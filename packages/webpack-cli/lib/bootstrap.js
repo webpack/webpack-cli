@@ -1,5 +1,9 @@
 const WebpackCLI = require("./webpack-cli");
 
+/**
+ * @param {string[]} args
+ * @returns {Promise<void>}
+ */
 const runCLI = async (args) => {
   // Create a new instance of the CLI object
   const cli = new WebpackCLI();

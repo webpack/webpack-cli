@@ -12,6 +12,7 @@
     "webpack-cli": "./bin/cli.js"
   },
   "main": "./lib/index.js",
+  "types": "./types/index.d.ts",
   "engines": {
     "node": ">=10.13.0"
   },
@@ -26,6 +27,7 @@
   "files": [
     "bin",
     "lib",
+    "types",
     "!**/*__tests__"
   ],
   "dependencies": {
@@ -44,6 +46,10 @@
   },
   "peerDependencies": {
     "webpack": "4.x.x || 5.x.x"
+  },
+  "devDependencies": {
+    "@types/rechoir": "^0.6.1",
+    "@types/webpack-bundle-analyzer": "^4.4.1"
   },
   "peerDependenciesMeta": {
     "@webpack-cli/generators": {

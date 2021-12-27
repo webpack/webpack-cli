@@ -47,7 +47,7 @@ class ConfigTestCommand {
           }
         } catch (error) {
           if (cli.isValidationError(error)) {
-            cli.logger.error(error.message);
+            cli.logger.error((error as Error).message);
           } else {
             cli.logger.error(error);
           }

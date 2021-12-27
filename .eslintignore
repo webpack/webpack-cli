@@ -6,6 +6,7 @@ packages/configtest/lib
 packages/generators/lib
 packages/info/lib
 packages/serve/lib
+packages/webpack-cli/types
 test/**/dist/
 test/**/bin/
 test/**/binary/

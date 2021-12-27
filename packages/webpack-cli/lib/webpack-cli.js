@@ -5,15 +5,64 @@ const util = require("util");
 
 const { program, Option } = require("commander");
 
+/** @typedef {TODO} Problem */
+/** @typedef {TODO} MultiCompilerOptions */
+/** @typedef {import("webpack").Compiler} Compiler */
+/** @typedef {import("webpack").MultiCompiler} MultiCompiler */
+/** @typedef {import("webpack").Stats} Stats */
+/** @typedef {import("webpack").MultiStats} MultiStats */
+/** @typedef {import("webpack").StatsOptions} StatsOptions */
+/** @typedef {import("webpack").Configuration} Configuration */
+/** @typedef {import("commander").Command} Command */
+/** @typedef {import("commander").Help} Help */
+
+/**
+ * @typedef {Object} Argv
+ * @property {{ WEBPACK_BUNDLE?: boolean, WEBPACK_BUILD?: boolean, WEBPACK_WATCH?: boolean, WEBPACK_SERVE?: boolean }} env
+ */
+
+/**
+ * @typedef {Object} Logger
+ * @property {(message?: any, ...optionalParams: any[]) => void} error
+ * @property {(message?: any, ...optionalParams: any[]) => void} warn
+ * @property {(message?: any, ...optionalParams: any[]) => void} info
+ * @property {(message?: any, ...optionalParams: any[]) => void} success
+ * @property {(message?: any, ...optionalParams: any[]) => void} log
+ * @property {(message?: any, ...optionalParams: any[]) => void} raw
+ */
+
+/** @typedef {import("commander").Command & { options?: Option[], pkg?: string, forHelp?: boolean }} WebpackCLICommand */
+
+/**
+ * @typedef {Object} WebpackCLICommandOptions
+ * @property {string} name
+ * @property {string | string[]} [alias]
+ * @property {string} [description]
+ * @property {string} [usage]
+ * @property {string} [pkg]
+ * @property {string[]} [dependencies]
+ */
+
+/** @typedef {import("commander").Option & { helpLevel?: "minimum" | "verbose" }} WebpackCLIOption */
+
+/** @typedef {TODO} CacheOptions */
+
+// TODO fix me
+/**
+ * @typedef {any} TODO
+ */
+
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
 class WebpackCLI {
   constructor() {
     this.colors = this.createColors();
+    this.isColorSupportChanged = undefined;
     this.logger = this.getLogger();
 
     // Initialize program
+    /** @type {WebpackCLICommand} */
     this.program = program;
     this.program.name("webpack");
     this.program.configureOutput({
@@ -23,6 +72,10 @@ class WebpackCLI {
     });
   }
 
+  /**
+   * @param {string} str
+   * @returns {Capitalize<string>}
+   */
   capitalizeFirstLetter(str) {
     if (typeof str !== "string") {
       return "";
@@ -31,10 +84,18 @@ class WebpackCLI {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  /**
+   * @param {string} str
+   * @returns {string}
+   */
   toKebabCase(str) {
     return str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
   }
 
+  /**
+   * @param {boolean} [useColor]
+   * @returns {import("colorette").Colorette & { isColorSupported: boolean }}
+   */
   createColors(useColor) {
     const { createColors, isColorSupported } = require("colorette");
 
@@ -49,6 +110,9 @@ class WebpackCLI {
     return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
   }
 
+  /**
+   * @returns {Logger}
+   */
   getLogger() {
     return {
       error: (val) => console.error(`[webpack-cli] ${this.colors.red(util.format(val))}`),
@@ -60,6 +124,10 @@ class WebpackCLI {
     };
   }
 
+  /**
+   * @param {string} packageName
+   * @returns {boolean}
+   */
   checkPackageExists(packageName) {
     if (process.versions.pnp) {
       return true;
@@ -80,6 +148,9 @@ class WebpackCLI {
     return false;
   }
 
+  /**
+   * @returns {string[]}
+   */
   getAvailablePackageManagers() {
     const { sync } = require("execa");
     const installers = ["npm", "yarn", "pnpm"];
@@ -105,6 +176,9 @@ class WebpackCLI {
     return availableInstallers;
   }
 
+  /**
+   * @returns {"npm" | "yarn" | "pnpm" | undefined}
+   */
   getDefaultPackageManager() {
     const { sync } = require("execa");
     const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), "package-lock.json"));
@@ -158,6 +232,11 @@ class WebpackCLI {
     }
   }
 
+  /**
+   * @param {string} packageName
+   * @param {{ preMessage?: () => void }} options
+   * @returns {Promise<string>}
+   */
   async doInstall(packageName, options = {}) {
     const packageManager = this.getDefaultPackageManager();
 
@@ -237,6 +316,12 @@ class WebpackCLI {
     process.exit(2);
   }
 
+  /**
+   * @template T
+   * @param {string} module
+   * @param {boolean} handleError
+   * @returns {Promise<T>}
+   */
   async tryRequireThenImport(module, handleError = true) {
     let result;
 
@@ -273,6 +358,12 @@ class WebpackCLI {
     return result || {};
   }
 
+  /**
+   * @template T
+   * @param {string} pathToFile
+   * @param {boolean} handleError
+   * @returns {T}
+   */
   loadJSONFile(pathToFile, handleError = true) {
     let result;
 
@@ -290,6 +381,12 @@ class WebpackCLI {
     return result;
   }
 
+  /**
+   * @param {TODO} commandOptions
+   * @param {TODO} options
+   * @param {TODO} action
+   * @returns {Promise<WebpackCLICommand>}
+   */
   async makeCommand(commandOptions, options, action) {
     const alreadyLoaded = this.program.commands.find(
       (command) =>
@@ -301,6 +398,7 @@ class WebpackCLI {
       return;
     }
 
+    /** @type {WebpackCLICommand} */
     const command = this.program.command(commandOptions.name, {
       noHelp: commandOptions.noHelp,
       hidden: commandOptions.hidden,
@@ -504,6 +602,7 @@ class WebpackCLI {
       if (mainOption.type.has(Number)) {
         let skipDefault = true;
 
+        /** @type {WebpackCLIOption} */
         const optionForCommand = new Option(mainOption.flags, mainOption.description)
           .argParser((value, prev = []) => {
             if (mainOption.defaultValue && mainOption.multiple && skipDefault) {
@@ -521,6 +620,7 @@ class WebpackCLI {
       } else if (mainOption.type.has(String)) {
         let skipDefault = true;
 
+        /** @type {WebpackCLIOption} */
         const optionForCommand = new Option(mainOption.flags, mainOption.description)
           .argParser((value, prev = []) => {
             if (mainOption.defaultValue && mainOption.multiple && skipDefault) {
@@ -536,6 +636,7 @@ class WebpackCLI {
 
         command.addOption(optionForCommand);
       } else if (mainOption.type.has(Boolean)) {
+        /** @type {WebpackCLIOption} */
         const optionForCommand = new Option(mainOption.flags, mainOption.description).default(
           mainOption.defaultValue,
         );
@@ -544,6 +645,7 @@ class WebpackCLI {
 
         command.addOption(optionForCommand);
       } else {
+        /** @type {WebpackCLIOption} */
         const optionForCommand = new Option(mainOption.flags, mainOption.description)
           .argParser(Array.from(mainOption.type)[0])
           .default(mainOption.defaultValue);
@@ -555,11 +657,8 @@ class WebpackCLI {
     } else if (mainOption.type.size > 1) {
       let skipDefault = true;
 
-      const optionForCommand = new Option(
-        mainOption.flags,
-        mainOption.description,
-        mainOption.defaultValue,
-      )
+      /** @type {WebpackCLIOption} */
+      const optionForCommand = new Option(mainOption.flags, mainOption.description)
         .argParser((value, prev = []) => {
           if (mainOption.defaultValue && mainOption.multiple && skipDefault) {
             prev = [];
@@ -586,6 +685,7 @@ class WebpackCLI {
 
       command.addOption(optionForCommand);
     } else if (mainOption.type.size === 0 && negativeOption) {
+      /** @type {WebpackCLIOption} */
       const optionForCommand = new Option(mainOption.flags, mainOption.description);
 
       // Hide stub option
@@ -596,6 +696,7 @@ class WebpackCLI {
     }
 
     if (negativeOption) {
+      /** @type {WebpackCLIOption} */
       const optionForCommand = new Option(negativeOption.flags, negativeOption.description);
 
       optionForCommand.helpLevel = option.helpLevel;
@@ -922,12 +1023,17 @@ class WebpackCLI {
     return options;
   }
 
+  /**
+   * @param {boolean} handleError
+   * @returns {Promise<typeof import("webpack")>}
+   */
   async loadWebpack(handleError = true) {
     return this.tryRequireThenImport(WEBPACK_PACKAGE, handleError);
   }
 
   async run(args, parseOptions) {
     // Built-in internal commands
+    /** @type {WebpackCLICommandOptions} */
     const buildCommandOptions = {
       name: "build [entries...]",
       alias: ["bundle", "b"],
@@ -935,6 +1041,7 @@ class WebpackCLI {
       usage: "[entries...] [options]",
       dependencies: [WEBPACK_PACKAGE],
     };
+    /** @type {WebpackCLICommandOptions} */
     const watchCommandOptions = {
       name: "watch [entries...]",
       alias: "w",
@@ -942,18 +1049,21 @@ class WebpackCLI {
       usage: "[entries...] [options]",
       dependencies: [WEBPACK_PACKAGE],
     };
+    /** @type {WebpackCLICommandOptions} */
     const versionCommandOptions = {
       name: "version [commands...]",
       alias: "v",
       description:
         "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
     };
+    /** @type {WebpackCLICommandOptions} */
     const helpCommandOptions = {
       name: "help [command] [option]",
       alias: "h",
       description: "Display help for commands and options.",
     };
     // Built-in external commands
+    /** @type {WebpackCLICommandOptions[]} */
     const externalBuiltInCommandsInfo = [
       {
         name: "serve [entries...]",
@@ -992,6 +1102,7 @@ class WebpackCLI {
       },
     ];
 
+    /** @type {WebpackCLICommandOptions[]} */
     const knownCommands = [
       buildCommandOptions,
       watchCommandOptions,
@@ -999,13 +1110,26 @@ class WebpackCLI {
       helpCommandOptions,
       ...externalBuiltInCommandsInfo,
     ];
+    /**
+     * @param {string} name
+     * @returns {string}
+     */
     const getCommandName = (name) => name.split(" ")[0];
+    /**
+     * @param {string} name
+     * @returns {WebpackCLICommandOptions}
+     */
     const isKnownCommand = (name) =>
       knownCommands.find(
         (command) =>
           getCommandName(command.name) === name ||
           (Array.isArray(command.alias) ? command.alias.includes(name) : command.alias === name),
       );
+    /**
+     * @param {string} input
+     * @param {TODO} commandOptions
+     * @returns {boolean}
+     */
     const isCommand = (input, commandOptions) => {
       const longName = getCommandName(commandOptions.name);
 
@@ -1023,11 +1147,24 @@ class WebpackCLI {
 
       return false;
     };
+
+    /**
+     * @param {string} name
+     * @returns {WebpackCLICommand}
+     */
     const findCommandByName = (name) =>
       this.program.commands.find(
         (command) => name === command.name() || command.aliases().includes(name),
       );
+    /**
+     * @param {string} value
+     * @returns {boolean}
+     */
     const isOption = (value) => value.startsWith("-");
+    /**
+     * @param {string} value
+     * @returns {boolean}
+     */
     const isGlobalOption = (value) =>
       value === "--color" ||
       value === "--no-color" ||
@@ -1036,6 +1173,11 @@ class WebpackCLI {
       value === "-h" ||
       value === "--help";
 
+    /**
+     * @param {string} commandName
+     * @param {boolean} allowToInstall
+     * @returns {Promise<void>}
+     */
     const loadCommandByName = async (commandName, allowToInstall = false) => {
       const isBuildCommandUsed = isCommand(commandName, buildCommandOptions);
       const isWatchCommandUsed = isCommand(commandName, watchCommandOptions);
@@ -1073,6 +1215,7 @@ class WebpackCLI {
               : externalBuiltInCommandInfo.alias === commandName),
         );
 
+        /** @type {string} */
         let pkg;
 
         if (builtInExternalCommandInfo) {
@@ -1134,6 +1277,7 @@ class WebpackCLI {
       }
 
       if (error.code === "commander.unknownOption") {
+        /** @type {RegExpMatchArray | string} */
         let name = error.message.match(/'(.+)'/);
 
         if (name) {
@@ -1161,7 +1305,10 @@ class WebpackCLI {
             const levenshtein = require("fastest-levenshtein");
 
             command.options.forEach((option) => {
-              if (!option.hidden && levenshtein.distance(name, option.long.slice(2)) < 3) {
+              if (
+                !option.hidden &&
+                levenshtein.distance(/** @type {string} */ (name), option.long.slice(2)) < 3
+              ) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
             });
@@ -1200,6 +1347,7 @@ class WebpackCLI {
     // Make `version|v [commands...]` command
     const outputVersion = async (options) => {
       // Filter `bundle`, `watch`, `version` and `help` commands
+      /** @type {string[]} */
       const possibleCommandNames = options.filter(
         (option) =>
           !isCommand(option, buildCommandOptions) &&
@@ -1274,6 +1422,13 @@ class WebpackCLI {
       "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
     );
 
+    /**
+     * @param {TODO} options
+     * @param {boolean} isVerbose
+     * @param {boolean} isHelpCommandSyntax
+     * @param {Command} program
+     * @returns {Promise<void>}
+     */
     const outputHelp = async (options, isVerbose, isHelpCommandSyntax, program) => {
       const { bold } = this.colors;
       const outputIncorrectUsageOfHelp = () => {
@@ -1292,6 +1447,10 @@ class WebpackCLI {
         program.configureHelp({
           sortSubcommands: true,
           // Support multiple aliases
+          /**
+           * @param {WebpackCLICommand} command
+           * @returns {string}
+           */
           commandUsage: (command) => {
             let parentCmdNames = "";
 
@@ -1310,24 +1469,38 @@ class WebpackCLI {
               .join("|")} ${command.usage()}`;
           },
           // Support multiple aliases
+          /**
+           * @param {WebpackCLICommand} command
+           * @returns {string}
+           */
           subcommandTerm: (command) => {
+            /**
+             * @param {Option} argument
+             * @returns {string}
+             */
             const humanReadableArgumentName = (argument) => {
               const nameOutput = argument.name + (argument.variadic === true ? "..." : "");
 
               return argument.required ? "<" + nameOutput + ">" : "[" + nameOutput + "]";
             };
+            // @ts-ignore
             const args = command._args.map((arg) => humanReadableArgumentName(arg)).join(" ");
 
             return `${command.name()}|${command.aliases().join("|")}${args ? ` ${args}` : ""}${
               command.options.length > 0 ? " [options]" : ""
             }`;
           },
+          /**
+           * @param {WebpackCLICommand} command
+           * @returns {Option[]}
+           */
           visibleOptions: function visibleOptions(command) {
             return command.options.filter((option) => {
               if (option.hidden) {
                 return false;
               }
 
+              // @ts-ignore
               switch (option.helpLevel) {
                 case "verbose":
                   return isVerbose;
@@ -1337,6 +1510,11 @@ class WebpackCLI {
               }
             });
           },
+          /**
+           * @param {WebpackCLICommand} command
+           * @param {Help} helper
+           * @returns {number}
+           */
           padWidth(command, helper) {
             return Math.max(
               helper.longestArgumentTermLength(command, helper),
@@ -1346,12 +1524,28 @@ class WebpackCLI {
               helper.longestSubcommandTermLength(isGlobalHelp ? program : command, helper),
             );
           },
+          /**
+           * @param {WebpackCLICommand} command
+           * @param {Help} helper
+           * @returns {string}
+           */
           formatHelp: (command, helper) => {
             const termWidth = helper.padWidth(command, helper);
-            const helpWidth = helper.helpWidth || process.env.WEBPACK_CLI_HELP_WIDTH || 80;
+            /** @type {number} */
+            const helpWidth =
+              typeof helper.helpWidth !== "undefined"
+                ? helper.helpWidth
+                : typeof process.env.WEBPACK_CLI_HELP_WIDTH !== "undefined"
+                ? parseInt(process.env.WEBPACK_CLI_HELP_WIDTH, 10)
+                : 80;
             const itemIndentWidth = 2;
             const itemSeparatorWidth = 2; // between term and description
 
+            /**
+             * @param {string} term
+             * @param {string} description
+             * @returns {string}
+             */
             const formatItem = (term, description) => {
               if (description) {
                 const fullText = `${term.padEnd(termWidth + itemSeparatorWidth)}${description}`;
@@ -1366,6 +1560,10 @@ class WebpackCLI {
               return term;
             };
 
+            /**
+             * @param {string[]} textArray
+             * @returns {string}
+             */
             const formatList = (textArray) =>
               textArray.join("\n").replace(/^/gm, " ".repeat(itemIndentWidth));
 
@@ -1402,6 +1600,7 @@ class WebpackCLI {
             }
 
             // Global options
+            // @ts-ignore
             const globalOptionList = program.options.map((option) =>
               formatItem(helper.optionTerm(option), helper.optionDescription(option)),
             );
@@ -1461,7 +1660,9 @@ class WebpackCLI {
         }
       } else if (isHelpCommandSyntax) {
         let isCommandSpecified = false;
+        /** @type {string} */
         let commandName = getCommandName(buildCommandOptions.name);
+        /** @type {string} */
         let optionName;
 
         if (options.length === 1) {
@@ -1488,6 +1689,7 @@ class WebpackCLI {
           process.exit(2);
         }
 
+        // @ts-ignore
         const option = command.options.find(
           (option) => option.short === optionName || option.long === optionName,
         );
@@ -1631,7 +1833,7 @@ class WebpackCLI {
           .concat(operands.slice(1))
           .concat(unknown);
 
-        await outputVersion(optionsForVersion, program);
+        await outputVersion(optionsForVersion);
       }
 
       let commandToRun = operand;
@@ -1679,6 +1881,12 @@ class WebpackCLI {
 
   async loadConfig(options) {
     const interpret = require("interpret");
+    /**
+     * @param {string} configPath
+     * @param {Argv} [argv]
+     * @returns {Promise<{ path: string, options: TODO }>}
+     */
+    // @ts-ignore
     const loadConfigByPath = async (configPath, argv = {}) => {
       const ext = path.extname(configPath);
       const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
@@ -1746,6 +1954,10 @@ class WebpackCLI {
         }
       }
 
+      /**
+       * @param {any} value
+       * @returns {boolean}
+       */
       const isObject = (value) => typeof value === "object" && value !== null;
 
       if (!isObject(options) && !Array.isArray(options)) {
@@ -1761,8 +1973,12 @@ class WebpackCLI {
 
     if (options.config && options.config.length > 0) {
       const loadedConfigs = await Promise.all(
-        options.config.map((configPath) =>
-          loadConfigByPath(path.resolve(configPath), options.argv),
+        options.config.map(
+          /**
+           * @param {string} configPath
+           * @returns {Promise<TODO>}
+           */
+          (configPath) => loadConfigByPath(path.resolve(configPath), options.argv),
         ),
       );
 
@@ -1842,6 +2058,9 @@ class WebpackCLI {
     }
 
     if (options.configName) {
+      /**
+       * @type {string[]}
+       */
       const notFoundConfigNames = [];
 
       config.options = options.configName.map((configName) => {
@@ -1881,6 +2100,9 @@ class WebpackCLI {
         process.exit(2);
       }
 
+      /**
+       * @type {string[]}
+       */
       const mergedConfigPaths = [];
 
       config.options = config.options.reduce((accumulator, options) => {
@@ -1897,6 +2119,11 @@ class WebpackCLI {
     return config;
   }
 
+  /**
+   * @param {Configuration | ReadonlyArray<Configuration> & MultiCompilerOptions} config
+   * @param {TODO} options
+   * @returns {Promise<Configuration | ReadonlyArray<Configuration> & MultiCompilerOptions>}
+   */
   async buildConfig(config, options) {
     const runFunctionOnEachConfig = (options, fn) => {
       if (Array.isArray(options)) {
@@ -1940,8 +2167,14 @@ class WebpackCLI {
       process.exit(2);
     }
 
-    const CLIPlugin = await this.tryRequireThenImport("./plugins/CLIPlugin");
+    const CLIPlugin =
+      /** @type {typeof import("./plugins/CLIPlugin.js")} */
+      (await this.tryRequireThenImport("./plugins/CLIPlugin"));
 
+    /**
+     * @param {Configuration} item
+     * @returns {Configuration}
+     */
     const internalBuildConfig = (item) => {
       // Output warnings
       if (
@@ -1962,7 +2195,7 @@ class WebpackCLI {
       }
 
       // Apply options
-      if (this.webpack.cli) {
+      if (/** @type {import("webpack")} */ (this.webpack).cli) {
         const args = this.getBuiltInOptions()
           .filter((flag) => flag.group === "core")
           .reduce((accumulator, flag) => {
@@ -1985,7 +2218,9 @@ class WebpackCLI {
           return accumulator;
         }, {});
 
-        const problems = this.webpack.cli.processArguments(args, item, values);
+        const problems =
+          /** @type {import("webpack")} */
+          (this.webpack).cli.processArguments(args, item, values);
 
         if (problems) {
           const groupBy = (xs, key) => {
@@ -2000,43 +2235,52 @@ class WebpackCLI {
           for (const path in problemsByPath) {
             const problems = problemsByPath[path];
 
-            problems.forEach((problem) => {
-              this.logger.error(
-                `${this.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
-                  problem.value ? ` '${problem.value}'` : ""
-                } for the '--${problem.argument}' option${
-                  problem.index ? ` by index '${problem.index}'` : ""
-                }`,
-              );
+            problems.forEach(
+              /**
+               * @param {Problem} problem
+               */
+              (problem) => {
+                this.logger.error(
+                  `${this.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
+                    problem.value ? ` '${problem.value}'` : ""
+                  } for the '--${problem.argument}' option${
+                    problem.index ? ` by index '${problem.index}'` : ""
+                  }`,
+                );
 
-              if (problem.expected) {
-                this.logger.error(`Expected: '${problem.expected}'`);
-              }
-            });
+                if (problem.expected) {
+                  this.logger.error(`Expected: '${problem.expected}'`);
+                }
+              },
+            );
           }
 
           process.exit(2);
         }
 
         // Setup default cache options
-        if (item.cache && item.cache.type === "filesystem") {
+        if (item.cache && /** @type {CacheOptions} */ (item.cache).type === "filesystem") {
           const configPath = config.path.get(item);
 
           if (configPath) {
-            if (!item.cache.buildDependencies) {
-              item.cache.buildDependencies = {};
+            if (!(/** @type {CacheOptions} */ (item.cache).buildDependencies)) {
+              /** @type {CacheOptions} */
+              (item.cache).buildDependencies = {};
             }
 
-            if (!item.cache.buildDependencies.defaultConfig) {
-              item.cache.buildDependencies.defaultConfig = [];
+            if (!(/** @type {CacheOptions} */ (item.cache).buildDependencies.defaultConfig)) {
+              /** @type {CacheOptions} */
+              (item.cache).buildDependencies.defaultConfig = [];
             }
 
             if (Array.isArray(configPath)) {
               configPath.forEach((oneOfConfigPath) => {
-                item.cache.buildDependencies.defaultConfig.push(oneOfConfigPath);
+                /** @type {CacheOptions} */
+                (item.cache).buildDependencies.defaultConfig.push(oneOfConfigPath);
               });
             } else {
-              item.cache.buildDependencies.defaultConfig.push(configPath);
+              /** @type {CacheOptions} */
+              (item.cache).buildDependencies.defaultConfig.push(configPath);
             }
           }
         }
@@ -2095,12 +2339,14 @@ class WebpackCLI {
 
       // Setup stats
       // TODO remove after drop webpack@4
+      // @ts-ignore
       const statsForWebpack4 = this.webpack.Stats && this.webpack.Stats.presetToOptions;
 
       if (statsForWebpack4) {
         if (typeof item.stats === "undefined") {
           item.stats = {};
         } else if (typeof item.stats === "boolean") {
+          // @ts-ignore
           item.stats = this.webpack.Stats.presetToOptions(item.stats);
         } else if (
           typeof item.stats === "string" &&
@@ -2112,6 +2358,7 @@ class WebpackCLI {
             item.stats === "errors-only" ||
             item.stats === "errors-warnings")
         ) {
+          // @ts-ignore
           item.stats = this.webpack.Stats.presetToOptions(item.stats);
         }
       } else {
@@ -2131,8 +2378,8 @@ class WebpackCLI {
         colors = Boolean(this.isColorSupportChanged);
       }
       // From stats
-      else if (typeof item.stats.colors !== "undefined") {
-        colors = item.stats.colors;
+      else if (typeof (/** @type {StatsOptions} */ (item.stats).colors) !== "undefined") {
+        colors = /** @type {StatsOptions} */ (item.stats).colors;
       }
       // Default
       else {
@@ -2152,7 +2399,6 @@ class WebpackCLI {
       item.plugins.unshift(
         new CLIPlugin({
           configPath: config.path.get(item),
-          helpfulOutput: !options.json,
           hot: options.hot,
           progress: options.progress,
           prefetch: options.prefetch,
@@ -2168,15 +2414,27 @@ class WebpackCLI {
     return config;
   }
 
+  /**
+   * @param {unknown} error
+   * @returns {boolean}
+   */
   isValidationError(error) {
     // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
     // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
     const ValidationError =
-      this.webpack.ValidationError || this.webpack.WebpackOptionsValidationError;
+      /** @type {import("webpack")} */ (this.webpack).ValidationError ||
+      /** @type {import("webpack")} */ (this.webpack).WebpackOptionsValidationError;
 
-    return error instanceof ValidationError || error.name === "ValidationError";
+    return (
+      error instanceof ValidationError || /** @type {Error} */ (error).name === "ValidationError"
+    );
   }
 
+  /**
+   * @param {Configuration | ReadonlyArray<Configuration> & MultiCompilerOptions} options
+   * @param {TODO} callback
+   * @returns {Promise<Compiler | MultiCompiler>}
+   */
   async createCompiler(options, callback) {
     if (typeof options.nodeEnv === "string") {
       process.env.NODE_ENV = options.nodeEnv;
@@ -2188,65 +2446,93 @@ class WebpackCLI {
     let compiler;
 
     try {
-      compiler = this.webpack(
-        config.options,
-        callback
-          ? (error, stats) => {
-              if (error && this.isValidationError(error)) {
-                this.logger.error(error.message);
-                process.exit(2);
-              }
+      compiler =
+        /** @type {import("webpack")} */
+        (this.webpack)(
+          config.options,
+          callback
+            ? /**
+               * @param {Error | null} error
+               * @param {Stats | MultiStats} stats
+               */
+              (error, stats) => {
+                if (error && this.isValidationError(error)) {
+                  this.logger.error(error.message);
+                  process.exit(2);
+                }
 
-              callback(error, stats);
-            }
-          : callback,
-      );
+                callback(error, stats);
+              }
+            : callback,
+        );
     } catch (error) {
       if (this.isValidationError(error)) {
-        this.logger.error(error.message);
+        this.logger.error(/** @type {Error} */ (error).message);
       } else {
-        this.logger.error(error);
+        this.logger.error(/** @type {Error} */ (error));
       }
 
       process.exit(2);
     }
 
     // TODO webpack@4 return Watching and MultiWatching instead Compiler and MultiCompiler, remove this after drop webpack@4
+    // @ts-ignore
     if (compiler && compiler.compiler) {
+      // @ts-ignore
       compiler = compiler.compiler;
     }
 
     return compiler;
   }
 
+  /**
+   * @param {Compiler | MultiCompiler} compiler
+   * @returns {boolean | undefined}
+   */
   needWatchStdin(compiler) {
-    if (compiler.compilers) {
-      return compiler.compilers.some(
+    if (/** @type {MultiCompiler} */ (compiler).compilers) {
+      return /** @type {MultiCompiler} */ (compiler).compilers.some(
         (compiler) => compiler.options.watchOptions && compiler.options.watchOptions.stdin,
       );
     }
 
-    return compiler.options.watchOptions && compiler.options.watchOptions.stdin;
+    return (
+      /** @type {Compiler} */ (compiler).options.watchOptions &&
+      /** @type {Compiler} */ (compiler).options.watchOptions.stdin
+    );
   }
 
+  /**
+   * @param {TODO} options
+   * @param {boolean} isWatchCommand
+   * @returns {Promise<void>}
+   */
   async runWebpack(options, isWatchCommand) {
+    /** @type {Compiler | MultiCompiler} */
     // eslint-disable-next-line prefer-const
     let compiler;
+    /** @type {import("@discoveryjs/json-ext")["stringifyStream"] | undefined} */
     let createJsonStringifyStream;
 
     if (options.json) {
-      const jsonExt = await this.tryRequireThenImport("@discoveryjs/json-ext");
+      const jsonExt =
+        /** @type {import("@discoveryjs/json-ext")} */
+        (await this.tryRequireThenImport("@discoveryjs/json-ext"));
 
       createJsonStringifyStream = jsonExt.stringifyStream;
     }
 
+    /**
+     * @param {Error | null} [error]
+     * @param {Stats | MultiStats} [stats]
+     */
     const callback = (error, stats) => {
       if (error) {
         this.logger.error(error);
         process.exit(2);
       }
 
-      if (stats.hasErrors()) {
+      if (/** @type {Stats | MultiStats} */ (stats).hasErrors()) {
         process.exitCode = 1;
       }
 
@@ -2254,37 +2540,52 @@ class WebpackCLI {
         return;
       }
 
-      const statsOptions = compiler.compilers
-        ? {
-            children: compiler.compilers.map((compiler) =>
-              compiler.options ? compiler.options.stats : undefined,
-            ),
-          }
-        : compiler.options
-        ? compiler.options.stats
-        : undefined;
+      /** @type {TODO} */
+      const statsOptions =
+        /** @type {MultiCompiler} */
+        (compiler).compilers
+          ? {
+              children:
+                /** @type {MultiCompiler} */
+                (compiler).compilers.map(
+                  /**
+                   * @param {Compiler} compiler
+                   * @returns {TODO | undefined}
+                   */
+                  (compiler) => (compiler.options ? compiler.options.stats : undefined),
+                ),
+            }
+          : /** @type {Compiler} */ (compiler).options
+          ? /** @type {Compiler} */ (compiler).options.stats
+          : undefined;
 
       // TODO webpack@4 doesn't support `{ children: [{ colors: true }, { colors: true }] }` for stats
+      // @ts-ignore
       const statsForWebpack4 = this.webpack.Stats && this.webpack.Stats.presetToOptions;
 
-      if (compiler.compilers && statsForWebpack4) {
+      if (/** @type {MultiCompiler} */ (compiler).compilers && statsForWebpack4) {
+        // @ts-ignore
         statsOptions.colors = statsOptions.children.some((child) => child.colors);
       }
 
       if (options.json && createJsonStringifyStream) {
+        /**
+         * @param {Error} error
+         * @returns {void}
+         */
         const handleWriteError = (error) => {
           this.logger.error(error);
           process.exit(2);
         };
 
         if (options.json === true) {
-          createJsonStringifyStream(stats.toJson(statsOptions))
+          createJsonStringifyStream(/** @type {Stats | MultiStats} */ (stats).toJson(statsOptions))
             .on("error", handleWriteError)
             .pipe(process.stdout)
             .on("error", handleWriteError)
             .on("close", () => process.stdout.write("\n"));
         } else {
-          createJsonStringifyStream(stats.toJson(statsOptions))
+          createJsonStringifyStream(/** @type {Stats | MultiStats} */ (stats).toJson(statsOptions))
             .on("error", handleWriteError)
             .pipe(fs.createWriteStream(options.json))
             .on("error", handleWriteError)
@@ -2298,7 +2599,7 @@ class WebpackCLI {
             });
         }
       } else {
-        const printedStats = stats.toString(statsOptions);
+        const printedStats = /** @type {Stats | MultiStats} */ (stats).toString(statsOptions);
 
         // Avoid extra empty line when `stats: 'none'`
         if (printedStats) {
@@ -2324,10 +2625,17 @@ class WebpackCLI {
       return;
     }
 
+    /**
+     * @param {Compiler | MultiCompiler} compiler
+     * @returns {boolean | undefined}
+     */
     const isWatch = (compiler) =>
-      compiler.compilers
-        ? compiler.compilers.some((compiler) => compiler.options.watch)
-        : compiler.options.watch;
+      /** @type {MultiCompiler} */
+      (compiler).compilers
+        ? /** @type {MultiCompiler} */
+          (compiler).compilers.some((compiler) => compiler.options.watch)
+        : /** @type {Compiler} */
+          (compiler).options.watch;
 
     if (isWatch(compiler) && this.needWatchStdin(compiler)) {
       process.stdin.on("end", () => {

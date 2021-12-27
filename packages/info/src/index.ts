@@ -42,7 +42,7 @@ class InfoCommand {
       async (options) => {
         let { output } = options;
 
-        const envinfoConfig = {};
+        const envinfoConfig: { [key: string]: boolean } = {};
 
         if (output) {
           // Remove quotes if exist

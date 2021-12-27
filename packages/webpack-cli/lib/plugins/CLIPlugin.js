@@ -1,12 +1,36 @@
+/** @typedef {import("webpack").Compiler} Compiler */
+/** @typedef {import("webpack").WebpackPluginInstance} WebpackPluginInstance */
+
+/**
+ * @typedef {Object} Options
+ * @property {string} [configPath]
+ * @property {"profile"} [progress]
+ * @property {boolean} [hot]
+ * @property {boolean} [prefetch]
+ * @property {boolean} [analyze]
+ */
+
 class CLIPlugin {
+  /**
+   * @param {Options} options
+   */
   constructor(options) {
     this.options = options;
   }
 
+  /**
+   * @param {Compiler} compiler
+   */
   setupHotPlugin(compiler) {
     const { HotModuleReplacementPlugin } = compiler.webpack || require("webpack");
     const hotModuleReplacementPlugin = Boolean(
-      compiler.options.plugins.find((plugin) => plugin instanceof HotModuleReplacementPlugin),
+      compiler.options.plugins.find(
+        /**
+         * @param {WebpackPluginInstance} plugin
+         * @returns {boolean}
+         */
+        (plugin) => plugin instanceof HotModuleReplacementPlugin,
+      ),
     );
 
     if (!hotModuleReplacementPlugin) {
@@ -14,17 +38,30 @@ class CLIPlugin {
     }
   }
 
+  /**
+   * @param {Compiler} compiler
+   */
   setupPrefetchPlugin(compiler) {
     const { PrefetchPlugin } = compiler.webpack || require("webpack");
 
     new PrefetchPlugin(null, this.options.prefetch).apply(compiler);
   }
 
+  /**
+   * @param {Compiler} compiler
+   * @returns {Promise<void>}
+   */
   async setupBundleAnalyzerPlugin(compiler) {
     // eslint-disable-next-line node/no-extraneous-require
     const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
     const bundleAnalyzerPlugin = Boolean(
-      compiler.options.plugins.find((plugin) => plugin instanceof BundleAnalyzerPlugin),
+      compiler.options.plugins.find(
+        /**
+         * @param {WebpackPluginInstance} plugin
+         * @returns {boolean}
+         */
+        (plugin) => plugin instanceof BundleAnalyzerPlugin,
+      ),
     );
 
     if (!bundleAnalyzerPlugin) {
@@ -32,10 +69,19 @@ class CLIPlugin {
     }
   }
 
+  /**
+   * @param {Compiler} compiler
+   */
   setupProgressPlugin(compiler) {
     const { ProgressPlugin } = compiler.webpack || require("webpack");
     const progressPlugin = Boolean(
-      compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin),
+      compiler.options.plugins.find(
+        /**
+         * @param {WebpackPluginInstance} plugin
+         * @returns {boolean}
+         */
+        (plugin) => plugin instanceof ProgressPlugin,
+      ),
     );
 
     if (!progressPlugin) {
@@ -45,14 +91,23 @@ class CLIPlugin {
     }
   }
 
+  /**
+   * @param {Compiler} compiler
+   * @returns {void}
+   */
   setupHelpfulOutput(compiler) {
     const pluginName = "webpack-cli";
     const getCompilationName = () => (compiler.name ? `'${compiler.name}'` : "");
+    /**
+     * @param {string} message
+     * @returns {void}
+     */
     const logCompilation = (message) => {
       if (process.env.WEBPACK_CLI_START_FINISH_FORCE_LOG) {
         process.stderr.write(message);
       } else {
-        this.logger.log(message);
+        /** @type {ReturnType<Compiler["getInfrastructureLogger"]>} */
+        (this.logger).log(message);
       }
     };
 
@@ -64,35 +119,55 @@ class CLIPlugin {
       logCompilation(`Compiler${name ? ` ${name}` : ""} starting... `);
 
       if (configPath) {
-        this.logger.log(`Compiler${name ? ` ${name}` : ""} is using config: '${configPath}'`);
+        /** @type {ReturnType<Compiler["getInfrastructureLogger"]>} */
+        (this.logger).log(`Compiler${name ? ` ${name}` : ""} is using config: '${configPath}'`);
       }
     });
 
-    compiler.hooks.watchRun.tap(pluginName, (compiler) => {
-      const { bail, watch } = compiler.options;
+    compiler.hooks.watchRun.tap(
+      pluginName,
+      /**
+       * @param {Compiler} compiler
+       */
+      (compiler) => {
+        const { bail, watch } = compiler.options;
 
-      if (bail && watch) {
-        this.logger.warn(
-          'You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.',
-        );
-      }
+        if (bail && watch) {
+          /** @type {ReturnType<Compiler["getInfrastructureLogger"]>} */
+          (this.logger).warn(
+            'You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.',
+          );
+        }
 
-      const name = getCompilationName();
+        const name = getCompilationName();
 
-      logCompilation(`Compiler${name ? ` ${name}` : ""} starting... `);
+        logCompilation(`Compiler${name ? ` ${name}` : ""} starting... `);
 
-      if (configPath) {
-        this.logger.log(`Compiler${name ? ` ${name}` : ""} is using config: '${configPath}'`);
-      }
-    });
+        if (configPath) {
+          /** @type {ReturnType<Compiler["getInfrastructureLogger"]>} */
+          (this.logger).log(`Compiler${name ? ` ${name}` : ""} is using config: '${configPath}'`);
+        }
+      },
+    );
 
-    compiler.hooks.invalid.tap(pluginName, (filename, changeTime) => {
-      const date = new Date(changeTime * 1000);
+    compiler.hooks.invalid.tap(
+      pluginName,
+      /**
+       * @param {string | null} filename
+       * @param {number} changeTime
+       */
+      (filename, changeTime) => {
+        const date = new Date(changeTime * 1000);
 
-      this.logger.log(`File '${filename}' was modified`);
-      this.logger.log(`Changed time is ${date} (timestamp is ${changeTime})`);
-    });
+        /** @type {ReturnType<Compiler["getInfrastructureLogger"]>} */
+        (this.logger).log(`File '${filename}' was modified`);
+        /** @type {ReturnType<Compiler["getInfrastructureLogger"]>} */
+        (this.logger).log(`Changed time is ${date} (timestamp is ${changeTime})`);
+      },
+    );
 
+    // TODO remove after drop webpack v4
+    // @ts-ignore
     (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, () => {
       const name = getCompilationName();
 
@@ -100,13 +175,22 @@ class CLIPlugin {
 
       process.nextTick(() => {
         if (compiler.watchMode) {
-          this.logger.log(`Compiler${name ? `${name}` : ""} is watching files for updates...`);
+          /** @type {ReturnType<Compiler["getInfrastructureLogger"]>} */
+          (this.logger).log(`Compiler${name ? `${name}` : ""} is watching files for updates...`);
         }
       });
     });
   }
 
+  /**
+   * @param {Compiler} compiler
+   * @returns {void}
+   */
   apply(compiler) {
+    /**
+     * @private
+     * @type {ReturnType<Compiler["getInfrastructureLogger"]>}
+     */
     this.logger = compiler.getInfrastructureLogger("webpack-cli");
 
     if (this.options.progress) {

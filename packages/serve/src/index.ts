@@ -183,7 +183,7 @@ class ServeCommand {
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const isDevServer4 = devServerVersion.startsWith("4");
-        const usedPorts = [];
+        const usedPorts: number[] = [];
 
         for (const compilerForDevServer of compilersForDevServer) {
           let devServerOptions: devServerOptionsType;
@@ -338,7 +338,7 @@ class ServeCommand {
             servers.push(server);
           } catch (error) {
             if (cli.isValidationError(error)) {
-              cli.logger.error(error.message);
+              cli.logger.error((error as Error).message);
             } else {
               cli.logger.error(error);
             }
