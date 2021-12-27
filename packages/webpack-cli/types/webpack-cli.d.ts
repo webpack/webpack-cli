@@ -4,10 +4,16 @@ declare class WebpackCLI {
   colors: import("colorette").Colorette & {
     isColorSupported: boolean;
   };
-  isColorSupportChanged: any;
+  /**
+   * @private
+   * @type {undefined | boolean}
+   */
+  private isColorSupportChanged;
   logger: Logger;
-  /** @type {WebpackCLICommand} */
-  program: WebpackCLICommand;
+  /** @type {CLICommand} */
+  program: CLICommand;
+  /** @type {import("webpack") | undefined} */
+  webpack: typeof import("webpack") | undefined;
   /**
    * @param {string} str
    * @returns {Capitalize<string>}
@@ -68,49 +74,63 @@ declare class WebpackCLI {
    */
   loadJSONFile<T_1>(pathToFile: string, handleError?: boolean): T_1;
   /**
-   * @param {TODO} commandOptions
+   * @param {CLICommandOptions} commandOptions
    * @param {TODO} options
-   * @param {TODO} action
-   * @returns {Promise<WebpackCLICommand>}
+   * @param {(...args: any[]) => void | Promise<void>} action
+   * @returns {Promise<CLICommand>}
    */
-  makeCommand(commandOptions: TODO, options: TODO, action: TODO): Promise<WebpackCLICommand>;
-  makeOption(command: any, option: any): void;
-  getBuiltInOptions(): any[];
-  builtInOptionsCache: any[];
+  makeCommand(
+    commandOptions: CLICommandOptions,
+    options: TODO,
+    action: (...args: any[]) => void | Promise<void>,
+  ): Promise<CLICommand>;
+  /**
+   * @param {CLICommand} command
+   * @param {CLIOptionOptions} option
+   */
+  makeOption(command: CLICommand, option: CLIOptionOptions): void;
+  /**
+   * @returns {CLIOptionOptions[]}
+   */
+  getBuiltInOptions(): CLIOptionOptions[];
+  /**
+   * @private
+   * @type {CLIOptionOptions[]}
+   */
+  private builtInOptionsCache;
   /**
    * @param {boolean} handleError
    * @returns {Promise<typeof import("webpack")>}
    */
   loadWebpack(handleError?: boolean): Promise<typeof import("webpack")>;
-  run(args: any, parseOptions: any): Promise<void>;
-  webpack: typeof import("webpack");
-  loadConfig(options: any): Promise<{
-    options: {};
-    path: WeakMap<object, any>;
-  }>;
   /**
-   * @param {Configuration | ReadonlyArray<Configuration> & MultiCompilerOptions} config
-   * @param {TODO} options
-   * @returns {Promise<Configuration | ReadonlyArray<Configuration> & MultiCompilerOptions>}
+   * @param {string[]} args
+   * @param {ParseOptions} [parseOptions]
+   * @returns {Promise<void>}
    */
-  buildConfig(
-    config: Configuration | (ReadonlyArray<Configuration> & MultiCompilerOptions),
-    options: TODO,
-  ): Promise<Configuration | (ReadonlyArray<Configuration> & MultiCompilerOptions)>;
+  run(args: string[], parseOptions?: ParseOptions): Promise<void>;
+  /**
+   * @param {CLIOptions} options
+   * @returns {Promise<LoadedConfiguration>}
+   */
+  loadConfig(options: CLIOptions): Promise<LoadedConfiguration>;
+  /**
+   * @param {LoadedConfiguration} config
+   * @param {TODO} options
+   * @returns {Promise<BuiltConfiguration>}
+   */
+  buildConfig(config: LoadedConfiguration, options: TODO): Promise<BuiltConfiguration>;
   /**
    * @param {unknown} error
    * @returns {boolean}
    */
   isValidationError(error: unknown): boolean;
   /**
-   * @param {Configuration | ReadonlyArray<Configuration> & MultiCompilerOptions} options
+   * @param {TODO} options
    * @param {TODO} callback
    * @returns {Promise<Compiler | MultiCompiler>}
    */
-  createCompiler(
-    options: Configuration | (ReadonlyArray<Configuration> & MultiCompilerOptions),
-    callback: TODO,
-  ): Promise<Compiler | MultiCompiler>;
+  createCompiler(options: TODO, callback: TODO): Promise<Compiler | MultiCompiler>;
   /**
    * @param {Compiler | MultiCompiler} compiler
    * @returns {boolean | undefined}
@@ -126,21 +146,29 @@ declare class WebpackCLI {
 declare namespace WebpackCLI {
   export {
     Problem,
-    MultiCompilerOptions,
     Compiler,
     MultiCompiler,
     Stats,
     MultiStats,
     StatsOptions,
     Configuration,
+    Argument,
     Command,
+    CommandOptions,
     Help,
+    ParseOptions,
     Argv,
-    Logger,
-    WebpackCLICommand,
-    WebpackCLICommandOptions,
-    WebpackCLIOption,
+    CLIOptions,
     CacheOptions,
+    MultiConfiguration,
+    PossibleConfiguration,
+    LoadedConfiguration,
+    BuiltConfiguration,
+    Logger,
+    CLICommandOptions,
+    CLICommand,
+    CLIOptionOptions,
+    CLIOption,
     TODO,
   };
 }
@@ -152,21 +180,39 @@ type Logger = {
   log: (message?: any, ...optionalParams: any[]) => void;
   raw: (message?: any, ...optionalParams: any[]) => void;
 };
-type WebpackCLICommand = import("commander").Command & {
+type CLICommand = import("commander").Command & {
   options?: Option[];
   pkg?: string;
   forHelp?: boolean;
 };
+type CLICommandOptions = any & CommandOptions;
 type TODO = any;
-type Configuration = import("webpack").Configuration;
-type MultiCompilerOptions = TODO;
+type CLIOptionOptions = Argument;
+type ParseOptions = import("commander").ParseOptions;
+type CLIOptions = {
+  merge?: boolean;
+  config: TODO;
+  configName?: string[];
+  argv: Argv;
+};
+type LoadedConfiguration = {
+  path: WeakMap<PossibleConfiguration, string>;
+  options: PossibleConfiguration;
+};
+type BuiltConfiguration = {
+  path: WeakMap<PossibleConfiguration, string>;
+  options: PossibleConfiguration;
+};
 type Compiler = import("webpack").Compiler;
 type MultiCompiler = import("webpack").MultiCompiler;
 type Problem = TODO;
 type Stats = import("webpack").Stats;
 type MultiStats = import("webpack").MultiStats;
 type StatsOptions = import("webpack").StatsOptions;
+type Configuration = import("webpack").Configuration;
+type Argument = TODO;
 type Command = import("commander").Command;
+type CommandOptions = import("commander").CommandOptions;
 type Help = import("commander").Help;
 type Argv = {
   env: {
@@ -176,16 +222,13 @@ type Argv = {
     WEBPACK_SERVE?: boolean;
   };
 };
-type WebpackCLICommandOptions = {
-  name: string;
-  alias?: string | string[];
-  description?: string;
-  usage?: string;
-  pkg?: string;
-  dependencies?: string[];
+type CacheOptions = TODO;
+type MultiConfiguration = ReadonlyArray<Configuration> & {
+  parallelism?: number;
 };
-type WebpackCLIOption = import("commander").Option & {
+type PossibleConfiguration = Configuration | MultiConfiguration;
+type CLIOption = import("commander").Option & {
   helpLevel?: "minimum" | "verbose";
 };
-type CacheOptions = TODO;
 import { Option } from "commander";
+import path = require("path");

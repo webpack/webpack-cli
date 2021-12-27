@@ -46,6 +46,8 @@ class GeneratorsCommand {
         });
         const generatorName = "webpack-init-generator";
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         env.registerStub(initGenerator, generatorName);
 
         env.run(generatorName, { cli, options }, () => {
@@ -78,6 +80,8 @@ class GeneratorsCommand {
         const env = yeoman.createEnv([], { cwd: outputPath });
         const generatorName = "webpack-loader-generator";
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         env.registerStub(loaderGenerator, generatorName);
 
         env.run(generatorName, { cli, options }, () => {
@@ -110,6 +114,8 @@ class GeneratorsCommand {
         const env = yeoman.createEnv([], { cwd: outputPath });
         const generatorName = "webpack-plugin-generator";
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         env.registerStub(pluginGenerator, generatorName);
 
         env.run(generatorName, { cli, options }, () => {
