@@ -18,11 +18,9 @@ export async function questions(
   Question: Record<string, any>,
 ): Promise<void> {
   await defaultQuestions(self, Question, {
-    forceSelection: true,
-    skip: {
-      devServer: true,
-      htmlWebpackPlugin: true,
-    },
+    langType: { required: true },
+    devServer: { skip: true },
+    htmlWebpackPlugin: { skip: true },
   });
 
   // Add react dependencies

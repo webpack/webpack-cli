@@ -17,20 +17,27 @@ export async function questions(
   self: CustomGenerator,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Question: Record<string, any>,
-  config: { forceSelection: boolean; skip: Record<string, boolean> } = {
-    forceSelection: false,
-    skip: {},
+  config: Record<string, { skip?: boolean; required?: boolean }> = {
+    langType: {},
+    devServer: {},
+    htmlWebpackPlugin: {},
+    workboxWebpackPlugin: {},
+    cssType: {},
+    isCSS: {},
+    isPostCSS: {},
+    extractPlugin: {},
   },
 ): Promise<void> {
-  const { forceSelection, skip: isSkip } = config;
   // Handle JS language solutions
   const { langType } = await Question.List(
     self,
     "langType",
     "Which of the following JS solutions do you want to use?",
-    [forceSelection ? "" : "none", "ES6", "Typescript"].filter((option) => option.length > 0),
-    forceSelection ? "ES6" : "none",
-    self.force || isSkip.langType,
+    [config.langType.required ? "" : "none", "ES6", "Typescript"].filter(
+      (option) => option.length > 0,
+    ),
+    config.langType.required ? "ES6" : "none",
+    self.force || config.langType.skip,
   );
 
   switch (langType) {
@@ -48,7 +55,7 @@ export async function questions(
     "devServer",
     "Do you want to use webpack-dev-server?",
     true,
-    self.force || isSkip.devServer,
+    self.force || config.devServer.skip,
   );
   if (devServer) {
     self.dependencies.push("webpack-dev-server");
@@ -60,7 +67,7 @@ export async function questions(
     "htmlWebpackPlugin",
     "Do you want to simplify the creation of HTML files for your bundle?",
     true,
-    self.force || isSkip.htmlWebpackPlugin,
+    self.force || config.htmlWebpackPlugin.skip,
   );
   if (htmlWebpackPlugin) {
     self.dependencies.push("html-webpack-plugin");
@@ -72,7 +79,7 @@ export async function questions(
     "workboxWebpackPlugin",
     "Do you want to add PWA support?",
     true,
-    self.force || isSkip.workboxWebpackPlugin,
+    self.force || config.workboxWebpackPlugin.skip,
   );
   if (workboxWebpackPlugin) {
     self.dependencies.push("workbox-webpack-plugin");
@@ -92,11 +99,11 @@ export async function questions(
     self,
     "cssType",
     "Which of the following CSS solutions do you want to use?",
-    [forceSelection ? "" : "none", "CSS only", "SASS", "LESS", "Stylus"].filter(
+    [config.cssType.required ? "" : "none", "CSS only", "SASS", "LESS", "Stylus"].filter(
       (option) => option.length > 0,
     ),
-    forceSelection ? "CSS only" : "none",
-    self.force || isSkip.cssType,
+    config.cssType.required ? "CSS only" : "none",
+    self.force || config.cssType.skip,
   );
 
   if (cssType == "none") {
