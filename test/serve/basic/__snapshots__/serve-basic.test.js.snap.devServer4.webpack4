@@ -30,8 +30,8 @@ exports[`basic serve usage should log used supplied config with serve: stderr 1`
 <i> [webpack-dev-server] On Your Network (IPv6): http://[<network-ip-v6>]:<port>/
 <i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory
     [webpack-cli] Compiler finished
-    [webpack-cli] Compiler is watching files for updates...
-    [webpack-dev-middleware] Compilation finished"
+    [webpack-dev-middleware] Compilation finished
+    [webpack-cli] Compiler is watching files for updates..."
 `;
 
 exports[`basic serve usage should respect the "publicPath" option from configuration (from the "devServer" options): stderr 1`] = `

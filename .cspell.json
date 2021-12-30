@@ -99,6 +99,8 @@
     "**/__snapshots__/**",
     "**/*.tsbuildinfo",
     "**/yarn.lock",
-    "**/*.png.tpl"
+    "**/*.png.tpl",
+    "**/package-lock.json",
+    "node_modules"
   ]
 }
