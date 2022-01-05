@@ -62,7 +62,7 @@ class InfoCommand {
         }
 
         const defaultInformation: Information = {
-          Binaries: ["Node", "Yarn", "npm"],
+          Binaries: ["Node", "Yarn", "npm", "pnpm"],
           Browsers: [
             "Brave Browser",
             "Chrome",
