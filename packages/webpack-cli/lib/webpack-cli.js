@@ -2324,6 +2324,27 @@ class WebpackCLI {
       return;
     }
 
+    const signals = ["SIGINT", "SIGTERM"];
+    let needForceShutdown = false;
+
+    signals.forEach((signal) => {
+      const listener = () => {
+        if (needForceShutdown) {
+          process.exit();
+        }
+
+        this.logger.info("Gracefully shutting down. To force exit, press ^C again. Please wait...");
+
+        needForceShutdown = true;
+
+        compiler.close(() => {
+          process.exit();
+        });
+      };
+
+      process.on(signal, listener);
+    });
+
     const isWatch = (compiler) =>
       compiler.compilers
         ? compiler.compilers.some((compiler) => compiler.options.watch)
