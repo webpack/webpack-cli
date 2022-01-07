@@ -31,7 +31,7 @@ const { program, Option } = require("commander");
 
 /** @typedef {Configuration | MultiConfiguration} PossibleConfiguration */
 
-/** @typedef {{ path: WeakMap<PossibleConfiguration, string>, options: PossibleConfiguration }} LoadedConfiguration */
+/** @typedef {TODO} LoadedConfiguration */
 
 /** @typedef {{ path: WeakMap<PossibleConfiguration, string>, options: PossibleConfiguration }} BuiltConfiguration */
 
@@ -508,11 +508,10 @@ class WebpackCLI {
       if (typeof options === "function") {
         if (forHelp && !allDependenciesInstalled) {
           command.description(
-            `${
-              commandOptions.description
-            } To see all available options you need to install ${commandOptions.dependencies
-              .map((dependency) => `'${dependency}'`)
-              .join(", ")}.`,
+            `${commandOptions.description} To see all available options you need to install ${
+              /** @type {string[]} */
+              (commandOptions.dependencies).map((dependency) => `'${dependency}'`).join(", ")
+            }.`,
           );
           options = [];
         } else {
@@ -520,9 +519,14 @@ class WebpackCLI {
         }
       }
 
-      options.forEach((optionForCommand) => {
-        this.makeOption(command, optionForCommand);
-      });
+      options.forEach(
+        /**
+         * @param {CLIOptionOptions} optionForCommand
+         */
+        (optionForCommand) => {
+          this.makeOption(command, optionForCommand);
+        },
+      );
     }
 
     command.action(action);
@@ -718,12 +722,16 @@ class WebpackCLI {
             const numberValue = Number(value);
 
             if (!isNaN(numberValue)) {
-              return mainOption.multiple ? [].concat(prev).concat(numberValue) : numberValue;
+              return mainOption.multiple
+                ? /** @type {number[]} */ ([]).concat(prev).concat(numberValue)
+                : numberValue;
             }
           }
 
           if (mainOption.type.has(String)) {
-            return mainOption.multiple ? [].concat(prev).concat(value) : value;
+            return mainOption.multiple
+              ? /** @type {string[]} */ ([]).concat(prev).concat(value)
+              : value;
           }
 
           return value;
@@ -2088,6 +2096,7 @@ class WebpackCLI {
       return { options, path: configPath };
     };
 
+    /** @type {LoadedConfiguration} */
     const config = { options: {}, path: new WeakMap() };
 
     if (options.config && options.config.length > 0) {
@@ -2205,7 +2214,9 @@ class WebpackCLI {
           if (Array.isArray(config.options)) {
             found = config.options.find((options) => options.name === configName);
           } else {
-            found = config.options.name === configName ? config.options : undefined;
+            found =
+              /** @type {Configuration} */
+              (config.options).name === configName ? config.options : undefined;
           }
 
           if (!found) {

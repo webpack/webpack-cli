@@ -196,10 +196,7 @@ type CLIOptions = {
   configName?: string[];
   argv: Argv;
 };
-type LoadedConfiguration = {
-  path: WeakMap<PossibleConfiguration, string>;
-  options: PossibleConfiguration;
-};
+type LoadedConfiguration = TODO;
 type BuiltConfiguration = {
   path: WeakMap<PossibleConfiguration, string>;
   options: PossibleConfiguration;
