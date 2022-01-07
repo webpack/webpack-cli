@@ -2,8 +2,6 @@
   "exclude": ["node_modules", "lib", "__tests__"],
   "files": [],
   "compilerOptions": {
-    // "allowJs": true,
-    // "checkJs": true,
     "skipLibCheck": true,
     "target": "es2017",
     "module": "commonjs",
