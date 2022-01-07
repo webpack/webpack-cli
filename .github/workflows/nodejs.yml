@@ -78,15 +78,15 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --ignore-engines
 
       - name: Install webpack ${{ matrix.webpack-version }}
         if: matrix.webpack-version == '4'
-        run: yarn add -W webpack@${{ matrix.webpack-version }}
+        run: yarn add -W webpack@${{ matrix.webpack-version }} --ignore-engines
 
       - name: Install webpack-dev-server ${{ matrix.webpack-version }}
         if: matrix.dev-server-version == 'latest'
-        run: yarn add -W webpack-dev-server@${{ matrix.dev-server-version }}
+        run: yarn add -W webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines
 
       - name: Prepare environment for tests
         run: yarn build:ci
