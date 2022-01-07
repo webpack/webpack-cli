@@ -40,9 +40,7 @@ const addonGenerator = (
     public template: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public cli: any;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    public props: Generator.Question;
+    public props: Generator.Question | undefined;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(args: any, opts: any) {
@@ -63,15 +61,16 @@ const addonGenerator = (
     }
 
     public default(): void {
+      const name = (this.props as Generator.Question).name as string;
       const currentDirName = path.basename(this.destinationPath());
 
-      if (currentDirName !== this.props.name) {
+      if (currentDirName !== name) {
         this.log(`
-				Your project must be inside a folder named ${this.props.name}
+				Your project must be inside a folder named ${name}
 				I will create this folder for you.
                 `);
 
-        const pathToProjectDir: string = this.destinationPath(this.props.name as string);
+        const pathToProjectDir: string = this.destinationPath(name);
 
         try {
           fs.mkdirSync(pathToProjectDir, { recursive: true });
@@ -85,13 +84,14 @@ const addonGenerator = (
     }
 
     public writing(): void {
+      const name = (this.props as Generator.Question).name as string;
       const resolvedTemplatePath = this.resolvedTemplatePath as string;
       const packageJsonTemplatePath = "../addon-template/package.json.js";
 
       this.fs.extendJSON(
         this.destinationPath("package.json"),
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        require(packageJsonTemplatePath)(this.props.name),
+        require(packageJsonTemplatePath)(name),
       );
 
       let files = [];
