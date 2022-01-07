@@ -1,5 +1,4 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-import path from "path";
 
 import { CustomGenerator } from "./types";
 import { getInstaller, getTemplate } from "./utils/helpers";
@@ -37,7 +36,7 @@ export default class InitGenerator extends CustomGenerator {
 
     this.template = await getTemplate.call(this);
 
-    await handlers[this.template].questions(this, Question);
+    await handlers[this.template as keyof typeof handlers].questions(this, Question);
 
     // Handle installation of prettier
     try {
@@ -75,7 +74,7 @@ export default class InitGenerator extends CustomGenerator {
     this.cli.logger.log(`${this.cli.colors.blue("ℹ INFO ")} Initialising project...`);
     this.configurationPath = this.destinationPath("webpack.config.js");
 
-    handlers[this.template].generate(this);
+    handlers[this.template as keyof typeof handlers].generate(this);
   }
 
   public end(): void {

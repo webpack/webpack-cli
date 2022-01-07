@@ -34,12 +34,14 @@ const addonGenerator = (
   templateFn: (instance: any) => Record<string, unknown>,
 ): Generator.GeneratorConstructor => {
   return class extends Generator {
-    public packageManager: string;
-    public resolvedTemplatePath: string;
+    public packageManager: string | undefined;
+    public resolvedTemplatePath: string | undefined;
     public supportedTemplates: string[];
     public template: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public cli: any;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     public props: Generator.Question;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,7 +85,9 @@ const addonGenerator = (
     }
 
     public writing(): void {
+      const resolvedTemplatePath = this.resolvedTemplatePath as string;
       const packageJsonTemplatePath = "../addon-template/package.json.js";
+
       this.fs.extendJSON(
         this.destinationPath("package.json"),
         // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -94,7 +98,7 @@ const addonGenerator = (
 
       try {
         // An array of file paths (relative to `./templates`) of files to be copied to the generated project
-        files = getFiles(this.resolvedTemplatePath);
+        files = getFiles(resolvedTemplatePath);
       } catch (error) {
         this.cli.logger.error(`Failed to generate starter template.\n ${error}`);
 
@@ -111,27 +115,30 @@ const addonGenerator = (
 
       copyFiles.forEach((filePath: string) => {
         // `absolute-path/to/file.js.tpl` -> `destination-path/file.js`
-        const destFilePath = path.relative(this.resolvedTemplatePath, filePath).replace(".tpl", "");
+        const destFilePath = path.relative(resolvedTemplatePath, filePath).replace(".tpl", "");
+
         this.fs.copyTpl(filePath, this.destinationPath(destFilePath));
       });
 
       copyTemplateFiles.forEach((filePath: string) => {
         // `absolute-path/to/_file.js.tpl` -> `destination-path/file.js`
         const destFilePath = path
-          .relative(this.resolvedTemplatePath, filePath)
+          .relative(resolvedTemplatePath, filePath)
           .replace("_", "")
           .replace(".tpl", "");
+
         this.fs.copyTpl(filePath, this.destinationPath(destFilePath), templateFn(this));
       });
     }
 
     public install(): void {
+      const packageManager = this.packageManager as string;
       const opts: {
         dev?: boolean;
         "save-dev"?: boolean;
       } = this.packageManager === "yarn" ? { dev: true } : { "save-dev": true };
 
-      this.scheduleInstallTask(this.packageManager, ["webpack-defaults"], opts);
+      this.scheduleInstallTask(packageManager, ["webpack-defaults"], opts);
     }
   };
 };
