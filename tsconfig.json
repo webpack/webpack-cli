@@ -8,7 +8,7 @@
     "target": "es2017",
     "module": "commonjs",
     "lib": ["es6", "es2017"],
-    "strict": true,
+    // "strict": true,
     "rootDir": ".",
     "outDir": "lib",
     "moduleResolution": "node",

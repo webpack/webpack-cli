@@ -7,43 +7,28 @@ import * as Question from "./utils/scaffold-utils";
 import handlers from "./handlers";
 
 export default class InitGenerator extends CustomGenerator {
-  public answers: Record<string, unknown>;
-  public configurationPath: string;
-  public force: boolean;
-  public generationPath: string;
-  public packageManager: string;
-  public resolvedGenerationPath: string;
+  public configurationPath: string | undefined;
+  public packageManager: string | undefined;
   public supportedTemplates: string[];
-  public template: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public cli: any;
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   public constructor(args: any, opts: any) {
     super(args, opts);
 
-    const { options } = opts;
-
-    this.template = options.template;
-    this.generationPath = options.generationPath;
-    this.resolvedGenerationPath = path.resolve(process.cwd(), this.generationPath);
-    this.force = options.force;
     this.dependencies = ["webpack", "webpack-cli"];
     this.supportedTemplates = Object.keys(handlers);
-    this.answers = {};
-    this.cli = opts.cli;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async prompting(): Promise<void | any> {
-    if (!existsSync(this.resolvedGenerationPath)) {
+    if (!existsSync(this.generationPath)) {
       this.cli.logger.log(
         `${this.cli.colors.blue(
           "ℹ INFO ",
         )} supplied generation path doesn't exist, required folders will be created.`,
       );
       try {
-        mkdirSync(this.resolvedGenerationPath, { recursive: true });
+        mkdirSync(this.generationPath, { recursive: true });
       } catch (error) {
         this.cli.logger.error(`Failed to create directory.\n ${error}`);
         process.exit(2);
@@ -88,6 +73,7 @@ export default class InitGenerator extends CustomGenerator {
 
   public writing(): void {
     this.cli.logger.log(`${this.cli.colors.blue("ℹ INFO ")} Initialising project...`);
+    this.configurationPath = this.destinationPath("webpack.config.js");
 
     handlers[this.template].generate(this);
   }
@@ -97,10 +83,10 @@ export default class InitGenerator extends CustomGenerator {
     try {
       // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
       const prettier = require("prettier");
-      const source = readFileSync(this.configurationPath, { encoding: "utf8" });
+      const source = readFileSync(this.configurationPath as string, { encoding: "utf8" });
       const formattedSource = prettier.format(source, { parser: "babel" });
 
-      writeFileSync(this.configurationPath, formattedSource);
+      writeFileSync(this.configurationPath as string, formattedSource);
     } catch (err) {
       this.cli.logger.log(
         `${this.cli.colors.yellow(

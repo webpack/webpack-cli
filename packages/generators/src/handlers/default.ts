@@ -198,7 +198,6 @@ export function generate(self: CustomGenerator): void {
     ...self.answers,
     entry,
   });
-  self.configurationPath = self.destinationPath("webpack.config.js");
 
   // Generate JS language essentials
   switch (self.answers.langType) {
