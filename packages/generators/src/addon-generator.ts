@@ -40,6 +40,7 @@ const addonGenerator = (
     public template: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public cli: any;
+    public props: Generator.Question;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(args: any, opts: any) {
@@ -51,10 +52,6 @@ const addonGenerator = (
       this.template = options.template;
       this.supportedTemplates = fs.readdirSync(templateDir);
     }
-
-    public props: Generator.Question;
-    public copy: (value: string, index: number, array: string[]) => void;
-    public copyTpl: (value: string, index: number, array: string[]) => void;
 
     public async prompting(): Promise<void> {
       this.template = await getTemplate.call(this);
