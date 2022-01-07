@@ -19,15 +19,6 @@ export function makeLoaderName(name: string): string {
   return name;
 }
 
-/**
- * A yeoman generator class for creating a webpack
- * loader project. It adds some starter loader code
- * and runs `webpack-defaults`.
- *
- * @class LoaderGenerator
- * @extends {Generator}
- */
-
 export const LoaderGenerator = addonGenerator(
   [
     {

@@ -2,14 +2,6 @@ import path from "path";
 import addonGenerator from "./addon-generator";
 import { toKebabCase, toUpperCamelCase } from "./utils/helpers";
 
-/**
- * A yeoman generator class for creating a webpack
- * plugin project. It adds some starter plugin code
- * and runs `webpack-defaults`.
- *
- * @class PluginGenerator
- * @extends {Generator}
- */
 export const PluginGenerator = addonGenerator(
   [
     {

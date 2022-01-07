@@ -5,14 +5,13 @@ import Generator from "yeoman-generator";
 import { getInstaller, getTemplate } from "./utils/helpers";
 
 // Helper to get the template-directory content
-
-const getFiles = (dir) => {
+const getFiles = (dir: string): string[] => {
   return fs.readdirSync(dir).reduce((list, file) => {
     const filePath = path.join(dir, file);
     const isDir = fs.statSync(filePath).isDirectory();
 
     return list.concat(isDir ? getFiles(filePath) : filePath);
-  }, []);
+  }, [] as string[]);
 };
 
 /**
@@ -60,21 +59,20 @@ const addonGenerator = (
     public async prompting(): Promise<void> {
       this.template = await getTemplate.call(this);
       this.resolvedTemplatePath = path.join(templateDir, this.template);
-
       this.props = await this.prompt(prompts);
-
       this.packageManager = await getInstaller.call(this);
     }
 
     public default(): void {
       const currentDirName = path.basename(this.destinationPath());
+
       if (currentDirName !== this.props.name) {
         this.log(`
 				Your project must be inside a folder named ${this.props.name}
 				I will create this folder for you.
                 `);
 
-        const pathToProjectDir: string = this.destinationPath(this.props.name);
+        const pathToProjectDir: string = this.destinationPath(this.props.name as string);
 
         try {
           fs.mkdirSync(pathToProjectDir, { recursive: true });
@@ -107,18 +105,20 @@ const addonGenerator = (
       }
 
       // Template file paths should be of the form `path/to/_file.js.tpl`
-      const copyTemplateFiles = files.filter((filePath) => path.basename(filePath).startsWith("_"));
+      const copyTemplateFiles = files.filter((filePath: string) =>
+        path.basename(filePath).startsWith("_"),
+      );
 
       // File paths should be of the form `path/to/file.js.tpl`
-      const copyFiles = files.filter((filePath) => !copyTemplateFiles.includes(filePath));
+      const copyFiles = files.filter((filePath: string) => !copyTemplateFiles.includes(filePath));
 
-      copyFiles.forEach((filePath) => {
+      copyFiles.forEach((filePath: string) => {
         // `absolute-path/to/file.js.tpl` -> `destination-path/file.js`
         const destFilePath = path.relative(this.resolvedTemplatePath, filePath).replace(".tpl", "");
         this.fs.copyTpl(filePath, this.destinationPath(destFilePath));
       });
 
-      copyTemplateFiles.forEach((filePath) => {
+      copyTemplateFiles.forEach((filePath: string) => {
         // `absolute-path/to/_file.js.tpl` -> `destination-path/file.js`
         const destFilePath = path
           .relative(this.resolvedTemplatePath, filePath)

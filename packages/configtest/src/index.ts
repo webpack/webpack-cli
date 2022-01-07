@@ -19,7 +19,8 @@ class ConfigTestCommand {
         const configPaths = new Set<string>();
 
         if (Array.isArray(config.options)) {
-          config.options.forEach((options) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          config.options.forEach((options: any) => {
             if (config.path.get(options)) {
               configPaths.add(config.path.get(options));
             }
@@ -47,7 +48,7 @@ class ConfigTestCommand {
           }
         } catch (error) {
           if (cli.isValidationError(error)) {
-            cli.logger.error(error.message);
+            cli.logger.error((error as Error).message);
           } else {
             cli.logger.error(error);
           }

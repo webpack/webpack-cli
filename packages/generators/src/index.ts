@@ -3,6 +3,7 @@ import loaderGenerator from "./loader-generator";
 import pluginGenerator from "./plugin-generator";
 import addonGenerator from "./addon-generator";
 import initGenerator from "./init-generator";
+import type { InitOptions, LoaderOptions, PluginOptions } from "./types";
 
 class GeneratorsCommand {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -38,17 +39,14 @@ class GeneratorsCommand {
           description: "Generate without questions (ideally) using default answers",
         },
       ],
-      async (generationPath, options) => {
-        options.generationPath = generationPath || ".";
-
-        const env = yeoman.createEnv([], {
-          cwd: options.generationPath,
-        });
+      async (generationPath: string, options: InitOptions) => {
+        const cwd = generationPath || ".";
+        const env = yeoman.createEnv([], { cwd });
         const generatorName = "webpack-init-generator";
 
         env.registerStub(initGenerator, generatorName);
 
-        env.run(generatorName, { cli, options }, () => {
+        env.run(generatorName, { cli, options: { ...options, generationPath: cwd } }, () => {
           cli.logger.success("Project has been initialised with webpack!");
         });
       },
@@ -74,7 +72,7 @@ class GeneratorsCommand {
           defaultValue: "default",
         },
       ],
-      async (outputPath, options) => {
+      async (outputPath: string, options: LoaderOptions) => {
         const env = yeoman.createEnv([], { cwd: outputPath });
         const generatorName = "webpack-loader-generator";
 
@@ -106,7 +104,7 @@ class GeneratorsCommand {
           defaultValue: "default",
         },
       ],
-      async (outputPath, options) => {
+      async (outputPath: string, options: PluginOptions) => {
         const env = yeoman.createEnv([], { cwd: outputPath });
         const generatorName = "webpack-plugin-generator";
 

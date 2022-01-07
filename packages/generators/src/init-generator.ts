@@ -6,15 +6,6 @@ import { getInstaller, getTemplate } from "./utils/helpers";
 import * as Question from "./utils/scaffold-utils";
 import handlers from "./handlers";
 
-/**
- *
- * Generator for initializing a webpack config
- *
- * @class 	InitGenerator
- * @extends CustomGenerator
- * @returns {Void} After execution, transforms are triggered
- *
- */
 export default class InitGenerator extends CustomGenerator {
   public answers: Record<string, unknown>;
   public configurationPath: string;

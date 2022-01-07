@@ -1,3 +1,5 @@
+// eslint-disable-next-line node/no-extraneous-import
+import type { Compiler, cli } from "webpack";
 import { devServerOptionsType } from "./types";
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
@@ -12,7 +14,7 @@ class ServeCommand {
       const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
       const isNewDevServerCLIAPI = typeof devServer.schema !== "undefined";
 
-      let options = {};
+      let options: Record<string, any> = {};
 
       if (isNewDevServerCLIAPI) {
         if (cli.webpack.cli && typeof cli.webpack.cli.getArguments === "function") {
@@ -66,11 +68,13 @@ class ServeCommand {
           process.exit(2);
         }
 
-        const builtInOptions = cli.getBuiltInOptions().filter((option) => option.name !== "watch");
+        const builtInOptions = cli
+          .getBuiltInOptions()
+          .filter((option: any) => option.name !== "watch");
 
         return [...builtInOptions, ...devServerFlags];
       },
-      async (entries, options) => {
+      async (entries: string[], options: any) => {
         const builtInOptions = cli.getBuiltInOptions();
         let devServerFlags = [];
 
@@ -93,13 +97,13 @@ class ServeCommand {
           // `webpack-dev-server` has own logic for the `--hot` option
           const isBuiltInOption =
             kebabedOption !== "hot" &&
-            builtInOptions.find((builtInOption) => builtInOption.name === kebabedOption);
+            builtInOptions.find((builtInOption: any) => builtInOption.name === kebabedOption);
 
           if (isBuiltInOption) {
             webpackCLIOptions[optionName] = options[optionName];
           } else {
             const needToProcess = devServerFlags.find(
-              (devServerOption) =>
+              (devServerOption: any) =>
                 devServerOption.name === kebabedOption && devServerOption.processor,
             );
 
@@ -130,7 +134,7 @@ class ServeCommand {
           return;
         }
 
-        const servers = [];
+        const servers: any[] = [];
 
         if (cli.needWatchStdin(compiler) || devServerCLIOptions.stdin) {
           // TODO remove in the next major release
@@ -179,27 +183,29 @@ class ServeCommand {
 
         const compilers =
           typeof compiler.compilers !== "undefined" ? compiler.compilers : [compiler];
-        const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
+        const possibleCompilers = compilers.filter(
+          (compiler: Compiler) => compiler.options.devServer,
+        );
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const isDevServer4 = devServerVersion.startsWith("4");
-        const usedPorts = [];
+        const usedPorts: number[] = [];
 
         for (const compilerForDevServer of compilersForDevServer) {
           let devServerOptions: devServerOptionsType;
 
           if (isNewDevServerCLIAPI) {
-            const args = devServerFlags.reduce((accumulator, flag) => {
+            const args = devServerFlags.reduce((accumulator: any, flag: any) => {
               accumulator[flag.name] = flag;
               return accumulator;
-            }, {});
+            }, {} as Record<string, any>);
             const values = Object.keys(devServerCLIOptions).reduce((accumulator, name) => {
               const kebabName = cli.toKebabCase(name);
               if (args[kebabName]) {
                 accumulator[kebabName] = options[name];
               }
               return accumulator;
-            }, {});
+            }, {} as Record<string, any>);
             const result = { ...(compilerForDevServer.options.devServer || {}) };
             const problems = (
               cli.webpack.cli && typeof cli.webpack.cli.processArguments === "function"
@@ -208,8 +214,8 @@ class ServeCommand {
             ).processArguments(args, result, values);
 
             if (problems) {
-              const groupBy = (xs, key) => {
-                return xs.reduce((rv, x) => {
+              const groupBy = (xs: { [key: string]: any }, key: string) => {
+                return xs.reduce((rv: any, x: any) => {
                   (rv[x[key]] = rv[x[key]] || []).push(x);
 
                   return rv;
@@ -220,7 +226,7 @@ class ServeCommand {
 
               for (const path in problemsByPath) {
                 const problems = problemsByPath[path];
-                problems.forEach((problem) => {
+                problems.forEach((problem: any) => {
                   cli.logger.error(
                     `${cli.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
                       problem.value ? ` '${problem.value}'` : ""
@@ -270,7 +276,7 @@ class ServeCommand {
           // TODO remove in the next major release
           if (!isDevServer4) {
             const getPublicPathOption = (): string => {
-              const normalizePublicPath = (publicPath): string =>
+              const normalizePublicPath = (publicPath: string): string =>
                 typeof publicPath === "undefined" || publicPath === "auto" ? "/" : publicPath;
 
               if (options.outputPublicPath) {
@@ -278,6 +284,8 @@ class ServeCommand {
               }
 
               if (devServerOptions.publicPath) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 return normalizePublicPath(devServerOptions.publicPath);
               }
 
@@ -328,7 +336,7 @@ class ServeCommand {
               await server.start();
             } else {
               // TODO remove in the next major release
-              server.listen(devServerOptions.port, devServerOptions.host, (error): void => {
+              server.listen(devServerOptions.port, devServerOptions.host, (error: Error): void => {
                 if (error) {
                   throw error;
                 }
@@ -338,7 +346,7 @@ class ServeCommand {
             servers.push(server);
           } catch (error) {
             if (cli.isValidationError(error)) {
-              cli.logger.error(error.message);
+              cli.logger.error((error as Error).message);
             } else {
               cli.logger.error(error);
             }
