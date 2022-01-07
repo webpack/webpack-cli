@@ -115,7 +115,7 @@ jobs:
           node-version: "16.x"
           cache: "yarn"
 
-      - run: yarn --frozen-lockfile
+      - run: yarn --frozen-lockfile --ignore-engines
 
       - name: conventional-changelog-lint-config-cz
         # $GITHUB_WORKSPACE is the path to your repository
