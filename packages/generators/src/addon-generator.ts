@@ -43,7 +43,7 @@ const addonGenerator = (
     public props: Generator.Question | undefined;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public constructor(args: any, opts: any) {
+    public constructor(args: string | string[], opts: any) {
       super(args, opts);
 
       const { cli = {}, options } = opts || {};

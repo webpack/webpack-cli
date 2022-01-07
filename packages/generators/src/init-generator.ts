@@ -8,18 +8,16 @@ import handlers from "./handlers";
 export default class InitGenerator extends CustomGenerator {
   public configurationPath: string | undefined;
   public packageManager: string | undefined;
-  public supportedTemplates: string[];
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-  public constructor(args: any, opts: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+  public constructor(args: string | string[], opts: any) {
     super(args, opts);
 
     this.dependencies = ["webpack", "webpack-cli"];
     this.supportedTemplates = Object.keys(handlers);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async prompting(): Promise<void | any> {
+  public async prompting(): Promise<void> {
     if (!existsSync(this.generationPath)) {
       this.cli.logger.log(
         `${this.cli.colors.blue(
