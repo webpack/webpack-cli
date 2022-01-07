@@ -5,6 +5,8 @@ import { devServerOptionsType } from "./types";
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
+type Problem = NonNullable<ReturnType<typeof cli["processArguments"]>>[0];
+
 class ServeCommand {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
   async apply(cli: any): Promise<void> {
@@ -14,6 +16,7 @@ class ServeCommand {
       const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
       const isNewDevServerCLIAPI = typeof devServer.schema !== "undefined";
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let options: Record<string, any> = {};
 
       if (isNewDevServerCLIAPI) {
@@ -68,12 +71,14 @@ class ServeCommand {
           process.exit(2);
         }
 
-        const builtInOptions = cli
-          .getBuiltInOptions()
-          .filter((option: any) => option.name !== "watch");
+        const builtInOptions = cli.getBuiltInOptions().filter(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (option: any) => option.name !== "watch",
+        );
 
         return [...builtInOptions, ...devServerFlags];
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async (entries: string[], options: any) => {
         const builtInOptions = cli.getBuiltInOptions();
         let devServerFlags = [];
@@ -97,12 +102,14 @@ class ServeCommand {
           // `webpack-dev-server` has own logic for the `--hot` option
           const isBuiltInOption =
             kebabedOption !== "hot" &&
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             builtInOptions.find((builtInOption: any) => builtInOption.name === kebabedOption);
 
           if (isBuiltInOption) {
             webpackCLIOptions[optionName] = options[optionName];
           } else {
             const needToProcess = devServerFlags.find(
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               (devServerOption: any) =>
                 devServerOption.name === kebabedOption && devServerOption.processor,
             );
@@ -134,7 +141,7 @@ class ServeCommand {
           return;
         }
 
-        const servers: any[] = [];
+        const servers: typeof DevServer[] = [];
 
         if (cli.needWatchStdin(compiler) || devServerCLIOptions.stdin) {
           // TODO remove in the next major release
@@ -195,17 +202,25 @@ class ServeCommand {
           let devServerOptions: devServerOptionsType;
 
           if (isNewDevServerCLIAPI) {
-            const args = devServerFlags.reduce((accumulator: any, flag: any) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const args = devServerFlags.reduce((accumulator: Record<string, any>, flag: any) => {
               accumulator[flag.name] = flag;
+
               return accumulator;
-            }, {} as Record<string, any>);
-            const values = Object.keys(devServerCLIOptions).reduce((accumulator, name) => {
-              const kebabName = cli.toKebabCase(name);
-              if (args[kebabName]) {
-                accumulator[kebabName] = options[name];
-              }
-              return accumulator;
-            }, {} as Record<string, any>);
+            }, {});
+            const values = Object.keys(devServerCLIOptions).reduce(
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (accumulator: Record<string, any>, name: string) => {
+                const kebabName = cli.toKebabCase(name);
+
+                if (args[kebabName]) {
+                  accumulator[kebabName] = options[name];
+                }
+
+                return accumulator;
+              },
+              {},
+            );
             const result = { ...(compilerForDevServer.options.devServer || {}) };
             const problems = (
               cli.webpack.cli && typeof cli.webpack.cli.processArguments === "function"
@@ -214,8 +229,8 @@ class ServeCommand {
             ).processArguments(args, result, values);
 
             if (problems) {
-              const groupBy = (xs: { [key: string]: any }, key: string) => {
-                return xs.reduce((rv: any, x: any) => {
+              const groupBy = (xs: Problem[], key: keyof Problem) => {
+                return xs.reduce((rv: { [key: string]: Problem[] }, x: Problem) => {
                   (rv[x[key]] = rv[x[key]] || []).push(x);
 
                   return rv;
@@ -226,7 +241,8 @@ class ServeCommand {
 
               for (const path in problemsByPath) {
                 const problems = problemsByPath[path];
-                problems.forEach((problem: any) => {
+
+                problems.forEach((problem: Problem) => {
                   cli.logger.error(
                     `${cli.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
                       problem.value ? ` '${problem.value}'` : ""
