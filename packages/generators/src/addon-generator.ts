@@ -134,7 +134,7 @@ const addonGenerator = (
         "save-dev"?: boolean;
       } = this.packageManager === "yarn" ? { dev: true } : { "save-dev": true };
 
-      this.scheduleInstallTask(this.packageManager, ["webpack-defaults", "bluebird"], opts);
+      this.scheduleInstallTask(this.packageManager, ["webpack-defaults"], opts);
     }
   };
 };
