@@ -2324,9 +2324,9 @@ class WebpackCLI {
       return;
     }
 
+    let needForceShutdown = false;
     if (compiler.options.cache) {
       const signals = ["SIGINT", "SIGTERM"];
-      let needForceShutdown = false;
 
       signals.forEach((signal) => {
         const listener = () => {
@@ -2356,7 +2356,10 @@ class WebpackCLI {
 
     if (isWatch(compiler) && this.needWatchStdin(compiler)) {
       process.stdin.on("end", () => {
-        process.exit(0);
+        compiler.close(() => {
+          process.exit(0);
+        });
+        needForceShutdown = true;
       });
       process.stdin.resume();
     }
