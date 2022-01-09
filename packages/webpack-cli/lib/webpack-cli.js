@@ -2324,7 +2324,7 @@ class WebpackCLI {
       return;
     }
 
-    if (compiler.cache) {
+    if (compiler.options.cache) {
       const signals = ["SIGINT", "SIGTERM"];
       let needForceShutdown = false;
 
