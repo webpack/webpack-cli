@@ -2324,26 +2324,30 @@ class WebpackCLI {
       return;
     }
 
-    const signals = ["SIGINT", "SIGTERM"];
-    let needForceShutdown = false;
+    if (compiler.cache) {
+      const signals = ["SIGINT", "SIGTERM"];
+      let needForceShutdown = false;
 
-    signals.forEach((signal) => {
-      const listener = () => {
-        if (needForceShutdown) {
-          process.exit();
-        }
+      signals.forEach((signal) => {
+        const listener = () => {
+          if (needForceShutdown) {
+            process.exit();
+          }
 
-        this.logger.info("Gracefully shutting down. To force exit, press ^C again. Please wait...");
+          this.logger.info(
+            "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+          );
 
-        needForceShutdown = true;
+          needForceShutdown = true;
 
-        compiler.close(() => {
-          process.exit();
-        });
-      };
+          compiler.close(() => {
+            process.exit();
+          });
+        };
 
-      process.on(signal, listener);
-    });
+        process.on(signal, listener);
+      });
+    }
 
     const isWatch = (compiler) =>
       compiler.compilers
