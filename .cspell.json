@@ -84,7 +84,8 @@
     "Yuuji",
     "Zangetsu",
     "Zenitsu",
-    "eslintcache"
+    "eslintcache",
+    "wagoid"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [
