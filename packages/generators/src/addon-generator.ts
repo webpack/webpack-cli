@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import Generator from "yeoman-generator";
 
+import { CustomGenerator } from "./types";
 import { getInstaller, getTemplate } from "./utils/helpers";
 
 // Helper to get the template-directory content
@@ -32,12 +33,11 @@ const addonGenerator = (
   templateDir: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   templateFn: (instance: any) => Record<string, unknown>,
-): Generator.GeneratorConstructor => {
-  return class extends Generator {
+): // TODO fix me
+Generator.GeneratorConstructor => {
+  return class extends CustomGenerator {
     public packageManager: string | undefined;
     public resolvedTemplatePath: string | undefined;
-    public supportedTemplates: string[];
-    public template: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public cli: any;
     public props: Generator.Question | undefined;
@@ -46,10 +46,6 @@ const addonGenerator = (
     public constructor(args: string | string[], opts: any) {
       super(args, opts);
 
-      const { cli = {}, options } = opts || {};
-
-      this.cli = cli;
-      this.template = options.template;
       this.supportedTemplates = fs.readdirSync(templateDir);
     }
 

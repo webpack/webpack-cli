@@ -73,12 +73,13 @@ class GeneratorsCommand {
         },
       ],
       async (outputPath: string, options: LoaderOptions) => {
-        const env = yeoman.createEnv([], { cwd: outputPath });
+        const cwd = outputPath || ".";
+        const env = yeoman.createEnv([], { cwd });
         const generatorName = "webpack-loader-generator";
 
         env.registerStub(loaderGenerator, generatorName);
 
-        env.run(generatorName, { cli, options }, () => {
+        env.run(generatorName, { cli, options: { ...options, generationPath: cwd } }, () => {
           cli.logger.success("Loader template has been successfully scaffolded.");
         });
       },
@@ -105,12 +106,13 @@ class GeneratorsCommand {
         },
       ],
       async (outputPath: string, options: PluginOptions) => {
-        const env = yeoman.createEnv([], { cwd: outputPath });
+        const cwd = outputPath || ".";
+        const env = yeoman.createEnv([], { cwd });
         const generatorName = "webpack-plugin-generator";
 
         env.registerStub(pluginGenerator, generatorName);
 
-        env.run(generatorName, { cli, options }, () => {
+        env.run(generatorName, { cli, options: { ...options, generationPath: cwd } }, () => {
           cli.logger.success("Plugin template has been successfully scaffolded.");
         });
       },

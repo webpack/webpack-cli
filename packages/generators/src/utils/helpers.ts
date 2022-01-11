@@ -23,8 +23,7 @@ export function toUpperCamelCase(str: string): string {
     .join("");
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-export async function getInstaller(this: any): Promise<string> {
+export async function getInstaller(this: CustomGenerator): Promise<string> {
   const installers = this.cli.getAvailablePackageManagers();
 
   if (installers.length === 1) {
@@ -44,8 +43,7 @@ export async function getInstaller(this: any): Promise<string> {
   return packager;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-export async function getTemplate(this: any): Promise<string> {
+export async function getTemplate(this: CustomGenerator): Promise<string> {
   if (this.supportedTemplates.includes(this.template)) {
     return this.template;
   }
