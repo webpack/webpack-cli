@@ -1,8 +1,10 @@
 import path from "path";
 import addonGenerator from "./addon-generator";
 import { toKebabCase, toUpperCamelCase } from "./utils/helpers";
+import type { PluginGeneratorOptions } from "./types";
+import Generator from "yeoman-generator";
 
-export const PluginGenerator = addonGenerator(
+export const PluginGenerator = addonGenerator<PluginGeneratorOptions>(
   [
     {
       default: "my-webpack-plugin",
@@ -15,7 +17,7 @@ export const PluginGenerator = addonGenerator(
   ],
   path.resolve(__dirname, "../plugin-template"),
   (gen): Record<string, unknown> => ({
-    name: toUpperCamelCase(gen.props.name),
+    name: toUpperCamelCase((gen.props as Generator.Question).name as string),
   }),
 );
 

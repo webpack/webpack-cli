@@ -3,6 +3,7 @@ import path from "path";
 import Generator from "yeoman-generator";
 
 import { CustomGenerator } from "./types";
+import type { CustomGeneratorOptions, BaseCustomGeneratorOptions } from "./types";
 import { getInstaller, getTemplate } from "./utils/helpers";
 
 // Helper to get the template-directory content
@@ -15,28 +16,30 @@ const getFiles = (dir: string): string[] => {
   }, [] as string[]);
 };
 
-/**
- * Creates a Yeoman Generator that generates a project conforming
- * to webpack-defaults.
- *
- * @param {Generator.Questions} prompts An array of Yeoman prompt objects
- *
- * @param {string} templateDir Absolute path to template directory
- *
- * @param {Function} templateFn A function that is passed a generator instance and
- * returns an object containing data to be supplied to the template files.
- *
- * @returns {Generator} A class extending Generator
- */
-const addonGenerator = (
+abstract class AddonGenerator<
+  T extends BaseCustomGeneratorOptions = BaseCustomGeneratorOptions,
+  Z extends CustomGeneratorOptions<T> = CustomGeneratorOptions<T>,
+> extends CustomGenerator<T, Z> {
+  public props: Generator.Question | undefined;
+  public resolvedTemplatePath: string | undefined;
+}
+
+export interface AddonGeneratorConstructor<
+  T extends BaseCustomGeneratorOptions = BaseCustomGeneratorOptions,
+  Z extends CustomGeneratorOptions<T> = CustomGeneratorOptions<T>,
+> {
+  new (args: string | string[], opts: Z): AddonGenerator<T, Z>;
+}
+
+const addonGenerator = <
+  T extends BaseCustomGeneratorOptions = BaseCustomGeneratorOptions,
+  Z extends CustomGeneratorOptions<T> = CustomGeneratorOptions<T>,
+>(
   prompts: Generator.Questions,
   templateDir: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  templateFn: (instance: any) => Record<string, unknown>,
-): // TODO fix me
-Generator.GeneratorConstructor => {
-  return class extends CustomGenerator {
-    public packageManager: string | undefined;
+  templateFn: (instance: CustomGenerator<T, Z> & AddonGenerator) => Record<string, unknown>,
+): AddonGeneratorConstructor<T, Z> => {
+  return class extends CustomGenerator<T, Z> {
     public resolvedTemplatePath: string | undefined;
     public props: Generator.Question | undefined;
 

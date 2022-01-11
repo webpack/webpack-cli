@@ -1,16 +1,17 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 
-import { CustomGenerator } from "./types";
+import { CustomGenerator, InitGeneratorOptions, CustomGeneratorOptions } from "./types";
 import { getInstaller, getTemplate } from "./utils/helpers";
 import * as Question from "./utils/scaffold-utils";
 import handlers from "./handlers";
 
-export default class InitGenerator extends CustomGenerator {
+export default class InitGenerator<
+  T extends InitGeneratorOptions = InitGeneratorOptions,
+  Z extends CustomGeneratorOptions<T> = CustomGeneratorOptions<T>,
+> extends CustomGenerator<InitGeneratorOptions> {
   public configurationPath: string | undefined;
-  public packageManager: string | undefined;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
-  public constructor(args: string | string[], opts: any) {
+  public constructor(args: string | string[], opts: Z) {
     super(args, opts);
 
     this.dependencies = ["webpack", "webpack-cli"];

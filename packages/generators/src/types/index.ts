@@ -5,9 +5,26 @@ export type InitOptions = { template: string; force?: boolean };
 export type LoaderOptions = { template: string };
 export type PluginOptions = { template: string };
 
+export type InitGeneratorOptions = { generationPath: string } & InitOptions;
+export type LoaderGeneratorOptions = { generationPath: string } & LoaderOptions;
+export type PluginGeneratorOptions = { generationPath: string } & PluginOptions;
+
+export type BaseCustomGeneratorOptions = {
+  template: string;
+  generationPath: string;
+  force?: boolean;
+};
+export type CustomGeneratorOptions<T extends BaseCustomGeneratorOptions> =
+  Generator.GeneratorOptions & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cli: any;
+    options: T;
+  };
+
 export class CustomGenerator<
-  T extends Generator.GeneratorOptions = Generator.GeneratorOptions,
-> extends Generator<T> {
+  T extends BaseCustomGeneratorOptions = BaseCustomGeneratorOptions,
+  Z extends CustomGeneratorOptions<T> = CustomGeneratorOptions<T>,
+> extends Generator<Z> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public cli: any;
   public template: string;
@@ -16,8 +33,9 @@ export class CustomGenerator<
   public answers: Record<string, unknown>;
   public generationPath: string;
   public supportedTemplates: string[];
+  public packageManager: string | undefined;
 
-  public constructor(args: string | string[], opts: T) {
+  public constructor(args: string | string[], opts: Z) {
     super(args, opts);
 
     this.cli = opts.cli;
@@ -28,7 +46,7 @@ export class CustomGenerator<
     const { options } = opts;
 
     this.template = options.template;
-    this.force = options.force;
+    this.force = typeof options.force !== "undefined" ? options.force : false;
     this.generationPath = path.resolve(process.cwd(), options.generationPath);
   }
 }
