@@ -2324,8 +2324,13 @@ class WebpackCLI {
       return;
     }
 
+    const isCacheEnabled = compiler.compilers
+      ? compiler.compilers.some((compiler) => compiler.options.cache)
+      : compiler.options.cache;
+
     let needForceShutdown = false;
-    if (compiler.options.cache) {
+
+    if (isCacheEnabled) {
       const signals = ["SIGINT", "SIGTERM"];
 
       signals.forEach((signal) => {
