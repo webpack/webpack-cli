@@ -38,8 +38,6 @@ Generator.GeneratorConstructor => {
   return class extends CustomGenerator {
     public packageManager: string | undefined;
     public resolvedTemplatePath: string | undefined;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public cli: any;
     public props: Generator.Question | undefined;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
