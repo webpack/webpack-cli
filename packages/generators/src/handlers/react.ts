@@ -1,6 +1,8 @@
 import path from "path";
 import { CustomGenerator } from "../types";
 import { questions as defaultQuestions } from "./default";
+import * as QuestionAPI from "../utils/scaffold-utils";
+
 const templatePath = path.resolve(__dirname, "../../init-template/react");
 const resolveFile = (file: string): string => {
   return path.resolve(templatePath, file);
@@ -14,8 +16,7 @@ const resolveFile = (file: string): string => {
 
 export async function questions(
   self: CustomGenerator,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Question: Record<string, any>,
+  Question: typeof QuestionAPI,
 ): Promise<void> {
   await defaultQuestions(self, Question, {
     langType: { required: true },
