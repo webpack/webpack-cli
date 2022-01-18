@@ -1,7 +1,6 @@
 const {
   Confirm,
   List,
-  InputValidate,
   Input,
   // eslint-disable-next-line node/no-missing-require
 } = require("../../../packages/generators/src/utils/scaffold-utils");
@@ -60,26 +59,6 @@ describe("utils", () => {
     it("should make a Confirm object with yes as default", () => {
       expect(Confirm(mockSelf, "context", "what is your context?", true, true)).toEqual({
         context: true,
-      });
-    });
-
-    it("should make an Input object with validation", () => {
-      expect(
-        InputValidate(mockSelf, "plugins", "what is your plugin?", () => true),
-      ).toMatchSnapshot();
-    });
-
-    it("should make an Input object with validation and default value", () => {
-      expect(
-        InputValidate(mockSelf, "plugins", "what is your plugin?", () => true, "my-plugin"),
-      ).toMatchSnapshot();
-    });
-
-    it("should return a default Input object with validation and default value", () => {
-      expect(
-        InputValidate(mockSelf, "plugins", "what is your plugin?", () => true, "my-plugin", true),
-      ).toEqual({
-        plugins: "my-plugin",
       });
     });
   });

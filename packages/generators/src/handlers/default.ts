@@ -1,22 +1,16 @@
 import path from "path";
 import { CustomGenerator } from "../types";
+import * as QuestionAPI from "../utils/scaffold-utils";
 
 const templatePath = path.resolve(__dirname, "../../init-template/default");
 const resolveFile = (file: string): string => {
   return path.resolve(templatePath, file);
 };
 
-/**
- * Asks questions to the user used to modify generation
- * @param self Generator values
- * @param Question Contains questions
- * @param config Configuration for default handler
- */
 
 export async function questions(
   self: CustomGenerator,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Question: Record<string, any>,
+  Question: typeof QuestionAPI,
   config: Record<string, { skip?: boolean; required?: boolean }> = {
     langType: {},
     devServer: {},
@@ -213,7 +207,6 @@ export function generate(self: CustomGenerator): void {
     ...self.answers,
     entry,
   });
-  self.configurationPath = self.destinationPath("webpack.config.js");
 
   // Generate JS language essentials
   switch (self.answers.langType) {
