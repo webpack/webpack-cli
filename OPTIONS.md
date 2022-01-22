@@ -70,6 +70,10 @@ Options:
   --no-experiments-build-http-upgrade                                                Negative 'experiments-build-http-upgrade' option.
   --experiments-cache-unaffected                                                     Enable additional in memory caching of modules that are unchanged and reference only unchanged modules.
   --no-experiments-cache-unaffected                                                  Negative 'experiments-cache-unaffected' option.
+  --experiments-css                                                                  Enable css support.
+  --no-experiments-css                                                               Negative 'experiments-css' option.
+  --experiments-css-exports-only                                                     Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
+  --no-experiments-css-exports-only                                                  Negative 'experiments-css-exports-only' option.
   --experiments-future-defaults                                                      Apply defaults of next major version.
   --no-experiments-future-defaults                                                   Negative 'experiments-future-defaults' option.
   --experiments-layers                                                               Enable module layers.
@@ -138,6 +142,7 @@ Options:
   --module-generator-asset-emit                                                      Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
   --no-module-generator-asset-emit                                                   Negative 'module-generator-asset-emit' option.
   --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --module-generator-asset-output-path <value>                                       Emit the asset in the specified folder relative to 'output.path'. This should only be needed when custom 'publicPath' is specified to match the folder structure there.
   --module-generator-asset-public-path <value>                                       The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
   --module-generator-asset-inline-data-url-encoding <value>                          Asset encoding (defaults to base64).
   --no-module-generator-asset-inline-data-url-encoding                               Negative 'module-generator-asset-inline-data-url-encoding' option.
@@ -145,6 +150,7 @@ Options:
   --module-generator-asset-resource-emit                                             Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
   --no-module-generator-asset-resource-emit                                          Negative 'module-generator-asset-resource-emit' option.
   --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --module-generator-asset-resource-output-path <value>                              Emit the asset in the specified folder relative to 'output.path'. This should only be needed when custom 'publicPath' is specified to match the folder structure there.
   --module-generator-asset-resource-public-path <value>                              The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full resolved request.
@@ -551,12 +557,14 @@ Options:
   --no-output-compare-before-emit                                                    Negative 'output-compare-before-emit' option.
   --output-cross-origin-loading <value>                                              This option enables cross-origin loading of chunks.
   --no-output-cross-origin-loading                                                   Negative 'output-cross-origin-loading' option.
+  --output-css-chunk-filename <value>                                                Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --output-css-filename <value>                                                      Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-devtool-fallback-module-filename-template <value>                         Similar to `output.devtoolModuleFilenameTemplate`, but used in the case of duplicate module identifiers.
   --output-devtool-module-filename-template <value>                                  Filename template string of function for the sources array in a generated SourceMap.
   --output-devtool-namespace <value>                                                 Module namespace to use when interpolating filename template string for the sources array in a generated SourceMap. Defaults to `output.library` if not set. It's useful for avoiding runtime collisions in sourcemaps from multiple webpack projects built as libraries.
   --output-enabled-chunk-loading-types <value...>                                    The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --output-enabled-chunk-loading-types-reset                                         Clear all items provided in 'output.enabledChunkLoadingTypes' configuration. List of chunk loading types enabled for use by entry points.
-  --output-enabled-library-types <value...>                                          Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
+  --output-enabled-library-types <value...>                                          Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'commonjs-static', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
   --output-enabled-library-types-reset                                               Clear all items provided in 'output.enabledLibraryTypes' configuration. List of library types enabled for use by entry points.
   --output-enabled-wasm-loading-types <value...>                                     The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --output-enabled-wasm-loading-types-reset                                          Clear all items provided in 'output.enabledWasmLoadingTypes' configuration. List of wasm loading types enabled for use by entry points.
@@ -610,7 +618,7 @@ Options:
   --output-library-name-commonjs <value>                                             Name of the exposed commonjs export in the UMD.
   --output-library-name-root <value...>                                              Part of the name of the property exposed globally by a UMD library.
   --output-library-name-root-reset                                                   Clear all items provided in 'output.library.name.root' configuration. Name of the property exposed globally by a UMD library.
-  --output-library-type <value>                                                      Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
+  --output-library-type <value>                                                      Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'commonjs-static', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
   --output-library-umd-named-define                                                  If `output.libraryTarget` is set to umd and `output.library` is set, setting this to true will name the AMD module.
   --no-output-library-umd-named-define                                               Negative 'output-library-umd-named-define' option.
   --output-module                                                                    Output javascript files as module source type.
