@@ -402,6 +402,7 @@ class WebpackCLI {
 
     if (option.configs) {
       let needNegativeOption = false;
+      let negatedDescription;
       const mainOptionType = new Set();
 
       option.configs.forEach((config) => {
@@ -413,6 +414,7 @@ class WebpackCLI {
           case "boolean":
             if (!needNegativeOption) {
               needNegativeOption = true;
+              negatedDescription = config.negatedDescription;
             }
 
             mainOptionType.add(Boolean);
@@ -454,16 +456,6 @@ class WebpackCLI {
             return enumTypes;
           }
         }
-
-        if (needNegativeOption) {
-          negativeOption = {
-            flags: `--no-${option.name}`,
-            description:
-              config.negatedDescription ||
-              option.negatedDescription ||
-              `Negative '${option.name}' option.`,
-          };
-        }
       });
 
       mainOption = {
@@ -473,6 +465,14 @@ class WebpackCLI {
         multiple: option.multiple,
         defaultValue: option.defaultValue,
       };
+
+      if (needNegativeOption) {
+        negativeOption = {
+          flags: `--no-${option.name}`,
+          description:
+            negatedDescription || option.negatedDescription || `Negative '${option.name}' option.`,
+        };
+      }
     } else {
       mainOption = {
         flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
