@@ -454,6 +454,16 @@ class WebpackCLI {
             return enumTypes;
           }
         }
+
+        if (needNegativeOption) {
+          negativeOption = {
+            flags: `--no-${option.name}`,
+            description:
+              config.negatedDescription ||
+              option.negatedDescription ||
+              `Negative '${option.name}' option.`,
+          };
+        }
       });
 
       mainOption = {
@@ -463,15 +473,6 @@ class WebpackCLI {
         multiple: option.multiple,
         defaultValue: option.defaultValue,
       };
-
-      if (needNegativeOption) {
-        negativeOption = {
-          flags: `--no-${option.name}`,
-          description: option.negatedDescription
-            ? option.negatedDescription
-            : `Negative '${option.name}' option.`,
-        };
-      }
     } else {
       mainOption = {
         flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
