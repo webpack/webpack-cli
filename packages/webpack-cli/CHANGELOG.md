@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.9.2](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.9.1...webpack-cli@4.9.2) (2022-01-24)
+
+### Bug Fixes
+
+- respect `negatedDescription` for flags from schema ([#3102](https://github.com/webpack/webpack-cli/issues/3102)) ([463b731](https://github.com/webpack/webpack-cli/commit/463b73115bf9a4871d775ec6501be50b08eef317))
+
 ## [4.9.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.9.0...webpack-cli@4.9.1) (2021-10-18)
 
 ### Bug Fixes
