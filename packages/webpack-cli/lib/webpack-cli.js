@@ -451,6 +451,7 @@ class WebpackCLI {
 
             if (!needNegativeOption) {
               needNegativeOption = hasFalseEnum;
+              negatedDescription = config.negatedDescription;
             }
 
             return enumTypes;
