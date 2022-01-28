@@ -7,7 +7,6 @@ const resolveFile = (file: string): string => {
   return path.resolve(templatePath, file);
 };
 
-
 export async function questions(
   self: CustomGenerator,
   Question: typeof QuestionAPI,
