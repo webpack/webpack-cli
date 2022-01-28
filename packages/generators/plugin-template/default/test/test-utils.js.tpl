@@ -1,6 +1,5 @@
 import path from 'path';
 import webpack from 'webpack';
-import Promise from 'bluebird';
 import MemoryFs from 'memory-fs';
 
 const fs = new MemoryFs();
@@ -59,24 +58,28 @@ async function runWebpackExampleInMemory(exampleName) {
 
 	compiler.outputFileSystem = fs;
 
-	const run = Promise.promisify(compiler.run, { context: compiler });
-	const stats = await run();
+	const result = await new Promise((resolve, reject) => {
+	 compiler.run((err, stats) => {
+			if(err) console.error(error)
 
+			const { compilation } = stats
+			const { errors, warnings, assets, entrypoints, chunks, modules } = compilation;
+			const statsJson = stats.toJson();
 
-	const { compilation } = stats;
-	const { errors, warnings, assets, entrypoints, chunks, modules } = compilation;
-	const statsJson = stats.toJson();
+			resolve({
+				assets,
+				entrypoints,
+				errors,
+				warnings,
+				stats,
+				chunks,
+				modules,
+				statsJson,
+			});
+		})
+ })
 
-	return {
-		assets,
-		entrypoints,
-		errors,
-		warnings,
-		stats,
-		chunks,
-		modules,
-		statsJson,
-	};
+ return result
 }
 
 export { getExampleConfig, runWebpackExampleInMemory, fs, getFixtureResource, getLoader, getFixture };

@@ -19,7 +19,8 @@ class ConfigTestCommand {
         const configPaths = new Set<string>();
 
         if (Array.isArray(config.options)) {
-          config.options.forEach((options) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          config.options.forEach((options: any) => {
             if (config.path.get(options)) {
               configPaths.add(config.path.get(options));
             }
@@ -38,8 +39,7 @@ class ConfigTestCommand {
         cli.logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
 
         try {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const error: any = cli.webpack.validate(config.options);
+          const error: Error[] = cli.webpack.validate(config.options);
 
           // TODO remove this after drop webpack@4
           if (error && error.length > 0) {
@@ -47,7 +47,7 @@ class ConfigTestCommand {
           }
         } catch (error) {
           if (cli.isValidationError(error)) {
-            cli.logger.error(error.message);
+            cli.logger.error((error as Error).message);
           } else {
             cli.logger.error(error);
           }
