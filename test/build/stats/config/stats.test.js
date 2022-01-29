@@ -24,7 +24,7 @@ describe("stats flag with config", () => {
   });
 
   for (const preset of statsPresets) {
-    it(`should override 'noramal' value in config with "${preset}"`, async () => {
+    it(`should override 'normal' value in config with "${preset}"`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--stats", `${preset}`]);
 
       expect(exitCode).toBe(0);

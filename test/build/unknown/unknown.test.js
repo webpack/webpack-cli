@@ -120,6 +120,7 @@ describe("unknown behaviour", () => {
   });
 
   it("should log an error if an unknown flag is passed and suggests the closest match to an unknown flag", async () => {
+    // cSpell:ignore entyr
     const { exitCode, stderr, stdout } = await run(__dirname, ["--entyr", "./a.js"]);
 
     expect(exitCode).toBe(2);
@@ -128,6 +129,7 @@ describe("unknown behaviour", () => {
   });
 
   it("should log an error if an unknown flag is passed and suggests the closest match to an unknown flag #2", async () => {
+    // cSpell:ignore fileneme
     const { exitCode, stderr, stdout } = await run(__dirname, ["--output-fileneme", "[name].js"]);
 
     expect(exitCode).toBe(2);
@@ -136,6 +138,7 @@ describe("unknown behaviour", () => {
   });
 
   it("should log an error if an unknown flag is passed and suggests the closest match to an unknown flag #3", async () => {
+    // cSpell:ignore commnjs
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--output-library-auxiliary-comment-commnjs",
     ]);
@@ -162,6 +165,7 @@ describe("unknown behaviour", () => {
   });
 
   it('should log an error if an unknown flag is passed and suggests the closest match to an unknown flag using "info" command', async () => {
+    // cSpell:ignore outpyt
     const { exitCode, stderr, stdout } = await run(__dirname, ["info", "--outpyt"]);
 
     expect(exitCode).toBe(2);
@@ -188,6 +192,7 @@ describe("unknown behaviour", () => {
   });
 
   it("should log error and provide suggestion if an unknown command passed", async () => {
+    // cSpell:ignore serverr
     const { exitCode, stderr, stdout } = await run(__dirname, ["serverr"], true, [], {
       TERM_PROGRAM: false,
     });

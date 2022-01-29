@@ -1,30 +1,36 @@
 import path from "path";
 import { CustomGenerator } from "../types";
+import * as QuestionAPI from "../utils/scaffold-utils";
 
 const templatePath = path.resolve(__dirname, "../../init-template/default");
 const resolveFile = (file: string): string => {
   return path.resolve(templatePath, file);
 };
 
-/**
- * Asks questions to the user used to modify generation
- * @param self Generator values
- * @param Question Contains questions
- */
-
 export async function questions(
   self: CustomGenerator,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Question: Record<string, any>,
+  Question: typeof QuestionAPI,
+  config: Record<string, { skip?: boolean; required?: boolean }> = {
+    langType: {},
+    devServer: {},
+    htmlWebpackPlugin: {},
+    workboxWebpackPlugin: {},
+    cssType: {},
+    isCSS: {},
+    isPostCSS: {},
+    extractPlugin: {},
+  },
 ): Promise<void> {
   // Handle JS language solutions
   const { langType } = await Question.List(
     self,
     "langType",
     "Which of the following JS solutions do you want to use?",
-    ["none", "ES6", "Typescript"],
-    "none",
-    self.force,
+    [config.langType.required ? "" : "none", "ES6", "Typescript"].filter(
+      (option) => option.length > 0,
+    ),
+    config.langType.required ? "ES6" : "none",
+    self.force || config.langType.skip,
   );
 
   switch (langType) {
@@ -36,13 +42,13 @@ export async function questions(
       break;
   }
 
-  // Configure devServer configuraion
+  // Configure devServer configuration
   const { devServer } = await Question.Confirm(
     self,
     "devServer",
     "Do you want to use webpack-dev-server?",
     true,
-    self.force,
+    self.force || config.devServer.skip,
   );
   if (devServer) {
     self.dependencies.push("webpack-dev-server");
@@ -54,7 +60,7 @@ export async function questions(
     "htmlWebpackPlugin",
     "Do you want to simplify the creation of HTML files for your bundle?",
     true,
-    self.force,
+    self.force || config.htmlWebpackPlugin.skip,
   );
   if (htmlWebpackPlugin) {
     self.dependencies.push("html-webpack-plugin");
@@ -66,7 +72,7 @@ export async function questions(
     "workboxWebpackPlugin",
     "Do you want to add PWA support?",
     true,
-    self.force,
+    self.force || config.workboxWebpackPlugin.skip,
   );
   if (workboxWebpackPlugin) {
     self.dependencies.push("workbox-webpack-plugin");
@@ -86,9 +92,11 @@ export async function questions(
     self,
     "cssType",
     "Which of the following CSS solutions do you want to use?",
-    ["none", "CSS only", "SASS", "LESS", "Stylus"],
-    "none",
-    self.force,
+    [config.cssType.required ? "" : "none", "CSS only", "SASS", "LESS", "Stylus"].filter(
+      (option) => option.length > 0,
+    ),
+    config.cssType.required ? "CSS only" : "none",
+    self.force || config.cssType.skip,
   );
 
   if (cssType == "none") {
@@ -198,7 +206,6 @@ export function generate(self: CustomGenerator): void {
     ...self.answers,
     entry,
   });
-  self.configurationPath = self.destinationPath("webpack.config.js");
 
   // Generate JS language essentials
   switch (self.answers.langType) {

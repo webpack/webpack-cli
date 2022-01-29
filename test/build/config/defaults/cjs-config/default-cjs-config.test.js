@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { run, isWebpack5 } = require("../../../../utils/test-utils");
 
-describe("default config with cjs extention", () => {
+describe("default config with cjs extension", () => {
   it("should build and not throw error with cjs config by default", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, []);
 

@@ -1,2 +1,1 @@
-const url = require('url');
-console.log(url);
+console.log("target test");

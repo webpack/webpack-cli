@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/info",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Outputs info about system and webpack config",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -22,5 +22,8 @@
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
   "peerDependencies": {
     "webpack-cli": "4.x.x"
+  },
+  "devDependencies": {
+    "@types/envinfo": "^7.8.1"
   }
 }

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/configtest@1.1.0...@webpack-cli/configtest@1.1.1) (2022-01-24)
+
+**Note:** Version bump only for package @webpack-cli/configtest
+
 # [1.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/configtest@1.0.4...@webpack-cli/configtest@1.1.0) (2021-10-06)
 
 ### Features

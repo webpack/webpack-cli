@@ -59,7 +59,7 @@ describe("help", () => {
     expect(normalizeStderr(stderrFromCommandSyntax)).toMatchSnapshot("stderr from command syntax");
     expect(stdoutFromOption).toBe(stdoutFromCommandSyntax);
     expect(normalizeStdout(stdoutFromOption)).toMatchSnapshot("stdout from option");
-    expect(normalizeStdout(stdoutFromCommandSyntax)).toMatchSnapshot("stdout from command sytnax");
+    expect(normalizeStdout(stdoutFromCommandSyntax)).toMatchSnapshot("stdout from command syntax");
   });
 
   it('should show help information and respect the "--color" flag using the "--help" option', async () => {
@@ -187,9 +187,9 @@ describe("help", () => {
       }
     });
 
-    const alises = Array.isArray(alias) ? alias : [alias];
+    const aliases = Array.isArray(alias) ? alias : [alias];
 
-    alises.forEach((alias) => {
+    aliases.forEach((alias) => {
       it(`should show help information for '${alias}' command using the "--help" option`, async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help"]);
 

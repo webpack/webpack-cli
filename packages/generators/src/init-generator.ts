@@ -1,58 +1,32 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-import path from "path";
 
-import { CustomGenerator } from "./types";
+import { CustomGenerator, InitGeneratorOptions, CustomGeneratorOptions } from "./types";
 import { getInstaller, getTemplate } from "./utils/helpers";
 import * as Question from "./utils/scaffold-utils";
 import handlers from "./handlers";
 
-/**
- *
- * Generator for initializing a webpack config
- *
- * @class 	InitGenerator
- * @extends CustomGenerator
- * @returns {Void} After execution, transforms are triggered
- *
- */
-export default class InitGenerator extends CustomGenerator {
-  public answers: Record<string, unknown>;
-  public configurationPath: string;
-  public force: boolean;
-  public generationPath: string;
-  public packageManager: string;
-  public resolvedGenerationPath: string;
-  public supportedTemplates: string[];
-  public template: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public cli: any;
+export default class InitGenerator<
+  T extends InitGeneratorOptions = InitGeneratorOptions,
+  Z extends CustomGeneratorOptions<T> = CustomGeneratorOptions<T>,
+> extends CustomGenerator<InitGeneratorOptions> {
+  public configurationPath: string | undefined;
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-  public constructor(args: any, opts: any) {
+  public constructor(args: string | string[], opts: Z) {
     super(args, opts);
 
-    const { options } = opts;
-
-    this.template = options.template;
-    this.generationPath = options.generationPath;
-    this.resolvedGenerationPath = path.resolve(process.cwd(), this.generationPath);
-    this.force = options.force;
     this.dependencies = ["webpack", "webpack-cli"];
     this.supportedTemplates = Object.keys(handlers);
-    this.answers = {};
-    this.cli = opts.cli;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async prompting(): Promise<void | any> {
-    if (!existsSync(this.resolvedGenerationPath)) {
+  public async prompting(): Promise<void> {
+    if (!existsSync(this.generationPath)) {
       this.cli.logger.log(
         `${this.cli.colors.blue(
           "ℹ INFO ",
         )} supplied generation path doesn't exist, required folders will be created.`,
       );
       try {
-        mkdirSync(this.resolvedGenerationPath, { recursive: true });
+        mkdirSync(this.generationPath, { recursive: true });
       } catch (error) {
         this.cli.logger.error(`Failed to create directory.\n ${error}`);
         process.exit(2);
@@ -61,7 +35,7 @@ export default class InitGenerator extends CustomGenerator {
 
     this.template = await getTemplate.call(this);
 
-    await handlers[this.template].questions(this, Question);
+    await handlers[this.template as keyof typeof handlers].questions(this, Question);
 
     // Handle installation of prettier
     try {
@@ -97,8 +71,9 @@ export default class InitGenerator extends CustomGenerator {
 
   public writing(): void {
     this.cli.logger.log(`${this.cli.colors.blue("ℹ INFO ")} Initialising project...`);
+    this.configurationPath = this.destinationPath("webpack.config.js");
 
-    handlers[this.template].generate(this);
+    handlers[this.template as keyof typeof handlers].generate(this);
   }
 
   public end(): void {
@@ -106,10 +81,10 @@ export default class InitGenerator extends CustomGenerator {
     try {
       // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
       const prettier = require("prettier");
-      const source = readFileSync(this.configurationPath, { encoding: "utf8" });
+      const source = readFileSync(this.configurationPath as string, { encoding: "utf8" });
       const formattedSource = prettier.format(source, { parser: "babel" });
 
-      writeFileSync(this.configurationPath, formattedSource);
+      writeFileSync(this.configurationPath as string, formattedSource);
     } catch (err) {
       this.cli.logger.log(
         `${this.cli.colors.yellow(

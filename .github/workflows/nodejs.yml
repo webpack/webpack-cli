@@ -33,6 +33,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          cache: "yarn"
 
       - name: Install dependencies
         run: yarn --frozen-lockfile
@@ -54,9 +55,18 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [10.x, 12.x, 14.x, 16.x]
-        webpack-version: [4, latest]
-        dev-server-version: [version-3, latest]
+        node-version: [10.x, 12.x, 14.x, 16.x, 17.x]
+        webpack-version: [latest]
+        dev-server-version: [latest]
+        include:
+          - node-version: 16.x
+            os: ubuntu-latest
+            dev-server-version: version-3
+            webpack-version: latest
+          - node-version: 16.x
+            os: ubuntu-latest
+            dev-server-version: latest
+            webpack-version: webpack-4
         exclude:
           - node-version: 10.x
             dev-server-version: latest
@@ -73,13 +83,15 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --ignore-engines
 
       - name: Install webpack ${{ matrix.webpack-version }}
-        run: yarn add -W webpack@${{ matrix.webpack-version }}
+        if: matrix.webpack-version == '4'
+        run: yarn add -W webpack@${{ matrix.webpack-version }} --ignore-engines
 
-      - name: Install webpack-dev-server ${{ matrix.webpack-version }}
-        run: yarn add -W webpack-dev-server@${{ matrix.dev-server-version }}
+      - name: Install webpack-dev-server ${{ matrix.dev-server-version }}
+        if: matrix.dev-server-version == 'version-3'
+        run: yarn add -W webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines
 
       - name: Prepare environment for tests
         run: yarn build:ci
@@ -106,6 +118,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16.x"
+          cache: "yarn"
 
       - run: yarn --frozen-lockfile
 

@@ -76,7 +76,7 @@ const config = {
         ],
     },<% if (langType == "Typescript") {%>
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
     },<% } %>
 };
 
