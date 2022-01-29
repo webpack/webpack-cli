@@ -2337,7 +2337,7 @@ class WebpackCLI {
 
       signals.forEach((signal) => {
         const listener = () => {
-          if (needForceShutdown) {
+          if (needForceShutdown || typeof compiler.close !== "function") {
             process.exit();
           }
 
@@ -2363,6 +2363,11 @@ class WebpackCLI {
 
     if (isWatch(compiler) && this.needWatchStdin(compiler)) {
       process.stdin.on("end", () => {
+        // TODO: remove on dropping webpack 4 support
+        if (typeof compiler.close !== "function") {
+          process.exit(0);
+        }
+
         compiler.close(() => {
           process.exit(0);
         });
