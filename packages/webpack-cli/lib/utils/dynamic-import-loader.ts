@@ -1,4 +1,5 @@
-function dynamicImportLoader() {
+// eslint-disable-next-line @typescript-eslint/ban-types
+function dynamicImportLoader<T = any>(): Function | null {
   let importESM;
 
   try {
