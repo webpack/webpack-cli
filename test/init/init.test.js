@@ -42,7 +42,7 @@ const readFromPkgJSON = (path) => {
 // Helper to read from webpack.config.js in a given path
 const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.js"), "utf8");
 
-describe("init command", () => {
+describe.skip("init command", () => {
   it("should generate default project when nothing is passed", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await run(assetsPath, ["init", "--force"]);
