@@ -1,8 +1,6 @@
 import { Compiler } from "webpack";
 import { CLIPluginOptions } from "../types";
 
-
-
 export class CLIPlugin {
   logger!: ReturnType<Compiler["getInfrastructureLogger"]>;
   options: CLIPluginOptions;
@@ -140,3 +138,4 @@ export class CLIPlugin {
   }
 }
 
+module.exports = CLIPlugin;

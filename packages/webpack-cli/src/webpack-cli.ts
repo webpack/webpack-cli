@@ -55,7 +55,7 @@ import {
 } from "webpack";
 import { stringifyStream } from "@discoveryjs/json-ext";
 
-import { Command, Help, ParseOptions } from "commander";
+import { Help, ParseOptions } from "commander";
 import { CLIPlugin as CLIPluginClass } from "./plugins/CLIPlugin";
 const fs = require("fs");
 const path = require("path");
