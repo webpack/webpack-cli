@@ -1,5 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/ban-types
-function dynamicImportLoader<T = any>(): Function | null {
+import { DynamicImport } from "../types";
+
+function dynamicImportLoader<T>(): DynamicImport<T> | null {
   let importESM;
 
   try {
@@ -8,7 +9,7 @@ function dynamicImportLoader<T = any>(): Function | null {
     importESM = null;
   }
 
-  return importESM;
+  return importESM as DynamicImport<T>;
 }
 
 module.exports = dynamicImportLoader;

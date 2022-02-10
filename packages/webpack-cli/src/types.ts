@@ -22,7 +22,11 @@ export type OptionType = Option & {
   helpLevel?: "minimum" | "verbose";
 };
 export type BasicPrimitive = string | boolean | number;
-export type Instantiable<ConstructorParameters extends any[] = any[], InstanceType = any> = {
+export type DynamicImport<T> = (url: string) => Promise<{ default: T }>;
+export type Instantiable<
+  InstanceType = unknown,
+  ConstructorParameters extends any[] = unknown[],
+> = {
   new (...args: ConstructorParameters): InstanceType;
 };
 export type PotentialPromise<T> = T | Promise<T>;
@@ -101,9 +105,10 @@ export type Env = {
 export type Argv = {
   env?: Env;
 } & Record<string, any>;
+
 export type CLIOptions = {
   merge?: boolean;
-  config: any;
+  config: string[];
   configName?: string[];
   argv: Argv;
 };
@@ -138,8 +143,8 @@ type OptionConfigType =
   | "RegExp"
   | "reset";
 export type CommandCliOption = Command;
-export type InstallOptions = {
-  preMessage?: (...args: any[]) => void;
+export type PackageInstallOptions = {
+  preMessage?: () => void;
 };
 export type CommandAction = Parameters<Command["action"]>[0];
 export type CommandCliOptions = BuiltInOptions[] | (() => Promise<BuiltInOptions[]>);
@@ -157,7 +162,7 @@ export interface IWebpackCLI {
   checkPackageExists: (packageName: string) => boolean;
   getAvailablePackageManagers: () => PackageManager[];
   getDefaultPackageManager: () => PackageManager | undefined;
-  doInstall: (packageName: string, options: InstallOptions) => Promise<string>;
+  doInstall: (packageName: string, options: PackageInstallOptions) => Promise<string>;
   loadJSONFile: <T = any>(path: Path, handleError: boolean) => Promise<T>;
   tryRequireThenImport: <T = any>(module: Module, handleError: boolean) => Promise<T>;
   runWebpack: (options: Options, isWatchCommand: boolean) => Promise<void>;

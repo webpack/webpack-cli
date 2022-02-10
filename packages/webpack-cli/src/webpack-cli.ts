@@ -14,10 +14,9 @@ import {
   CommandOptionType,
   ConfigOptions,
   DevServerOptions,
-  Env,
   ExtendedCommand,
   FileSystemCacheOptions,
-  InstallOptions,
+  PackageInstallOptions,
   Instantiable,
   LegacyCompiler,
   Logger,
@@ -39,20 +38,14 @@ import {
   WebpackV4LegacyStats,
   IWebpackCLI,
   CLIPluginOptions,
-  Config,
   BuiltConfig,
   WebpackCommand,
   OptionType,
+  DynamicImport,
 } from "./types";
 
 import webpack, { Argument } from "webpack";
-import {
-  Compiler,
-  MultiCompiler,
-  WebpackOptionsNormalized,
-  WebpackError,
-  StatsOptions,
-} from "webpack";
+import { Compiler, MultiCompiler, WebpackError, StatsOptions } from "webpack";
 import { stringifyStream } from "@discoveryjs/json-ext";
 
 import { Help, ParseOptions } from "commander";
@@ -95,7 +88,7 @@ class WebpackCLI implements IWebpackCLI {
     });
   }
 
-  capitalizeFirstLetter(str: string) {
+  capitalizeFirstLetter(str: string | unknown) {
     if (typeof str !== "string") {
       return "";
     }
@@ -230,7 +223,7 @@ class WebpackCLI implements IWebpackCLI {
     }
   }
 
-  async doInstall(packageName: string, options: InstallOptions = {}) {
+  async doInstall(packageName: string, options: PackageInstallOptions = {}) {
     const packageManager = this.getDefaultPackageManager();
 
     if (!packageManager) {
@@ -324,7 +317,7 @@ class WebpackCLI implements IWebpackCLI {
       result = require(module);
       //@ts-expect-error asserting error type
     } catch (error: WebpackError) {
-      const dynamicImportLoader: null | ((url: string) => Promise<{ default: T }>) =
+      const dynamicImportLoader: null | DynamicImport<T> =
         require("./utils/dynamic-import-loader")();
       if (
         (error.code === "ERR_REQUIRE_ESM" || process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
@@ -1196,7 +1189,7 @@ class WebpackCLI implements IWebpackCLI {
         let loadedCommand;
 
         try {
-          loadedCommand = await this.tryRequireThenImport<Instantiable>(pkg, false);
+          loadedCommand = await this.tryRequireThenImport<Instantiable<() => void>>(pkg, false);
         } catch (error) {
           // Ignore, command is not installed
 
@@ -1600,7 +1593,7 @@ class WebpackCLI implements IWebpackCLI {
         }
 
         const option = (command as WebpackCommand).options.find(
-          (option: any) => option.short === optionName || option.long === optionName,
+          (option) => option.short === optionName || option.long === optionName,
         );
 
         if (!option) {
@@ -1904,24 +1897,24 @@ class WebpackCLI implements IWebpackCLI {
         const isArray = Array.isArray(loadedConfig.options);
 
         // TODO we should run webpack multiple times when the `--config` options have multiple values with `--merge`, need to solve for the next major release
-        if ((config.options as []).length === 0) {
-          config.options = loadedConfig.options;
+        if ((config.options as ConfigOptions[]).length === 0) {
+          config.options = loadedConfig.options as WebpackConfiguration;
         } else {
           if (!Array.isArray(config.options)) {
             config.options = [config.options];
           }
 
           if (isArray) {
-            loadedConfig.options.forEach((item: WebpackOptionsNormalized) => {
-              (config.options as WebpackOptionsNormalized[]).push(item);
+            (loadedConfig.options as ConfigOptions[]).forEach((item) => {
+              (config.options as ConfigOptions[]).push(item);
             });
           } else {
-            config.options.push(loadedConfig.options);
+            config.options.push(loadedConfig.options as WebpackConfiguration);
           }
         }
 
         if (isArray) {
-          loadedConfig.options.forEach((options: WebpackOptionsNormalized) => {
+          (loadedConfig.options as ConfigOptions[]).forEach((options) => {
             config.path.set(options, loadedConfig.path);
           });
         } else {
@@ -2078,7 +2071,7 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     const CLIPlugin = await this.tryRequireThenImport<
-      Instantiable<[CLIPluginOptions], CLIPluginClass>
+      Instantiable<CLIPluginClass, [CLIPluginOptions]>
     >("./plugins/CLIPlugin");
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
