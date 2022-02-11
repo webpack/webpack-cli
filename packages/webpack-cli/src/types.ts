@@ -17,8 +17,20 @@ import {
   AssetEmittedInfo,
 } from "webpack";
 
-type Option = InstanceType<OptionConstructor>;
-export type OptionType = Option & {
+export type Env = {
+  WEBPACK_BUNDLE?: boolean;
+  WEBPACK_BUILD?: boolean;
+  WEBPACK_WATCH?: boolean;
+  WEBPACK_SERVE?: boolean;
+};
+
+export type Argv = {
+  env?: Env;
+} & Record<string, any>;
+
+type CommanderOption = InstanceType<OptionConstructor>;
+
+export type WebpackCLICommandOption = CommanderOption & {
   helpLevel?: "minimum" | "verbose";
 };
 export type BasicPrimitive = string | boolean | number;
@@ -30,7 +42,7 @@ export type Instantiable<
   new (...args: ConstructorParameters): InstanceType;
 };
 export type PotentialPromise<T> = T | Promise<T>;
-export type Module = string;
+export type ModuleName = string;
 export type Path = string;
 export type PackageManager = "pnpm" | "yarn" | "npm";
 export type Colors = Colorette & {
@@ -51,60 +63,43 @@ export type CLIPluginOptions = {
   prefetch?: string;
   analyze?: boolean;
 };
-export interface Problem {
-  type: ProblemType;
-  path: string;
-  argument: string;
-  value?: unknown;
-  index?: number;
-  expected?: string;
-}
-type ProblemType =
-  | "unknown-argument"
-  | "unexpected-non-array-in-path"
-  | "unexpected-non-object-in-path"
-  | "multiple-values-unexpected"
-  | "invalid-value";
 
 export type FileSystemCacheOptions = WebpackConfiguration & {
   cache: FileCacheOptions & { defaultConfig: unknown[] };
 };
 
-export type ProcessArgumentsValues = Record<
+export type ProcessedArguments = Record<
   string,
   BasicPrimitive | RegExp | (BasicPrimitive | RegExp)[]
 >;
 
-export type LegacyCompiler = Compiler & {
+export type WebpackV4Compiler = Compiler & {
   compiler: Compiler;
 };
 
-export type WebpackCommand = Command & { options: Option[]; _args: Option[] };
+export type WebpackCLICommand = Command & {
+  pkg: string | undefined;
+  forHelp: boolean | undefined;
+  options: WebpackCLICommandOption[];
+  _args: WebpackCLICommandOption[];
+};
 
 export type DevServerOptions = DevServerConfig &
   WebpackConfiguration &
   ClientConfiguration &
   AssetEmittedInfo &
-  CLIOptions & {
+  CLIOptions &
+  WebpackOptionsNormalized &
+  FileCacheOptions &
+  Argv & {
     nodeEnv?: "string";
     watchOptionsStdin?: boolean;
-    progress?: boolean | "profile";
+    progress?: boolean | "profile" | undefined;
     analyze?: boolean;
     prefetch?: string;
-    json?: unknown;
+    json?: boolean;
     entry: EntryOptions;
-  } & WebpackOptionsNormalized &
-  FileCacheOptions &
-  Argv;
-export type Env = {
-  WEBPACK_BUNDLE?: boolean;
-  WEBPACK_BUILD?: boolean;
-  WEBPACK_WATCH?: boolean;
-  WEBPACK_SERVE?: boolean;
-};
-export type Argv = {
-  env?: Env;
-} & Record<string, any>;
+  };
 
 export type CLIOptions = {
   merge?: boolean;
@@ -121,7 +116,12 @@ export type Rechoir = {
   prepare: typeof prepare;
 };
 
+export type RechoirError = Error & {
+  failures: RechoirError[];
+  error: Error;
+};
 export type WebpackCompiler = Compiler | MultiCompiler;
+
 export type FlagConfig = {
   negatedDescription: string;
   type: OptionConfigType;
@@ -142,48 +142,59 @@ type OptionConfigType =
   | "boolean"
   | "RegExp"
   | "reset";
-export type CommandCliOption = Command;
+
 export type PackageInstallOptions = {
   preMessage?: () => void;
 };
-export type CommandAction = Parameters<Command["action"]>[0];
+export type CommandAction = Parameters<WebpackCLICommand["action"]>[0];
 export type CommandCliOptions = BuiltInOptions[] | (() => Promise<BuiltInOptions[]>);
+
 export interface IWebpackCLI {
   colors: Colors;
-  logger: Logger;
+  logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;
   webpack: typeof webpack;
   builtInOptionsCache: BuiltInOptions[] | undefined;
-  program: Command & { forHelp: boolean };
-  getLogger: () => Logger;
-  createColors: (useColors?: boolean) => Colors;
+  program: WebpackCLICommand;
+  getLogger(): WebpackCLILogger;
+  createColors(useColors?: boolean): Colors;
   toKebabCase: StringFormatter;
   capitalizeFirstLetter: StringFormatter;
-  checkPackageExists: (packageName: string) => boolean;
-  getAvailablePackageManagers: () => PackageManager[];
-  getDefaultPackageManager: () => PackageManager | undefined;
-  doInstall: (packageName: string, options: PackageInstallOptions) => Promise<string>;
-  loadJSONFile: <T = any>(path: Path, handleError: boolean) => Promise<T>;
-  tryRequireThenImport: <T = any>(module: Module, handleError: boolean) => Promise<T>;
-  runWebpack: (options: Options, isWatchCommand: boolean) => Promise<void>;
-  makeCommand: (
-    commandOptions: CommandOptionType,
+  checkPackageExists(packageName: string): boolean;
+  getAvailablePackageManagers(): PackageManager[];
+  getDefaultPackageManager(): PackageManager | undefined;
+  doInstall(packageName: string, options?: PackageInstallOptions): Promise<string>;
+  loadJSONFile<T = any>(path: Path, handleError: boolean): Promise<T>;
+  tryRequireThenImport<T = any>(module: ModuleName, handleError: boolean): Promise<T>;
+  makeCommand(
+    commandOptions: WebpackCLIOptions,
     options: CommandCliOptions,
     action: CommandAction,
-  ) => Promise<ExtendedCommand | undefined>;
-  isValidationError: (error: Error) => boolean;
+  ): Promise<WebpackCLICommand | undefined>;
+  makeOption(command: WebpackCLICommand | WebpackCLICommand, option: BuiltInOptions): void;
   run(
-    args: Parameters<WebpackCommand["parseOptions"]>[0],
+    args: Parameters<WebpackCLICommand["parseOptions"]>[0],
     parseOptions?: ParseOptions,
   ): Promise<void>;
+  getBuiltInOptions(): BuiltInOptions[];
+  loadWebpack(handleError: boolean): Promise<typeof webpack>;
+  loadConfig(options: DevServerOptions): Promise<BuiltConfig>;
+  buildConfig(config: BuiltConfig, options: DevServerOptions): Promise<BuiltConfig>;
+  isValidationError(error: Error): error is WebpackError;
+  createCompiler(
+    options: DevServerOptions,
+    callback: Callback<[Error | undefined, CliStats | undefined]>,
+  ): Promise<WebpackCompiler>;
+  needWatchStdin(compiler: Compiler | MultiCompiler): undefined | boolean;
+  runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
 }
-export type Options = WebpackOptionsNormalized & {
+export type WebpackRunOptions = WebpackOptionsNormalized & {
   json?: boolean;
   argv?: Argv;
   env: Env;
 };
 
-export interface Logger {
+export interface WebpackCLILogger {
   error: LogHandler;
   warn: LogHandler;
   info: LogHandler;
@@ -213,38 +224,29 @@ export type BuiltInOptions = BuiltInFlag & {
   group?: "core";
   helpLevel: "minimum" | "verbose";
 };
-export type CommandOptionType = {
+
+export type WebpackCLIOptions = {
   name: string;
   alias: string | string[];
-  description: string;
+  description?: string;
   usage?: string;
   dependencies?: string[];
   pkg?: string;
   argsDescription?: { [argName: string]: string };
 } & CommandOptions;
 
-export type ExtendedCommand = Command & {
-  pkg?: string;
-};
-export type CommandInfo = {
-  name: string;
-  alias: string[] | string;
-  description?: string;
+export type BuiltInExternalCommandInfo = Pick<
+  WebpackCLIOptions,
+  "name" | "alias" | "description"
+> & {
   pkg: string;
 };
 
-export type Config = {
-  options: WebpackConfiguration | WebpackConfiguration[];
-  path: WeakMap<object, string>;
+export type ImportLoaderError = Error & {
+  code?: string;
 };
-export type WebpackFailure = {
-  error: WebpackError;
-};
-export type MainOptionType = Set<BooleanConstructor | StringConstructor | NumberConstructor>;
-export type MainOption = {
+
+export type MainOption = Pick<BuiltInOptions, "description" | "defaultValue" | "multiple"> & {
   flags: string;
-  type: MainOptionType;
-  description: string;
-  defaultValue: string | undefined;
-  multiple: boolean | undefined;
+  type: Set<BooleanConstructor | StringConstructor | NumberConstructor>;
 };
