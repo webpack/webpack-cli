@@ -43,16 +43,17 @@ import {
   PotentialPromise,
   Rechoir,
   RechoirError,
+  Argument,
+  Problem,
 } from "./types";
 
 import webpackMerge from "webpack-merge";
-import webpack, { Argument } from "webpack";
+import webpack from "webpack";
 import { Compiler, MultiCompiler, WebpackError, StatsOptions } from "webpack";
 import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
 import { CLIPlugin as CLIPluginClass } from "./plugins/CLIPlugin";
-import { Problem } from "./webpack-internal-types";
 
 const fs = require("fs");
 const path = require("path");

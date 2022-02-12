@@ -7,9 +7,9 @@ import webpack, {
   WebpackOptionsNormalized,
   Compiler,
   MultiCompiler,
-  FileCacheOptions,
-  AssetEmittedInfo,
 } from "webpack";
+import { Problem, Argument, AssetEmittedInfo, FileCacheOptions } from "./webpack-internal-types";
+
 // eslint-disable-next-line node/no-extraneous-import
 import { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
 
@@ -319,6 +319,7 @@ export {
   WebpackCompiler,
   WebpackConfiguration,
   Argv,
+  Argument,
   BasicPrimitive,
   BasicPackageJsonContent,
   CallableOption,
@@ -341,6 +342,7 @@ export {
   Path,
   ProcessedArguments,
   PromptOptions,
+  Problem,
   PotentialPromise,
   Rechoir,
   RechoirError,

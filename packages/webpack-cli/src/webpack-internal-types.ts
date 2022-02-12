@@ -1,5 +1,14 @@
 import { Compilation } from "webpack";
 
+// Types declared in 'webpack' v5.68.0, but not exported:
+// Argument, ArgumentConfig, EntryOptions, FileCacheOptions, AssetEmittedInfo
+//
+// We can either duplicate them here or open a PR to expose them
+//
+// import { Argument, ArgumentConfig, EntryOptions, FileCacheOptions, AssetEmittedInfo, Problem } from "webpack";
+// export {Argument, ArgumentConfig, EntryOptions, FileCacheOptions, AssetEmittedInfo, Problem}
+//
+
 export interface Problem {
   type: ProblemType;
   path: string;
@@ -148,4 +157,20 @@ export interface AssetEmittedInfo {
   targetPath: string;
 }
 type EntryDescriptionNormalized = any;
+
+export interface Argument {
+  description: string;
+  simpleType: "string" | "number" | "boolean";
+  multiple: boolean;
+  configs: ArgumentConfig[];
+}
+interface ArgumentConfig {
+  description: string;
+  negatedDescription?: string;
+  path: string;
+  multiple: boolean;
+  type: "string" | "number" | "boolean" | "path" | "enum" | "RegExp" | "reset";
+  values?: any[];
+}
+
 export type EntryOptions = { name?: string } & Omit<EntryDescriptionNormalized, "import">;
