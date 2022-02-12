@@ -64,7 +64,7 @@ interface IWebpackCLI {
     options: WebpackDevServerOptions,
     callback: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
   ): Promise<WebpackCompiler>;
-  needWatchStdin(compiler: Compiler | MultiCompiler): undefined | boolean;
+  needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
 }
 

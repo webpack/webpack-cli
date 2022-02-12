@@ -2384,15 +2384,17 @@ class WebpackCLI implements IWebpackCLI {
     return compiler;
   }
 
-  needWatchStdin(compiler: Compiler | MultiCompiler): undefined | boolean {
+  needWatchStdin(compiler: Compiler | MultiCompiler): boolean {
     if (this.isMultipleCompiler(compiler)) {
-      return (compiler as MultiCompiler).compilers.some(
-        (compiler: Compiler) =>
-          compiler.options.watchOptions && compiler.options.watchOptions.stdin,
+      return Boolean(
+        (compiler as MultiCompiler).compilers.some(
+          (compiler: Compiler) =>
+            compiler.options.watchOptions && compiler.options.watchOptions.stdin,
+        ),
       );
     }
 
-    return compiler.options.watchOptions && compiler.options.watchOptions.stdin;
+    return Boolean(compiler.options.watchOptions && compiler.options.watchOptions.stdin);
   }
 
   async runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void> {
@@ -2493,10 +2495,12 @@ class WebpackCLI implements IWebpackCLI {
       return;
     }
 
-    const isWatch = (compiler: WebpackCompiler): undefined | boolean =>
-      this.isMultipleCompiler(compiler)
-        ? compiler.compilers.some((compiler) => compiler.options.watch)
-        : compiler.options.watch;
+    const isWatch = (compiler: WebpackCompiler): boolean =>
+      Boolean(
+        this.isMultipleCompiler(compiler)
+          ? compiler.compilers.some((compiler) => compiler.options.watch)
+          : compiler.options.watch,
+      );
 
     if (isWatch(compiler) && this.needWatchStdin(compiler)) {
       process.stdin.on("end", () => {
