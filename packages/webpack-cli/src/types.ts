@@ -1,11 +1,5 @@
-import { Colorette } from "colorette";
-// eslint-disable-next-line node/no-extraneous-import
-import { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
-
-import { Command, CommandOptions, OptionConstructor, ParseOptions } from "commander";
-import { prepare } from "rechoir";
-import webpack, { EntryOptions } from "webpack";
-import {
+import webpack, {
+  EntryOptions,
   Stats,
   Configuration,
   WebpackError,
@@ -16,185 +10,69 @@ import {
   FileCacheOptions,
   AssetEmittedInfo,
 } from "webpack";
+// eslint-disable-next-line node/no-extraneous-import
+import { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
 
-export type Env = {
-  WEBPACK_BUNDLE?: boolean;
-  WEBPACK_BUILD?: boolean;
-  WEBPACK_WATCH?: boolean;
-  WEBPACK_SERVE?: boolean;
-};
+import { Colorette } from "colorette";
+import { Command, CommandOptions, OptionConstructor, ParseOptions } from "commander";
+import { prepare } from "rechoir";
+import { stringifyStream } from "@discoveryjs/json-ext";
 
-export type Argv = {
-  env?: Env;
-} & Record<string, any>;
+/**
+ * Webpack CLI
+ */
 
-type CommanderOption = InstanceType<OptionConstructor>;
-
-export type WebpackCLICommandOption = CommanderOption & {
-  helpLevel?: "minimum" | "verbose";
-};
-export type BasicPrimitive = string | boolean | number;
-export type DynamicImport<T> = (url: string) => Promise<{ default: T }>;
-export type Instantiable<
-  InstanceType = unknown,
-  ConstructorParameters extends any[] = unknown[],
-> = {
-  new (...args: ConstructorParameters): InstanceType;
-};
-export type PotentialPromise<T> = T | Promise<T>;
-export type ModuleName = string;
-export type Path = string;
-export type PackageManager = "pnpm" | "yarn" | "npm";
-export type Colors = Colorette & {
-  isColorSupported: boolean;
-};
-type LogHandler = (value: any) => void;
-type StringFormatter = (value: string) => string;
-
-export type BuiltConfig = {
-  options: WebpackConfiguration | WebpackConfiguration[];
-  path: WeakMap<object, string>;
-};
-export type CLIPluginOptions = {
-  configPath?: string;
-  helpfulOutput: boolean;
-  hot?: boolean | "only";
-  progress?: boolean | "profile";
-  prefetch?: string;
-  analyze?: boolean;
-};
-
-export type FileSystemCacheOptions = WebpackConfiguration & {
-  cache: FileCacheOptions & { defaultConfig: unknown[] };
-};
-
-export type ProcessedArguments = Record<
-  string,
-  BasicPrimitive | RegExp | (BasicPrimitive | RegExp)[]
->;
-
-export type WebpackV4Compiler = Compiler & {
-  compiler: Compiler;
-};
-
-export type WebpackCLICommand = Command & {
-  pkg: string | undefined;
-  forHelp: boolean | undefined;
-  options: WebpackCLICommandOption[];
-  _args: WebpackCLICommandOption[];
-};
-
-export type DevServerOptions = DevServerConfig &
-  WebpackConfiguration &
-  ClientConfiguration &
-  AssetEmittedInfo &
-  CLIOptions &
-  WebpackOptionsNormalized &
-  FileCacheOptions &
-  Argv & {
-    nodeEnv?: "string";
-    watchOptionsStdin?: boolean;
-    progress?: boolean | "profile" | undefined;
-    analyze?: boolean;
-    prefetch?: string;
-    json?: boolean;
-    entry: EntryOptions;
-  };
-
-export type CLIOptions = {
-  merge?: boolean;
-  config: string[];
-  configName?: string[];
-  argv: Argv;
-};
-
-export type Callback<T extends unknown[]> = (...args: T) => void;
-export type WebpackConfiguration = Configuration;
-export type ConfigOptions = PotentialPromise<WebpackConfiguration | CallableOption>;
-export type CallableOption = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
-export type Rechoir = {
-  prepare: typeof prepare;
-};
-
-export type RechoirError = Error & {
-  failures: RechoirError[];
-  error: Error;
-};
-export type WebpackCompiler = Compiler | MultiCompiler;
-
-export type FlagConfig = {
-  negatedDescription: string;
-  type: OptionConfigType;
-  values: OptionConfigType[];
-};
-
-export type CliStats = Stats & {
-  presetToOptions?: (item: string | boolean) => StatsOptions;
-};
-
-export type WebpackV4LegacyStats = Required<CliStats>;
-type OptionConfigType =
-  | boolean
-  | "enum"
-  | "string"
-  | "path"
-  | "number"
-  | "boolean"
-  | "RegExp"
-  | "reset";
-
-export type PackageInstallOptions = {
-  preMessage?: () => void;
-};
-export type CommandAction = Parameters<WebpackCLICommand["action"]>[0];
-export type CommandCliOptions = BuiltInOptions[] | (() => Promise<BuiltInOptions[]>);
-
-export interface IWebpackCLI {
-  colors: Colors;
+interface IWebpackCLI {
+  colors: WebpackCLIColors;
   logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;
   webpack: typeof webpack;
-  builtInOptionsCache: BuiltInOptions[] | undefined;
+  builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
   program: WebpackCLICommand;
+  isMultipleCompiler(compiler: WebpackCompiler): compiler is MultiCompiler;
+  isPromise<T>(value: Promise<T>): value is Promise<T>;
+  isFunction(value: unknown): value is CallableFunction;
   getLogger(): WebpackCLILogger;
-  createColors(useColors?: boolean): Colors;
+  createColors(useColors?: boolean): WebpackCLIColors;
   toKebabCase: StringFormatter;
   capitalizeFirstLetter: StringFormatter;
   checkPackageExists(packageName: string): boolean;
   getAvailablePackageManagers(): PackageManager[];
   getDefaultPackageManager(): PackageManager | undefined;
   doInstall(packageName: string, options?: PackageInstallOptions): Promise<string>;
-  loadJSONFile<T = any>(path: Path, handleError: boolean): Promise<T>;
-  tryRequireThenImport<T = any>(module: ModuleName, handleError: boolean): Promise<T>;
+  loadJSONFile<T = unknown>(path: Path, handleError: boolean): Promise<T>;
+  tryRequireThenImport<T = unknown>(module: ModuleName, handleError: boolean): Promise<T>;
   makeCommand(
     commandOptions: WebpackCLIOptions,
-    options: CommandCliOptions,
+    options: WebpackCLICommandOptions,
     action: CommandAction,
   ): Promise<WebpackCLICommand | undefined>;
-  makeOption(command: WebpackCLICommand | WebpackCLICommand, option: BuiltInOptions): void;
+  makeOption(command: WebpackCLICommand, option: WebpackCLIBuiltInOption): void;
   run(
     args: Parameters<WebpackCLICommand["parseOptions"]>[0],
     parseOptions?: ParseOptions,
   ): Promise<void>;
-  getBuiltInOptions(): BuiltInOptions[];
+  getBuiltInOptions(): WebpackCLIBuiltInOption[];
   loadWebpack(handleError: boolean): Promise<typeof webpack>;
-  loadConfig(options: DevServerOptions): Promise<BuiltConfig>;
-  buildConfig(config: BuiltConfig, options: DevServerOptions): Promise<BuiltConfig>;
+  loadConfig(options: WebpackDevServerOptions): Promise<WebpackCLIConfig>;
+  buildConfig(
+    config: WebpackCLIConfig,
+    options: WebpackDevServerOptions,
+  ): Promise<WebpackCLIConfig>;
   isValidationError(error: Error): error is WebpackError;
   createCompiler(
-    options: DevServerOptions,
-    callback: Callback<[Error | undefined, CliStats | undefined]>,
+    options: WebpackDevServerOptions,
+    callback: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): undefined | boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
 }
-export type WebpackRunOptions = WebpackOptionsNormalized & {
-  json?: boolean;
-  argv?: Argv;
-  env: Env;
-};
 
-export interface WebpackCLILogger {
+interface WebpackCLIColors extends Colorette {
+  isColorSupported: boolean;
+}
+
+interface WebpackCLILogger {
   error: LogHandler;
   warn: LogHandler;
   info: LogHandler;
@@ -203,7 +81,49 @@ export interface WebpackCLILogger {
   raw: LogHandler;
 }
 
-export type BuiltInFlag = {
+interface WebpackCLICommandOption extends CommanderOption {
+  helpLevel?: "minimum" | "verbose";
+}
+
+interface WebpackCLIConfig {
+  options: WebpackConfiguration | WebpackConfiguration[];
+  path: WeakMap<object, string>;
+}
+
+interface WebpackCLICommand extends Command {
+  pkg: string | undefined;
+  forHelp: boolean | undefined;
+  options: WebpackCLICommandOption[];
+  _args: WebpackCLICommandOption[];
+}
+
+interface WebpackCLIStats extends Stats {
+  presetToOptions?: (item: string | boolean) => StatsOptions;
+}
+
+type WebpackCLIMainOption = Pick<
+  WebpackCLIBuiltInOption,
+  "description" | "defaultValue" | "multiple"
+> & {
+  flags: string;
+  type: Set<BooleanConstructor | StringConstructor | NumberConstructor>;
+};
+
+interface WebpackCLIOptions extends CommandOptions {
+  name: string;
+  alias: string | string[];
+  description?: string;
+  usage?: string;
+  dependencies?: string[];
+  pkg?: string;
+  argsDescription?: { [argName: string]: string };
+}
+
+type WebpackCLICommandOptions =
+  | WebpackCLIBuiltInOption[]
+  | (() => Promise<WebpackCLIBuiltInOption[]>);
+
+interface WebpackCLIBuiltInFlag {
   name: string;
   alias?: string;
   type?: (
@@ -217,36 +137,211 @@ export type BuiltInFlag = {
   describe?: string;
   negatedDescription?: string;
   defaultValue?: string;
-};
+}
 
-export type BuiltInOptions = BuiltInFlag & {
+interface WebpackCLIBuiltInOption extends WebpackCLIBuiltInFlag {
   hidden?: boolean;
   group?: "core";
   helpLevel: "minimum" | "verbose";
-};
+}
 
-export type WebpackCLIOptions = {
-  name: string;
-  alias: string | string[];
-  description?: string;
-  usage?: string;
-  dependencies?: string[];
-  pkg?: string;
-  argsDescription?: { [argName: string]: string };
-} & CommandOptions;
-
-export type BuiltInExternalCommandInfo = Pick<
-  WebpackCLIOptions,
-  "name" | "alias" | "description"
-> & {
+type WebpackCLIExternalCommandInfo = Pick<WebpackCLIOptions, "name" | "alias" | "description"> & {
   pkg: string;
 };
 
-export type ImportLoaderError = Error & {
-  code?: string;
+/**
+ * Webpack dev server
+ */
+
+type WebpackDevServerOptions = DevServerConfig &
+  WebpackConfiguration &
+  ClientConfiguration &
+  AssetEmittedInfo &
+  WebpackOptionsNormalized &
+  FileCacheOptions &
+  Argv & {
+    nodeEnv?: "string";
+    watchOptionsStdin?: boolean;
+    progress?: boolean | "profile" | undefined;
+    analyze?: boolean;
+    prefetch?: string;
+    json?: boolean;
+    entry: EntryOptions;
+    merge?: boolean;
+    config: string[];
+    configName?: string[];
+    argv: Argv;
+  };
+
+type Callback<T extends unknown[]> = (...args: T) => void;
+
+/**
+ * Webpack
+ */
+
+type WebpackConfiguration = Configuration;
+type ConfigOptions = PotentialPromise<WebpackConfiguration | CallableOption>;
+type CallableOption = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
+type WebpackCompiler = Compiler | MultiCompiler;
+
+type FlagType = boolean | "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset";
+
+type FlagConfig = {
+  negatedDescription: string;
+  type: FlagType;
+  values: FlagType[];
 };
 
-export type MainOption = Pick<BuiltInOptions, "description" | "defaultValue" | "multiple"> & {
-  flags: string;
-  type: Set<BooleanConstructor | StringConstructor | NumberConstructor>;
+type FileSystemCacheOptions = WebpackConfiguration & {
+  cache: FileCacheOptions & { defaultConfig: string[] };
+};
+
+type ProcessedArguments = Record<string, BasicPrimitive | RegExp | (BasicPrimitive | RegExp)[]>;
+
+type MultipleCompilerStatsOptions = StatsOptions & { children: StatsOptions[] };
+type CommandAction = Parameters<WebpackCLICommand["action"]>[0];
+
+interface WebpackRunOptions extends WebpackOptionsNormalized {
+  json?: boolean;
+  argv?: Argv;
+  env: Env;
+}
+
+/**
+ * Package management
+ */
+
+type PackageManager = "pnpm" | "yarn" | "npm";
+interface PackageInstallOptions {
+  preMessage?: () => void;
+}
+interface BasicPackageJsonContent {
+  name: string;
+  version: string;
+  description: string;
+  license: string;
+}
+
+/**
+ * Webpack V4
+ */
+
+type WebpackV4LegacyStats = Required<WebpackCLIStats>;
+interface WebpackV4Compiler extends Compiler {
+  compiler: Compiler;
+}
+
+/**
+ * Plugins and util types
+ */
+
+interface CLIPluginOptions {
+  configPath?: string;
+  helpfulOutput: boolean;
+  hot?: boolean | "only";
+  progress?: boolean | "profile";
+  prefetch?: string;
+  analyze?: boolean;
+}
+
+type BasicPrimitive = string | boolean | number;
+type Instantiable<InstanceType = unknown, ConstructorParameters extends any[] = unknown[]> = {
+  new (...args: ConstructorParameters): InstanceType;
+};
+type PotentialPromise<T> = T | Promise<T>;
+type ModuleName = string;
+type Path = string;
+type LogHandler = (value: any) => void;
+type StringFormatter = (value: string) => string;
+
+interface Argv extends Record<string, any> {
+  env?: Env;
+}
+
+interface Env {
+  WEBPACK_BUNDLE?: boolean;
+  WEBPACK_BUILD?: boolean;
+  WEBPACK_WATCH?: boolean;
+  WEBPACK_SERVE?: boolean;
+  WEBPACK_PACKAGE?: string;
+  WEBPACK_DEV_SERVER_PACKAGE?: string;
+}
+
+type DynamicImport<T> = (url: string) => Promise<{ default: T }>;
+
+interface ImportLoaderError extends Error {
+  code?: string;
+}
+
+/**
+ * External libraries types
+ */
+
+type CommanderOption = InstanceType<OptionConstructor>;
+
+interface Rechoir {
+  prepare: typeof prepare;
+}
+
+interface JsonExt {
+  stringifyStream: typeof stringifyStream;
+}
+
+interface RechoirError extends Error {
+  failures: RechoirError[];
+  error: Error;
+}
+
+interface PromptOptions {
+  message: string;
+  defaultResponse: string;
+  stream: NodeJS.WritableStream;
+}
+
+export {
+  IWebpackCLI,
+  WebpackCLICommandOption,
+  WebpackCLIBuiltInOption,
+  WebpackCLIBuiltInFlag,
+  WebpackCLIColors,
+  WebpackCLIStats,
+  WebpackCLIConfig,
+  WebpackCLIExternalCommandInfo,
+  WebpackCLIOptions,
+  WebpackCLICommand,
+  WebpackCLICommandOptions,
+  WebpackCLIMainOption,
+  WebpackCLILogger,
+  WebpackV4LegacyStats,
+  WebpackDevServerOptions,
+  WebpackRunOptions,
+  WebpackV4Compiler,
+  WebpackCompiler,
+  WebpackConfiguration,
+  Argv,
+  BasicPrimitive,
+  BasicPackageJsonContent,
+  CallableOption,
+  Callback,
+  CLIPluginOptions,
+  CommandAction,
+  CommanderOption,
+  CommandOptions,
+  ConfigOptions,
+  DynamicImport,
+  FileSystemCacheOptions,
+  FlagConfig,
+  ImportLoaderError,
+  Instantiable,
+  JsonExt,
+  ModuleName,
+  MultipleCompilerStatsOptions,
+  PackageInstallOptions,
+  PackageManager,
+  Path,
+  ProcessedArguments,
+  PromptOptions,
+  PotentialPromise,
+  Rechoir,
+  RechoirError,
 };

@@ -1,53 +1,59 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import {
-  Argv,
-  BuiltInFlag,
-  BuiltInOptions,
-  CallableOption,
-  Callback,
-  CliStats,
-  Colors,
-  CommandAction,
-  CommandCliOptions,
-  BuiltInExternalCommandInfo,
+  IWebpackCLI,
+  WebpackCLICommandOption,
+  WebpackCLIBuiltInOption,
+  WebpackCLIBuiltInFlag,
+  WebpackCLIColors,
+  WebpackCLIStats,
+  WebpackCLIConfig,
+  WebpackCLIExternalCommandInfo,
   WebpackCLIOptions,
-  ConfigOptions,
-  DevServerOptions,
-  FileSystemCacheOptions,
-  PackageInstallOptions,
-  Instantiable,
-  WebpackV4Compiler,
+  WebpackCLICommand,
+  WebpackCLICommandOptions,
+  WebpackCLIMainOption,
   WebpackCLILogger,
-  ImportLoaderError,
-  MainOption,
-  ModuleName,
-  BasicPrimitive,
-  FlagConfig,
+  WebpackV4LegacyStats,
+  WebpackDevServerOptions,
   WebpackRunOptions,
-  PackageManager,
-  Path,
-  PotentialPromise,
-  ProcessedArguments,
-  Rechoir,
+  WebpackV4Compiler,
   WebpackCompiler,
   WebpackConfiguration,
-  WebpackV4LegacyStats,
-  IWebpackCLI,
+  Argv,
+  BasicPrimitive,
+  BasicPackageJsonContent,
+  CallableOption,
+  Callback,
   CLIPluginOptions,
-  BuiltConfig,
-  WebpackCLICommand,
-  WebpackCLICommandOption,
+  CommandAction,
+  ConfigOptions,
   DynamicImport,
+  FileSystemCacheOptions,
+  FlagConfig,
+  ImportLoaderError,
+  Instantiable,
+  JsonExt,
+  ModuleName,
+  MultipleCompilerStatsOptions,
+  PackageInstallOptions,
+  PackageManager,
+  Path,
+  ProcessedArguments,
+  PromptOptions,
+  PotentialPromise,
+  Rechoir,
   RechoirError,
 } from "./types";
 
+import webpackMerge from "webpack-merge";
 import webpack, { Argument } from "webpack";
 import { Compiler, MultiCompiler, WebpackError, StatsOptions } from "webpack";
 import { stringifyStream } from "@discoveryjs/json-ext";
-
 import { Help, ParseOptions } from "commander";
+
 import { CLIPlugin as CLIPluginClass } from "./plugins/CLIPlugin";
 import { Problem } from "./webpack-internal-types";
+
 const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
@@ -59,12 +65,12 @@ const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
 class WebpackCLI implements IWebpackCLI {
-  colors: Colors;
+  colors: WebpackCLIColors;
   logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;
-  builtInOptionsCache: BuiltInOptions[] | undefined;
+  builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
   webpack!: typeof webpack;
-  program: WebpackCLICommand & { forHelp: boolean };
+  program: WebpackCLICommand;
   constructor() {
     this.colors = this.createColors();
     this.logger = this.getLogger();
@@ -82,16 +88,14 @@ class WebpackCLI implements IWebpackCLI {
   isMultipleCompiler(compiler: WebpackCompiler): compiler is MultiCompiler {
     return (compiler as MultiCompiler).compilers as unknown as boolean;
   }
-
-  isPromise<T>(val: Promise<T>): val is Promise<T> {
-    return typeof (val as unknown as Promise<T>).then === "function";
+  isPromise<T>(value: Promise<T>): value is Promise<T> {
+    return typeof (value as unknown as Promise<T>).then === "function";
+  }
+  isFunction(value: unknown): value is CallableFunction {
+    return typeof value === "function";
   }
 
-  isFunction(property: unknown): property is CallableFunction {
-    return typeof property === "function";
-  }
-
-  capitalizeFirstLetter(str: string | unknown) {
+  capitalizeFirstLetter(str: string | unknown): string {
     if (typeof str !== "string") {
       return "";
     }
@@ -99,11 +103,11 @@ class WebpackCLI implements IWebpackCLI {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  toKebabCase(str: string) {
+  toKebabCase(str: string): string {
     return str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
   }
 
-  createColors(useColor?: boolean) {
+  createColors(useColor?: boolean): WebpackCLIColors {
     const { createColors, isColorSupported } = require("colorette");
 
     let shouldUseColor;
@@ -128,7 +132,7 @@ class WebpackCLI implements IWebpackCLI {
     };
   }
 
-  checkPackageExists(packageName: string) {
+  checkPackageExists(packageName: string): boolean {
     if (process.versions.pnp) {
       return true;
     }
@@ -173,7 +177,7 @@ class WebpackCLI implements IWebpackCLI {
     return availableInstallers;
   }
 
-  getDefaultPackageManager() {
+  getDefaultPackageManager(): PackageManager | undefined {
     const { sync } = require("execa");
     const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), "package-lock.json"));
 
@@ -226,7 +230,7 @@ class WebpackCLI implements IWebpackCLI {
     }
   }
 
-  async doInstall(packageName: string, options: PackageInstallOptions = {}) {
+  async doInstall(packageName: string, options: PackageInstallOptions = {}): Promise<string> {
     const packageManager = this.getDefaultPackageManager();
 
     if (!packageManager) {
@@ -246,15 +250,7 @@ class WebpackCLI implements IWebpackCLI {
       packageName,
     ].join(" ")}`;
 
-    const prompt = ({
-      message,
-      defaultResponse,
-      stream,
-    }: {
-      message: string;
-      defaultResponse: string;
-      stream: NodeJS.WritableStream;
-    }) => {
+    const prompt = ({ message, defaultResponse, stream }: PromptOptions) => {
       const readline = require("readline");
       const rl = readline.createInterface({
         input: process.stdin,
@@ -351,7 +347,7 @@ class WebpackCLI implements IWebpackCLI {
     return result || {};
   }
 
-  loadJSONFile<T = any>(pathToFile: Path, handleError = true): T {
+  loadJSONFile<T = unknown>(pathToFile: Path, handleError = true): T {
     let result;
 
     try {
@@ -370,7 +366,7 @@ class WebpackCLI implements IWebpackCLI {
 
   async makeCommand(
     commandOptions: WebpackCLIOptions,
-    options: CommandCliOptions,
+    options: WebpackCLICommandOptions,
     action: CommandAction,
   ): Promise<WebpackCLICommand | undefined> {
     const alreadyLoaded = this.program.commands.find(
@@ -459,7 +455,7 @@ class WebpackCLI implements IWebpackCLI {
             `${
               commandOptions.description
             } To see all available options you need to install ${commandOptions.dependencies
-              .map((dependency: string) => `'${dependency}'`)
+              .map((dependency) => `'${dependency}'`)
               .join(", ")}.`,
           );
           options = [];
@@ -478,14 +474,14 @@ class WebpackCLI implements IWebpackCLI {
     return command;
   }
 
-  makeOption(command: WebpackCLICommand, option: BuiltInOptions) {
-    let mainOption: MainOption;
+  makeOption(command: WebpackCLICommand, option: WebpackCLIBuiltInOption) {
+    let mainOption: WebpackCLIMainOption;
     let negativeOption;
 
     if (option.configs) {
       let needNegativeOption = false;
       let negatedDescription;
-      const mainOptionType: MainOption["type"] = new Set();
+      const mainOptionType: WebpackCLIMainOption["type"] = new Set();
 
       option.configs.forEach((config) => {
         switch (config.type) {
@@ -697,7 +693,7 @@ class WebpackCLI implements IWebpackCLI {
     }
   }
 
-  getBuiltInOptions(): BuiltInOptions[] {
+  getBuiltInOptions(): WebpackCLIBuiltInOption[] {
     if (this.builtInOptionsCache) {
       return this.builtInOptionsCache;
     }
@@ -721,7 +717,7 @@ class WebpackCLI implements IWebpackCLI {
       "node-env",
     ];
 
-    const builtInFlags: BuiltInFlag[] = [
+    const builtInFlags: WebpackCLIBuiltInFlag[] = [
       // For configs
       {
         name: "config",
@@ -1001,18 +997,18 @@ class WebpackCLI implements IWebpackCLI {
         })
       : [];
 
-    const options: BuiltInOptions[] = ([] as BuiltInFlag[])
+    const options: WebpackCLIBuiltInOption[] = ([] as WebpackCLIBuiltInFlag[])
       .concat(
         builtInFlags.filter(
           (builtInFlag) => !coreFlags.find((coreFlag) => builtInFlag.name === coreFlag.name),
         ),
       )
       .concat(coreFlags)
-      .map((option): BuiltInOptions => {
-        (option as BuiltInOptions).helpLevel = minimumHelpFlags.includes(option.name)
+      .map((option): WebpackCLIBuiltInOption => {
+        (option as WebpackCLIBuiltInOption).helpLevel = minimumHelpFlags.includes(option.name)
           ? "minimum"
           : "verbose";
-        return option as BuiltInOptions;
+        return option as WebpackCLIBuiltInOption;
       });
 
     this.builtInOptionsCache = options;
@@ -1052,7 +1048,7 @@ class WebpackCLI implements IWebpackCLI {
       description: "Display help for commands and options.",
     };
     // Built-in external commands
-    const externalBuiltInCommandsInfo: BuiltInExternalCommandInfo[] = [
+    const externalBuiltInCommandsInfo: WebpackCLIExternalCommandInfo[] = [
       {
         name: "serve [entries...]",
         alias: ["server", "s"],
@@ -1135,7 +1131,7 @@ class WebpackCLI implements IWebpackCLI {
       value === "--help";
 
     const loadCommandByName = async (
-      commandName: BuiltInExternalCommandInfo["name"],
+      commandName: WebpackCLIExternalCommandInfo["name"],
       allowToInstall = false,
     ) => {
       const isBuildCommandUsed = isCommand(commandName, buildCommandOptions);
@@ -1339,7 +1335,7 @@ class WebpackCLI implements IWebpackCLI {
           }
 
           try {
-            const { name, version } = this.loadJSONFile<{ name: string; version: string }>(
+            const { name, version } = this.loadJSONFile<BasicPackageJsonContent>(
               `${foundCommand.pkg}/package.json`,
             );
 
@@ -1361,14 +1357,17 @@ class WebpackCLI implements IWebpackCLI {
 
       this.logger.raw(`webpack: ${webpack ? webpack.version : "not installed"}`);
 
-      const pkgJSON = this.loadJSONFile("../package.json");
+      const pkgJSON = this.loadJSONFile<BasicPackageJsonContent>("../package.json");
 
       this.logger.raw(`webpack-cli: ${pkgJSON.version}`);
 
       let devServer;
 
       try {
-        devServer = await this.loadJSONFile("webpack-dev-server/package.json", false);
+        devServer = await this.loadJSONFile<BasicPackageJsonContent>(
+          "webpack-dev-server/package.json",
+          false,
+        );
       } catch (_error) {
         // Nothing
       }
@@ -1795,7 +1794,7 @@ class WebpackCLI implements IWebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
-  async loadConfig(options: DevServerOptions) {
+  async loadConfig(options: WebpackDevServerOptions) {
     const interpret = require("interpret");
     const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
       const ext = path.extname(configPath);
@@ -1888,7 +1887,7 @@ class WebpackCLI implements IWebpackCLI {
       return { options, path: configPath };
     };
 
-    const config: BuiltConfig = {
+    const config: WebpackCLIConfig = {
       options: {} as WebpackConfiguration,
       path: new WeakMap(),
     };
@@ -2005,9 +2004,7 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     if (options.merge) {
-      const merge = await this.tryRequireThenImport<
-        (firstConfig: object | object[], ...configurations: object[]) => object
-      >("webpack-merge");
+      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
 
       // we can only merge when there are multiple configurations
       // either by passing multiple configs by flags or passing a
@@ -2033,7 +2030,10 @@ class WebpackCLI implements IWebpackCLI {
     return config;
   }
 
-  async buildConfig(config: BuiltConfig, options: DevServerOptions): Promise<BuiltConfig> {
+  async buildConfig(
+    config: WebpackCLIConfig,
+    options: WebpackDevServerOptions,
+  ): Promise<WebpackCLIConfig> {
     const runFunctionOnEachConfig = (
       options: ConfigOptions | ConfigOptions[],
       fn: CallableFunction,
@@ -2339,8 +2339,8 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   async createCompiler(
-    options: DevServerOptions,
-    callback: Callback<[Error | undefined, CliStats | undefined]>,
+    options: WebpackDevServerOptions,
+    callback: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
   ): Promise<WebpackCompiler> {
     if (typeof options.nodeEnv === "string") {
       process.env.NODE_ENV = options.nodeEnv;
@@ -2400,14 +2400,12 @@ class WebpackCLI implements IWebpackCLI {
     let createJsonStringifyStream: typeof stringifyStream;
 
     if (options.json) {
-      const jsonExt = await this.tryRequireThenImport<{ stringifyStream: typeof stringifyStream }>(
-        "@discoveryjs/json-ext",
-      );
+      const jsonExt = await this.tryRequireThenImport<JsonExt>("@discoveryjs/json-ext");
 
       createJsonStringifyStream = jsonExt.stringifyStream;
     }
 
-    const callback = (error: Error | undefined, stats: CliStats | undefined): void => {
+    const callback = (error: Error | undefined, stats: WebpackCLIStats | undefined): void => {
       if (error) {
         this.logger.error(error);
         process.exit(2);
@@ -2438,7 +2436,7 @@ class WebpackCLI implements IWebpackCLI {
 
       if (this.isMultipleCompiler(compiler) && statsForWebpack4) {
         (statsOptions as StatsOptions).colors = (
-          statsOptions as { children: StatsOptions[] }
+          statsOptions as MultipleCompilerStatsOptions
         ).children.some((child) => child.colors);
       }
 
@@ -2488,7 +2486,7 @@ class WebpackCLI implements IWebpackCLI {
       options.watch = true;
     }
 
-    compiler = await this.createCompiler(options as DevServerOptions, callback);
+    compiler = await this.createCompiler(options as WebpackDevServerOptions, callback);
 
     if (!compiler) {
       return;
