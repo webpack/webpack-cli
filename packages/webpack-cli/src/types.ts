@@ -7,8 +7,11 @@ import webpack, {
   WebpackOptionsNormalized,
   Compiler,
   MultiCompiler,
+  Problem,
+  Argument,
+  AssetEmittedInfo,
+  FileCacheOptions,
 } from "webpack";
-import { Problem, Argument, AssetEmittedInfo, FileCacheOptions } from "./webpack-internal-types";
 
 // eslint-disable-next-line node/no-extraneous-import
 import { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
