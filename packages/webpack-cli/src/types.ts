@@ -248,15 +248,17 @@ interface CLIPluginOptions {
 }
 
 type BasicPrimitive = string | boolean | number;
-type Instantiable<InstanceType = unknown, ConstructorParameters extends any[] = unknown[]> = {
+type Instantiable<InstanceType = unknown, ConstructorParameters extends unknown[] = unknown[]> = {
   new (...args: ConstructorParameters): InstanceType;
 };
 type PotentialPromise<T> = T | Promise<T>;
 type ModuleName = string;
 type Path = string;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type LogHandler = (value: any) => void;
 type StringFormatter = (value: string) => string;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Argv extends Record<string, any> {
   env?: Env;
 }

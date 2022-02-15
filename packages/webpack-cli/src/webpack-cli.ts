@@ -2132,6 +2132,7 @@ class WebpackCLI implements IWebpackCLI {
         const problems: Problem[] | null = this.webpack.cli.processArguments(args, item, values);
 
         if (problems) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const groupBy = (xs: Record<string, any>[], key: string) => {
             return xs.reduce((rv, x) => {
               (rv[x[key]] = rv[x[key]] || []).push(x);
