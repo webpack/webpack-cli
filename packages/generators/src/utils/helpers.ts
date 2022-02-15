@@ -37,7 +37,7 @@ export async function getInstaller(this: CustomGenerator): Promise<string> {
     "packager",
     "Pick a package manager:",
     installers,
-    defaultPackager,
+    defaultPackager as string,
     this.force,
   );
   return packager;

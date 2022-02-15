@@ -145,7 +145,7 @@ interface WebpackCLIBuiltInFlag {
 interface WebpackCLIBuiltInOption extends WebpackCLIBuiltInFlag {
   hidden?: boolean;
   group?: "core";
-  helpLevel: "minimum" | "verbose";
+  helpLevel?: "minimum" | "verbose";
 }
 
 type WebpackCLIExternalCommandInfo = Pick<WebpackCLIOptions, "name" | "alias" | "description"> & {
