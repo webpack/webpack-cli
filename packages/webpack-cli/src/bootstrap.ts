@@ -1,5 +1,6 @@
 import { IWebpackCLI } from "./types";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const WebpackCLI = require("./webpack-cli");
 
 const runCLI = async (args: Parameters<IWebpackCLI["run"]>[0]) => {
