@@ -39,14 +39,12 @@ class ConfigTestCommand {
         cli.logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
 
         try {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          const error: Error[] = cli.webpack.validate(config.options);
+          // @ts-expect-error cli.webpack.validate returns void
+          const error: Error[] | undefined = cli.webpack.validate(config.options);
 
           // TODO remove this after drop webpack@4
           if (error && error.length > 0) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error schema argument is missing
             throw new cli.webpack.WebpackOptionsValidationError(error);
           }
         } catch (error) {
