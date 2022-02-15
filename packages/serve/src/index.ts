@@ -1,6 +1,5 @@
 // eslint-disable-next-line node/no-extraneous-import
 import type { Compiler, cli } from "webpack";
-import { devServerOptionsType } from "./types";
 import { IWebpackCLI, WebpackDevServerOptions } from "webpack-cli";
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
