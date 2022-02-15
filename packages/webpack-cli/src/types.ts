@@ -56,8 +56,8 @@ interface IWebpackCLI {
     parseOptions?: ParseOptions,
   ): Promise<void>;
   getBuiltInOptions(): WebpackCLIBuiltInOption[];
-  loadWebpack(handleError: boolean): Promise<typeof webpack>;
-  loadConfig(options: WebpackDevServerOptions): Promise<WebpackCLIConfig>;
+  loadWebpack(handleError?: boolean): Promise<typeof webpack>;
+  loadConfig(options: Partial<WebpackDevServerOptions>): Promise<WebpackCLIConfig>;
   buildConfig(
     config: WebpackCLIConfig,
     options: WebpackDevServerOptions,
