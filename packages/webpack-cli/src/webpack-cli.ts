@@ -1795,7 +1795,7 @@ class WebpackCLI implements IWebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
-  async loadConfig(options: WebpackDevServerOptions) {
+  async loadConfig(options: Partial<WebpackDevServerOptions>) {
     const interpret = require("interpret");
     const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
       const ext = path.extname(configPath);
@@ -2033,7 +2033,7 @@ class WebpackCLI implements IWebpackCLI {
 
   async buildConfig(
     config: WebpackCLIConfig,
-    options: WebpackDevServerOptions,
+    options: Partial<WebpackDevServerOptions>,
   ): Promise<WebpackCLIConfig> {
     const runFunctionOnEachConfig = (
       options: ConfigOptions | ConfigOptions[],
@@ -2340,8 +2340,8 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   async createCompiler(
-    options: WebpackDevServerOptions,
-    callback: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
+    options: Partial<WebpackDevServerOptions>,
+    callback?: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
   ): Promise<WebpackCompiler> {
     if (typeof options.nodeEnv === "string") {
       process.env.NODE_ENV = options.nodeEnv;

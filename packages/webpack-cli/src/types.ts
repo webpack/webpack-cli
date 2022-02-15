@@ -64,8 +64,8 @@ interface IWebpackCLI {
   ): Promise<WebpackCLIConfig>;
   isValidationError(error: Error): error is WebpackError;
   createCompiler(
-    options: WebpackDevServerOptions,
-    callback: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
+    options: Partial<WebpackDevServerOptions>,
+    callback?: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;

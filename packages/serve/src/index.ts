@@ -1,15 +1,15 @@
 // eslint-disable-next-line node/no-extraneous-import
 import type { Compiler, cli } from "webpack";
 import { devServerOptionsType } from "./types";
+import { IWebpackCLI, WebpackDevServerOptions } from "webpack-cli";
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
 type Problem = NonNullable<ReturnType<typeof cli["processArguments"]>>[0];
-
+type PublicPath = WebpackDevServerOptions["output"]["publicPath"];
 class ServeCommand {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-  async apply(cli: any): Promise<void> {
+  async apply(cli: IWebpackCLI): Promise<void> {
     const loadDevServerOptions = () => {
       // TODO simplify this after drop webpack v4 and webpack-dev-server v3
       // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -188,8 +188,7 @@ class ServeCommand {
           process.exit(2);
         }
 
-        const compilers =
-          typeof compiler.compilers !== "undefined" ? compiler.compilers : [compiler];
+        const compilers = cli.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
         const possibleCompilers = compilers.filter(
           (compiler: Compiler) => compiler.options.devServer,
         );
@@ -199,7 +198,7 @@ class ServeCommand {
         const usedPorts: number[] = [];
 
         for (const compilerForDevServer of compilersForDevServer) {
-          let devServerOptions: devServerOptionsType;
+          let devServerOptions: WebpackDevServerOptions;
 
           if (isNewDevServerCLIAPI) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -260,18 +259,23 @@ class ServeCommand {
               process.exit(2);
             }
 
-            devServerOptions = result;
+            devServerOptions = result as WebpackDevServerOptions;
           } else {
             // TODO remove in the next major release
             const mergeOptions = (
-              devServerOptions: devServerOptionsType,
-              devServerCliOptions: devServerOptionsType,
-            ): devServerOptionsType => {
+              devServerOptions: Partial<WebpackDevServerOptions>,
+              devServerCliOptions: Partial<WebpackDevServerOptions>,
+            ): WebpackDevServerOptions => {
               // CLI options should take precedence over devServer options,
               // and CLI options should have no default values included
               const options = { ...devServerOptions, ...devServerCliOptions };
 
-              if (devServerOptions.client && devServerCliOptions.client) {
+              if (
+                devServerOptions.client &&
+                devServerCliOptions.client &&
+                typeof devServerOptions.client === "object" &&
+                typeof devServerCliOptions.client === "object"
+              ) {
                 // the user could set some client options in their devServer config,
                 // then also specify client options on the CLI
                 options.client = {
@@ -280,7 +284,7 @@ class ServeCommand {
                 };
               }
 
-              return options;
+              return options as WebpackDevServerOptions;
             };
 
             devServerOptions = mergeOptions(
@@ -291,8 +295,8 @@ class ServeCommand {
 
           // TODO remove in the next major release
           if (!isDevServer4) {
-            const getPublicPathOption = (): string => {
-              const normalizePublicPath = (publicPath: string): string =>
+            const getPublicPathOption = (): PublicPath => {
+              const normalizePublicPath = (publicPath: PublicPath): PublicPath =>
                 typeof publicPath === "undefined" || publicPath === "auto" ? "/" : publicPath;
 
               if (options.outputPublicPath) {
@@ -307,7 +311,7 @@ class ServeCommand {
 
               return normalizePublicPath(compilerForDevServer.options.output.publicPath);
             };
-            const getStatsOption = (): string | boolean => {
+            const getStatsOption = (): WebpackDevServerOptions["stats"] => {
               if (options.stats) {
                 return options.stats;
               }
@@ -361,7 +365,7 @@ class ServeCommand {
 
             servers.push(server);
           } catch (error) {
-            if (cli.isValidationError(error)) {
+            if (cli.isValidationError(error as Error)) {
               cli.logger.error((error as Error).message);
             } else {
               cli.logger.error(error);
