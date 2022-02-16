@@ -59,5 +59,8 @@
       "optional": true
     }
   },
-  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
+  "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
+  "devDependencies": {
+    "webpack-dev-server": "^4.7.4"
+  }
 }

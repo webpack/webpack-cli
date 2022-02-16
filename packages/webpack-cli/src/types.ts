@@ -13,7 +13,6 @@ import webpack, {
   FileCacheOptions,
 } from "webpack";
 
-// eslint-disable-next-line node/no-extraneous-import
 import { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
 
 import { Colorette } from "colorette";
