@@ -13,6 +13,8 @@ import webpack, {
   FileCacheOptions,
 } from "webpack";
 
+// @ts-expect-error extraneous import is intended
+// eslint-disable-next-line node/no-extraneous-import
 import { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
 
 import { Colorette } from "colorette";

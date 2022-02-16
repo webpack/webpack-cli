@@ -2121,7 +2121,7 @@ class WebpackCLI implements IWebpackCLI {
             const kebabName = this.toKebabCase(name);
 
             if (args[kebabName]) {
-              accumulator[kebabName] = options[name as keyof typeof options];
+              accumulator[kebabName] = options[name as keyof typeof options as string];
             }
 
             return accumulator;
