@@ -1,9 +1,15 @@
-class CLIPlugin {
-  constructor(options) {
+import { Compiler } from "webpack";
+import { CLIPluginOptions } from "../types";
+
+export class CLIPlugin {
+  logger!: ReturnType<Compiler["getInfrastructureLogger"]>;
+  options: CLIPluginOptions;
+
+  constructor(options: CLIPluginOptions) {
     this.options = options;
   }
 
-  setupHotPlugin(compiler) {
+  setupHotPlugin(compiler: Compiler) {
     const { HotModuleReplacementPlugin } = compiler.webpack || require("webpack");
     const hotModuleReplacementPlugin = Boolean(
       compiler.options.plugins.find((plugin) => plugin instanceof HotModuleReplacementPlugin),
@@ -14,14 +20,14 @@ class CLIPlugin {
     }
   }
 
-  setupPrefetchPlugin(compiler) {
+  setupPrefetchPlugin(compiler: Compiler) {
     const { PrefetchPlugin } = compiler.webpack || require("webpack");
 
     new PrefetchPlugin(null, this.options.prefetch).apply(compiler);
   }
 
-  async setupBundleAnalyzerPlugin(compiler) {
-    // eslint-disable-next-line node/no-extraneous-require
+  async setupBundleAnalyzerPlugin(compiler: Compiler) {
+    // eslint-disable-next-line node/no-extraneous-require,@typescript-eslint/no-var-requires
     const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
     const bundleAnalyzerPlugin = Boolean(
       compiler.options.plugins.find((plugin) => plugin instanceof BundleAnalyzerPlugin),
@@ -32,7 +38,7 @@ class CLIPlugin {
     }
   }
 
-  setupProgressPlugin(compiler) {
+  setupProgressPlugin(compiler: Compiler) {
     const { ProgressPlugin } = compiler.webpack || require("webpack");
     const progressPlugin = Boolean(
       compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin),
@@ -45,10 +51,10 @@ class CLIPlugin {
     }
   }
 
-  setupHelpfulOutput(compiler) {
+  setupHelpfulOutput(compiler: Compiler) {
     const pluginName = "webpack-cli";
     const getCompilationName = () => (compiler.name ? `'${compiler.name}'` : "");
-    const logCompilation = (message) => {
+    const logCompilation = (message: string) => {
       if (process.env.WEBPACK_CLI_START_FINISH_FORCE_LOG) {
         process.stderr.write(message);
       } else {
@@ -93,20 +99,23 @@ class CLIPlugin {
       this.logger.log(`Changed time is ${date} (timestamp is ${changeTime})`);
     });
 
-    (compiler.webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(pluginName, () => {
-      const name = getCompilationName();
+    ((compiler as Partial<Compiler>).webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(
+      pluginName,
+      () => {
+        const name = getCompilationName();
 
-      logCompilation(`Compiler${name ? ` ${name}` : ""} finished`);
+        logCompilation(`Compiler${name ? ` ${name}` : ""} finished`);
 
-      process.nextTick(() => {
-        if (compiler.watchMode) {
-          this.logger.log(`Compiler${name ? `${name}` : ""} is watching files for updates...`);
-        }
-      });
-    });
+        process.nextTick(() => {
+          if (compiler.watchMode) {
+            this.logger.log(`Compiler${name ? `${name}` : ""} is watching files for updates...`);
+          }
+        });
+      },
+    );
   }
 
-  apply(compiler) {
+  apply(compiler: Compiler) {
     this.logger = compiler.getInfrastructureLogger("webpack-cli");
 
     if (this.options.progress) {

@@ -1,4 +1,5 @@
 import envinfo from "envinfo";
+import { IWebpackCLI } from "webpack-cli";
 
 interface Information {
   Binaries?: string[];
@@ -10,8 +11,7 @@ interface Information {
 }
 
 class InfoCommand {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-  async apply(cli: any): Promise<void> {
+  async apply(cli: IWebpackCLI): Promise<void> {
     await cli.makeCommand(
       {
         name: "info",
