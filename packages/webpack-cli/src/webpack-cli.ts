@@ -2509,6 +2509,7 @@ class WebpackCLI implements IWebpackCLI {
 
       signals.forEach((signal) => {
         const listener = () => {
+          // TODO" remove function check after webpack v4 support drop
           if (needForceShutdown || typeof compiler.close !== "function") {
             process.exit();
           }
