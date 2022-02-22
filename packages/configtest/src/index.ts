@@ -1,8 +1,9 @@
+import { IWebpackCLI } from "webpack-cli";
+
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 
 class ConfigTestCommand {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-  async apply(cli: any): Promise<void> {
+  async apply(cli: IWebpackCLI): Promise<void> {
     await cli.makeCommand(
       {
         name: "configtest [config-path]",
@@ -19,15 +20,14 @@ class ConfigTestCommand {
         const configPaths = new Set<string>();
 
         if (Array.isArray(config.options)) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          config.options.forEach((options: any) => {
+          config.options.forEach((options) => {
             if (config.path.get(options)) {
-              configPaths.add(config.path.get(options));
+              configPaths.add(config.path.get(options) as string);
             }
           });
         } else {
           if (config.path.get(config.options)) {
-            configPaths.add(config.path.get(config.options));
+            configPaths.add(config.path.get(config.options) as string);
           }
         }
 
@@ -39,14 +39,16 @@ class ConfigTestCommand {
         cli.logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
 
         try {
-          const error: Error[] = cli.webpack.validate(config.options);
+          // @ts-expect-error cli.webpack.validate returns void
+          const error: Error[] | undefined = cli.webpack.validate(config.options);
 
           // TODO remove this after drop webpack@4
           if (error && error.length > 0) {
+            // @ts-expect-error schema argument is missing
             throw new cli.webpack.WebpackOptionsValidationError(error);
           }
         } catch (error) {
-          if (cli.isValidationError(error)) {
+          if (cli.isValidationError(error as Error)) {
             cli.logger.error((error as Error).message);
           } else {
             cli.logger.error(error);

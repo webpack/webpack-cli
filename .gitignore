@@ -55,7 +55,6 @@ packages/**/*.map
 # build files
 packages/**/lib
 packages/**/yarn.lock
-!packages/webpack-cli/lib
 
 # test output files
 test/js/*

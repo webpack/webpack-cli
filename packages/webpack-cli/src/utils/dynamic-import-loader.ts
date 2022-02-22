@@ -1,4 +1,6 @@
-function dynamicImportLoader() {
+import { DynamicImport } from "../types";
+
+function dynamicImportLoader<T>(): DynamicImport<T> | null {
   let importESM;
 
   try {
@@ -7,7 +9,7 @@ function dynamicImportLoader() {
     importESM = null;
   }
 
-  return importESM;
+  return importESM as DynamicImport<T>;
 }
 
 module.exports = dynamicImportLoader;

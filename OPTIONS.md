@@ -177,6 +177,8 @@ Options:
   --no-module-parser-javascript-import                                               Negative 'module-parser-javascript-import' option.
   --module-parser-javascript-import-exports-presence <value>                         Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-import-exports-presence                              Negative 'module-parser-javascript-import-exports-presence' option.
+  --module-parser-javascript-import-meta                                             Enable/disable evaluating import.meta.
+  --no-module-parser-javascript-import-meta                                          Negative 'module-parser-javascript-import-meta' option.
   --no-module-parser-javascript-node                                                 Negative 'module-parser-javascript-node' option.
   --module-parser-javascript-node-dirname [value]                                    Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-node-dirname                                         Negative 'module-parser-javascript-node-dirname' option.
@@ -239,6 +241,8 @@ Options:
   --no-module-parser-javascript-auto-import                                          Negative 'module-parser-javascript-auto-import' option.
   --module-parser-javascript-auto-import-exports-presence <value>                    Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-auto-import-exports-presence                         Negative 'module-parser-javascript-auto-import-exports-presence' option.
+  --module-parser-javascript-auto-import-meta                                        Enable/disable evaluating import.meta.
+  --no-module-parser-javascript-auto-import-meta                                     Negative 'module-parser-javascript-auto-import-meta' option.
   --no-module-parser-javascript-auto-node                                            Negative 'module-parser-javascript-auto-node' option.
   --module-parser-javascript-auto-node-dirname [value]                               Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-auto-node-dirname                                    Negative 'module-parser-javascript-auto-node-dirname' option.
@@ -301,6 +305,8 @@ Options:
   --no-module-parser-javascript-dynamic-import                                       Negative 'module-parser-javascript-dynamic-import' option.
   --module-parser-javascript-dynamic-import-exports-presence <value>                 Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-dynamic-import-exports-presence                      Negative 'module-parser-javascript-dynamic-import-exports-presence' option.
+  --module-parser-javascript-dynamic-import-meta                                     Enable/disable evaluating import.meta.
+  --no-module-parser-javascript-dynamic-import-meta                                  Negative 'module-parser-javascript-dynamic-import-meta' option.
   --no-module-parser-javascript-dynamic-node                                         Negative 'module-parser-javascript-dynamic-node' option.
   --module-parser-javascript-dynamic-node-dirname [value]                            Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-dynamic-node-dirname                                 Negative 'module-parser-javascript-dynamic-node-dirname' option.
@@ -363,6 +369,8 @@ Options:
   --no-module-parser-javascript-esm-import                                           Negative 'module-parser-javascript-esm-import' option.
   --module-parser-javascript-esm-import-exports-presence <value>                     Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-esm-import-exports-presence                          Negative 'module-parser-javascript-esm-import-exports-presence' option.
+  --module-parser-javascript-esm-import-meta                                         Enable/disable evaluating import.meta.
+  --no-module-parser-javascript-esm-import-meta                                      Negative 'module-parser-javascript-esm-import-meta' option.
   --no-module-parser-javascript-esm-node                                             Negative 'module-parser-javascript-esm-node' option.
   --module-parser-javascript-esm-node-dirname [value]                                Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-esm-node-dirname                                     Negative 'module-parser-javascript-esm-node-dirname' option.

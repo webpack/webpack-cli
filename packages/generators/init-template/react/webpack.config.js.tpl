@@ -38,8 +38,14 @@ const config = {
     module: {
         rules: [<% if (langType == "ES6") { %>
             {
-                test: /\.(js|jsx)$/i,
-                loader: 'babel-loader',
+                test: /\.?js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env", "@babel/preset-react"],
+                    },
+                },
             },<% } %><% if (langType == "Typescript") { %>
             {
                 test: /\.(ts|tsx)$/i,
@@ -74,10 +80,13 @@ const config = {
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
-    },<% if (langType == "Typescript") {%>
+    },
     resolve: {
-        extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
-    },<% } %>
+        alias: {
+            "@": path.resolve(__dirname, "./src/"),
+        },<% if (langType == "Typescript") {%>
+        extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],<% } %>
+    },
 };
 
 module.exports = () => {

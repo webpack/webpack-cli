@@ -10,15 +10,27 @@ const resolveFile = (file: string): string => {
 export async function questions(
   self: CustomGenerator,
   Question: typeof QuestionAPI,
+  config: Record<string, { skip?: boolean; required?: boolean }> = {
+    langType: {},
+    devServer: {},
+    htmlWebpackPlugin: {},
+    workboxWebpackPlugin: {},
+    cssType: {},
+    isCSS: {},
+    isPostCSS: {},
+    extractPlugin: {},
+  },
 ): Promise<void> {
   // Handle JS language solutions
   const { langType } = await Question.List(
     self,
     "langType",
     "Which of the following JS solutions do you want to use?",
-    ["none", "ES6", "Typescript"],
-    "none",
-    self.force,
+    [config.langType.required ? "" : "none", "ES6", "Typescript"].filter(
+      (option) => option.length > 0,
+    ),
+    config.langType.required ? "ES6" : "none",
+    self.force || config.langType.skip,
   );
 
   switch (langType) {
@@ -36,7 +48,7 @@ export async function questions(
     "devServer",
     "Do you want to use webpack-dev-server?",
     true,
-    self.force,
+    self.force || config.devServer.skip,
   );
   if (devServer) {
     self.dependencies.push("webpack-dev-server");
@@ -48,7 +60,7 @@ export async function questions(
     "htmlWebpackPlugin",
     "Do you want to simplify the creation of HTML files for your bundle?",
     true,
-    self.force,
+    self.force || config.htmlWebpackPlugin.skip,
   );
   if (htmlWebpackPlugin) {
     self.dependencies.push("html-webpack-plugin");
@@ -60,7 +72,7 @@ export async function questions(
     "workboxWebpackPlugin",
     "Do you want to add PWA support?",
     true,
-    self.force,
+    self.force || config.workboxWebpackPlugin.skip,
   );
   if (workboxWebpackPlugin) {
     self.dependencies.push("workbox-webpack-plugin");
@@ -80,9 +92,11 @@ export async function questions(
     self,
     "cssType",
     "Which of the following CSS solutions do you want to use?",
-    ["none", "CSS only", "SASS", "LESS", "Stylus"],
-    "none",
-    self.force,
+    [config.cssType.required ? "" : "none", "CSS only", "SASS", "LESS", "Stylus"].filter(
+      (option) => option.length > 0,
+    ),
+    config.cssType.required ? "CSS only" : "none",
+    self.force || config.cssType.skip,
   );
 
   if (cssType == "none") {
