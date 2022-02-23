@@ -4,10 +4,10 @@ import pluginGenerator from "./plugin-generator";
 import addonGenerator from "./addon-generator";
 import initGenerator from "./init-generator";
 import type { InitOptions, LoaderOptions, PluginOptions } from "./types";
+import { IWebpackCLI } from "webpack-cli";
 
 class GeneratorsCommand {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-  async apply(cli: any): Promise<void> {
+  async apply(cli: IWebpackCLI): Promise<void> {
     await cli.makeCommand(
       {
         name: "init [generation-path]",

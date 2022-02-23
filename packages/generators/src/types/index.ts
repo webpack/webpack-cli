@@ -1,5 +1,6 @@
 import Generator from "yeoman-generator";
 import path from "path";
+import { IWebpackCLI } from "webpack-cli";
 
 export type InitOptions = { template: string; force?: boolean };
 export type LoaderOptions = { template: string };
@@ -16,8 +17,7 @@ export type BaseCustomGeneratorOptions = {
 };
 export type CustomGeneratorOptions<T extends BaseCustomGeneratorOptions> =
   Generator.GeneratorOptions & {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    cli: any;
+    cli: IWebpackCLI;
     options: T;
   };
 
@@ -25,8 +25,7 @@ export class CustomGenerator<
   T extends BaseCustomGeneratorOptions = BaseCustomGeneratorOptions,
   Z extends CustomGeneratorOptions<T> = CustomGeneratorOptions<T>,
 > extends Generator<Z> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public cli: any;
+  public cli: IWebpackCLI;
   public template: string;
   public dependencies: string[];
   public force: boolean;
