@@ -244,13 +244,6 @@ class WebpackCLI implements IWebpackCLI {
       options.preMessage();
     }
 
-    // yarn uses 'add' command, rest npm and pnpm both use 'install'
-    const commandToBeRun = `${packageManager} ${[
-      packageManager === "yarn" ? "add" : "install",
-      "-D",
-      packageName,
-    ].join(" ")}`;
-
     const prompt = ({ message, defaultResponse, stream }: PromptOptions) => {
       const readline = require("readline");
       const rl = readline.createInterface({
@@ -275,6 +268,10 @@ class WebpackCLI implements IWebpackCLI {
       });
     };
 
+    // yarn uses 'add' command, rest npm and pnpm both use 'install'
+    const commandArguments = [packageManager === "yarn" ? "add" : "install", "-D", packageName];
+    const commandToBeRun = `${packageManager} ${commandArguments.join(" ")}`;
+
     let needInstall;
 
     try {
@@ -294,10 +291,10 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     if (needInstall) {
-      const spawn = require("cross-spawn");
+      const { sync } = require("cross-spawn");
 
       try {
-        spawn(commandToBeRun, [], { stdio: "inherit", shell: true });
+        sync(packageManager, commandArguments, { stdio: "inherit" });
       } catch (error) {
         this.logger.error(error);
 
