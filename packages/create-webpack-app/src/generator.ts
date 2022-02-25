@@ -17,17 +17,17 @@ import handlers from "./handlers";
  */
 export default class Generator extends CustomGenerator {
   public answers: Record<string, unknown>;
-  public configurationPath: string;
+  public configurationPath!: string;
   public force: boolean;
   public generationPath: string;
-  public packageManager: string;
+  public packageManager!: string;
   public resolvedGenerationPath: string;
   public supportedTemplates: string[];
   public template: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public cli: any;
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public constructor(args: any, opts: any) {
     super(args, opts);
 
@@ -59,7 +59,7 @@ export default class Generator extends CustomGenerator {
       }
     }
 
-    this.template = await getTemplate.call(this);
+    this.template = await getTemplate(this);
 
     await handlers[this.template].questions(this, Question);
 
@@ -83,7 +83,7 @@ export default class Generator extends CustomGenerator {
   }
 
   public async installPlugins(): Promise<void> {
-    this.packageManager = await getInstaller.call(this);
+    this.packageManager = await getInstaller(this);
 
     const opts: {
       dev?: boolean;

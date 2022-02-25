@@ -10,7 +10,7 @@ export function List(
   name: string,
   message: string,
   choices: string[],
-  defaultChoice?: string,
+  defaultChoice: string,
   skip = false,
 ): CustomGeneratorStringPrompt {
   if (skip) {
@@ -24,7 +24,7 @@ export function Input(
   self: Generator,
   name: string,
   message: string,
-  defaultChoice?: string,
+  defaultChoice: string,
   skip = false,
 ): CustomGeneratorStringPrompt {
   if (skip) {

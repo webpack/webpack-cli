@@ -1,3 +1,4 @@
+import Generator from "./generator";
 import { List } from "./scaffold-utils";
 
 const regex = /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g;
@@ -8,7 +9,7 @@ const regex = /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+
  * @returns output string
  */
 export function toKebabCase(str: string): string {
-  return str.match(regex).join("-").toLowerCase();
+  return (str.match(regex) as string[]).join("-").toLowerCase();
 }
 
 /**
@@ -17,44 +18,43 @@ export function toKebabCase(str: string): string {
  * @returns {string} output string
  */
 export function toUpperCamelCase(str: string): string {
-  return str
-    .match(regex)
+  return (str.match(regex) as string[])
     .map((x) => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase())
     .join("");
 }
 
-export async function getInstaller(): Promise<string> {
-  const installers = this.cli.getAvailablePackageManagers();
+export async function getInstaller(self: Generator): Promise<string> {
+  const installers = self.cli.getAvailablePackageManagers();
 
   if (installers.length === 1) {
     return installers[0];
   }
 
   // Prompt for the package manager of choice
-  const defaultPackager = this.cli.getDefaultPackageManager();
+  const defaultPackager = self.cli.getDefaultPackageManager();
   const { packager } = await List(
-    this,
+    self,
     "packager",
     "Pick a package manager:",
     installers,
     defaultPackager,
-    this.force,
+    self.force,
   );
   return packager;
 }
 
-export async function getTemplate(): Promise<string> {
-  if (this.supportedTemplates.includes(this.template)) {
-    return this.template;
+export async function getTemplate(self: Generator): Promise<string> {
+  if (self.supportedTemplates.includes(self.template)) {
+    return self.template;
   }
 
-  this.cli.logger.warn(`⚠ ${this.template} is not a valid template, please select one from below`);
+  self.cli.logger.warn(`⚠ ${self.template} is not a valid template, please select one from below`);
 
   const { selectedTemplate } = await List(
-    this,
+    self,
     "selectedTemplate",
     "Select a valid template from below:",
-    this.supportedTemplates,
+    self.supportedTemplates,
     "default",
     false,
   );

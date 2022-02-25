@@ -57,7 +57,7 @@ export default function (): void {
   });
   const generatorName = "create-webpack-app-generator";
 
-  env.registerStub(Generator, generatorName);
+  env.registerStub(Generator as never, generatorName);
 
   env.run(generatorName, { cli: { colors, logger }, options }, () => {
     logger.success("Project has been initialised with webpack!");
