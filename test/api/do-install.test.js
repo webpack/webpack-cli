@@ -19,7 +19,7 @@ jest.mock("readline", () => {
 
 const spawnMock = jest.fn();
 
-jest.mock("cross-spawn", () => spawnMock);
+jest.mock("cross-spawn", () => ({ sync: spawnMock }));
 
 describe("doInstall", () => {
   let cli;
@@ -51,7 +51,8 @@ describe("doInstall", () => {
     );
 
     // install the package using npm
-    expect(spawnMock.mock.calls[0][0]).toEqual("npm install -D test-package");
+    expect(spawnMock.mock.calls[0][0]).toEqual("npm");
+    expect(spawnMock.mock.calls[0][1]).toEqual(["install", "-D", "test-package"]);
   });
 
   it("should prompt to install using yarn if yarn is package manager", async () => {
@@ -68,7 +69,8 @@ describe("doInstall", () => {
     );
 
     // install the package using yarn
-    expect(spawnMock.mock.calls[0][0]).toEqual("yarn add -D test-package");
+    expect(spawnMock.mock.calls[0][0]).toEqual("yarn");
+    expect(spawnMock.mock.calls[0][1]).toEqual(["add", "-D", "test-package"]);
   });
 
   it("should prompt to install using pnpm if pnpm is package manager", async () => {
@@ -85,7 +87,8 @@ describe("doInstall", () => {
     );
 
     // install the package using npm
-    expect(spawnMock.mock.calls[0][0]).toEqual("pnpm install -D test-package");
+    expect(spawnMock.mock.calls[0][0]).toEqual("pnpm");
+    expect(spawnMock.mock.calls[0][1]).toEqual(["install", "-D", "test-package"]);
   });
 
   it("should support pre message", async () => {
@@ -104,7 +107,8 @@ describe("doInstall", () => {
     );
 
     // install the package using npm
-    expect(spawnMock.mock.calls[0][0]).toEqual("npm install -D test-package");
+    expect(spawnMock.mock.calls[0][0]).toEqual("npm");
+    expect(spawnMock.mock.calls[0][1]).toEqual(["install", "-D", "test-package"]);
   });
 
   it("should prompt to install and install using 'y'", async () => {
@@ -121,7 +125,8 @@ describe("doInstall", () => {
     );
 
     // install the package using npm
-    expect(spawnMock.mock.calls[0][0]).toEqual("npm install -D test-package");
+    expect(spawnMock.mock.calls[0][0]).toEqual("npm");
+    expect(spawnMock.mock.calls[0][1]).toEqual(["install", "-D", "test-package"]);
   });
 
   it("should prompt to install and install using 'yes'", async () => {
@@ -138,7 +143,8 @@ describe("doInstall", () => {
     );
 
     // install the package using npm
-    expect(spawnMock.mock.calls[0][0]).toEqual("npm install -D test-package");
+    expect(spawnMock.mock.calls[0][0]).toEqual("npm");
+    expect(spawnMock.mock.calls[0][1]).toEqual(["install", "-D", "test-package"]);
   });
 
   it("should prompt to install and install using 'yEs'", async () => {
@@ -155,7 +161,8 @@ describe("doInstall", () => {
     );
 
     // install the package using npm
-    expect(spawnMock.mock.calls[0][0]).toEqual("npm install -D test-package");
+    expect(spawnMock.mock.calls[0][0]).toEqual("npm");
+    expect(spawnMock.mock.calls[0][1]).toEqual(["install", "-D", "test-package"]);
   });
 
   it("should not install if install is not confirmed", async () => {
