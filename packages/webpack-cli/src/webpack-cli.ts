@@ -62,8 +62,10 @@ const util = require("util");
 
 const { program, Option } = require("commander");
 
-const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
-const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
+const WEBPACK_PACKAGE_IS_CUSTOM = !!process.env.WEBPACK_PACKAGE;
+const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM ? process.env.WEBPACK_PACKAGE as string : "webpack";
+const WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM = !!process.env.WEBPACK_DEV_SERVER_PACKAGE;
+const WEBPACK_DEV_SERVER_PACKAGE = WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM ? process.env.WEBPACK_DEV_SERVER_PACKAGE as string : "webpack-dev-server";
 
 class WebpackCLI implements IWebpackCLI {
   colors: WebpackCLIColors;
@@ -421,12 +423,12 @@ class WebpackCLI implements IWebpackCLI {
         let skipInstallation = false;
 
         // Allow to use `./path/to/webpack.js` outside `node_modules`
-        if (dependency === WEBPACK_PACKAGE && fs.existsSync(WEBPACK_PACKAGE)) {
+        if (dependency === WEBPACK_PACKAGE && WEBPACK_PACKAGE_IS_CUSTOM) {
           skipInstallation = true;
         }
 
         // Allow to use `./path/to/webpack-dev-server.js` outside `node_modules`
-        if (dependency === WEBPACK_DEV_SERVER_PACKAGE && fs.existsSync(WEBPACK_PACKAGE)) {
+        if (dependency === WEBPACK_DEV_SERVER_PACKAGE && WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM) {
           skipInstallation = true;
         }
 
