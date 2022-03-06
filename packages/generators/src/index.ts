@@ -46,9 +46,15 @@ class GeneratorsCommand {
 
         env.registerStub(initGenerator, generatorName);
 
-        env.run(generatorName, { cli, options: { ...options, generationPath: cwd } }, () => {
-          cli.logger.success("Project has been initialised with webpack!");
-        });
+        env.run(generatorName, { cli, options: { ...options, generationPath: cwd } }).then(
+          () => {
+            cli.logger.success("Project has been initialised with webpack!");
+          },
+          (error) => {
+            cli.logger.error(`Failed to initialize the project.\n ${error}`);
+            process.exit(2);
+          },
+        );
       },
     );
 
@@ -79,9 +85,15 @@ class GeneratorsCommand {
 
         env.registerStub(loaderGenerator, generatorName);
 
-        env.run(generatorName, { cli, options: { ...options, generationPath: cwd } }, () => {
-          cli.logger.success("Loader template has been successfully scaffolded.");
-        });
+        env.run(generatorName, { cli, options: { ...options, generationPath: cwd } }).then(
+          () => {
+            cli.logger.success("Loader template has been successfully scaffolded.");
+          },
+          (error) => {
+            cli.logger.error(`Failed to initialize the loader template.\n ${error}`);
+            process.exit(2);
+          },
+        );
       },
     );
 
@@ -112,9 +124,15 @@ class GeneratorsCommand {
 
         env.registerStub(pluginGenerator, generatorName);
 
-        env.run(generatorName, { cli, options: { ...options, generationPath: cwd } }, () => {
-          cli.logger.success("Plugin template has been successfully scaffolded.");
-        });
+        env.run(generatorName, { cli, options: { ...options, generationPath: cwd } }).then(
+          () => {
+            cli.logger.success("Plugin template has been successfully scaffolded.");
+          },
+          (error) => {
+            cli.logger.error(`Failed to initialize the plugin template.\n ${error}`);
+            process.exit(2);
+          },
+        );
       },
     );
   }
