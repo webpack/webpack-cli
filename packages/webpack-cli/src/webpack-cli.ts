@@ -154,7 +154,7 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   getAvailablePackageManagers(): PackageManager[] {
-    const { sync } = require("execa");
+    const { sync } = require("cross-spawn");
     const installers: PackageManager[] = ["npm", "yarn", "pnpm"];
     const hasPackageManagerInstalled = (packageManager: PackageManager) => {
       try {
@@ -179,7 +179,7 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   getDefaultPackageManager(): PackageManager | undefined {
-    const { sync } = require("execa");
+    const { sync } = require("cross-spawn");
     const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), "package-lock.json"));
 
     if (hasLocalNpm) {
@@ -244,13 +244,6 @@ class WebpackCLI implements IWebpackCLI {
       options.preMessage();
     }
 
-    // yarn uses 'add' command, rest npm and pnpm both use 'install'
-    const commandToBeRun = `${packageManager} ${[
-      packageManager === "yarn" ? "add" : "install",
-      "-D",
-      packageName,
-    ].join(" ")}`;
-
     const prompt = ({ message, defaultResponse, stream }: PromptOptions) => {
       const readline = require("readline");
       const rl = readline.createInterface({
@@ -275,6 +268,10 @@ class WebpackCLI implements IWebpackCLI {
       });
     };
 
+    // yarn uses 'add' command, rest npm and pnpm both use 'install'
+    const commandArguments = [packageManager === "yarn" ? "add" : "install", "-D", packageName];
+    const commandToBeRun = `${packageManager} ${commandArguments.join(" ")}`;
+
     let needInstall;
 
     try {
@@ -294,10 +291,10 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     if (needInstall) {
-      const execa = require("execa");
+      const { sync } = require("cross-spawn");
 
       try {
-        await execa(commandToBeRun, [], { stdio: "inherit", shell: true });
+        sync(packageManager, commandArguments, { stdio: "inherit" });
       } catch (error) {
         this.logger.error(error);
 
