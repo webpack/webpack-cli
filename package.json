@@ -7,6 +7,10 @@
     "type": "git",
     "url": "https://github.com/webpack/webpack-cli.git"
   },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/webpack"
+  },
   "engines": {
     "node": ">=10.13.0"
   },
