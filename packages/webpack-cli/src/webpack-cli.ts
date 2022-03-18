@@ -1234,7 +1234,7 @@ class WebpackCLI implements IWebpackCLI {
         let name = error.message.match(/'(.+)'/) as string | null;
 
         if (name) {
-          name = name[1].substr(2);
+          name = name[1].slice(2);
 
           if (name.includes("=")) {
             name = name.split("=")[0];
