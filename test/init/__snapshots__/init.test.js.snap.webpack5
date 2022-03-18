@@ -772,8 +772,10 @@ exports[`init command should use mini-css-extract-plugin when selected 1`] = `
 Object {
   "description": "My webpack project",
   "devDependencies": Object {
+    "css-loader": "x.x.x",
     "sass": "x.x.x",
     "sass-loader": "x.x.x",
+    "style-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
   },
@@ -794,6 +796,8 @@ exports[`init command should use mini-css-extract-plugin when selected 2`] = `
 const path = require(\\"path\\");
 
 const isProduction = process.env.NODE_ENV == \\"production\\";
+
+const stylesHandler = "style-loader";
 
 const config = {
   entry: \\"./src/index.js\\",
@@ -980,8 +984,10 @@ exports[`init command should use sass in project when selected 1`] = `
 Object {
   "description": "My webpack project",
   "devDependencies": Object {
+    "css-loader": "x.x.x",
     "sass": "x.x.x",
     "sass-loader": "x.x.x",
+    "style-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
   },
@@ -1002,6 +1008,8 @@ exports[`init command should use sass in project when selected 2`] = `
 const path = require(\\"path\\");
 
 const isProduction = process.env.NODE_ENV == \\"production\\";
+
+const stylesHandler = "style-loader";
 
 const config = {
   entry: \\"./src/index.js\\",
@@ -1045,10 +1053,12 @@ Object {
   "description": "My webpack project",
   "devDependencies": Object {
     "autoprefixer": "x.x.x",
+    "css-loader": "x.x.x",
     "postcss": "x.x.x",
     "postcss-loader": "x.x.x",
     "sass": "x.x.x",
     "sass-loader": "x.x.x",
+    "style-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
   },
@@ -1069,6 +1079,8 @@ exports[`init command should use sass with postcss in project when selected 2`] 
 const path = require(\\"path\\");
 
 const isProduction = process.env.NODE_ENV == \\"production\\";
+
+const stylesHandler = "style-loader";
 
 const config = {
   entry: \\"./src/index.js\\",
