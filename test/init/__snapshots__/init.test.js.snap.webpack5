@@ -797,7 +797,7 @@ const path = require(\\"path\\");
 
 const isProduction = process.env.NODE_ENV == \\"production\\";
 
-const stylesHandler = "style-loader";
+const stylesHandler = \\"style-loader\\";
 
 const config = {
   entry: \\"./src/index.js\\",
@@ -1009,7 +1009,7 @@ const path = require(\\"path\\");
 
 const isProduction = process.env.NODE_ENV == \\"production\\";
 
-const stylesHandler = "style-loader";
+const stylesHandler = \\"style-loader\\";
 
 const config = {
   entry: \\"./src/index.js\\",
@@ -1080,7 +1080,7 @@ const path = require(\\"path\\");
 
 const isProduction = process.env.NODE_ENV == \\"production\\";
 
-const stylesHandler = "style-loader";
+const stylesHandler = \\"style-loader\\";
 
 const config = {
   entry: \\"./src/index.js\\",
