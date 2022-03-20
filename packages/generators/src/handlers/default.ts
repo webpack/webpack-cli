@@ -150,7 +150,7 @@ export async function questions(
       break;
   }
 
-  if (isCSS || cssType === "SASS") {
+  if (cssType !== "none") {
     self.dependencies.push("style-loader", "css-loader");
   }
 
