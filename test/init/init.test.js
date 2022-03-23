@@ -9,7 +9,7 @@ const {
   uniqueDirectoryForTest,
 } = require("../utils/test-utils");
 
-jest.setTimeout(560000);
+jest.setTimeout(3070000);
 
 const ENTER = "\x0D";
 const DOWN = "\x1B\x5B\x42";
