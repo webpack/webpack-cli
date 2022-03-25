@@ -66,6 +66,7 @@ Options:
   --experiments-build-http-frozen                                                    When set, anything that would lead to a modification of the lockfile or any resource content, will result in an error.
   --no-experiments-build-http-frozen                                                 Negative 'experiments-build-http-frozen' option.
   --experiments-build-http-lockfile-location <value>                                 Location of the lockfile.
+  --experiments-build-http-proxy <value>                                             Proxy configuration, which can be used to specify a proxy server to use for HTTP requests.
   --experiments-build-http-upgrade                                                   When set, resources of existing lockfile entries will be fetched and entries will be upgraded when resource content has changed.
   --no-experiments-build-http-upgrade                                                Negative 'experiments-build-http-upgrade' option.
   --experiments-cache-unaffected                                                     Enable additional in memory caching of modules that are unchanged and reference only unchanged modules.
@@ -179,6 +180,8 @@ Options:
   --no-module-parser-javascript-import-exports-presence                              Negative 'module-parser-javascript-import-exports-presence' option.
   --module-parser-javascript-import-meta                                             Enable/disable evaluating import.meta.
   --no-module-parser-javascript-import-meta                                          Negative 'module-parser-javascript-import-meta' option.
+  --module-parser-javascript-import-meta-context                                     Enable/disable evaluating import.meta.webpackContext.
+  --no-module-parser-javascript-import-meta-context                                  Negative 'module-parser-javascript-import-meta-context' option.
   --no-module-parser-javascript-node                                                 Negative 'module-parser-javascript-node' option.
   --module-parser-javascript-node-dirname [value]                                    Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-node-dirname                                         Negative 'module-parser-javascript-node-dirname' option.
@@ -243,6 +246,8 @@ Options:
   --no-module-parser-javascript-auto-import-exports-presence                         Negative 'module-parser-javascript-auto-import-exports-presence' option.
   --module-parser-javascript-auto-import-meta                                        Enable/disable evaluating import.meta.
   --no-module-parser-javascript-auto-import-meta                                     Negative 'module-parser-javascript-auto-import-meta' option.
+  --module-parser-javascript-auto-import-meta-context                                Enable/disable evaluating import.meta.webpackContext.
+  --no-module-parser-javascript-auto-import-meta-context                             Negative 'module-parser-javascript-auto-import-meta-context' option.
   --no-module-parser-javascript-auto-node                                            Negative 'module-parser-javascript-auto-node' option.
   --module-parser-javascript-auto-node-dirname [value]                               Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-auto-node-dirname                                    Negative 'module-parser-javascript-auto-node-dirname' option.
@@ -307,6 +312,8 @@ Options:
   --no-module-parser-javascript-dynamic-import-exports-presence                      Negative 'module-parser-javascript-dynamic-import-exports-presence' option.
   --module-parser-javascript-dynamic-import-meta                                     Enable/disable evaluating import.meta.
   --no-module-parser-javascript-dynamic-import-meta                                  Negative 'module-parser-javascript-dynamic-import-meta' option.
+  --module-parser-javascript-dynamic-import-meta-context                             Enable/disable evaluating import.meta.webpackContext.
+  --no-module-parser-javascript-dynamic-import-meta-context                          Negative 'module-parser-javascript-dynamic-import-meta-context' option.
   --no-module-parser-javascript-dynamic-node                                         Negative 'module-parser-javascript-dynamic-node' option.
   --module-parser-javascript-dynamic-node-dirname [value]                            Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-dynamic-node-dirname                                 Negative 'module-parser-javascript-dynamic-node-dirname' option.
@@ -371,6 +378,8 @@ Options:
   --no-module-parser-javascript-esm-import-exports-presence                          Negative 'module-parser-javascript-esm-import-exports-presence' option.
   --module-parser-javascript-esm-import-meta                                         Enable/disable evaluating import.meta.
   --no-module-parser-javascript-esm-import-meta                                      Negative 'module-parser-javascript-esm-import-meta' option.
+  --module-parser-javascript-esm-import-meta-context                                 Enable/disable evaluating import.meta.webpackContext.
+  --no-module-parser-javascript-esm-import-meta-context                              Negative 'module-parser-javascript-esm-import-meta-context' option.
   --no-module-parser-javascript-esm-node                                             Negative 'module-parser-javascript-esm-node' option.
   --module-parser-javascript-esm-node-dirname [value]                                Include a polyfill for the '__dirname' variable.
   --no-module-parser-javascript-esm-node-dirname                                     Negative 'module-parser-javascript-esm-node-dirname' option.
