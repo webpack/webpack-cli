@@ -17,7 +17,7 @@ const getPkgPath = (pkg, isSubPackage) => {
 
 const swapPkgName = (current, isSubPackage = false) => {
   // info -> .info and vice-versa
-  const next = current.startsWith(".") ? current.substr(1) : `.${current}`;
+  const next = current.startsWith(".") ? current.slice(1) : `.${current}`;
 
   console.log(`  swapping ${current} with ${next}`);
 
@@ -44,7 +44,7 @@ const runTest = (pkg, cliArgs = [], logMessage, isSubPackage = false) => {
     const timeout = setTimeout(() => {
       console.log("  timeout: killing process");
       proc.kill();
-    }, 30000);
+    }, 60000);
 
     const prompt = "Would you like to install";
     let hasLogMessage = false,

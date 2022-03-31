@@ -8,7 +8,7 @@ const syncMock = jest.fn(() => {
     stdout: "1.0.0",
   };
 });
-jest.setMock("execa", {
+jest.setMock("cross-spawn", {
   sync: syncMock,
 });
 
