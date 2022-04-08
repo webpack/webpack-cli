@@ -93,7 +93,7 @@ export class CLIPlugin {
     });
 
     compiler.hooks.invalid.tap(pluginName, (filename, changeTime) => {
-      const date = new Date(changeTime * 1000);
+      const date = new Date(changeTime);
 
       this.logger.log(`File '${filename}' was modified`);
       this.logger.log(`Changed time is ${date} (timestamp is ${changeTime})`);
