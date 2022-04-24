@@ -48,7 +48,6 @@ jobs:
         run: yarn lint:prettier --write
 
       - name: Commit updated docs
-        if: contains(github.event.pull_request.labels.*.name, 'update docs')
         uses: EndBug/add-and-commit@v9.0.0
         with:
           add: "*.md"
