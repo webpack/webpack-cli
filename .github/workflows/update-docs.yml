@@ -42,8 +42,8 @@ jobs:
       - name: Update docs
         run: yarn update:docs
 
-      - name: Fix lint
-        run: yarn fix
+      - name: Fix formatting
+        run: yarn lint:prettier --write
 
       - name: Commit updated docs
         if: contains(github.event.pull_request.labels.*.name, 'update docs')
