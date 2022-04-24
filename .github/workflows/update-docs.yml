@@ -1,4 +1,3 @@
-
 name: webpack-cli
 
 on:
@@ -10,9 +9,9 @@ env:
   HOME: /actions-runner/_work
 
 jobs:
-  update-deocs:
+  update-docs:
     name: Update docs
-    
+
     if: contains(github.event.pull_request.labels.*.name, 'update docs')
 
     runs-on: ${{ matrix.os }}
@@ -38,7 +37,7 @@ jobs:
 
       - name: Update docs
         run: yarn update:docs
-      
+
       - name: Commit updated docs
         if: contains(github.event.pull_request.labels.*.name, 'update docs')
         uses: EndBug/add-and-commit@v9.0.0
