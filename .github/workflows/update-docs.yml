@@ -20,7 +20,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [16.x]
-        webpack-version: [latest]
 
     steps:
       - name: Checkout Codebase
@@ -35,10 +34,16 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile --ignore-engines
+        run: yarn --frozen-lockfile
+
+      - name: Install latest webpack and webpack-dev-server version
+        run: yarn add -W webpack-dev-server@latest webpack@latest
 
       - name: Update docs
         run: yarn update:docs
+
+      - name: Fix lint
+        run: yarn fix
 
       - name: Commit updated docs
         if: contains(github.event.pull_request.labels.*.name, 'update docs')
