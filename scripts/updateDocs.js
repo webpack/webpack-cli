@@ -26,7 +26,7 @@ try {
   // serve options
   const { stdout: serveOptions } = sync(
     resolve(__dirname, "../packages/webpack-cli/bin/cli.js"),
-    ["serve", "--help"],
+    ["serve", "--help", "--no-color"],
     {
       cwd: __dirname,
       reject: false,
