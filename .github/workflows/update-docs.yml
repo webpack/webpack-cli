@@ -1,0 +1,47 @@
+
+name: webpack-cli
+
+on:
+  pull_request:
+    types: [labeled]
+
+env:
+  GITHUB_ACCESS_TOKEN: ${{ secrets.CI_BOT_TOKEN }}
+  HOME: /actions-runner/_work
+
+jobs:
+  update-deocs:
+    name: Update docs
+    
+    if: contains(github.event.pull_request.labels.*.name, 'update docs')
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [16.x]
+        webpack-version: [latest]
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v2
+
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --ignore-engines
+
+      - name: Update docs
+        run: yarn update:docs
+      
+      - name: Commit updated docs
+        if: contains(github.event.pull_request.labels.*.name, 'update docs')
+        uses: EndBug/add-and-commit@v9.0.0
+        with:
+          add: "*.md"
+          message: "docs: update options"
