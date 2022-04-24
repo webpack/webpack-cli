@@ -25,6 +25,8 @@ jobs:
     steps:
       - name: Checkout Codebase
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Using Node v${{ matrix.node-version }}
         uses: actions/setup-node@v2
@@ -44,3 +46,5 @@ jobs:
         with:
           add: "*.md"
           message: "docs: update options"
+          author_name: Nitin Kumar
+          author_email: snitin315@gmail.com
