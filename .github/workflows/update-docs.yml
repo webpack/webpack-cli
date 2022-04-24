@@ -1,4 +1,4 @@
-name: webpack-cli
+name: webpack-cli docs
 
 on:
   pull_request:
