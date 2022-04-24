@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [ubuntu-latest]
         node-version: [16.x]
 
     steps:
@@ -38,6 +38,12 @@ jobs:
 
       - name: Install latest webpack and webpack-dev-server version
         run: yarn add -W webpack-dev-server@latest webpack@latest
+
+      - name: Bootstrap
+        run: yarn lerna bootstrap
+
+      - name: Build
+        run: yarn build
 
       - name: Update docs
         run: yarn update:docs
