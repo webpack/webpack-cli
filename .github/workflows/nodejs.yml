@@ -50,6 +50,8 @@ jobs:
   build:
     name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, DevServer ${{ matrix.dev-server-version }}
 
+    # temporary
+    if: ${{ false }}
     runs-on: ${{ matrix.os }}
 
     strategy:

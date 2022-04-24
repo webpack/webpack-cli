@@ -42,6 +42,10 @@ jobs:
       - name: Update docs
         run: yarn update:docs
 
+      - name: git status
+        run: git status
+      - name: git diff
+        run: git diff
       - name: Fix formatting
         run: yarn lint:prettier --write
 
