@@ -1,10 +1,10 @@
 ```
-[1mUsage:[22m webpack [entries...] [options]
-[1mAlternative usage to run commands:[22m webpack [command] [options]
+Usage: webpack [entries...] [options]
+Alternative usage to run commands: webpack [command] [options]
 
 The build tool for modern web applications.
 
-[1mOptions:[22m
+Options:
   -c, --config <value...>                                                            Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>                                                           Name of the configuration to use.
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
@@ -963,13 +963,13 @@ The build tool for modern web applications.
   --watch-options-stdin                                                              Stop watching when stdin stream has ended.
   --no-watch-options-stdin                                                           Do not stop watching when stdin stream has ended.
 
-[1mGlobal options:[22m
+Global options:
   --color                                                                            Enable colors on console.
   --no-color                                                                         Disable colors on console.
   -v, --version                                                                      Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   -h, --help [verbose]                                                               Display help for commands and options.
 
-[1mCommands:[22m
+Commands:
   build|bundle|b [entries...] [options]                                              Run webpack (default command, can be omitted).
   configtest|t [config-path]                                                         Validate a webpack configuration.
   help|h [command] [option]                                                          Display help for commands and options.
@@ -984,7 +984,7 @@ The build tool for modern web applications.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
-[1mWebpack documentation:[22m https://webpack.js.org/.
-[1mCLI documentation:[22m https://webpack.js.org/api/cli/.
-[1mMade with ♥ by the webpack team[22m.
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team.
 ```
