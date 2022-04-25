@@ -27,18 +27,18 @@ Options:
   --allowed-hosts-reset                     Clear all items provided in 'allowedHosts' configuration. Allows to enumerate the hosts from which access to the dev server are allowed (useful when you are proxying dev server, by default is 'auto').
   --bonjour                                 Allows to broadcasts dev server via ZeroConf networking on start.
   --no-bonjour                              Disallows to broadcasts dev server via ZeroConf networking on start.
-  --no-client                               Negative 'client' option.
+  --no-client                               Disables client script.
   --client-logging <value>                  Allows to set log level in the browser.
   --client-overlay                          Enables a full-screen overlay in the browser when there are compiler errors or warnings.
-  --no-client-overlay                       Disables a full-screen overlay in the browser when there are compiler errors or warnings.
+  --no-client-overlay                       Disables the full-screen overlay in the browser when there are compiler errors or warnings.
   --client-overlay-errors                   Enables a full-screen overlay in the browser when there are compiler errors.
-  --no-client-overlay-errors                Negative 'client-overlay-errors' option.
+  --no-client-overlay-errors                Disables the full-screen overlay in the browser when there are compiler errors.
   --client-overlay-warnings                 Enables a full-screen overlay in the browser when there are compiler warnings.
-  --no-client-overlay-warnings              Negative 'client-overlay-warnings' option.
+  --no-client-overlay-warnings              Disables the full-screen overlay in the browser when there are compiler warnings.
   --client-progress                         Prints compilation progress in percentage in the browser.
   --no-client-progress                      Does not print compilation progress in percentage in the browser.
   --client-reconnect [value]                Tells dev-server the number of times it should try to reconnect the client.
-  --no-client-reconnect                     Tells dev-server to not to try to connect the client.
+  --no-client-reconnect                     Tells dev-server to not to try to reconnect the client.
   --client-web-socket-transport <value>     Allows to set custom web socket transport to communicate with dev server.
   --client-web-socket-url <value>           Allows to specify URL to web socket server (useful when you're proxying dev server and client script does not always know where to connect to).
   --client-web-socket-url-hostname <value>  Tells clients connected to devServer to use the provided hostname.
@@ -50,7 +50,7 @@ Options:
   --compress                                Enables gzip compression for everything served.
   --no-compress                             Disables gzip compression for everything served.
   --history-api-fallback                    Allows to proxy requests through a specified index page (by default 'index.html'), useful for Single Page Applications that utilise the HTML5 History API.
-  --no-history-api-fallback                 Negative 'history-api-fallback' option.
+  --no-history-api-fallback                 Disallows to proxy requests through a specified index page.
   --host <value>                            Allows to specify a hostname to use.
   --hot [value]                             Enables Hot Module Replacement.
   --no-hot                                  Disables Hot Module Replacement.
@@ -90,7 +90,7 @@ Options:
   --server-type <value>                     Allows to set server and options (by default 'http').
   --server-options-passphrase <value>       Passphrase for a pfx file.
   --server-options-request-cert             Request for an SSL certificate.
-  --no-server-options-request-cert          Negative 'server-options-request-cert' option.
+  --no-server-options-request-cert          Does not request for an SSL certificate.
   --server-options-ca <value...>            Path to an SSL CA certificate or content of an SSL CA certificate.
   --server-options-ca-reset                 Clear all items provided in 'server.options.ca' configuration. Path to an SSL CA certificate or content of an SSL CA certificate.
   --server-options-cacert <value...>        Path to an SSL CA certificate or content of an SSL CA certificate. Deprecated, use the `server.options.ca` option.
@@ -104,7 +104,7 @@ Options:
   --server-options-pfx <value...>           Path to an SSL pfx file or content of an SSL pfx file.
   --server-options-pfx-reset                Clear all items provided in 'server.options.pfx' configuration. Path to an SSL pfx file or content of an SSL pfx file.
   --static [value...]                       Allows to configure options for serving static files from directory (by default 'public' directory).
-  --no-static                               Negative 'static' option.
+  --no-static                               Disallows to configure options for serving static files from directory.
   --static-directory <value...>             Directory for static contents.
   --static-public-path <value...>           The static files will be available in the browser under this public path.
   --static-serve-index                      Tells dev server to use serveIndex middleware when enabled.
@@ -116,7 +116,7 @@ Options:
   --watch-files <value...>                  Allows to configure list of globs/directories/files to watch for file changes.
   --watch-files-reset                       Clear all items provided in 'watchFiles' configuration. Allows to configure list of globs/directories/files to watch for file changes.
   --web-socket-server <value>               Deprecated: please use '--web-socket-server-type' option. Allows to set web socket server and options (by default 'ws').
-  --no-web-socket-server                    Negative 'web-socket-server' option.
+  --no-web-socket-server                    Disallows to set web socket server and options.
   --web-socket-server-type <value>          Allows to set web socket server and options (by default 'ws').
 
 Global options:
