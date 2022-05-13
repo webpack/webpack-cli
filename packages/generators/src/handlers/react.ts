@@ -25,7 +25,7 @@ export async function questions(
   });
 
   // Add react dependencies
-  self.dependencies.push("react@18.1.0", "react-dom@18.1.0");
+  self.dependencies.push("react@18", "react-dom@18");
 
   // Add webpack-dev-server always
   self.dependencies.push("webpack-dev-server");
