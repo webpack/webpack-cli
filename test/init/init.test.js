@@ -22,6 +22,8 @@ const defaultTemplateFiles = [
   "webpack.config.js",
 ];
 
+const reactTemplateFiles = [...defaultTemplateFiles, "index.html"];
+
 // Helper to read from package.json in a given path
 const readFromPkgJSON = (path) => {
   const pkgJSONPath = join(path, "package.json");
@@ -632,5 +634,47 @@ describe("init command", () => {
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+  });
+
+  it("should generate react template with prompt answers", async () => {
+    const assetsPath = await uniqueDirectoryForTest();
+    const { stdout, stderr } = await runPromptWithAnswers(
+      assetsPath,
+      ["init"],
+      [ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+    );
+
+    expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stderr).toContain("webpack.config.js");
+
+    // Test files
+    reactTemplateFiles.forEach((file) => {
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+    });
+
+    // Check if the generated package.json file content matches the snapshot
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+
+    // Check if the generated webpack configuration matches the snapshot
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+  });
+
+  it("should generate react template with --force", async () => {
+    const assetsPath = await uniqueDirectoryForTest();
+    const { stdout, stderr } = await run(assetsPath, ["init", "--template=react", "--force"]);
+
+    expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stderr).toContain("webpack.config.js");
+
+    // Test files
+    reactTemplateFiles.forEach((file) => {
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+    });
+
+    // Check if the generated package.json file content matches the snapshot
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+
+    // Check if the generated webpack configuration matches the snapshot
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 });
