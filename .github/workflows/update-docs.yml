@@ -40,7 +40,7 @@ jobs:
         run: yarn add -W webpack-dev-server@latest webpack@latest
 
       - name: Bootstrap
-        run: yarn lerna bootstrap
+        run: yarn install
 
       - name: Build
         run: yarn build

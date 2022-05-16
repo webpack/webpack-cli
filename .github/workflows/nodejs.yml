@@ -39,7 +39,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Bootstrap
-        run: yarn lerna bootstrap
+        run: yarn install
 
       - name: Build
         run: yarn build

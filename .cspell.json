@@ -91,7 +91,9 @@
     "Zenitsu",
     "eslintcache",
     "wagoid",
-    "Nitin"
+    "Nitin",
+    "dbaeumer",
+    "esbenp"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [

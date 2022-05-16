@@ -22,6 +22,7 @@
     "./packages/*"
   ],
   "scripts": {
+    "prune:deps": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/*/lib/!(*.tpl)\" \"**/.yo-rc.json\"",
     "prebuild": "yarn clean",
     "prebuild:ci": "yarn clean && node ./scripts/setupBuild.js",
