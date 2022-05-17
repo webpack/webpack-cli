@@ -1,4 +1,4 @@
-import { type Compiler } from "webpack";
+import { MultiCompiler, type Compiler } from "webpack";
 // eslint-disable-next-line node/no-extraneous-import
 import { SyncHook } from "tapable";
 
@@ -16,7 +16,7 @@ type THandlers = {
   start: THandler;
 };
 
-const compilerHooksMap = new WeakMap<Compiler, Record<string, SyncHook<unknown>>>();
+const compilerHooksMap = new WeakMap<Compiler | MultiCompiler, Record<string, SyncHook<unknown>>>();
 
 class InteractivePlugin {
   public name = "webpack-interactive-cli";
@@ -24,7 +24,7 @@ class InteractivePlugin {
   private verbose: boolean;
   private handlers: THandlers;
 
-  static getCompilerHooks(compiler: Compiler) {
+  static getCompilerHooks(compiler: Compiler | MultiCompiler) {
     let hooks = compilerHooksMap.get(compiler);
     if (hooks === undefined) {
       hooks = {
@@ -51,8 +51,14 @@ class InteractivePlugin {
     };
   }
 
-  apply(compiler: Compiler) {
+  apply(compiler: Compiler | MultiCompiler) {
     this.hideCursor();
+
+    // Check for webpack version
+    if ("compilers" in compiler ? !compiler.compilers[0].webpack : !compiler.webpack) {
+      process.stderr.write("Interactive is not supported on webpack v4 and less.");
+      process.exit(1);
+    }
   }
 
   hideCursor() {
