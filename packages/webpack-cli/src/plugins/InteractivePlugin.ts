@@ -1,6 +1,7 @@
 import { MultiCompiler, type Compiler } from "webpack";
 // eslint-disable-next-line node/no-extraneous-import
 import { SyncHook } from "tapable";
+import { emitKeypressEvents } from "readline";
 
 type TKeys = {
   quit: string;
@@ -8,7 +9,7 @@ type TKeys = {
   start: string;
 };
 
-type THandler = (compilers: Compiler[]) => Promise<void>;
+type THandler = (compilers: Compiler[], compiler?: Compiler | MultiCompiler) => Promise<void>;
 
 type THandlers = {
   quit: THandler;
@@ -59,6 +60,30 @@ class InteractivePlugin {
       process.stderr.write("Interactive is not supported on webpack v4 and less.");
       process.exit(1);
     }
+
+    const hooks = InteractivePlugin.getCompilerHooks(compiler);
+    const compilers = "compilers" in compiler ? compiler.compilers : [compiler];
+    const events = Object.keys(this.keys) as (keyof TKeys)[];
+
+    const { stdin } = process;
+    stdin.setEncoding("utf-8");
+    stdin.setRawMode(true);
+    emitKeypressEvents(stdin);
+
+    stdin.on("keypress", (_, actionKey) => {
+      if (actionKey && actionKey.ctrl && ["c", "d"].includes(actionKey.name)) {
+        this.handlers["quit"](compilers, compiler);
+        return;
+      }
+
+      const event = events.filter((evt) => this.keys[evt] === actionKey.name)[0];
+
+      if (!event) {
+        return;
+      }
+
+      this.handlers[event](compilers, compiler);
+    });
   }
 
   hideCursor() {
