@@ -52,7 +52,14 @@ class InteractivePlugin {
   }
 
   apply(compiler: Compiler) {
-    return;
+    this.hideCursor();
+  }
+
+  hideCursor() {
+    process.stdout.write("\u001B[?25l");
+    process.on("beforeExit", () => {
+      process.stdout.write("\u001B[?25h");
+    });
   }
 
   async quit(compilers: Compiler[]) {
