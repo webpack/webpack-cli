@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import { MultiCompiler, type Compiler } from "webpack";
 // eslint-disable-next-line node/no-extraneous-import
 import { SyncHook } from "tapable";
@@ -69,7 +70,6 @@ class InteractivePlugin {
     stdin.setEncoding("utf-8");
     stdin.setRawMode(true);
     emitKeypressEvents(stdin);
-
     stdin.on("keypress", (_, actionKey) => {
       if (actionKey && actionKey.ctrl && ["c", "d"].includes(actionKey.name)) {
         this.handlers["quit"](compilers, compiler);
@@ -84,6 +84,28 @@ class InteractivePlugin {
 
       this.handlers[event](compilers, compiler);
     });
+
+    let beforeCompileCount = 0,
+      afterDoneCount = 0;
+
+    for (const child of compilers) {
+      child.hooks.beforeCompile.tap(this.name, () => {
+        if (beforeCompileCount === 0) {
+          this.clearScreen();
+          hooks.beforeInteractiveOutput.call(null);
+        }
+        beforeCompileCount = (beforeCompileCount + 1) % compilers.length;
+      });
+
+      child.hooks.afterDone.tap(this.name, () => {
+        if (afterDoneCount === compilers.length) {
+          process.nextTick(() => {
+            // Reprint Interactive Interface
+          });
+        }
+        afterDoneCount = (afterDoneCount + 1) % compilers.length;
+      });
+    }
   }
 
   hideCursor() {
@@ -91,6 +113,10 @@ class InteractivePlugin {
     process.on("beforeExit", () => {
       process.stdout.write("\u001B[?25h");
     });
+  }
+
+  clearScreen() {
+    process.stdout.write("\x1B[2J\x1B[3J\x1B[H");
   }
 
   async quit(compilers: Compiler[]) {
