@@ -93,7 +93,8 @@
     "wagoid",
     "Nitin",
     "dbaeumer",
-    "esbenp"
+    "esbenp",
+    "quickstart"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [

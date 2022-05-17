@@ -38,9 +38,6 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile
 
-      - name: Bootstrap
-        run: yarn install
-
       - name: Build
         run: yarn build
 
