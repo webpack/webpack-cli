@@ -125,7 +125,21 @@ class InteractivePlugin {
   }
 
   async quit(compilers: Compiler[]) {
-    return;
+    const allExits: Promise<void>[] = [];
+    for (const compiler of compilers) {
+      allExits.push(
+        new Promise<void>((resolve) => {
+          compiler.close(() => {
+            resolve();
+          });
+        }),
+      );
+    }
+
+    Promise.all(allExits).then(() => {
+      // TODO: remove interface
+      process.exit(0);
+    });
   }
 
   async stop(compilers: Compiler[]) {
