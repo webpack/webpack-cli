@@ -8,7 +8,7 @@
     "url": "https://github.com/webpack/webpack-cli.git"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=14.15.0"
   },
   "keywords": [
     "webpack",
