@@ -972,6 +972,21 @@ class WebpackCLI implements IWebpackCLI {
         description: "Stop watching when stdin stream has ended.",
         negatedDescription: "Do not stop watching when stdin stream has ended.",
       },
+
+      {
+        name: "interactive",
+        configs: [
+          {
+            type: "string",
+          },
+          {
+            type: "boolean",
+          },
+        ],
+        alias: "i",
+        multiple: false,
+        description: "Enable webpack interactive mode",
+      },
     ];
 
     // Extract all the flags being exported from core.
