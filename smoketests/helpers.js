@@ -98,7 +98,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
     const timeout = setTimeout(() => {
       console.log("  timeout: killing process");
       proc.kill();
-    }, 30000);
+    }, 60000);
 
     let hasPassed = false;
 
