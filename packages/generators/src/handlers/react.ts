@@ -22,10 +22,15 @@ export async function questions(
     langType: { required: true },
     devServer: { skip: true },
     htmlWebpackPlugin: { skip: true },
+    workboxWebpackPlugin: {},
+    cssType: {},
+    isCSS: {},
+    isPostCSS: {},
+    extractPlugin: {},
   });
 
   // Add react dependencies
-  self.dependencies.push("react", "react-dom");
+  self.dependencies.push("react@18", "react-dom@18");
 
   // Add webpack-dev-server always
   self.dependencies.push("webpack-dev-server");

@@ -467,6 +467,175 @@ Object {
 }
 `;
 
+exports[`init command should generate react template with --force 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "@babel/core": "x.x.x",
+    "@babel/preset-env": "x.x.x",
+    "@babel/preset-react": "x.x.x",
+    "babel-loader": "x.x.x",
+    "html-webpack-plugin": "x.x.x",
+    "react": "x.x.x",
+    "react-dom": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command should generate react template with --force 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+const path = require(\\"path\\");
+const HtmlWebpackPlugin = require(\\"html-webpack-plugin\\");
+const WorkboxWebpackPlugin = require(\\"workbox-webpack-plugin\\");
+
+const isProduction = process.env.NODE_ENV == \\"production\\";
+
+const config = {
+  entry: \\"./src/index.js\\",
+  output: {
+    path: path.resolve(__dirname, \\"dist\\"),
+  },
+  devServer: {
+    open: true,
+    host: \\"localhost\\",
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: \\"index.html\\",
+    }),
+
+    // Add your plugins here
+    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+  ],
+  module: {
+    rules: [
+      {
+        test: /\\\\.?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: \\"babel-loader\\",
+          options: {
+            presets: [\\"@babel/preset-env\\", \\"@babel/preset-react\\"],
+          },
+        },
+      },
+      {
+        test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        type: \\"asset\\",
+      },
+
+      // Add your rules for custom modules here
+      // Learn more about loaders from https://webpack.js.org/loaders/
+    ],
+  },
+  resolve: {
+    alias: {
+      \\"@\\": path.resolve(__dirname, \\"./src/\\"),
+    },
+  },
+};
+
+module.exports = () => {
+  if (isProduction) {
+    config.mode = \\"production\\";
+
+    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+  } else {
+    config.mode = \\"development\\";
+  }
+  return config;
+};
+"
+`;
+
+exports[`init command should generate react template with prompt answers 1`] = `
+Object {
+  "description": "My webpack project",
+  "devDependencies": Object {
+    "html-webpack-plugin": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": Object {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`init command should generate react template with prompt answers 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+const path = require(\\"path\\");
+const HtmlWebpackPlugin = require(\\"html-webpack-plugin\\");
+const WorkboxWebpackPlugin = require(\\"workbox-webpack-plugin\\");
+
+const isProduction = process.env.NODE_ENV == \\"production\\";
+
+const config = {
+  entry: \\"./src/index.js\\",
+  output: {
+    path: path.resolve(__dirname, \\"dist\\"),
+  },
+  devServer: {
+    open: true,
+    host: \\"localhost\\",
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: \\"index.html\\",
+    }),
+
+    // Add your plugins here
+    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+  ],
+  module: {
+    rules: [
+      {
+        test: /\\\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        type: \\"asset\\",
+      },
+
+      // Add your rules for custom modules here
+      // Learn more about loaders from https://webpack.js.org/loaders/
+    ],
+  },
+};
+
+module.exports = () => {
+  if (isProduction) {
+    config.mode = \\"production\\";
+
+    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+  } else {
+    config.mode = \\"development\\";
+  }
+  return config;
+};
+"
+`;
+
 exports[`init command should generate typescript project correctly 1`] = `
 Object {
   "description": "My webpack project",
