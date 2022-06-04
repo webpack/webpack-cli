@@ -147,7 +147,23 @@ class InteractivePlugin {
   }
 
   async start(compilers: Compiler[]) {
-    return;
+    const allWatching = compilers.reduce((result, childCompiler) => {
+      return result && !childCompiler.watching.suspended;
+    }, true);
+
+    if (allWatching) {
+      //TODO: spawn interface
+      return;
+    }
+
+    for (const childCompiler of compilers) {
+      if (childCompiler.watching && childCompiler.watching.suspended) {
+        childCompiler.watching.resume();
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        childCompiler.compile(() => {});
+      }
+    }
+    // TODO: spawn interface
   }
 }
 
