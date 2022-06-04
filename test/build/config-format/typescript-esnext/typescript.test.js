@@ -13,8 +13,10 @@ describe("webpack cli", () => {
       return;
     }
 
-    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"]);
-    expect(stderr).toBeFalsy();
+    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
+      nodeOptions: ["--loader=ts-node/esm"],
+    });
+    expect(stderr).not.toBeFalsy(); // Deprecation warning logs on stderr
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
     expect(existsSync(resolve(__dirname, "dist/foo.bundle.js"))).toBeTruthy();

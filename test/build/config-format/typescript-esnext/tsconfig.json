@@ -2,11 +2,5 @@
   "compilerOptions": {
     "module": "esnext",
     "allowSyntheticDefaultImports": true
-  },
-  // https://typestrong.org/ts-node/docs/imports/
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
   }
 }

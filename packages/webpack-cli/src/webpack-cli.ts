@@ -2448,7 +2448,7 @@ class WebpackCLI implements IWebpackCLI {
       // TODO webpack@4 doesn't support `{ children: [{ colors: true }, { colors: true }] }` for stats
       const statsForWebpack4 =
         this.webpack.Stats &&
-        (this.webpack.Stats as unknown as WebpackV4LegacyStats).presetToOptions;
+        (this.webpack.Stats as unknown as Partial<WebpackV4LegacyStats>).presetToOptions;
 
       if (this.isMultipleCompiler(compiler) && statsForWebpack4) {
         (statsOptions as StatsOptions).colors = (
