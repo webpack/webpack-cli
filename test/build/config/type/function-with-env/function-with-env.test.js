@@ -142,9 +142,19 @@ describe("function configuration", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toBeTruthy();
-    // Should generate the appropriate files
-    expect(existsSync(resolve(__dirname, "./dist/equal-at-the-end.js"))).toBeTruthy();
+    // should log foo: undefined
+    expect(stdout).toContain("foo: undefined");
+  });
+
+  it('Supports env variable with "=$NON_EXISTENT_VAR" at the end', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--env", `foo=$NON_EXISTENT_VAR`], {
+      shell: true,
+    });
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    // should log foo: undefined
+    expect(stdout).toContain("foo: undefined");
   });
 
   it("is able to understand multiple env flags", async () => {

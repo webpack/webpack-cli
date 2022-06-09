@@ -756,13 +756,13 @@ class WebpackCLI implements IWebpackCLI {
           value: string,
           previous: Record<string, BasicPrimitive | object> = {},
         ): Record<string, BasicPrimitive | object> => {
-          // for https://github.com/webpack/webpack-cli/issues/2642
-          if (value.endsWith("=")) {
-            value.concat('""');
-          }
-
           // This ensures we're only splitting by the first `=`
-          const [allKeys, val] = value.split(/=(.+)/, 2);
+          let [allKeys, val] = value.split(/=(.+)/, 2);
+          if (typeof val === "undefined" && allKeys.endsWith("=")) {
+            // remove '=' from key
+            allKeys = allKeys.slice(0, -1);
+            val = "undefined";
+          }
           const splitKeys = allKeys.split(/\.(?!$)/);
 
           let prevRef = previous;
@@ -777,8 +777,11 @@ class WebpackCLI implements IWebpackCLI {
             }
 
             if (index === splitKeys.length - 1) {
-              if (typeof val === "string") {
+              if (typeof val === "string" && val !== "undefined") {
                 prevRef[someKey] = val;
+              } else if (val === "undefined") {
+                // @ts-expect-error we explicitly want to set it to undefined
+                prevRef[someKey] = undefined;
               } else {
                 prevRef[someKey] = true;
               }
