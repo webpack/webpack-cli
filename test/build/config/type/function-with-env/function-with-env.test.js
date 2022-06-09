@@ -1,7 +1,7 @@
 "use strict";
 const { existsSync } = require("fs");
 const { resolve } = require("path");
-const { run, readFile } = require("../../../../utils/test-utils");
+const { run, readFile, isWindows } = require("../../../../utils/test-utils");
 
 describe("function configuration", () => {
   it("should throw when env is not supplied", async () => {
@@ -156,6 +156,20 @@ describe("function configuration", () => {
     // should log foo: undefined
     expect(stdout).toContain("foo: undefined");
   });
+
+  // macOS/Linux specific syntax
+  if (!isWindows) {
+    it('Supports env variable with "foo=undefined" at the end', async () => {
+      const { exitCode, stderr, stdout } = await run(__dirname, ["--env", `foo=undefined`]);
+
+      expect(exitCode).toBe(0);
+      expect(stderr).toBeFalsy();
+      // should log foo: 'undefined'
+      expect(stdout).toContain("foo: 'undefined'");
+      // Should generate the appropriate files
+      expect(existsSync(resolve(__dirname, "./dist/undefined-foo.js"))).toBeTruthy();
+    });
+  }
 
   it("is able to understand multiple env flags", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [

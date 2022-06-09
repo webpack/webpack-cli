@@ -26,6 +26,14 @@ module.exports = (env) => {
       },
     };
   }
+  if (env.foo === "undefined") {
+    return {
+      entry: "./a.js",
+      output: {
+        filename: "undefined-foo.js",
+      },
+    };
+  }
   return {
     entry: "./a.js",
     mode: "development",

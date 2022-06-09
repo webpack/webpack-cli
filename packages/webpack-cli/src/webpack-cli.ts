@@ -757,17 +757,21 @@ class WebpackCLI implements IWebpackCLI {
           previous: Record<string, BasicPrimitive | object> = {},
         ): Record<string, BasicPrimitive | object> => {
           // This ensures we're only splitting by the first `=`
-          let [allKeys, val] = value.split(/=(.+)/, 2);
-          if (typeof val === "undefined" && allKeys.endsWith("=")) {
-            // remove '=' from key
-            allKeys = allKeys.slice(0, -1);
-            val = "undefined";
-          }
+          const [allKeys, val] = value.split(/=(.+)/, 2);
           const splitKeys = allKeys.split(/\.(?!$)/);
 
           let prevRef = previous;
 
           splitKeys.forEach((someKey, index) => {
+            // https://github.com/webpack/webpack-cli/issues/3284
+            if (someKey.endsWith("=")) {
+              // remove '=' from key
+              someKey = someKey.slice(0, -1);
+              // @ts-expect-error we explicitly want to set it to undefined
+              prevRef[someKey] = undefined;
+              return;
+            }
+
             if (!prevRef[someKey]) {
               prevRef[someKey] = {};
             }
@@ -777,11 +781,8 @@ class WebpackCLI implements IWebpackCLI {
             }
 
             if (index === splitKeys.length - 1) {
-              if (typeof val === "string" && val !== "undefined") {
+              if (typeof val === "string") {
                 prevRef[someKey] = val;
-              } else if (val === "undefined") {
-                // @ts-expect-error we explicitly want to set it to undefined
-                prevRef[someKey] = undefined;
               } else {
                 prevRef[someKey] = true;
               }
