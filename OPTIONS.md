@@ -2,7 +2,6 @@
 Usage: webpack [entries...] [options]
 Alternative usage to run commands: webpack [command] [options]
 
-
 The build tool for modern web applications.
 
 Options:
@@ -164,6 +163,13 @@ Options:
   --no-module-parser-javascript-commonjs                                             Negative 'module-parser-javascript-commonjs' option.
   --module-parser-javascript-commonjs-magic-comments                                 Enable/disable parsing of magic comments in CommonJs syntax.
   --no-module-parser-javascript-commonjs-magic-comments                              Negative 'module-parser-javascript-commonjs-magic-comments' option.
+  --module-parser-javascript-create-require [value]                                  Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
+  --no-module-parser-javascript-create-require                                       Negative 'module-parser-javascript-create-require' option.
+  --module-parser-javascript-dynamic-import-mode <value>                             Specifies global mode for dynamic import.
+  --module-parser-javascript-dynamic-import-prefetch [value]                         Specifies global prefetch for dynamic import.
+  --no-module-parser-javascript-dynamic-import-prefetch                              Negative 'module-parser-javascript-dynamic-import-prefetch' option.
+  --module-parser-javascript-dynamic-import-preload [value]                          Specifies global preload for dynamic import.
+  --no-module-parser-javascript-dynamic-import-preload                               Negative 'module-parser-javascript-dynamic-import-preload' option.
   --module-parser-javascript-exports-presence <value>                                Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
   --no-module-parser-javascript-exports-presence                                     Negative 'module-parser-javascript-exports-presence' option.
   --module-parser-javascript-expr-context-critical                                   Enable warnings for full dynamic dependencies.
@@ -230,6 +236,13 @@ Options:
   --no-module-parser-javascript-auto-commonjs                                        Negative 'module-parser-javascript-auto-commonjs' option.
   --module-parser-javascript-auto-commonjs-magic-comments                            Enable/disable parsing of magic comments in CommonJs syntax.
   --no-module-parser-javascript-auto-commonjs-magic-comments                         Negative 'module-parser-javascript-auto-commonjs-magic-comments' option.
+  --module-parser-javascript-auto-create-require [value]                             Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
+  --no-module-parser-javascript-auto-create-require                                  Negative 'module-parser-javascript-auto-create-require' option.
+  --module-parser-javascript-auto-dynamic-import-mode <value>                        Specifies global mode for dynamic import.
+  --module-parser-javascript-auto-dynamic-import-prefetch [value]                    Specifies global prefetch for dynamic import.
+  --no-module-parser-javascript-auto-dynamic-import-prefetch                         Negative 'module-parser-javascript-auto-dynamic-import-prefetch' option.
+  --module-parser-javascript-auto-dynamic-import-preload [value]                     Specifies global preload for dynamic import.
+  --no-module-parser-javascript-auto-dynamic-import-preload                          Negative 'module-parser-javascript-auto-dynamic-import-preload' option.
   --module-parser-javascript-auto-exports-presence <value>                           Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
   --no-module-parser-javascript-auto-exports-presence                                Negative 'module-parser-javascript-auto-exports-presence' option.
   --module-parser-javascript-auto-expr-context-critical                              Enable warnings for full dynamic dependencies.
@@ -296,6 +309,13 @@ Options:
   --no-module-parser-javascript-dynamic-commonjs                                     Negative 'module-parser-javascript-dynamic-commonjs' option.
   --module-parser-javascript-dynamic-commonjs-magic-comments                         Enable/disable parsing of magic comments in CommonJs syntax.
   --no-module-parser-javascript-dynamic-commonjs-magic-comments                      Negative 'module-parser-javascript-dynamic-commonjs-magic-comments' option.
+  --module-parser-javascript-dynamic-create-require [value]                          Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
+  --no-module-parser-javascript-dynamic-create-require                               Negative 'module-parser-javascript-dynamic-create-require' option.
+  --module-parser-javascript-dynamic-dynamic-import-mode <value>                     Specifies global mode for dynamic import.
+  --module-parser-javascript-dynamic-dynamic-import-prefetch [value]                 Specifies global prefetch for dynamic import.
+  --no-module-parser-javascript-dynamic-dynamic-import-prefetch                      Negative 'module-parser-javascript-dynamic-dynamic-import-prefetch' option.
+  --module-parser-javascript-dynamic-dynamic-import-preload [value]                  Specifies global preload for dynamic import.
+  --no-module-parser-javascript-dynamic-dynamic-import-preload                       Negative 'module-parser-javascript-dynamic-dynamic-import-preload' option.
   --module-parser-javascript-dynamic-exports-presence <value>                        Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
   --no-module-parser-javascript-dynamic-exports-presence                             Negative 'module-parser-javascript-dynamic-exports-presence' option.
   --module-parser-javascript-dynamic-expr-context-critical                           Enable warnings for full dynamic dependencies.
@@ -362,6 +382,13 @@ Options:
   --no-module-parser-javascript-esm-commonjs                                         Negative 'module-parser-javascript-esm-commonjs' option.
   --module-parser-javascript-esm-commonjs-magic-comments                             Enable/disable parsing of magic comments in CommonJs syntax.
   --no-module-parser-javascript-esm-commonjs-magic-comments                          Negative 'module-parser-javascript-esm-commonjs-magic-comments' option.
+  --module-parser-javascript-esm-create-require [value]                              Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
+  --no-module-parser-javascript-esm-create-require                                   Negative 'module-parser-javascript-esm-create-require' option.
+  --module-parser-javascript-esm-dynamic-import-mode <value>                         Specifies global mode for dynamic import.
+  --module-parser-javascript-esm-dynamic-import-prefetch [value]                     Specifies global prefetch for dynamic import.
+  --no-module-parser-javascript-esm-dynamic-import-prefetch                          Negative 'module-parser-javascript-esm-dynamic-import-prefetch' option.
+  --module-parser-javascript-esm-dynamic-import-preload [value]                      Specifies global preload for dynamic import.
+  --no-module-parser-javascript-esm-dynamic-import-preload                           Negative 'module-parser-javascript-esm-dynamic-import-preload' option.
   --module-parser-javascript-esm-exports-presence <value>                            Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
   --no-module-parser-javascript-esm-exports-presence                                 Negative 'module-parser-javascript-esm-exports-presence' option.
   --module-parser-javascript-esm-expr-context-critical                               Enable warnings for full dynamic dependencies.
