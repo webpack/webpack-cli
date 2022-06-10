@@ -1,6 +1,7 @@
 const { DefinePlugin } = require("webpack");
 
 module.exports = (env) => {
+  console.log(env);
   if (env.isProd) {
     return {
       entry: "./a.js",
@@ -25,11 +26,11 @@ module.exports = (env) => {
       },
     };
   }
-  if (env["foo="]) {
+  if (env.foo === "undefined") {
     return {
       entry: "./a.js",
       output: {
-        filename: "equal-at-the-end.js",
+        filename: "undefined-foo.js",
       },
     };
   }
