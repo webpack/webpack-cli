@@ -5,8 +5,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/webpack/webpack-cli.git",
-    "directory": "packages/webpack-cli"
+    "url": "https://github.com/webpack/webpack-cli.git"
   },
   "funding": {
     "type": "opencollective",
