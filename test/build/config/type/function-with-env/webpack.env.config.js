@@ -1,4 +1,5 @@
 module.exports = (env) => {
+  console.log(env);
   const { environment, app, file } = env;
   const customName = file && file.name && file.name.is && file.name.is.this;
   const appTitle = app && app.title;
