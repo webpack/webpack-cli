@@ -62,7 +62,6 @@ describe("function configuration", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toBeTruthy();
     expect(stdout).toContain("environment: 'production'");
     // Should generate the appropriate files
     expect(existsSync(resolve(__dirname, "./dist/Atsumu.js"))).toBeTruthy();
