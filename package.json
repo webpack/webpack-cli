@@ -5,7 +5,14 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/webpack/webpack-cli.git"
+    "url": "https://github.com/webpack/webpack-cli.git",
+    "directory": "packages/webpack-cli"
+  },
+  "homepage": "https://github.com/webpack/webpack-cli",
+  "bugs": "https://github.com/webpack/webpack-cli/issues",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/webpack"
   },
   "engines": {
     "node": ">=10.13.0"
