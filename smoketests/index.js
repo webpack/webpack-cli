@@ -11,6 +11,7 @@ const tests = [
 
 (async () => {
   let isAllPassed = true;
+  const allResults = [];
 
   for await (const test of tests) {
     console.log(`\nRUN  ${test.name}`);
@@ -22,11 +23,20 @@ const tests = [
     }
 
     if (!isPass) {
-      console.log(`FAIL  ${test.name}`);
+      const result = `FAIL  ${test.name}`;
+      allResults.push(result);
+      console.log(result);
       isAllPassed = false;
     } else {
-      console.log(`PASS  ${test.name}`);
+      const result = `PASS  ${test.name}`;
+      allResults.push(result);
+      console.log(result);
     }
+  }
+
+  console.log(`\n\nSummary of smoketest run:`);
+  for (const result of allResults) {
+    console.log(result);
   }
 
   if (!isAllPassed) {
