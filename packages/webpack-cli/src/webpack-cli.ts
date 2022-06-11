@@ -1087,11 +1087,6 @@ class WebpackCLI implements IWebpackCLI {
         pkg: "@webpack-cli/generators",
       },
       {
-        name: "migrate",
-        alias: "m",
-        pkg: "@webpack-cli/migrate",
-      },
-      {
         name: "configtest [config-path]",
         alias: "t",
         pkg: "@webpack-cli/configtest",
