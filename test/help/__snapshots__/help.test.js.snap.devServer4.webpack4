@@ -128,7 +128,6 @@ Commands:
   info|i [options]                                 Outputs information about your system.
   init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
   loader|l [output-path] [options]                 Scaffold a loader.
-  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
   version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
@@ -184,7 +183,6 @@ Commands:
   info|i [options]                                 Outputs information about your system.
   init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
   loader|l [output-path] [options]                 Scaffold a loader.
-  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
   version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
@@ -240,7 +238,6 @@ Commands:
   info|i [options]                                 Outputs information about your system.
   init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
   loader|l [output-path] [options]                 Scaffold a loader.
-  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
   version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
@@ -1135,128 +1132,6 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
-exports[`help should show help information for 'm' command using command syntax: stderr 1`] = `""`;
-
-exports[`help should show help information for 'm' command using command syntax: stdout 1`] = `
-"Usage: webpack migrate|m <config-path> [new-config-path]
-
-Migrate a configuration to a new version.
-
-Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
-
-To see list of all supported commands and options run 'webpack --help=verbose'.
-
-Webpack documentation: https://webpack.js.org/.
-CLI documentation: https://webpack.js.org/api/cli/.
-Made with ♥ by the webpack team."
-`;
-
-exports[`help should show help information for 'm' command using the "--help" option: stderr 1`] = `""`;
-
-exports[`help should show help information for 'm' command using the "--help" option: stdout 1`] = `
-"Usage: webpack migrate|m <config-path> [new-config-path]
-
-Migrate a configuration to a new version.
-
-Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
-
-To see list of all supported commands and options run 'webpack --help=verbose'.
-
-Webpack documentation: https://webpack.js.org/.
-CLI documentation: https://webpack.js.org/api/cli/.
-Made with ♥ by the webpack team."
-`;
-
-exports[`help should show help information for 'migrate' and respect the "--color" flag using the "--help" option: stderr 1`] = `""`;
-
-exports[`help should show help information for 'migrate' and respect the "--color" flag using the "--help" option: stdout 1`] = `
-"Usage: webpack migrate|m <config-path> [new-config-path]
-
-Migrate a configuration to a new version.
-
-Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli'
-                        and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
-
-To see list of all supported commands and options run 'webpack --help=verbose'.
-
-Webpack documentation: https://webpack.js.org/.
-CLI documentation: https://webpack.js.org/api/cli/.
-Made with ♥ by the webpack team."
-`;
-
-exports[`help should show help information for 'migrate' and respect the "--no-color" flag using the "--help" option: stderr 1`] = `""`;
-
-exports[`help should show help information for 'migrate' and respect the "--no-color" flag using the "--help" option: stdout 1`] = `
-"Usage: webpack migrate|m <config-path> [new-config-path]
-
-Migrate a configuration to a new version.
-
-Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli'
-                        and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
-
-To see list of all supported commands and options run 'webpack --help=verbose'.
-
-Webpack documentation: https://webpack.js.org/.
-CLI documentation: https://webpack.js.org/api/cli/.
-Made with ♥ by the webpack team."
-`;
-
-exports[`help should show help information for 'migrate' command using command syntax: stderr 1`] = `""`;
-
-exports[`help should show help information for 'migrate' command using command syntax: stdout 1`] = `
-"Usage: webpack migrate|m <config-path> [new-config-path]
-
-Migrate a configuration to a new version.
-
-Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
-
-To see list of all supported commands and options run 'webpack --help=verbose'.
-
-Webpack documentation: https://webpack.js.org/.
-CLI documentation: https://webpack.js.org/api/cli/.
-Made with ♥ by the webpack team."
-`;
-
-exports[`help should show help information for 'migrate' command using the "--help" option: stderr 1`] = `""`;
-
-exports[`help should show help information for 'migrate' command using the "--help" option: stdout 1`] = `
-"Usage: webpack migrate|m <config-path> [new-config-path]
-
-Migrate a configuration to a new version.
-
-Global options:
-  --color               Enable colors on console.
-  --no-color            Disable colors on console.
-  -v, --version         Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
-  -h, --help [verbose]  Display help for commands and options.
-
-To see list of all supported commands and options run 'webpack --help=verbose'.
-
-Webpack documentation: https://webpack.js.org/.
-CLI documentation: https://webpack.js.org/api/cli/.
-Made with ♥ by the webpack team."
-`;
-
 exports[`help should show help information for 'n' command using command syntax: stderr 1`] = `""`;
 
 exports[`help should show help information for 'n' command using command syntax: stdout 1`] = `
@@ -1880,7 +1755,6 @@ Commands:
   info|i [options]                                 Outputs information about your system.
   init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
   loader|l [output-path] [options]                 Scaffold a loader.
-  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
   version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
@@ -1936,7 +1810,6 @@ Commands:
   info|i [options]                                 Outputs information about your system.
   init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
   loader|l [output-path] [options]                 Scaffold a loader.
-  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
   version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
@@ -2164,7 +2037,6 @@ Commands:
   info|i [options]                                 Outputs information about your system.
   init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
   loader|l [output-path] [options]                 Scaffold a loader.
-  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
   version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
@@ -2218,7 +2090,6 @@ Commands:
   info|i [options]                                 Outputs information about your system.
   init|create|new|c|n [generation-path] [options]  Initialize a new webpack project.
   loader|l [output-path] [options]                 Scaffold a loader.
-  migrate|m <config-path> [new-config-path]        Migrate a configuration to a new version.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
   version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.

@@ -54,9 +54,6 @@
     "@webpack-cli/generators": {
       "optional": true
     },
-    "@webpack-cli/migrate": {
-      "optional": true
-    },
     "webpack-bundle-analyzer": {
       "optional": true
     },
