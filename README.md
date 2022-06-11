@@ -108,7 +108,6 @@ If you like **webpack**, please consider donating to our [Open Collective](https
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
 [codecov-badge]: https://codecov.io/gh/webpack/webpack-cli/branch/master/graph/badge.svg?token=6B6NxtsZc3
 [codecov-url]: https://codecov.io/gh/webpack/webpack-cli
-[deps]: https://img.shields.io/david/webpack/webpack.svg
 [size]: https://packagephobia.com/badge?p=webpack-cli
 [size-url]: https://packagephobia.com/result?p=webpack-cli
 [chat]: https://badges.gitter.im/webpack/webpack.svg
