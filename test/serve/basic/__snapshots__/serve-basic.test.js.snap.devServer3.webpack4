@@ -47,29 +47,19 @@ exports[`basic serve usage should work and log warning on the \`watch option in 
 
 exports[`basic serve usage should work in multi compiler mode: stderr 1`] = `""`;
 
-exports[`basic serve usage should work with "--hot" and "--port" options: stderr 1`] = `""`;
-
 exports[`basic serve usage should work with entries syntax: stderr 1`] = `""`;
 
 exports[`basic serve usage should work with the "--client-log-level" option: stderr 1`] = `""`;
 
-exports[`basic serve usage should work with the "--config" and "--env" options and expose dev server options: stderr 1`] = `""`;
-
 exports[`basic serve usage should work with the "--config" and "--env" options: stderr 1`] = `""`;
 
 exports[`basic serve usage should work with the "--config" option: stderr 1`] = `""`;
-
-exports[`basic serve usage should work with the "--hot" option using the "only" value: stderr 1`] = `""`;
-
-exports[`basic serve usage should work with the "--hot" option: stderr 1`] = `""`;
 
 exports[`basic serve usage should work with the "--mode" option #2: stderr 1`] = `""`;
 
 exports[`basic serve usage should work with the "--mode" option #3: stderr 1`] = `""`;
 
 exports[`basic serve usage should work with the "--mode" option: stderr 1`] = `""`;
-
-exports[`basic serve usage should work with the "--no-hot" option: stderr 1`] = `""`;
 
 exports[`basic serve usage should work with the "--open" option: stderr 1`] = `""`;
 
