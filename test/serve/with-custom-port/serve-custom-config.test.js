@@ -6,6 +6,7 @@ const getPort = require("get-port");
 const { runWatch, normalizeStderr, isDevServer4 } = require("../../utils/test-utils");
 
 const testPath = path.resolve(__dirname);
+const devServer4Test = isDevServer4 ? it : it.skip;
 
 describe("serve with devServer in config", () => {
   let port;
@@ -44,32 +45,22 @@ describe("serve with devServer in config", () => {
     expect(stdout).toContain("main.js");
   });
 
-  it("Passing hot flag works alongside other server config", async () => {
+  devServer4Test("Passing hot flag works alongside other server config", async () => {
     const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--hot"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-      expect(stdout).toContain(`http://0.0.0.0:${port}`);
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
-  it("works fine when no-hot flag is passed alongside other server config", async () => {
-    const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--no-hot"]);
+  devServer4Test(
+    "works fine when no-hot flag is passed alongside other server config",
+    async () => {
+      const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--no-hot"]);
 
-    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).not.toContain("HotModuleReplacementPlugin");
-
-    if (!isDevServer4) {
-      // Runs at correct host and port
-      expect(stdout).toContain(`http://0.0.0.0:${port}`);
-    }
-
-    expect(stdout).toContain("main.js");
-  });
+      expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+      expect(stdout).not.toContain("HotModuleReplacementPlugin");
+      expect(stdout).toContain("main.js");
+    },
+  );
 });
