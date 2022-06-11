@@ -131,14 +131,6 @@ describe("single version flag", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  it("outputs version with migrate", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["migrate", "--version"]);
-
-    expect(exitCode).toBe(0);
-    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-  });
-
   it("outputs version with the alias c for init", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["c", "--version"]);
 
