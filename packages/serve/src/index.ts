@@ -98,8 +98,8 @@ class ServeCommand {
 
         for (const optionName in options) {
           const kebabedOption = cli.toKebabCase(optionName);
-           
           const isBuiltInOption = builtInOptions.find(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (builtInOption: any) => builtInOption.name === kebabedOption,
           );
 
