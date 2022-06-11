@@ -78,15 +78,6 @@ webpack-cli: x.x.x
 webpack-dev-server x.x.x"
 `;
 
-exports[`single version flag outputs version with migrate: stderr 1`] = `""`;
-
-exports[`single version flag outputs version with migrate: stdout 1`] = `
-"@webpack-cli/migrate x.x.x
-webpack: x.x.x
-webpack-cli: x.x.x
-webpack-dev-server x.x.x"
-`;
-
 exports[`single version flag outputs version with plugin: stderr 1`] = `""`;
 
 exports[`single version flag outputs version with plugin: stdout 1`] = `
