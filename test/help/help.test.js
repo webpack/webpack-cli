@@ -97,10 +97,6 @@ describe("help", () => {
       alias: "l",
     },
     {
-      name: "migrate",
-      alias: "m",
-    },
-    {
       name: "plugin",
       alias: "p",
     },
