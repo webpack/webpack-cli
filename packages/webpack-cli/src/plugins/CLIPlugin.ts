@@ -9,17 +9,6 @@ export class CLIPlugin {
     this.options = options;
   }
 
-  setupHotPlugin(compiler: Compiler) {
-    const { HotModuleReplacementPlugin } = compiler.webpack || require("webpack");
-    const hotModuleReplacementPlugin = Boolean(
-      compiler.options.plugins.find((plugin) => plugin instanceof HotModuleReplacementPlugin),
-    );
-
-    if (!hotModuleReplacementPlugin) {
-      new HotModuleReplacementPlugin().apply(compiler);
-    }
-  }
-
   setupPrefetchPlugin(compiler: Compiler) {
     const { PrefetchPlugin } = compiler.webpack || require("webpack");
 
@@ -120,10 +109,6 @@ export class CLIPlugin {
 
     if (this.options.progress) {
       this.setupProgressPlugin(compiler);
-    }
-
-    if (this.options.hot) {
-      this.setupHotPlugin(compiler);
     }
 
     if (this.options.prefetch) {
