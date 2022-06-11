@@ -8,6 +8,11 @@
     "url": "https://github.com/webpack/webpack-cli.git"
   },
   "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli",
+  "bugs": "https://github.com/webpack/webpack-cli/issues",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/webpack"
+  },
   "bin": {
     "webpack-cli": "./bin/cli.js"
   },
