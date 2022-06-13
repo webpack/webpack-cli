@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.6.1...@webpack-cli/serve@1.7.0) (2022-06-13)
+
+### Features
+
+- added types ([8ec1375](https://github.com/webpack/webpack-cli/commit/8ec1375092a6f9676e82fa4231dd88b1016c2302))
+
 ## [1.6.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@1.6.0...@webpack-cli/serve@1.6.1) (2022-01-24)
 
 **Note:** Version bump only for package @webpack-cli/serve

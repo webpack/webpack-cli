@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.4.2...@webpack-cli/generators@2.5.0) (2022-06-13)
+
+### Bug Fixes
+
+- consider using createroot instead of render ([#3240](https://github.com/webpack/webpack-cli/issues/3240)) ([86bfe8a](https://github.com/webpack/webpack-cli/commit/86bfe8af92d731f02bbeac375bfe8249c0d3f4d5))
+- correct react template generation ([#3245](https://github.com/webpack/webpack-cli/issues/3245)) ([8531b75](https://github.com/webpack/webpack-cli/commit/8531b75d77e1f7f22f185c4efd82e0351ffce04a))
+
+### Features
+
+- added types ([8ec1375](https://github.com/webpack/webpack-cli/commit/8ec1375092a6f9676e82fa4231dd88b1016c2302))
+- react template ([#2862](https://github.com/webpack/webpack-cli/issues/2862)) ([8118405](https://github.com/webpack/webpack-cli/commit/81184055ad8a0dc83d085b7c60a59be9c0046f3c))
+
 ## [2.4.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.4.1...@webpack-cli/generators@2.4.2) (2022-01-24)
 
 **Note:** Version bump only for package @webpack-cli/generators

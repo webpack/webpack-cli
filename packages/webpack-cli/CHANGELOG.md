@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.9.2...webpack-cli@4.10.0) (2022-06-13)
+
+### Bug Fixes
+
+- changeTime is already in milliseconds ([#3198](https://github.com/webpack/webpack-cli/issues/3198)) ([d390d32](https://github.com/webpack/webpack-cli/commit/d390d32fe0f2491c5cc3a8dfae3ccc3962a5911b))
+- improve parsing of `--env` flag ([#3286](https://github.com/webpack/webpack-cli/issues/3286)) ([402c0fe](https://github.com/webpack/webpack-cli/commit/402c0fe9d4c09e75b9abec3bf44df430f4b62dff))
+
+### Features
+
+- added types ([8ec1375](https://github.com/webpack/webpack-cli/commit/8ec1375092a6f9676e82fa4231dd88b1016c2302))
+
 ## [4.9.2](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.9.1...webpack-cli@4.9.2) (2022-01-24)
 
 ### Bug Fixes
