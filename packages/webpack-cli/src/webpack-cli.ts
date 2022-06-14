@@ -832,15 +832,6 @@ class WebpackCLI implements IWebpackCLI {
         ],
         description: "Print compilation progress during build.",
       },
-      {
-        name: "prefetch",
-        configs: [
-          {
-            type: "string",
-          },
-        ],
-        description: "Prefetch this request.",
-      },
 
       // Output options
       {
@@ -2301,7 +2292,6 @@ class WebpackCLI implements IWebpackCLI {
           configPath: config.path.get(item),
           helpfulOutput: !options.json,
           progress: options.progress,
-          prefetch: options.prefetch,
           analyze: options.analyze,
         }),
       );
