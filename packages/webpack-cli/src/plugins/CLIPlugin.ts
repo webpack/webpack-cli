@@ -9,12 +9,6 @@ export class CLIPlugin {
     this.options = options;
   }
 
-  setupPrefetchPlugin(compiler: Compiler) {
-    const { PrefetchPlugin } = compiler.webpack || require("webpack");
-
-    new PrefetchPlugin(null, this.options.prefetch).apply(compiler);
-  }
-
   async setupBundleAnalyzerPlugin(compiler: Compiler) {
     // eslint-disable-next-line node/no-extraneous-require,@typescript-eslint/no-var-requires
     const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
@@ -109,10 +103,6 @@ export class CLIPlugin {
 
     if (this.options.progress) {
       this.setupProgressPlugin(compiler);
-    }
-
-    if (this.options.prefetch) {
-      this.setupPrefetchPlugin(compiler);
     }
 
     if (this.options.analyze) {
