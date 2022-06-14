@@ -14,7 +14,6 @@ Options:
   --no-hot                                                                           Disables Hot Module Replacement.
   --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                                                 Print compilation progress during build.
-  --prefetch <value>                                                                 Prefetch this request.
   -j, --json [value]                                                                 Prints result as JSON or store it in a file.
   --fail-on-warnings                                                                 Stop webpack-cli process with non-zero exit code on warnings from webpack
   --no-amd                                                                           Negative 'amd' option.
