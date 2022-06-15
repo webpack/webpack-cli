@@ -1,12 +1,6 @@
 {
-  "include": [
-      "packages/**"
-  ],
-  "reporter": [
-      "html",
-      "json",
-      "cobertura"
-  ],
+  "include": ["packages/**"],
+  "reporter": ["html", "json", "cobertura"],
   "source-map": true,
   "exclude-after-remap": false
 }
