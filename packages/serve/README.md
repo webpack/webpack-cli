@@ -2,7 +2,9 @@
 
 [![NPM Downloads][downloads]][downloads-url]
 
-**This package is used by webpack-cli under-the-hood and is not intended for installation as of v0.2.0**
+> **Note**
+>
+> This package is used by webpack-cli under-the-hood and is not intended for installation
 
 ## Description
 

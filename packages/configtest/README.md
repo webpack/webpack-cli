@@ -2,6 +2,10 @@
 
 [![NPM Downloads][downloads]][downloads-url]
 
+> **Note**
+>
+> This package is used by webpack-cli under-the-hood and is not intended for installation
+
 ## Description
 
 This package validates a webpack configuration.
