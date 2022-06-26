@@ -217,16 +217,6 @@ rules:
     actions:
       label: "PR: unreviewed"
 
-  # add small label to small pull requests
-  - filters:
-      open: true
-      pull_request:
-        additions: "<= 10"
-        deletions: "<= 10"
-        changed_files: "<= 2"
-    actions:
-      label: "PR: small"
-
   # add non-master label to pull request to other branch
   - filters:
       open: true
