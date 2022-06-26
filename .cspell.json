@@ -92,7 +92,9 @@
     "eslintcache",
     "wagoid",
     "Nitin",
-    "smoketest"
+    "smoketest",
+    "dbaeumer",
+    "esbenp"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [
