@@ -20,7 +20,7 @@ module.exports = {
   moduleFileExtensions: ["ts", "js", "json"],
   snapshotResolver: "<rootDir>/scripts/snapshotResolver.js",
   watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname"],
-  setupFilesAfterEnv: ["<rootDir>/setupTest.js"],
+  setupFilesAfterEnv: ["<rootDir>/scripts/setupTest.js"],
   globalTeardown: "<rootDir>/scripts/cleanupTest.js",
   globalSetup: "<rootDir>/scripts/globalSetup.js",
   modulePathIgnorePatterns: [
