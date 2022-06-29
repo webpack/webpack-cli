@@ -984,7 +984,6 @@ class WebpackCLI implements IWebpackCLI {
             values: [false],
           },
         ],
-        negative: true,
         description: "Stop webpack-cli process with non-zero exit code on warnings from webpack",
       },
     ];
@@ -2427,7 +2426,7 @@ class WebpackCLI implements IWebpackCLI {
         process.exit(2);
       }
 
-      if (stats && stats.hasErrors()) {
+      if (stats && (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings()))) {
         process.exitCode = 1;
       }
 
@@ -2488,10 +2487,6 @@ class WebpackCLI implements IWebpackCLI {
         if (printedStats) {
           this.logger.raw(printedStats);
         }
-      }
-
-      if (options.failOnWarnings && (stats.hasErrors() || stats.hasWarnings())) {
-        process.exit(1);
       }
     };
 
