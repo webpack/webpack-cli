@@ -4323,9 +4323,9 @@ cssstyle@^2.3.0:
     cssom "~0.3.6"
 
 cz-customizable@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/cz-customizable/-/cz-customizable-6.3.0.tgz#1b24e5b84e1fccaa18ad837612b233b8c51d7882"
-  integrity sha512-MWGmWa45v4Ds3NJNNwQc3GCFdjtH3k4ypDWoWkwultMVLf7aOHR9VaXGYGZHLOQS4sMfbkBSjNUYoXCSmLuRSA==
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/cz-customizable/-/cz-customizable-6.7.0.tgz#68c8ba70dd5fb9d445d20392848035b8be1204a3"
+  integrity sha512-Pu81S0gBm8MLsRN3bi1WHIQQo4IubeGEPY8fs/niZwco9RQ5GQXLhdaUOL+mdHC8kOVxfBm0r9Ry9DkQb8uuvw==
   dependencies:
     editor "1.0.0"
     find-config "^1.0.0"
