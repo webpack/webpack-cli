@@ -976,6 +976,16 @@ class WebpackCLI implements IWebpackCLI {
         description: "Stop watching when stdin stream has ended.",
         negatedDescription: "Do not stop watching when stdin stream has ended.",
       },
+      {
+        name: "fail-on-warnings",
+        configs: [
+          {
+            type: "boolean",
+          },
+        ],
+        negative: false,
+        description: "Stop webpack-cli process on non-zero exit code",
+      },
     ];
 
     // Extract all the flags being exported from core.
@@ -2476,6 +2486,10 @@ class WebpackCLI implements IWebpackCLI {
         // Avoid extra empty line when `stats: 'none'`
         if (printedStats) {
           this.logger.raw(printedStats);
+        }
+
+        if (options.failOnWarnings && stats.hasErrors()) {
+          process.exit(1);
         }
       }
     };
