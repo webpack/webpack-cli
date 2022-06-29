@@ -2487,10 +2487,10 @@ class WebpackCLI implements IWebpackCLI {
         if (printedStats) {
           this.logger.raw(printedStats);
         }
+      }
 
-        if (options.failOnWarnings && stats.hasErrors()) {
-          process.exit(1);
-        }
+      if (options.failOnWarnings && stats.hasErrors()) {
+        process.exit(1);
       }
     };
 
