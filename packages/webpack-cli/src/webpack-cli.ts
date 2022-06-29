@@ -981,7 +981,7 @@ class WebpackCLI implements IWebpackCLI {
         configs: [
           {
             type: "enum",
-            values: [false],
+            values: [true],
           },
         ],
         description: "Stop webpack-cli process with non-zero exit code on warnings from webpack",
