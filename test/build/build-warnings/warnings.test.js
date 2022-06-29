@@ -14,6 +14,15 @@ describe("warnings", () => {
     expect(stdout).toMatch(/Error: Can't resolve/);
   });
 
+  it("should exit with non-zero code on --fail-on-warnings flag", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--fail-on-warnings"]);
+
+    expect(exitCode).toBe(1);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toMatch(/WARNING/);
+    expect(stdout).toMatch(/Error: Can't resolve/);
+  });
+
   it('should output JSON with the "json" flag', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--json"]);
 
