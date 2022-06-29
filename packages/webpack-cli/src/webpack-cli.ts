@@ -980,10 +980,11 @@ class WebpackCLI implements IWebpackCLI {
         name: "fail-on-warnings",
         configs: [
           {
-            type: "boolean",
+            type: "enum",
+            values: [false],
           },
         ],
-        negative: false,
+        negative: true,
         description: "Stop webpack-cli process with non-zero exit code on warnings from webpack",
       },
     ];
