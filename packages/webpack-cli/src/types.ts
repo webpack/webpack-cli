@@ -210,6 +210,7 @@ interface WebpackRunOptions extends WebpackOptionsNormalized {
   json?: boolean;
   argv?: Argv;
   env: Env;
+  failOnWarnings?: boolean;
 }
 
 /**
