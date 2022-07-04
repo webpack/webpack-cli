@@ -11,7 +11,10 @@ jest.mock(path.join(utilsDirectory.generators, "scaffold-utils"), () => ({
   List: jest.fn(),
 }));
 
-const { getInstaller, getTemplate } = require(path.join(utilsDirectory.generators, "helpers"));
+const { getInstaller, getTemplate, toKebabCase, toUpperCamelCase } = require(path.join(
+  utilsDirectory.generators,
+  "helpers",
+));
 const { List } = require(path.join(utilsDirectory.generators, "scaffold-utils"));
 
 describe("helpers", () => {
@@ -33,6 +36,18 @@ describe("helpers", () => {
     jest.clearAllMocks();
 
     getDefaultPackageManagerSpy.mockRestore();
+  });
+
+  it("toKebabCase() returns kebab case", () => {
+    const kebabValue = toKebabCase("HtmlMinimizerPlugin");
+
+    expect(kebabValue).toBe("html-minimizer-plugin");
+  });
+
+  it("toUpperCamelCase() returns camel case strings", () => {
+    const camelCaseString = toUpperCamelCase("html-minimizer-webpack-plugin");
+
+    expect(camelCaseString).toBe("HtmlMinimizerWebpackPlugin");
   });
 
   it("getInstaller() returns the available installer", async () => {
