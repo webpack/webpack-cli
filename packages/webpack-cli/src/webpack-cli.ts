@@ -69,6 +69,7 @@ class WebpackCLI implements IWebpackCLI {
   colors: WebpackCLIColors;
   logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;
+  isConfigRegistered: boolean | undefined;
   builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
   webpack!: typeof webpack;
   program: WebpackCLICommand;
@@ -1310,6 +1311,14 @@ class WebpackCLI implements IWebpackCLI {
       cli.colors = cli.createColors(color);
     });
 
+    this.program.option("--config-registered", "Disable interpret a config file.");
+    this.program.on("option:config-registered", function () {
+      // @ts-expect-error shadowing 'this' is intended
+      const { configRegistered } = this.opts();
+
+      cli.isConfigRegistered = configRegistered;
+    });
+
     // Make `-v, --version` options
     // Make `version|v [commands...]` command
     const outputVersion = async (options: string[]) => {
@@ -1807,12 +1816,15 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   async loadConfig(options: Partial<WebpackDevServerOptions>) {
+    const configRegistered =
+      typeof this.isConfigRegistered !== undefined && this.isConfigRegistered;
+
     const interpret = require("interpret");
     const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
       const ext = path.extname(configPath);
       const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
-      if (interpreted) {
+      if (interpreted && !configRegistered) {
         const rechoir: Rechoir = require("rechoir");
 
         try {
@@ -1904,7 +1916,7 @@ class WebpackCLI implements IWebpackCLI {
       path: new WeakMap(),
     };
 
-    if (options.config && options.config.length > 0) {
+    if (options.config && options.config.length > 0 && configRegistered) {
       const loadedConfigs = await Promise.all(
         options.config.map((configPath: string) =>
           loadConfigByPath(path.resolve(configPath), options.argv),
