@@ -31,7 +31,6 @@ interface IWebpackCLI {
   colors: WebpackCLIColors;
   logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;
-  isConfigRegistered: boolean | undefined;
   webpack: typeof webpack;
   builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
   program: WebpackCLICommand;
@@ -176,6 +175,7 @@ type WebpackDevServerOptions = DevServerConfig &
     merge?: boolean;
     config: string[];
     configName?: string[];
+    configRegistered?: boolean;
     argv: Argv;
   };
 

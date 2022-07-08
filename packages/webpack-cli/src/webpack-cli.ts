@@ -69,7 +69,6 @@ class WebpackCLI implements IWebpackCLI {
   colors: WebpackCLIColors;
   logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;
-  isConfigRegistered: boolean | undefined;
   builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
   webpack!: typeof webpack;
   program: WebpackCLICommand;
@@ -701,6 +700,7 @@ class WebpackCLI implements IWebpackCLI {
       "config",
       "config-name",
       "merge",
+      "config-registered",
       "env",
       "mode",
       "watch",
@@ -749,6 +749,15 @@ class WebpackCLI implements IWebpackCLI {
           },
         ],
         description: "Merge two or more configurations using 'webpack-merge'.",
+      },
+      {
+        name: "config-registered",
+        configs: [
+          {
+            type: "boolean",
+          },
+        ],
+        description: "Disable interpret a config file.",
       },
       // Complex configs
       {
@@ -1311,14 +1320,6 @@ class WebpackCLI implements IWebpackCLI {
       cli.colors = cli.createColors(color);
     });
 
-    this.program.option("--config-registered", "Disable interpret a config file.");
-    this.program.on("option:config-registered", function () {
-      // @ts-expect-error shadowing 'this' is intended
-      const { configRegistered } = this.opts();
-
-      cli.isConfigRegistered = configRegistered;
-    });
-
     // Make `-v, --version` options
     // Make `version|v [commands...]` command
     const outputVersion = async (options: string[]) => {
@@ -1817,7 +1818,7 @@ class WebpackCLI implements IWebpackCLI {
 
   async loadConfig(options: Partial<WebpackDevServerOptions>) {
     const configRegistered =
-      typeof this.isConfigRegistered !== undefined && this.isConfigRegistered;
+      typeof options.configRegistered !== undefined && options.configRegistered;
 
     const interpret = require("interpret");
     const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
