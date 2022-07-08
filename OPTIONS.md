@@ -8,7 +8,7 @@ Options:
   -c, --config <value...>                                                            Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>                                                           Name of the configuration to use.
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
-  --config-registered
+  --config-registered                                                                Disable interpret a config file.
   --env <value...>                                                                   Environment passed to the configuration when it is a function.
   --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value.
   -h, --hot [value]                                                                  Enables Hot Module Replacement
