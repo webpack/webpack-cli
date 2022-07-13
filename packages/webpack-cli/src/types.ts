@@ -175,7 +175,7 @@ type WebpackDevServerOptions = DevServerConfig &
     merge?: boolean;
     config: string[];
     configName?: string[];
-    configRegistered?: boolean;
+    disableInterpret?: boolean;
     argv: Argv;
   };
 

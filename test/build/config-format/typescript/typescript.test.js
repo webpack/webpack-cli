@@ -16,13 +16,13 @@ describe("webpack cli", () => {
     expect(existsSync(resolve(__dirname, "dist/foo.bundle.js"))).toBeTruthy();
   });
 
-  it('should work with the "config-registered" option from flags', async () => {
+  it('should work with the "disable-interpret" option from flags', async () => {
     const configFileName = "webpack.config";
     const configFilePath = resolve(__dirname, `${configFileName}.ts`);
     const buildScripts = spawnSync("yarn", ["tsc", configFilePath]);
     expect(buildScripts.stdout).toBeTruthy();
 
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--config-registered"]);
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--disable-interpret"]);
     unlinkSync(resolve(__dirname, `${configFileName}.js`));
 
     expect(stderr).toBeFalsy();

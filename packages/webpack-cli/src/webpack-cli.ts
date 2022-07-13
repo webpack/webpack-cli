@@ -700,7 +700,7 @@ class WebpackCLI implements IWebpackCLI {
       "config",
       "config-name",
       "merge",
-      "config-registered",
+      "disable-interpret",
       "env",
       "mode",
       "watch",
@@ -751,7 +751,7 @@ class WebpackCLI implements IWebpackCLI {
         description: "Merge two or more configurations using 'webpack-merge'.",
       },
       {
-        name: "config-registered",
+        name: "disable-interpret",
         configs: [
           {
             type: "boolean",
@@ -1817,15 +1817,15 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   async loadConfig(options: Partial<WebpackDevServerOptions>) {
-    const configRegistered =
-      typeof options.configRegistered !== undefined && options.configRegistered;
+    const disableInterpret =
+      typeof options.disableInterpret !== undefined && options.disableInterpret;
 
     const interpret = require("interpret");
     const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
       const ext = path.extname(configPath);
       const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
-      if (interpreted && !configRegistered) {
+      if (interpreted && !disableInterpret) {
         const rechoir: Rechoir = require("rechoir");
 
         try {
@@ -1917,7 +1917,7 @@ class WebpackCLI implements IWebpackCLI {
       path: new WeakMap(),
     };
 
-    if (options.config && options.config.length > 0 && configRegistered) {
+    if (options.config && options.config.length > 0 && disableInterpret) {
       const loadedConfigs = await Promise.all(
         options.config.map((configPath: string) =>
           loadConfigByPath(path.resolve(configPath), options.argv),
