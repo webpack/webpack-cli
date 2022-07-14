@@ -1917,7 +1917,7 @@ class WebpackCLI implements IWebpackCLI {
       path: new WeakMap(),
     };
 
-    if (options.config && options.config.length > 0 && disableInterpret) {
+    if (options.config && options.config.length > 0) {
       const loadedConfigs = await Promise.all(
         options.config.map((configPath: string) =>
           loadConfigByPath(path.resolve(configPath), options.argv),
