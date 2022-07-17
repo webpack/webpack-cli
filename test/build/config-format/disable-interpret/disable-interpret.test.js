@@ -21,4 +21,12 @@ describe("webpack cli", () => {
     expect(exitCode).toBe(0);
     expect(existsSync(resolve(__dirname, "dist/foo.bundle.js"))).toBeTruthy();
   });
+
+  it("should log error without transpilation", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--disable-interpret"]);
+
+    expect(exitCode).toBe(2);
+    expect(stderr).toContain(`Failed to load '${resolve(__dirname, "webpack.config.ts")}' config`);
+    expect(stdout).toBeFalsy();
+  });
 });
