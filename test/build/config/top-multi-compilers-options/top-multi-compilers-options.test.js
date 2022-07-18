@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("path");
-const { run, isWebpack5 } = require("../../../utils/test-utils");
+const { run } = require("../../../utils/test-utils");
 
 describe("top multi compiler options", () => {
   it("should work without provided configuration", async () => {
@@ -9,12 +9,7 @@ describe("top multi compiler options", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-
-    if (isWebpack5) {
-      expect(stdout).toContain("Done build0\nDone build1\nDone build2\nDone build3");
-    } else {
-      expect(stdout).toBeTruthy();
-    }
+    expect(stdout).toContain("Done build0\nDone build1\nDone build2\nDone build3");
   });
 
   it("should work with provided configuration", async () => {
@@ -25,11 +20,6 @@ describe("top multi compiler options", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-
-    if (isWebpack5) {
-      expect(stdout).toContain("Done build0\nDone build1\nDone build2\nDone build3");
-    } else {
-      expect(stdout).toBeTruthy();
-    }
+    expect(stdout).toContain("Done build0\nDone build1\nDone build2\nDone build3");
   });
 });
