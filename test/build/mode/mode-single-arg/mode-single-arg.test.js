@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, isWebpack5 } = require("../../../utils/test-utils");
+const { run } = require("../../../utils/test-utils");
 
 describe("mode flags", () => {
   it("should not set mode=production by default", async () => {
@@ -52,15 +52,8 @@ describe("mode flags", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--mode", "abcd"]);
 
     expect(exitCode).toBe(2);
-
-    if (isWebpack5) {
-      expect(stderr).toContain("Invalid value 'abcd' for the '--mode' option");
-      expect(stderr).toContain("Expected: 'development | production | none'");
-    } else {
-      expect(stderr).toContain("configuration.mode should be one of these");
-      expect(stderr).toContain(`"development" | "production" | "none"`);
-    }
-
+    expect(stderr).toContain("Invalid value 'abcd' for the '--mode' option");
+    expect(stderr).toContain("Expected: 'development | production | none'");
     expect(stdout).toBeFalsy();
   });
 });

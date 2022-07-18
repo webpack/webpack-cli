@@ -18,6 +18,7 @@
     "lib"
   ],
   "peerDependencies": {
+    "webpack": "5.x.x",
     "webpack-cli": "4.x.x"
   },
   "peerDependenciesMeta": {

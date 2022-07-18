@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, isWebpack5, normalizeStderr, normalizeStdout } = require("../../../utils/test-utils");
+const { run, normalizeStderr, normalizeStdout } = require("../../../utils/test-utils");
 
 const presets = [
   "normal",
@@ -10,11 +10,8 @@ const presets = [
   "minimal",
   "verbose",
   "none",
+  "summary",
 ];
-
-if (isWebpack5) {
-  presets.push("summary");
-}
 
 describe("stats flag", () => {
   for (const preset of presets) {
@@ -23,41 +20,15 @@ describe("stats flag", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
+      expect(stdout).toContain(`preset: '${preset}'`);
+    });
 
-      if (isWebpack5) {
-        expect(stdout).toContain(`preset: '${preset}'`);
-      } else {
-        switch (preset) {
-          case "normal":
-            expect(stdout).toContain("stats:");
-            break;
-          case "detailed":
-            expect(stdout).toContain("entrypoints: true");
-            expect(stdout).toContain("errorDetails: true");
-            break;
-          case "errors-only":
-            expect(stdout).toContain("all: false");
-            expect(stdout).toContain("errors: true");
-            break;
-          case "errors-warnings":
-            expect(stdout).toContain("all: false");
-            expect(stdout).toContain("errors: true");
-            expect(stdout).toContain("warnings: true");
-            break;
-          case "minimal":
-            expect(stdout).toContain("modules: true");
-            expect(stdout).toContain("maxModules: 0");
-            break;
-          case "verbose":
-            expect(stdout).toContain("logging: 'verbose'");
-            break;
-          case "none":
-            expect(stdout).toContain("all: false");
-            break;
-          default:
-            expect(stdout).toContain(`preset: '${preset}'`);
-        }
-      }
+    it("should accept stats as boolean", async () => {
+      const { exitCode, stderr, stdout } = await run(__dirname, ["--stats"]);
+
+      expect(exitCode).toBe(0);
+      expect(stderr).toBeFalsy();
+      expect(stdout).toContain("preset: 'normal'");
     });
   }
 
@@ -66,12 +37,7 @@ describe("stats flag", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-
-    if (isWebpack5) {
-      expect(stdout).toContain("preset: 'normal'");
-    } else {
-      expect(stdout).toContain("stats:");
-    }
+    expect(stdout).toContain("preset: 'none'");
   });
 
   it("should accept --no-stats as boolean", async () => {
@@ -79,12 +45,7 @@ describe("stats flag", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-
-    if (isWebpack5) {
-      expect(stdout).toContain("preset: 'none'");
-    } else {
-      expect(stdout).toContain("all: false");
-    }
+    expect(stdout).toContain("preset: 'none'");
   });
 
   it("should log error when an unknown flag stats value is passed", async () => {

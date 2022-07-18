@@ -5,7 +5,6 @@ const path = require("path");
 const getPort = require("get-port");
 const {
   runWatch,
-  isWebpack5,
   normalizeStderr,
   normalizeStdout,
   isDevServer4,
@@ -173,7 +172,7 @@ describe("basic serve usage", () => {
       expect(stdout).not.toContain("HotModuleReplacementPlugin");
     }
 
-    expect(stdout).toContain(isWebpack5 ? "compiled successfully" : "Version: webpack");
+    expect(stdout).toContain("compiled successfully");
   });
 
   it('should work with the "--stats verbose" option', async () => {
@@ -190,9 +189,7 @@ describe("basic serve usage", () => {
     const isMacOS = process.platform === "darwin";
 
     if (!isMacOS) {
-      expect(stdout).toContain(
-        isWebpack5 ? "from webpack.Compiler" : "webpack.buildChunkGraph.visitModules",
-      );
+      expect(stdout).toContain("from webpack.Compiler");
     }
     expect(stdout).toContain("main.js");
   });
@@ -222,7 +219,7 @@ describe("basic serve usage", () => {
     } else {
       expect(stdout).not.toContain("HotModuleReplacementPlugin");
     }
-
+    expect(stdout).toContain("compiled successfully");
     expect(stdout).toContain("development");
     expect(stdout).toContain("main.js");
   });
@@ -238,6 +235,7 @@ describe("basic serve usage", () => {
       expect(stdout).not.toContain("HotModuleReplacementPlugin");
     }
 
+    expect(stdout).toContain("from webpack.Compiler");
     expect(stdout).toContain("main.js");
   });
 
@@ -357,20 +355,79 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain("/my-public-path/");
 
-    if (isWebpack5) {
-      expect(stdout).toContain("/my-public-path/");
-
-      if (isDevServer4) {
-        expect(stdout).toContain("HotModuleReplacementPlugin");
-      } else {
-        expect(stdout).not.toContain("HotModuleReplacementPlugin");
-      }
-
-      expect(stdout).toContain("main.js");
+    if (isDevServer4) {
+      expect(stdout).toContain("HotModuleReplacementPlugin");
     } else {
-      expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+      expect(stdout).not.toContain("HotModuleReplacementPlugin");
+      expect(stdout).toContain("main.js");
     }
+  });
+
+  devServer4Test('should work with the "--hot" option using the "only" value', async () => {
+    const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--hot=only"]);
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("main.js");
+  });
+
+  devServer4Test('should work with "--hot" and "--port" options', async () => {
+    const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--hot"]);
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("main.js");
+  });
+
+  devServer4Test('should work with the "--hot" and "--progress" options', async () => {
+    const { stdout, stderr } = await runWatch(testPath, [
+      "serve",
+      "--port",
+      port,
+      "--hot",
+      "--progress",
+    ]);
+
+    expect(stderr).toContain("webpack.Progress");
+    expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("main.js");
+  });
+
+  it('should work with the default "publicPath" option', async () => {
+    const { stderr, stdout } = await runWatch(__dirname, ["serve"]);
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+
+    if (isDevServer4) {
+      expect(stdout).toContain("HotModuleReplacementPlugin");
+    } else {
+      expect(stdout).not.toContain("HotModuleReplacementPlugin");
+    }
+
+    expect(stdout).toContain("main.js");
+  });
+
+  it('should work with the "--output-public-path" option', async () => {
+    const { stderr, stdout } = await runWatch(__dirname, [
+      "serve",
+      "--output-public-path",
+      "/my-public-path/",
+      "--stats",
+      "verbose",
+    ]);
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain("/my-public-path/");
+
+    if (isDevServer4) {
+      expect(stdout).toContain("HotModuleReplacementPlugin");
+    } else {
+      expect(stdout).not.toContain("HotModuleReplacementPlugin");
+    }
+
+    expect(stdout).toContain("main.js");
   });
 
   it('should respect the "publicPath" option from configuration', async () => {
@@ -535,6 +592,120 @@ describe("basic serve usage", () => {
       },
     );
 
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toBeTruthy();
+  });
+
+  it("should log error on using '--watch' flag with serve", async () => {
+    const { exitCode, stdout, stderr } = await runWatch(testPath, ["serve", "--watch"]);
+
+    expect(exitCode).toBe(2);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
+
+  it("should log error on using '-w' alias with serve", async () => {
+    const { exitCode, stdout, stderr } = await runWatch(testPath, ["serve", "-w"]);
+
+    expect(exitCode).toBe(2);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
+
+  it("should log an error on unknown flag", async () => {
+    const { exitCode, stdout, stderr } = await runWatch(testPath, [
+      "serve",
+      "--port",
+      port,
+      "--unknown-flag",
+    ]);
+
+    expect(exitCode).toBe(2);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
+
+  it('should work with the "stats" option in config', async () => {
+    const { stderr, stdout } = await runWatch(__dirname, ["serve", "--config", "stats.config.js"], {
+      killString: /Compiled successfully|modules/i,
+    });
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain("compiled successfully");
+    expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
+  });
+
+  it('should respect the "publicPath" option from configuration using multi compiler mode (from the "devServer" options)', async () => {
+    const { stderr, stdout } = await runWatch(__dirname, [
+      "serve",
+      "--config",
+      "multi-dev-server-output-public-path.config.js",
+      "--port",
+      port,
+    ]);
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+
+    if (isDevServer4) {
+      expect(stdout).toContain("HotModuleReplacementPlugin");
+    } else {
+      expect(stdout).not.toContain("HotModuleReplacementPlugin");
+    }
+
+    expect(stdout).toContain("one");
+    expect(stdout).toContain("first-output/main.js");
+    expect(stdout).toContain("two");
+    expect(stdout).toContain("second-output/main.js");
+  });
+
+  it("should work with entries syntax", async () => {
+    const { stderr, stdout } = await runWatch(__dirname, [
+      "serve",
+      "./src/entry.js",
+      "--port",
+      port,
+    ]);
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+
+    if (isDevServer4) {
+      expect(stdout).toContain("HotModuleReplacementPlugin");
+    } else {
+      expect(stdout).not.toContain("HotModuleReplacementPlugin");
+    }
+
+    expect(stdout).toContain("development");
+  });
+
+  it("should work and log warning on the `watch option in a configuration", async () => {
+    const { stderr, stdout } = await runWatch(__dirname, [
+      "serve",
+      "--config",
+      "./watch.config.js",
+      "--port",
+      port,
+    ]);
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+
+    if (isDevServer4) {
+      expect(stdout).toContain("HotModuleReplacementPlugin");
+    } else {
+      expect(stdout).not.toContain("HotModuleReplacementPlugin");
+    }
+
+    expect(stdout).toContain("development");
+  });
+
+  it("should log used supplied config with serve", async () => {
+    const { stderr, stdout } = await runWatch(
+      __dirname,
+      ["serve", "--config", "log.config.js", "--port", port],
+      {
+        killString: /Compiler is watching files for updates\.\.\./,
+      },
+    );
+
     // sort logs for CI
     let normalizedStderr = normalizeStderr(stderr).split("\n");
     const lastString = normalizedStderr[normalizedStderr.length - 1];
@@ -590,7 +761,7 @@ describe("basic serve usage", () => {
     });
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).toContain(isWebpack5 ? "compiled successfully" : "modules");
+    expect(stdout).toContain("compiled successfully");
     expect(stdout.match(/HotModuleReplacementPlugin/g)).toBeNull();
   });
 

@@ -63,10 +63,6 @@ jobs:
             os: ubuntu-latest
             dev-server-version: version-3
             webpack-version: latest
-          - node-version: 16.x
-            os: ubuntu-latest
-            dev-server-version: latest
-            webpack-version: webpack-4
 
     steps:
       - uses: actions/checkout@v3
@@ -81,10 +77,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --ignore-engines
-
-      - name: Install webpack ${{ matrix.webpack-version }}
-        if: matrix.webpack-version == '4'
-        run: yarn add -W webpack@${{ matrix.webpack-version }} --ignore-engines
 
       - name: Install webpack-dev-server ${{ matrix.dev-server-version }}
         if: matrix.dev-server-version == 'version-3'

@@ -48,7 +48,7 @@
     "webpack-merge": "^5.7.3"
   },
   "peerDependencies": {
-    "webpack": "4.x.x || 5.x.x"
+    "webpack": "5.x.x"
   },
   "peerDependenciesMeta": {
     "@webpack-cli/generators": {

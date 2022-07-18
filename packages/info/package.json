@@ -21,6 +21,7 @@
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
   "peerDependencies": {
+    "webpack": "5.x.x",
     "webpack-cli": "4.x.x"
   },
   "devDependencies": {
