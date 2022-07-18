@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { run, isWebpack5 } = require("../../../../utils/test-utils");
+const { run } = require("../../../../utils/test-utils");
 
 describe("default config with cjs extension", () => {
   it("should build and not throw error with cjs config by default", async () => {
@@ -12,14 +12,7 @@ describe("default config with cjs extension", () => {
     expect(stdout).toContain("./src/index.js");
     // should pick up the output path from config
     expect(stdout).toContain("test-output");
-
-    if (!isWebpack5) {
-      expect(stdout).toContain("Hash");
-      expect(stdout).toContain("Version");
-      expect(stdout).toContain("Built at");
-      expect(stdout).toContain("Time");
-    }
-
+    expect(stdout).toContain("compiled successfully");
     // check that the output file exists
     expect(fs.existsSync(path.join(__dirname, "/dist/test-output.js"))).toBeTruthy();
   });
