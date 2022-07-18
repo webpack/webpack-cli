@@ -94,7 +94,10 @@
     "Nitin",
     "smoketest",
     "dbaeumer",
-    "esbenp"
+    "esbenp",
+    "msuccessfully",
+    "mfirst",
+    "msecond"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [

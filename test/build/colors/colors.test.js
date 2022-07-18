@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, isWebpack5 } = require("../../utils/test-utils");
+const { run } = require("../../utils/test-utils");
 const { resolve } = require("path");
 
 describe("colors", () => {
@@ -11,8 +11,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it('should work with the "stats" option from flags', async () => {
@@ -22,8 +21,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it('should work with the "stats" option from flags and from configuration', async () => {
@@ -35,8 +33,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it('should work with the "stats" option from flags and from configuration #2', async () => {
@@ -50,8 +47,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it('should work with the "stats" option and --color flags', async () => {
@@ -59,8 +55,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it("should disable colored output with --no-color", async () => {
@@ -68,9 +63,8 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
-    expect(stdout).toContain(output);
+    expect(stdout).not.toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
+    expect(stdout).toContain("successfully");
   });
 
   it('should work with the "stats" option from the configuration', async () => {
@@ -84,8 +78,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it('should work with the "stats" option from the configuration #1', async () => {
@@ -99,8 +92,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it('should work with the "stats" option from the configuration #2', async () => {
@@ -114,8 +106,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it('should work with the "stats" option from the configuration #3', async () => {
@@ -125,8 +116,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it('should work with the "stats" option from the configuration #4', async () => {
@@ -136,9 +126,8 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
-    expect(stdout).toContain(output);
+    expect(stdout).not.toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
+    expect(stdout).toContain("successfully");
   });
 
   it('should work with the "stats" option from the configuration #5', async () => {
@@ -152,8 +141,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[31m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[31msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it('should work with the "stats" option from the configuration in multi compiler mode', async () => {
@@ -167,14 +155,10 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-
-    if (isWebpack5) {
-      // cSpell:ignore msuccessfully
-      // red from first config
-      expect(stdout).toContain(`\u001b[31msuccessfully`);
-      // blue from second config
-      expect(stdout).toContain(`\u001b[34msuccessfully`);
-    }
+    // red from first config
+    expect(stdout).toContain(`\u001b[31msuccessfully`);
+    // blue from second config
+    expect(stdout).toContain(`\u001b[34msuccessfully`);
   });
 
   it("should prioritize --color over colors in config", async () => {
@@ -185,8 +169,7 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 
   it("should prioritize --no-color over colors in config", async () => {
@@ -197,9 +180,8 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    const output = isWebpack5 ? "successfully" : "main.js";
-    expect(stdout).not.toContain(`\u001b[1m\u001b[32m${output}\u001b[39m\u001b[22m`);
-    expect(stdout).toContain(output);
+    expect(stdout).not.toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
+    expect(stdout).toContain("successfully");
   });
 
   it("should work in multi compiler mode", async () => {
@@ -210,12 +192,8 @@ describe("colors", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-
-    if (isWebpack5) {
-      // cSpell:ignore mfirst, msecond
-      expect(stdout).toContain(`\u001b[1mfirst-config`);
-      expect(stdout).toContain(`\u001b[1msecond-config`);
-      expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
-    }
+    expect(stdout).toContain(`\u001b[1mfirst-config`);
+    expect(stdout).toContain(`\u001b[1msecond-config`);
+    expect(stdout).toContain(`\u001b[1m\u001b[32msuccessfully\u001b[39m\u001b[22m`);
   });
 });
