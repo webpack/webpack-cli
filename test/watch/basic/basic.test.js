@@ -1,10 +1,9 @@
 "use strict";
 
-const { run, runAndGetProcess, isWebpack5, processKill } = require("../../utils/test-utils");
+const { run, runAndGetProcess, processKill } = require("../../utils/test-utils");
 const { writeFileSync } = require("fs");
 const { resolve } = require("path");
 
-const wordsInStatsv4 = ["Hash", "Built at:", "main.js"];
 const wordsInStatsv5 = ["asset", "index.js", "compiled successfully"];
 
 describe("basic", () => {
@@ -29,14 +28,8 @@ describe("basic", () => {
       const data = chunk.toString();
 
       if (data.includes("index.js")) {
-        if (isWebpack5) {
-          for (const word of wordsInStatsv5) {
-            expect(data).toContain(word);
-          }
-        } else {
-          for (const word of wordsInStatsv4) {
-            expect(data).toContain(word);
-          }
+        for (const word of wordsInStatsv5) {
+          expect(data).toContain(word);
         }
 
         if (!modified) {
@@ -65,14 +58,8 @@ describe("basic", () => {
       const data = chunk.toString();
 
       if (data.includes("index.js")) {
-        if (isWebpack5) {
-          for (const word of wordsInStatsv5) {
-            expect(data).toContain(word);
-          }
-        } else {
-          for (const word of wordsInStatsv4) {
-            expect(data).toContain(word);
-          }
+        for (const word of wordsInStatsv5) {
+          expect(data).toContain(word);
         }
 
         if (!modified) {
@@ -103,14 +90,8 @@ describe("basic", () => {
       const data = chunk.toString();
 
       if (data.includes("entry.js")) {
-        if (isWebpack5) {
-          for (const word of wordsInStatsv5Entries) {
-            expect(data).toContain(word);
-          }
-        } else {
-          for (const word of wordsInStatsv4) {
-            expect(data).toContain(word);
-          }
+        for (const word of wordsInStatsv5Entries) {
+          expect(data).toContain(word);
         }
 
         if (!modified) {
@@ -145,14 +126,8 @@ describe("basic", () => {
       const data = chunk.toString();
 
       if (data.includes("index.js")) {
-        if (isWebpack5) {
-          for (const word of wordsInStatsv5) {
-            expect(data).toContain(word);
-          }
-        } else {
-          for (const word of wordsInStatsv4) {
-            expect(data).toContain(word);
-          }
+        for (const word of wordsInStatsv5) {
+          expect(data).toContain(word);
         }
 
         if (!modified) {
