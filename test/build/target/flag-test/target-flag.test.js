@@ -1,5 +1,5 @@
 "use strict";
-const { run, isWebpack5, normalizeStdout, normalizeStderr } = require("../../../utils/test-utils");
+const { run, normalizeStdout, normalizeStderr } = require("../../../utils/test-utils");
 
 const targetValues = [
   "web",
@@ -19,12 +19,7 @@ describe("--target flag", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-
-      if (isWebpack5) {
-        expect(stdout).toContain(`target: [ '${val}' ]`);
-      } else {
-        expect(stdout).toContain(`target: '${val}'`);
-      }
+      expect(stdout).toContain(`target: [ '${val}' ]`);
     });
 
     it(`should accept ${val} with -t alias`, async () => {
@@ -32,12 +27,7 @@ describe("--target flag", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-
-      if (isWebpack5) {
-        expect(stdout).toContain(`target: [ '${val}' ]`);
-      } else {
-        expect(stdout).toContain(`target: '${val}'`);
-      }
+      expect(stdout).toContain(`target: [ '${val}' ]`);
     });
   });
 
@@ -49,64 +39,101 @@ describe("--target flag", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  if (isWebpack5) {
-    it("should allow multiple targets", async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [
-        "--target",
-        "node",
-        "--target",
-        "async-node",
-      ]);
+  it("should allow multiple targets", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--target",
+      "node",
+      "--target",
+      "async-node",
+    ]);
 
-      expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
-    });
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
+  });
 
-    it("should throw an error for invalid target in multiple syntax", async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [
-        "--target",
-        "node",
-        "--target",
-        "invalid",
-      ]);
+  it("should throw an error for invalid target in multiple syntax", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--target",
+      "node",
+      "--target",
+      "invalid",
+    ]);
 
-      expect(exitCode).toBe(2);
-      expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-      expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-    });
+    expect(exitCode).toBe(2);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
 
-    it("should throw an error for incompatible multiple targets", async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [
-        "--target",
-        "node",
-        "--target",
-        "web",
-      ]);
+  it("should throw an error for incompatible multiple targets", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--target",
+      "node",
+      "--target",
+      "web",
+    ]);
 
-      expect(exitCode).toBe(2);
-      expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-      expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-    });
+    expect(exitCode).toBe(2);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
 
-    it("should reset target from node to async-node with --target-reset", async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [
-        "--target-reset",
-        "--target",
-        "async-node",
-      ]);
+  it("should allow multiple targets", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--target",
+      "node",
+      "--target",
+      "async-node",
+    ]);
 
-      expect(exitCode).toBe(0);
-      expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-      expect(stdout).toContain(`target: [ 'async-node' ]`);
-    });
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
+  });
 
-    it("should throw error if target is an empty array", async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, ["--target-reset"]);
+  it("should throw an error for invalid target in multiple syntax", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--target",
+      "node",
+      "--target",
+      "invalid",
+    ]);
 
-      expect(exitCode).toBe(2);
-      expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-      expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-    });
-  }
+    expect(exitCode).toBe(2);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
+
+  it("should throw an error for incompatible multiple targets", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--target",
+      "node",
+      "--target",
+      "web",
+    ]);
+
+    expect(exitCode).toBe(2);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
+
+  it("should reset target from node to async-node with --target-reset", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--target-reset",
+      "--target",
+      "async-node",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain(`target: [ 'async-node' ]`);
+  });
+
+  it("should throw error if target is an empty array", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--target-reset"]);
+
+    expect(exitCode).toBe(2);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
 });

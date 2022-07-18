@@ -1,5 +1,5 @@
 "use strict";
-const { run, isWebpack5 } = require("../../../utils/test-utils");
+const { run } = require("../../../utils/test-utils");
 
 describe("invalid schema", () => {
   it("should log error on invalid config", async () => {
@@ -20,7 +20,7 @@ describe("invalid schema", () => {
     ]);
 
     expect(exitCode).toEqual(2);
-    expect(stderr).toContain(isWebpack5 ? "Invalid options object" : "Invalid Options");
+    expect(stderr).toContain("Invalid options object");
     expect(stdout).toBeFalsy();
   });
 
@@ -52,14 +52,8 @@ describe("invalid schema", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--mode", "Yukihira"]);
 
     expect(exitCode).toEqual(2);
-
-    if (isWebpack5) {
-      expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
-      expect(stderr).toContain("Expected: 'development | production | none'");
-    } else {
-      expect(stderr).toContain("Invalid configuration object");
-    }
-
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
+    expect(stderr).toContain("Expected: 'development | production | none'");
     expect(stdout).toBeFalsy();
   });
 
@@ -67,14 +61,8 @@ describe("invalid schema", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["build", "--mode", "Yukihira"]);
 
     expect(exitCode).toEqual(2);
-
-    if (isWebpack5) {
-      expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
-      expect(stderr).toContain("Expected: 'development | production | none'");
-    } else {
-      expect(stderr).toContain("Invalid configuration object");
-    }
-
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
+    expect(stderr).toContain("Expected: 'development | production | none'");
     expect(stdout).toBeFalsy();
   });
 
@@ -82,14 +70,8 @@ describe("invalid schema", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["bundle", "--mode", "Yukihira"]);
 
     expect(exitCode).toEqual(2);
-
-    if (isWebpack5) {
-      expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
-      expect(stderr).toContain("Expected: 'development | production | none'");
-    } else {
-      expect(stderr).toContain("Invalid configuration object");
-    }
-
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
+    expect(stderr).toContain("Expected: 'development | production | none'");
     expect(stdout).toBeFalsy();
   });
 
@@ -97,14 +79,8 @@ describe("invalid schema", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["b", "--mode", "Yukihira"]);
 
     expect(exitCode).toEqual(2);
-
-    if (isWebpack5) {
-      expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
-      expect(stderr).toContain("Expected: 'development | production | none'");
-    } else {
-      expect(stderr).toContain("Invalid configuration object");
-    }
-
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
+    expect(stderr).toContain("Expected: 'development | production | none'");
     expect(stdout).toBeFalsy();
   });
 
@@ -112,14 +88,8 @@ describe("invalid schema", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["watch", "--mode", "Yukihira"]);
 
     expect(exitCode).toEqual(2);
-
-    if (isWebpack5) {
-      expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
-      expect(stderr).toContain("Expected: 'development | production | none'");
-    } else {
-      expect(stderr).toContain("Invalid configuration object");
-    }
-
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
+    expect(stderr).toContain("Expected: 'development | production | none'");
     expect(stdout).toBeFalsy();
   });
 
@@ -127,14 +97,8 @@ describe("invalid schema", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["w", "--mode", "Yukihira"]);
 
     expect(exitCode).toEqual(2);
-
-    if (isWebpack5) {
-      expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
-      expect(stderr).toContain("Expected: 'development | production | none'");
-    } else {
-      expect(stderr).toContain("Invalid configuration object");
-    }
-
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
+    expect(stderr).toContain("Expected: 'development | production | none'");
     expect(stdout).toBeFalsy();
   });
 
@@ -142,14 +106,8 @@ describe("invalid schema", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["serve", "--mode", "Yukihira"]);
 
     expect(exitCode).toEqual(2);
-
-    if (isWebpack5) {
-      expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
-      expect(stderr).toContain("Expected: 'development | production | none'");
-    } else {
-      expect(stderr).toContain("Invalid configuration object");
-    }
-
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
+    expect(stderr).toContain("Expected: 'development | production | none'");
     expect(stdout).toBeFalsy();
   });
 
@@ -157,14 +115,8 @@ describe("invalid schema", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["s", "--mode", "Yukihira"]);
 
     expect(exitCode).toEqual(2);
-
-    if (isWebpack5) {
-      expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
-      expect(stderr).toContain("Expected: 'development | production | none'");
-    } else {
-      expect(stderr).toContain("Invalid configuration object");
-    }
-
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
+    expect(stderr).toContain("Expected: 'development | production | none'");
     expect(stdout).toBeFalsy();
   });
 });

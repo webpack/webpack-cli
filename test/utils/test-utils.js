@@ -12,8 +12,7 @@ const { exec } = require("child_process");
 const { node: execaNode } = execa;
 const { Writable } = require("readable-stream");
 const concat = require("concat-stream");
-const { cli, version } = require("webpack");
-const isWebpack5 = version.startsWith("5");
+const { cli } = require("webpack");
 
 let devServerVersion;
 
@@ -393,7 +392,6 @@ module.exports = {
   runAndGetProcess,
   runWatch,
   runPromptWithAnswers,
-  isWebpack5,
   isDevServer4,
   isWindows,
   normalizeStderr,
