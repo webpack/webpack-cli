@@ -37,7 +37,7 @@ describe("stats flag", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("preset: 'none'");
+    expect(stdout).toContain("preset: 'normal'");
   });
 
   it("should accept --no-stats as boolean", async () => {
