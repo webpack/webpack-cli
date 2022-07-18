@@ -754,7 +754,8 @@ class WebpackCLI implements IWebpackCLI {
         name: "disable-interpret",
         configs: [
           {
-            type: "boolean",
+            type: "enum",
+            values: [true],
           },
         ],
         description: "Disable interpret a config file.",
