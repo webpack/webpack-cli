@@ -1819,7 +1819,7 @@ class WebpackCLI implements IWebpackCLI {
 
   async loadConfig(options: Partial<WebpackDevServerOptions>) {
     const disableInterpret =
-      typeof options.disableInterpret !== undefined && options.disableInterpret;
+      typeof options.disableInterpret !== "undefined" && options.disableInterpret;
 
     const interpret = require("interpret");
     const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
