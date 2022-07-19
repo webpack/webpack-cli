@@ -38,7 +38,7 @@ describe("output flag defaults", () => {
     ]);
 
     expect(exitCode).toBe(2);
-    expect(stderr).toContain("Error: Option '-o, --output-path <value>' argument missing");
+    expect(stderr).toContain("Error: Option '--output-path <value>' argument missing");
     expect(stdout).toBeFalsy();
   });
 });
