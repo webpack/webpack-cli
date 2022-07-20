@@ -2,6 +2,10 @@
 
 exports[`--target flag should reset target from node to async-node with --target-reset: stderr 1`] = `""`;
 
+exports[`--target flag should reset the \`target\` option when the \`--target-reset\` is used for multiple targets: stderr 1`] = `""`;
+
+exports[`--target flag should reset the \`target\` option when the \`--target-reset\` is used: stderr 1`] = `""`;
+
 exports[`--target flag should throw an error for incompatible multiple targets: stderr 1`] = `
 "[webpack-cli] Error: For the selected environment is no default script chunk format available:
 JSONP Array push can be chosen when 'document' or 'importScripts' is available.
