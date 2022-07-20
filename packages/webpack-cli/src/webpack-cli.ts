@@ -2226,40 +2226,12 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       // Setup stats
-      // TODO remove after drop webpack@4
-      const statsForWebpack4 =
-        this.webpack.Stats &&
-        (this.webpack.Stats as unknown as Partial<WebpackV4LegacyStats>).presetToOptions;
-
-      if (statsForWebpack4) {
-        if (typeof item.stats === "undefined") {
-          item.stats = {};
-        } else if (typeof item.stats === "boolean") {
-          item.stats = (this.webpack.Stats as unknown as WebpackV4LegacyStats).presetToOptions(
-            item.stats,
-          );
-        } else if (
-          typeof item.stats === "string" &&
-          (item.stats === "none" ||
-            item.stats === "verbose" ||
-            item.stats === "detailed" ||
-            item.stats === "normal" ||
-            item.stats === "minimal" ||
-            item.stats === "errors-only" ||
-            item.stats === "errors-warnings")
-        ) {
-          item.stats = (this.webpack.Stats as unknown as WebpackV4LegacyStats).presetToOptions(
-            item.stats,
-          );
-        }
-      } else {
-        if (typeof item.stats === "undefined") {
-          item.stats = { preset: "normal" };
-        } else if (typeof item.stats === "boolean") {
-          item.stats = item.stats ? { preset: "normal" } : { preset: "none" };
-        } else if (typeof item.stats === "string") {
-          item.stats = { preset: item.stats };
-        }
+      if (typeof item.stats === "undefined") {
+        item.stats = { preset: "normal" };
+      } else if (typeof item.stats === "boolean") {
+        item.stats = item.stats ? { preset: "normal" } : { preset: "none" };
+      } else if (typeof item.stats === "string") {
+        item.stats = { preset: item.stats };
       }
 
       let colors;
@@ -2277,10 +2249,7 @@ class WebpackCLI implements IWebpackCLI {
         colors = Boolean(this.colors.isColorSupported);
       }
 
-      // TODO remove after drop webpack v4
-      if (typeof item.stats === "object" && item.stats !== null) {
-        item.stats.colors = colors;
-      }
+      item.stats.colors = colors;
 
       // Apply CLI plugin
       if (!item.plugins) {
@@ -2305,12 +2274,7 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   isValidationError(error: Error): error is WebpackError {
-    // https://github.com/webpack/webpack/blob/master/lib/index.js#L267
-    // https://github.com/webpack/webpack/blob/v4.44.2/lib/webpack.js#L90
-    const ValidationError =
-      this.webpack.ValidationError || this.webpack.WebpackOptionsValidationError;
-
-    return error instanceof ValidationError || error.name === "ValidationError";
+    return error instanceof this.webpack.ValidationError || error.name === "ValidationError";
   }
 
   async createCompiler(
@@ -2348,11 +2312,6 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       process.exit(2);
-    }
-
-    // TODO webpack@4 return Watching and MultiWatching instead Compiler and MultiCompiler, remove this after drop webpack@4
-    if (compiler && (compiler as WebpackV4Compiler).compiler) {
-      compiler = (compiler as WebpackV4Compiler).compiler;
     }
 
     return compiler;
@@ -2405,17 +2364,6 @@ class WebpackCLI implements IWebpackCLI {
         : compiler.options
         ? compiler.options.stats
         : undefined;
-
-      // TODO webpack@4 doesn't support `{ children: [{ colors: true }, { colors: true }] }` for stats
-      const statsForWebpack4 =
-        this.webpack.Stats &&
-        (this.webpack.Stats as unknown as Partial<WebpackV4LegacyStats>).presetToOptions;
-
-      if (this.isMultipleCompiler(compiler) && statsForWebpack4) {
-        (statsOptions as StatsOptions).colors = (
-          statsOptions as MultipleCompilerStatsOptions
-        ).children.some((child) => child.colors);
-      }
 
       if (options.json && createJsonStringifyStream) {
         const handleWriteError = (error: WebpackError) => {
