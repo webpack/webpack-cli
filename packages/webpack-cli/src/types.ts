@@ -229,15 +229,6 @@ interface BasicPackageJsonContent {
 }
 
 /**
- * Webpack V4
- */
-
-type WebpackV4LegacyStats = Required<WebpackCLIStats>;
-interface WebpackV4Compiler extends Compiler {
-  compiler: Compiler;
-}
-
-/**
  * Plugins and util types
  */
 
@@ -320,10 +311,8 @@ export {
   WebpackCLICommandOptions,
   WebpackCLIMainOption,
   WebpackCLILogger,
-  WebpackV4LegacyStats,
   WebpackDevServerOptions,
   WebpackRunOptions,
-  WebpackV4Compiler,
   WebpackCompiler,
   WebpackConfiguration,
   Argv,
