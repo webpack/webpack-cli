@@ -91,6 +91,36 @@ describe("--target flag", () => {
     expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
   });
 
+  it("should reset the `target` option when the `--target-reset` is used", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--config",
+      "target.web.config.js",
+      "--target-reset",
+      "--target",
+      "node",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain(`target: [ 'node' ]`);
+  });
+
+  it("should reset the `target` option when the `--target-reset` is used for multiple targets", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--config",
+      "multiple-target.config.js",
+      "--target-reset",
+      "--target",
+      "node",
+      "--target",
+      "async-node",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
+  });
+
   it("should throw an error for invalid target in multiple syntax", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--target",
@@ -115,18 +145,6 @@ describe("--target flag", () => {
     expect(exitCode).toBe(2);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-  });
-
-  it("should reset target from node to async-node with --target-reset", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--target-reset",
-      "--target",
-      "async-node",
-    ]);
-
-    expect(exitCode).toBe(0);
-    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).toContain(`target: [ 'async-node' ]`);
   });
 
   it("should throw error if target is an empty array", async () => {
