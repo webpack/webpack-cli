@@ -697,6 +697,7 @@ class WebpackCLI implements IWebpackCLI {
       "config",
       "config-name",
       "merge",
+      "disable-interpret",
       "env",
       "mode",
       "watch",
@@ -745,6 +746,16 @@ class WebpackCLI implements IWebpackCLI {
           },
         ],
         description: "Merge two or more configurations using 'webpack-merge'.",
+      },
+      {
+        name: "disable-interpret",
+        configs: [
+          {
+            type: "enum",
+            values: [true],
+          },
+        ],
+        description: "Disable interpret a config file.",
       },
       // Complex configs
       {
@@ -1775,12 +1786,15 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   async loadConfig(options: Partial<WebpackDevServerOptions>) {
+    const disableInterpret =
+      typeof options.disableInterpret !== "undefined" && options.disableInterpret;
+
     const interpret = require("interpret");
     const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
       const ext = path.extname(configPath);
       const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
-      if (interpreted) {
+      if (interpreted && !disableInterpret) {
         const rechoir: Rechoir = require("rechoir");
 
         try {
