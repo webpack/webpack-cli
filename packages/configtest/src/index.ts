@@ -39,14 +39,7 @@ class ConfigTestCommand {
         cli.logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
 
         try {
-          // @ts-expect-error cli.webpack.validate returns void
-          const error: Error[] | undefined = cli.webpack.validate(config.options);
-
-          // TODO remove this after drop webpack@4
-          if (error && error.length > 0) {
-            // @ts-expect-error schema argument is missing
-            throw new cli.webpack.WebpackOptionsValidationError(error);
-          }
+          cli.webpack.validate(config.options);
         } catch (error) {
           if (cli.isValidationError(error as Error)) {
             cli.logger.error((error as Error).message);
