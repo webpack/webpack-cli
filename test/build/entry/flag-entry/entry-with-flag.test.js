@@ -6,12 +6,7 @@ const { resolve } = require("path");
 
 describe("entry flag", () => {
   it("should resolve the path to src/index.cjs", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--entry",
-      "./src/index.cjs",
-      "-o",
-      "./dist/",
-    ]);
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--entry", "./src/index.cjs"]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
