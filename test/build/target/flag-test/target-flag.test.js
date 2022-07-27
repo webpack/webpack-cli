@@ -22,8 +22,7 @@ describe("--target flag", () => {
       expect(stdout).toContain(`target: [ '${val}' ]`);
     });
 
-    // TODO: Enable aliases with webpack 5
-    it.skip(`should accept ${val} with -t alias`, async () => {
+    it(`should accept ${val} with -t alias`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["-t", `${val}`]);
 
       expect(exitCode).toBe(0);
