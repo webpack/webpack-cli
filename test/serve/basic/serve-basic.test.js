@@ -3,15 +3,9 @@
 const path = require("path");
 // eslint-disable-next-line node/no-unpublished-require
 const getPort = require("get-port");
-const {
-  runWatch,
-  normalizeStderr,
-  normalizeStdout,
-  isDevServer4,
-} = require("../../utils/test-utils");
+const { runWatch, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
 
 const testPath = path.resolve(__dirname);
-const devServer4Test = isDevServer4 ? it : it.skip;
 
 describe("basic serve usage", () => {
   let port;
@@ -24,13 +18,7 @@ describe("basic serve usage", () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
@@ -44,13 +32,7 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
@@ -66,40 +48,31 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("WEBPACK_SERVE: true");
     expect(stdout).toContain("foo: 'bar'");
     expect(stdout).toContain("development");
   });
 
-  devServer4Test(
-    'should work with the "--config" and "--env" options and expose dev server options',
-    async () => {
-      const { stderr, stdout } = await runWatch(__dirname, [
-        "serve",
-        "--config",
-        "function-with-argv.config.js",
-        "--env",
-        "foo=bar",
-        "--hot",
-        "--port",
-        port,
-      ]);
+  it('should work with the "--config" and "--env" options and expose dev server options', async () => {
+    const { stderr, stdout } = await runWatch(__dirname, [
+      "serve",
+      "--config",
+      "function-with-argv.config.js",
+      "--env",
+      "foo=bar",
+      "--hot",
+      "--port",
+      port,
+    ]);
 
-      expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-      expect(stdout).toContain("hot: true");
-      expect(stdout).toContain("WEBPACK_SERVE: true");
-      expect(stdout).toContain("foo: 'bar'");
-      expect(stdout).toContain("development");
-    },
-  );
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("hot: true");
+    expect(stdout).toContain("WEBPACK_SERVE: true");
+    expect(stdout).toContain("foo: 'bar'");
+    expect(stdout).toContain("development");
+  });
 
   it("should work in multi compiler mode", async () => {
     const { stderr, stdout } = await runWatch(__dirname, [
@@ -111,13 +84,7 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("one");
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
@@ -133,13 +100,7 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("one");
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
@@ -150,13 +111,7 @@ describe("basic serve usage", () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("development");
     expect(stdout).toContain("main.js");
   });
@@ -165,13 +120,7 @@ describe("basic serve usage", () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve", "--stats"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("compiled successfully");
   });
 
@@ -179,12 +128,7 @@ describe("basic serve usage", () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve", "--stats", "verbose"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
+    expect(stdout).toContain("HotModuleReplacementPlugin");
 
     const isMacOS = process.platform === "darwin";
 
@@ -198,13 +142,7 @@ describe("basic serve usage", () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve", "--mode", "production"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("production");
     expect(stdout).toContain("main.js");
   });
@@ -213,12 +151,7 @@ describe("basic serve usage", () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve", "--mode", "development"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("compiled successfully");
     expect(stdout).toContain("development");
     expect(stdout).toContain("main.js");
@@ -228,13 +161,7 @@ describe("basic serve usage", () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve", "--progress"]);
 
     expect(stderr).toContain("webpack.Progress");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stderr).toContain("webpack.Progress");
     expect(stdout).toContain("main.js");
   });
@@ -243,31 +170,15 @@ describe("basic serve usage", () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve", "--progress", "profile"]);
 
     expect(stderr).toContain("webpack.Progress");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
   it('should work with the "--client-log-level" option', async () => {
-    const { stdout, stderr } = await runWatch(testPath, [
-      "serve",
-      isDevServer4 ? "--client-logging" : "--client-log-level",
-      "info",
-    ]);
+    const { stdout, stderr } = await runWatch(testPath, ["serve", "--client-logging", "info"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
@@ -275,17 +186,11 @@ describe("basic serve usage", () => {
     const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
-  devServer4Test('should work with the "--hot" option', async () => {
+  it('should work with the "--hot" option', async () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve", "--hot"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -293,7 +198,7 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("main.js");
   });
 
-  devServer4Test('should work with the "--no-hot" option', async () => {
+  it('should work with the "--no-hot" option', async () => {
     const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--no-hot"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -301,7 +206,7 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("main.js");
   });
 
-  devServer4Test('should work with the "--hot" option using the "only" value', async () => {
+  it('should work with the "--hot" option using the "only" value', async () => {
     const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--hot=only"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -309,7 +214,7 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("main.js");
   });
 
-  devServer4Test('should work with "--hot" and "--port" options', async () => {
+  it('should work with "--hot" and "--port" options', async () => {
     const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--hot"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -317,7 +222,7 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("main.js");
   });
 
-  devServer4Test('should work with the "--hot" and "--progress" options', async () => {
+  it('should work with the "--hot" and "--progress" options', async () => {
     const { stdout, stderr } = await runWatch(testPath, [
       "serve",
       "--port",
@@ -335,13 +240,7 @@ describe("basic serve usage", () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve"]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
@@ -356,13 +255,8 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("/my-public-path/");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-      expect(stdout).toContain("main.js");
-    }
+    expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("main.js");
   });
 
   it('should respect the "publicPath" option from configuration', async () => {
@@ -373,13 +267,7 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
     expect(stdout).toContain("/my-public-path/");
   });
@@ -394,13 +282,7 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("one");
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
@@ -416,43 +298,31 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
   it('should work with the "--open" option', async () => {
     const { stdout, stderr } = await runWatch(testPath, ["serve", "--open", "--port", port]);
 
-    if (isDevServer4) {
-      let normalizedStderr = normalizeStderr(stderr);
+    let normalizedStderr = normalizeStderr(stderr);
 
-      if (/wait until bundle finished/.test(normalizedStderr)) {
-        normalizedStderr = normalizedStderr.split("\n");
+    if (/wait until bundle finished/.test(normalizedStderr)) {
+      normalizedStderr = normalizedStderr.split("\n");
 
-        const waitIndex = normalizedStderr.findIndex((item) =>
-          /wait until bundle finished/.test(item),
-        );
+      const waitIndex = normalizedStderr.findIndex((item) =>
+        /wait until bundle finished/.test(item),
+      );
 
-        if (waitIndex !== -1) {
-          normalizedStderr.splice(waitIndex, 1);
-        }
-
-        normalizedStderr = normalizedStderr.join("\n");
+      if (waitIndex !== -1) {
+        normalizedStderr.splice(waitIndex, 1);
       }
 
-      expect(normalizedStderr).toMatchSnapshot("stderr");
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
+      normalizedStderr = normalizedStderr.join("\n");
     }
 
+    expect(normalizedStderr).toMatchSnapshot("stderr");
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
@@ -466,13 +336,7 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("one");
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
@@ -488,13 +352,7 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("development");
   });
 
@@ -508,13 +366,7 @@ describe("basic serve usage", () => {
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-    if (isDevServer4) {
-      expect(stdout).toContain("HotModuleReplacementPlugin");
-    } else {
-      expect(stdout).not.toContain("HotModuleReplacementPlugin");
-    }
-
+    expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("development");
   });
 
