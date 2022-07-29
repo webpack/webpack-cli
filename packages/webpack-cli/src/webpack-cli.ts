@@ -554,8 +554,7 @@ class WebpackCLI implements IWebpackCLI {
     } else {
       mainOption = {
         flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
-        // TODO `describe` used by `webpack-dev-server@3`
-        description: option.description || option.describe || "",
+        description: option.description || "",
         type: option.type
           ? new Set(Array.isArray(option.type) ? option.type : [option.type])
           : new Set([Boolean]),

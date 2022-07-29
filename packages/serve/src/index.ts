@@ -9,33 +9,11 @@ type PublicPath = WebpackDevServerOptions["output"]["publicPath"];
 class ServeCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
     const loadDevServerOptions = () => {
-      // TODO simplify this after drop webpack v4 and webpack-dev-server v3
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
-      const isNewDevServerCLIAPI = typeof devServer.schema !== "undefined";
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let options: Record<string, any> = {};
-
-      if (isNewDevServerCLIAPI) {
-        if (cli.webpack.cli && typeof cli.webpack.cli.getArguments === "function") {
-          options = cli.webpack.cli.getArguments(devServer.schema);
-        } else {
-          options = devServer.cli.getArguments();
-        }
-      } else {
-        options = require(`${WEBPACK_DEV_SERVER_PACKAGE}/bin/cli-flags`);
-      }
-
-      // Old options format
-      // { devServer: [{...}, {}...] }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (options.devServer) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        return options.devServer;
-      }
+      const options: Record<string, any> = cli.webpack.cli.getArguments(devServer.schema);
 
       // New options format
       // { flag1: {}, flag2: {} }
@@ -151,16 +129,7 @@ class ServeCommand {
           process.stdin.on("end", () => {
             Promise.all(
               servers.map((server) => {
-                if (typeof server.stop === "function") {
-                  return server.stop();
-                }
-
-                // TODO remove in the next major release
-                return new Promise<void>((resolve) => {
-                  server.close(() => {
-                    resolve();
-                  });
-                });
+                return server.stop();
               }),
             ).then(() => {
               process.exit(0);
@@ -171,13 +140,10 @@ class ServeCommand {
 
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const DevServer = require(WEBPACK_DEV_SERVER_PACKAGE);
-        const isNewDevServerCLIAPI = typeof DevServer.schema !== "undefined";
-
-        let devServerVersion;
 
         try {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
-          devServerVersion = require(`${WEBPACK_DEV_SERVER_PACKAGE}/package.json`).version;
+          require(`${WEBPACK_DEV_SERVER_PACKAGE}/package.json`).version;
         } catch (err) {
           cli.logger.error(
             `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
@@ -191,141 +157,68 @@ class ServeCommand {
         );
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
-        const isDevServer4 = devServerVersion.startsWith("4");
         const usedPorts: number[] = [];
 
         for (const compilerForDevServer of compilersForDevServer) {
-          let devServerOptions: WebpackDevServerOptions;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const args = devServerFlags.reduce((accumulator: Record<string, any>, flag: any) => {
+            accumulator[flag.name] = flag;
 
-          if (isNewDevServerCLIAPI) {
+            return accumulator;
+          }, {});
+          const values = Object.keys(devServerCLIOptions).reduce(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const args = devServerFlags.reduce((accumulator: Record<string, any>, flag: any) => {
-              accumulator[flag.name] = flag;
+            (accumulator: Record<string, any>, name: string) => {
+              const kebabName = cli.toKebabCase(name);
+
+              if (args[kebabName]) {
+                accumulator[kebabName] = options[name];
+              }
 
               return accumulator;
-            }, {});
-            const values = Object.keys(devServerCLIOptions).reduce(
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (accumulator: Record<string, any>, name: string) => {
-                const kebabName = cli.toKebabCase(name);
+            },
+            {},
+          );
+          const result = { ...(compilerForDevServer.options.devServer || {}) };
+          const problems = (
+            cli.webpack.cli && typeof cli.webpack.cli.processArguments === "function"
+              ? cli.webpack.cli
+              : DevServer.cli
+          ).processArguments(args, result, values);
 
-                if (args[kebabName]) {
-                  accumulator[kebabName] = options[name];
+          if (problems) {
+            const groupBy = (xs: Problem[], key: keyof Problem) => {
+              return xs.reduce((rv: { [key: string]: Problem[] }, x: Problem) => {
+                (rv[x[key]] = rv[x[key]] || []).push(x);
+
+                return rv;
+              }, {});
+            };
+
+            const problemsByPath = groupBy(problems, "path");
+
+            for (const path in problemsByPath) {
+              const problems = problemsByPath[path];
+
+              problems.forEach((problem: Problem) => {
+                cli.logger.error(
+                  `${cli.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
+                    problem.value ? ` '${problem.value}'` : ""
+                  } for the '--${problem.argument}' option${
+                    problem.index ? ` by index '${problem.index}'` : ""
+                  }`,
+                );
+
+                if (problem.expected) {
+                  cli.logger.error(`Expected: '${problem.expected}'`);
                 }
-
-                return accumulator;
-              },
-              {},
-            );
-            const result = { ...(compilerForDevServer.options.devServer || {}) };
-            const problems = (
-              cli.webpack.cli && typeof cli.webpack.cli.processArguments === "function"
-                ? cli.webpack.cli
-                : DevServer.cli
-            ).processArguments(args, result, values);
-
-            if (problems) {
-              const groupBy = (xs: Problem[], key: keyof Problem) => {
-                return xs.reduce((rv: { [key: string]: Problem[] }, x: Problem) => {
-                  (rv[x[key]] = rv[x[key]] || []).push(x);
-
-                  return rv;
-                }, {});
-              };
-
-              const problemsByPath = groupBy(problems, "path");
-
-              for (const path in problemsByPath) {
-                const problems = problemsByPath[path];
-
-                problems.forEach((problem: Problem) => {
-                  cli.logger.error(
-                    `${cli.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
-                      problem.value ? ` '${problem.value}'` : ""
-                    } for the '--${problem.argument}' option${
-                      problem.index ? ` by index '${problem.index}'` : ""
-                    }`,
-                  );
-
-                  if (problem.expected) {
-                    cli.logger.error(`Expected: '${problem.expected}'`);
-                  }
-                });
-              }
-
-              process.exit(2);
+              });
             }
 
-            devServerOptions = result as WebpackDevServerOptions;
-          } else {
-            // TODO remove in the next major release
-            const mergeOptions = (
-              devServerOptions: Partial<WebpackDevServerOptions>,
-              devServerCliOptions: Partial<WebpackDevServerOptions>,
-            ): WebpackDevServerOptions => {
-              // CLI options should take precedence over devServer options,
-              // and CLI options should have no default values included
-              const options = { ...devServerOptions, ...devServerCliOptions };
-
-              if (
-                devServerOptions.client &&
-                devServerCliOptions.client &&
-                typeof devServerOptions.client === "object" &&
-                typeof devServerCliOptions.client === "object"
-              ) {
-                // the user could set some client options in their devServer config,
-                // then also specify client options on the CLI
-                options.client = {
-                  ...devServerOptions.client,
-                  ...devServerCliOptions.client,
-                };
-              }
-
-              return options as WebpackDevServerOptions;
-            };
-
-            devServerOptions = mergeOptions(
-              compilerForDevServer.options.devServer || {},
-              devServerCLIOptions,
-            );
+            process.exit(2);
           }
 
-          // TODO remove in the next major release
-          if (!isDevServer4) {
-            const getPublicPathOption = (): PublicPath => {
-              const normalizePublicPath = (publicPath: PublicPath): PublicPath =>
-                typeof publicPath === "undefined" || publicPath === "auto" ? "/" : publicPath;
-
-              if (options.outputPublicPath) {
-                return normalizePublicPath(compilerForDevServer.options.output.publicPath);
-              }
-
-              if (devServerOptions.publicPath) {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                return normalizePublicPath(devServerOptions.publicPath);
-              }
-
-              return normalizePublicPath(compilerForDevServer.options.output.publicPath);
-            };
-            const getStatsOption = (): WebpackDevServerOptions["stats"] => {
-              if (options.stats) {
-                return options.stats;
-              }
-
-              if (devServerOptions.stats) {
-                return devServerOptions.stats;
-              }
-
-              return compilerForDevServer.options.stats;
-            };
-
-            devServerOptions.host = devServerOptions.host || "localhost";
-            devServerOptions.port =
-              typeof devServerOptions.port !== "undefined" ? devServerOptions.port : 8080;
-            devServerOptions.stats = getStatsOption();
-            devServerOptions.publicPath = getPublicPathOption();
-          }
+          const devServerOptions: WebpackDevServerOptions = result as WebpackDevServerOptions;
 
           if (devServerOptions.port) {
             const portNumber = Number(devServerOptions.port);
@@ -340,25 +233,9 @@ class ServeCommand {
           }
 
           try {
-            let server;
+            const server = new DevServer(devServerOptions, compiler);
 
-            // TODO: remove after dropping webpack-dev-server@v3
-            if (isDevServer4) {
-              server = new DevServer(devServerOptions, compiler);
-            } else {
-              server = new DevServer(compiler, devServerOptions);
-            }
-
-            if (typeof server.start === "function") {
-              await server.start();
-            } else {
-              // TODO remove in the next major release
-              server.listen(devServerOptions.port, devServerOptions.host, (error: Error): void => {
-                if (error) {
-                  throw error;
-                }
-              });
-            }
+            await server.start();
 
             servers.push(server);
           } catch (error) {
