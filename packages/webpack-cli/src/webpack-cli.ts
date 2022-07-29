@@ -699,6 +699,7 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     const minimumHelpFlags = [
+      "analyze",
       "config",
       "config-name",
       "merge",
@@ -716,6 +717,7 @@ class WebpackCLI implements IWebpackCLI {
       "name",
       "output-path",
       "node-env",
+      "fail-on-warnings",
     ];
 
     const builtInFlags: WebpackCLIBuiltInFlag[] = [
