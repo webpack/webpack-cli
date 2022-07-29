@@ -698,28 +698,6 @@ class WebpackCLI implements IWebpackCLI {
       return this.builtInOptionsCache;
     }
 
-    const minimumHelpFlags = [
-      "analyze",
-      "config",
-      "config-name",
-      "merge",
-      "disable-interpret",
-      "env",
-      "mode",
-      "watch",
-      "watch-options-stdin",
-      "stats",
-      "devtool",
-      "entry",
-      "target",
-      "progress",
-      "json",
-      "name",
-      "output-path",
-      "node-env",
-      "fail-on-warnings",
-    ];
-
     const builtInFlags: WebpackCLIBuiltInFlag[] = [
       // For configs
       {
@@ -873,6 +851,19 @@ class WebpackCLI implements IWebpackCLI {
         ],
         description: "Stop webpack-cli process with non-zero exit code on warnings from webpack",
       },
+    ];
+
+    const minimumHelpFlags = [
+      ...builtInFlags.map((flag) => flag.name),
+      "mode",
+      "watch",
+      "watch-options-stdin",
+      "stats",
+      "devtool",
+      "entry",
+      "target",
+      "name",
+      "output-path",
     ];
 
     // Extract all the flags being exported from core.
