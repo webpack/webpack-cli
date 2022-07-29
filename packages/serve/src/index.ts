@@ -5,7 +5,7 @@ const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
 type Problem = NonNullable<ReturnType<typeof cli["processArguments"]>>[0];
-type PublicPath = WebpackDevServerOptions["output"]["publicPath"];
+
 class ServeCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
     const loadDevServerOptions = () => {
