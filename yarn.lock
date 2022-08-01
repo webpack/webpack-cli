@@ -6904,10 +6904,10 @@ isarray@1.0.0, isarray@~1.0.0:
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
 
-isbinaryfile@^4.0.0, isbinaryfile@^4.0.8:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/isbinaryfile/-/isbinaryfile-4.0.8.tgz#5d34b94865bd4946633ecc78a026fc76c5b11fcf"
-  integrity sha512-53h6XFniq77YdW+spoRrebh0mnmTxRPTlcuIArO57lmMdq4uBKFKaeTjnb92oYWrSn/LVL+LT+Hap2tFQj8V+w==
+isbinaryfile@^4.0.0, isbinaryfile@^4.0.10, isbinaryfile@^4.0.8:
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/isbinaryfile/-/isbinaryfile-4.0.10.tgz#0c5b5e30c2557a2f06febd37b7322946aaee42b3"
+  integrity sha512-iHrqe5shvBUcFbmZq9zOQHBoeOhZJu6RQGrDpBgenUm/Am+F3JM2MgQj+rK3Z601fzrL5gLZWtAPH2OBaSVcyw==
 
 isexe@^2.0.0:
   version "2.0.0"
@@ -12124,9 +12124,9 @@ yeoman-environment@^2.10.3, yeoman-environment@^2.9.5:
     yeoman-generator "^4.8.2"
 
 yeoman-environment@^3.9.1:
-  version "3.9.1"
-  resolved "https://registry.yarnpkg.com/yeoman-environment/-/yeoman-environment-3.9.1.tgz#21912bdee4b1d302a5c25a7d31338fa092ea7116"
-  integrity sha512-IdRnbQt/DSOSnao0oD9c+or1X2UrL+fx9eC0O7Lq/MGZV68nhv9k77MqG+hEAySPSlyCpocVlhfQwV62hczk5Q==
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/yeoman-environment/-/yeoman-environment-3.10.0.tgz#d8c56571b68d16b4af8abfb950f83acc503eed77"
+  integrity sha512-sYtSxBK9daq21QjoskJTHKLQ1xEsRPURkmFV/aM8HS8ZlQVzwx57Rz1zCs8EGPhK4vqsmTE8H92Gp1jg1fT3EA==
   dependencies:
     "@npmcli/arborist" "^4.0.4"
     are-we-there-yet "^2.0.0"
@@ -12146,6 +12146,7 @@ yeoman-environment@^3.9.1:
     grouped-queue "^2.0.0"
     inquirer "^8.0.0"
     is-scoped "^2.1.0"
+    isbinaryfile "^4.0.10"
     lodash "^4.17.10"
     log-symbols "^4.0.0"
     mem-fs "^1.2.0 || ^2.0.0"
