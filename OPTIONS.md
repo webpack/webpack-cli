@@ -8,11 +8,9 @@ Options:
   -c, --config <value...>                                                            Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>                                                           Name of the configuration to use.
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
-  --disable-interpret                                                                Disable interpret for loading the config file.
+  --disable-interpret                                                                Disable interpret a config file.
   --env <value...>                                                                   Environment passed to the configuration when it is a function.
   --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value.
-  -h, --hot [value]                                                                  Enables Hot Module Replacement
-  --no-hot                                                                           Disables Hot Module Replacement.
   --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                                                 Print compilation progress during build.
   -j, --json [value]                                                                 Prints result as JSON or store it in a file.
@@ -52,9 +50,9 @@ Options:
   --context <value>                                                                  The base directory (absolute path!) for resolving the `entry` option. If `output.pathinfo` is set, the included pathinfo is shortened to this directory.
   --dependencies <value...>                                                          References to another configuration to depend on.
   --dependencies-reset                                                               Clear all items provided in 'dependencies' configuration. References to other configurations to depend on.
-  -d, --devtool <value>                                                              Determine source maps to use.
-  --no-devtool                                                                       Do not generate source maps.
-  --entry <value...>                                                                 The entry point(s) of your application e.g. ./src/main.js.
+  -d, --devtool <value>                                                              A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
+  --no-devtool                                                                       Negative 'devtool' option.
+  --entry <value...>                                                                 A module that is loaded upon startup. Only the last one is exported.
   --entry-reset                                                                      Clear all items provided in 'entry' configuration. All modules are loaded upon startup. The last one is exported.
   --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
   --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
@@ -130,7 +128,7 @@ Options:
   --no-infrastructure-logging-debug                                                  Negative 'infrastructure-logging-debug' option.
   --infrastructure-logging-debug-reset                                               Clear all items provided in 'infrastructureLogging.debug' configuration. Enable debug logging for specific loggers.
   --infrastructure-logging-level <value>                                             Log level.
-  --mode <value>                                                                     Defines the mode to pass to webpack.
+  --mode <value>                                                                     Enable production optimizations or development hints.
   --module-expr-context-critical                                                     Enable warnings for full dynamic dependencies.
   --no-module-expr-context-critical                                                  Negative 'module-expr-context-critical' option.
   --module-expr-context-recursive                                                    Enable recursive directory lookup for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRecursive'.
@@ -669,7 +667,7 @@ Options:
   --no-output-library-umd-named-define                                               Negative 'output-library-umd-named-define' option.
   --output-module                                                                    Output javascript files as module source type.
   --no-output-module                                                                 Negative 'output-module' option.
-  -o, --output-path <value>                                                          Output location of the file generated by webpack e.g. ./dist/.
+  -o, --output-path <value>                                                          The output directory as **absolute path** (required).
   --output-pathinfo [value]                                                          Include comments with information about the modules.
   --no-output-pathinfo                                                               Negative 'output-pathinfo' option.
   --output-public-path <value>                                                       The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
@@ -829,8 +827,8 @@ Options:
   --no-snapshot-resolve-build-dependencies-hash                                      Negative 'snapshot-resolve-build-dependencies-hash' option.
   --snapshot-resolve-build-dependencies-timestamp                                    Use timestamps of the files/directories to determine invalidation.
   --no-snapshot-resolve-build-dependencies-timestamp                                 Negative 'snapshot-resolve-build-dependencies-timestamp' option.
-  --stats [value]                                                                    It instructs webpack on how to treat the stats e.g. verbose.
-  --no-stats                                                                         Disable stats output.
+  --stats [value]                                                                    Stats options object or preset name.
+  --no-stats                                                                         Negative 'stats' option.
   --stats-all                                                                        Fallback value for stats options when an option is not defined (has precedence over local webpack defaults).
   --no-stats-all                                                                     Negative 'stats-all' option.
   --stats-assets                                                                     Add assets information.
@@ -977,11 +975,11 @@ Options:
   --no-stats-warnings-count                                                          Negative 'stats-warnings-count' option.
   --stats-warnings-filter <value...>                                                 Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
   --stats-warnings-filter-reset                                                      Clear all items provided in 'stats.warningsFilter' configuration. Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
-  -t, --target <value...>                                                            Sets the build target e.g. node.
+  -t, --target <value...>                                                            Environment to build for. Environment to build for. An array of environments to build for all of them when possible.
   --no-target                                                                        Negative 'target' option.
   --target-reset                                                                     Clear all items provided in 'target' configuration. Environment to build for. An array of environments to build for all of them when possible.
-  -w, --watch                                                                        Watch for files changes.
-  --no-watch                                                                         Do not watch for file changes.
+  -w, --watch                                                                        Enter watch mode, which rebuilds on file change.
+  --no-watch                                                                         Negative 'watch' option.
   --watch-options-aggregate-timeout <value>                                          Delay the rebuilt after the first change. Value is a time in ms.
   --watch-options-follow-symlinks                                                    Resolve symlinks and watch symlink and real file. This is usually not needed as webpack already resolves symlinks ('resolve.symlinks').
   --no-watch-options-follow-symlinks                                                 Negative 'watch-options-follow-symlinks' option.
@@ -990,7 +988,7 @@ Options:
   --watch-options-poll [value]                                                       `number`: use polling with specified interval. `true`: use polling.
   --no-watch-options-poll                                                            Negative 'watch-options-poll' option.
   --watch-options-stdin                                                              Stop watching when stdin stream has ended.
-  --no-watch-options-stdin                                                           Do not stop watching when stdin stream has ended.
+  --no-watch-options-stdin                                                           Negative 'watch-options-stdin' option.
 
 Global options:
   --color                                                                            Enable colors on console.
