@@ -80,15 +80,7 @@ class InfoCommand {
           npmGlobalPackages: ["webpack", "webpack-cli", "webpack-dev-server"],
         };
 
-        let defaultPackages: string[] = [
-          "webpack",
-          "loader",
-          "@webpack-cli/init",
-          "@webpack-cli/info",
-          "@webpack-cli/serve",
-          "@webpack-cli/configtest",
-          "@webpack-cli/generators",
-        ];
+        let defaultPackages: string[] = ["webpack", "loader", "@webpack-cli/"];
 
         if (typeof options.additionalPackage !== "undefined") {
           defaultPackages = [...defaultPackages, ...options.additionalPackage];
