@@ -78,10 +78,17 @@ class InfoCommand {
           Monorepos: ["Yarn Workspaces", "Lerna"],
           System: ["OS", "CPU", "Memory"],
           npmGlobalPackages: ["webpack", "webpack-cli", "webpack-dev-server"],
-          npmPackages: "{*webpack*,*loader*}",
         };
 
-        let defaultPackages: string[] = ["webpack", "loader"];
+        let defaultPackages: string[] = [
+          "webpack",
+          "loader",
+          "@webpack-cli/init",
+          "@webpack-cli/info",
+          "@webpack-cli/serve",
+          "@webpack-cli/configtest",
+          "@webpack-cli/generators",
+        ];
 
         if (typeof options.additionalPackage !== "undefined") {
           defaultPackages = [...defaultPackages, ...options.additionalPackage];
