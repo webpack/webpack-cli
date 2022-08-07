@@ -8,7 +8,7 @@ Options:
   -c, --config <value...>                                                            Provide path to a webpack configuration file e.g. ./webpack.config.js.
   --config-name <value...>                                                           Name of the configuration to use.
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
-  --disable-interpret                                                                Disable interpret a config file.
+  --disable-interpret                                                                Disable interpret for loading the config file.
   --env <value...>                                                                   Environment passed to the configuration when it is a function.
   --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value.
   --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
