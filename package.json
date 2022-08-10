@@ -61,7 +61,6 @@
     "@types/rechoir": "^0.6.1",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
-    "@webpack-cli/migrate": "^1.1.2",
     "coffeescript": "^2.7.0",
     "colorette": "^2.0.16",
     "concat-stream": "^2.0.0",
