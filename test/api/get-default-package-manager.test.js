@@ -12,10 +12,6 @@ jest.setMock("cross-spawn", {
   sync: syncMock,
 });
 
-const globalModulesNpmValue = "test-npm";
-
-jest.setMock("global-modules", globalModulesNpmValue);
-
 describe("getPackageManager", () => {
   let cli;
 
