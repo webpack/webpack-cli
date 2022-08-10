@@ -739,7 +739,7 @@ class WebpackCLI implements IWebpackCLI {
             values: [true],
           },
         ],
-        description: "Disable interpret a config file.",
+        description: "Disable interpret for loading the config file.",
       },
       // Complex configs
       {
