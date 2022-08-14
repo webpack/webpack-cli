@@ -1,1 +1,1 @@
-console.log("Kazuya Miyuki");
+console.log("Hello from index.cjs");
