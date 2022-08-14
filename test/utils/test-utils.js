@@ -14,16 +14,6 @@ const { Writable } = require("readable-stream");
 const concat = require("concat-stream");
 const { cli } = require("webpack");
 
-let devServerVersion;
-
-try {
-  devServerVersion = require("webpack-dev-server/package.json").version;
-} catch (error) {
-  // Nothing
-}
-
-const isDevServer4 = devServerVersion && devServerVersion.startsWith("4");
-
 const WEBPACK_PATH = path.resolve(__dirname, "../../packages/webpack-cli/bin/cli.js");
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 const isWindows = process.platform === "win32";
@@ -392,7 +382,6 @@ module.exports = {
   runAndGetProcess,
   runWatch,
   runPromptWithAnswers,
-  isDevServer4,
   isWindows,
   normalizeStderr,
   normalizeStdout,
