@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, normalizeStderr, normalizeStdout, isDevServer4 } = require("../utils/test-utils");
+const { run, normalizeStderr, normalizeStdout } = require("../utils/test-utils");
 
 describe("help", () => {
   it('should show help information using the "--help" option', async () => {
@@ -114,7 +114,7 @@ describe("help", () => {
 
   commands.forEach(({ name, alias }) => {
     // TODO fix it
-    const needSkip = name === "serve" && isDevServer4;
+    const needSkip = name === "serve";
 
     it(`should show help information for '${name}' command using the "--help" option`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help"]);
