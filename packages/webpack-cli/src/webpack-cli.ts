@@ -1136,7 +1136,6 @@ class WebpackCLI implements IWebpackCLI {
           versionCommandOptions,
           this.getInfoOptions(),
           async (options: { output: string; additionalPackage: string[] }) => {
-            console.log(options);
             const info = await cli.getInfoOutput(options);
 
             cli.logger.raw(info);
