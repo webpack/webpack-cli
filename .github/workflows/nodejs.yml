@@ -51,7 +51,7 @@ jobs:
         run: yarn lint
 
   build:
-    name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, DevServer ${{ matrix.dev-server-version }}
+    name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, DevServer ${{ matrix.dev-server-version }} (${{ matrix.shard }})
 
     runs-on: ${{ matrix.os }}
 
@@ -59,6 +59,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [10.x, 12.x, 14.x, 16.x, 18.x]
+        shard: ["1/4", "2/4", "3/4", "4/4"]
         webpack-version: [latest]
         dev-server-version: [latest]
         include:
@@ -105,7 +106,7 @@ jobs:
       - name: Run tests and generate coverage
         run: |
           yarn prepsuite
-          yarn test:coverage
+          yarn test:coverage --ci --shard=${{ matrix.shard }}
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
