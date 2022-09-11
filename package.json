@@ -68,7 +68,7 @@
     "cspell": "^4.2.8",
     "cz-customizable": "^6.3.0",
     "del-cli": "^3.0.1",
-    "eslint": "^8.14.0",
+    "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.2.0",
     "eslint-plugin-node": "^11.1.0",
     "execa": "^5.0.0",
