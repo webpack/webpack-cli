@@ -19,7 +19,6 @@ import {
   WebpackConfiguration,
   Argv,
   BasicPrimitive,
-  BasicPackageJsonContent,
   CallableOption,
   Callback,
   CLIPluginOptions,
@@ -58,9 +57,19 @@ const { pathToFileURL } = require("url");
 const util = require("util");
 
 const { program, Option } = require("commander");
+const envinfo = require("envinfo");
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
+
+interface Information {
+  Binaries?: string[];
+  Browsers?: string[];
+  Monorepos?: string[];
+  System?: string[];
+  npmGlobalPackages?: string[];
+  npmPackages?: string | string[];
+}
 
 class WebpackCLI implements IWebpackCLI {
   colors: WebpackCLIColors;
@@ -357,6 +366,84 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     return result;
+  }
+
+  getInfoOptions(): WebpackCLIBuiltInOption[] {
+    return [
+      {
+        name: "output",
+        alias: "o",
+        configs: [
+          {
+            type: "string",
+          },
+        ],
+        description: "To get the output in a specified format ( accept json or markdown )",
+      },
+      {
+        name: "additional-package",
+        alias: "a",
+        configs: [{ type: "string" }],
+        multiple: true,
+        description: "Adds additional packages to the output",
+      },
+    ];
+  }
+
+  async getInfoOutput(options: { output: string; additionalPackage: string[] }): Promise<string> {
+    let { output } = options;
+    const envinfoConfig: { [key: string]: boolean } = {};
+
+    if (output) {
+      // Remove quotes if exist
+      output = output.replace(/['"]+/g, "");
+
+      switch (output) {
+        case "markdown":
+          envinfoConfig["markdown"] = true;
+          break;
+        case "json":
+          envinfoConfig["json"] = true;
+          break;
+        default:
+          this.logger.error(`'${output}' is not a valid value for output`);
+          process.exit(2);
+      }
+    }
+
+    const defaultInformation: Information = {
+      Binaries: ["Node", "Yarn", "npm"],
+      Browsers: [
+        "Brave Browser",
+        "Chrome",
+        "Chrome Canary",
+        "Edge",
+        "Firefox",
+        "Firefox Developer Edition",
+        "Firefox Nightly",
+        "Internet Explorer",
+        "Safari",
+        "Safari Technology Preview",
+      ],
+      Monorepos: ["Yarn Workspaces", "Lerna"],
+      System: ["OS", "CPU", "Memory"],
+      npmGlobalPackages: ["webpack", "webpack-cli", "webpack-dev-server"],
+    };
+
+    let defaultPackages: string[] = ["webpack", "loader", "@webpack-cli/"];
+
+    if (typeof options.additionalPackage !== "undefined") {
+      defaultPackages = [...defaultPackages, ...options.additionalPackage];
+    }
+
+    defaultInformation.npmPackages = `{${defaultPackages.map((item) => `*${item}*`).join(",")}}`;
+
+    let info = await envinfo.run(defaultInformation, envinfoConfig);
+
+    info = info.replace(/npmPackages/g, "Packages");
+    info = info.replace(/npmGlobalPackages/g, "Global Packages");
+
+    return info;
   }
 
   async makeCommand(
@@ -925,8 +1012,9 @@ class WebpackCLI implements IWebpackCLI {
       dependencies: [WEBPACK_PACKAGE],
     };
     const versionCommandOptions = {
-      name: "version [commands...]",
+      name: "version",
       alias: "v",
+      usage: "[options]",
       description:
         "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
     };
@@ -1044,8 +1132,15 @@ class WebpackCLI implements IWebpackCLI {
         this.makeCommand(helpCommandOptions, [], () => {});
       } else if (isCommand(commandName, versionCommandOptions)) {
         // Stub for the `version` command
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this.makeCommand(versionCommandOptions, [], () => {});
+        this.makeCommand(
+          versionCommandOptions,
+          this.getInfoOptions(),
+          async (options: { output: string; additionalPackage: string[] }) => {
+            const info = await cli.getInfoOutput(options);
+
+            cli.logger.raw(info);
+          },
+        );
       } else {
         const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
           (externalBuiltInCommandInfo) =>
@@ -1181,84 +1276,6 @@ class WebpackCLI implements IWebpackCLI {
       cli.colors = cli.createColors(color);
     });
 
-    // Make `-v, --version` options
-    // Make `version|v [commands...]` command
-    const outputVersion = async (options: string[]) => {
-      // Filter `bundle`, `watch`, `version` and `help` commands
-      const possibleCommandNames = options.filter(
-        (option) =>
-          !isCommand(option, buildCommandOptions) &&
-          !isCommand(option, watchCommandOptions) &&
-          !isCommand(option, versionCommandOptions) &&
-          !isCommand(option, helpCommandOptions),
-      );
-
-      possibleCommandNames.forEach((possibleCommandName) => {
-        if (!isOption(possibleCommandName)) {
-          return;
-        }
-
-        this.logger.error(`Unknown option '${possibleCommandName}'`);
-        this.logger.error("Run 'webpack --help' to see available commands and options");
-        process.exit(2);
-      });
-
-      if (possibleCommandNames.length > 0) {
-        await Promise.all(
-          possibleCommandNames.map((possibleCommand) => loadCommandByName(possibleCommand)),
-        );
-
-        for (const possibleCommandName of possibleCommandNames) {
-          const foundCommand = findCommandByName(possibleCommandName) as WebpackCLICommand;
-
-          if (!foundCommand) {
-            this.logger.error(`Unknown command '${possibleCommandName}'`);
-            this.logger.error("Run 'webpack --help' to see available commands and options");
-            process.exit(2);
-          }
-
-          try {
-            const { name, version } = this.loadJSONFile<BasicPackageJsonContent>(
-              `${foundCommand.pkg}/package.json`,
-            );
-
-            this.logger.raw(`${name} ${version}`);
-          } catch (e) {
-            this.logger.error(`Error: External package '${foundCommand.pkg}' not found`);
-            process.exit(2);
-          }
-        }
-      }
-
-      let webpack;
-
-      try {
-        webpack = await this.loadWebpack(false);
-      } catch (_error) {
-        // Nothing
-      }
-
-      this.logger.raw(`webpack: ${webpack ? webpack.version : "not installed"}`);
-
-      const pkgJSON = this.loadJSONFile<BasicPackageJsonContent>("../package.json");
-
-      this.logger.raw(`webpack-cli: ${pkgJSON.version}`);
-
-      let devServer;
-
-      try {
-        devServer = await this.loadJSONFile<BasicPackageJsonContent>(
-          "webpack-dev-server/package.json",
-          false,
-        );
-      } catch (_error) {
-        // Nothing
-      }
-
-      this.logger.raw(`webpack-dev-server ${devServer ? devServer.version : "not installed"}`);
-
-      process.exit(0);
-    };
     this.program.option(
       "-v, --version",
       "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
@@ -1625,15 +1642,11 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       const isVersionOption = typeof options.version !== "undefined";
-      const isVersionCommandSyntax = isCommand(operand, versionCommandOptions);
 
-      if (isVersionOption || isVersionCommandSyntax) {
-        const optionsForVersion = ([] as string[])
-          .concat(isVersionOption ? [operand] : [])
-          .concat(operands.slice(1))
-          .concat(unknown);
-
-        await outputVersion(optionsForVersion);
+      if (isVersionOption) {
+        const info = await this.getInfoOutput({ output: "", additionalPackage: [] });
+        this.logger.raw(info);
+        process.exit(0);
       }
 
       let commandToRun = operand;

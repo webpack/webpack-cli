@@ -19,15 +19,9 @@
   "files": [
     "lib"
   ],
-  "dependencies": {
-    "envinfo": "^7.7.3"
-  },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
   "peerDependencies": {
     "webpack": "5.x.x",
     "webpack-cli": "4.x.x"
-  },
-  "devDependencies": {
-    "@types/envinfo": "^7.8.1"
   }
 }
