@@ -37,7 +37,7 @@ const serveCommand = () => {
 const versionCommand = () => {
   const packageName = "webpack";
   const args = ["version"];
-  const logMessage = "webpack-cli:";
+  const logMessage = "System:";
 
   return runTestStdout({ packageName, cliArgs: args, logMessage });
 };
