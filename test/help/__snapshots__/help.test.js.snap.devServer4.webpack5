@@ -134,7 +134,7 @@ Commands:
   loader|l [output-path] [options]                 Scaffold a loader.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
-  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  version|v [options]                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
@@ -193,7 +193,7 @@ Commands:
   loader|l [output-path] [options]                 Scaffold a loader.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
-  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  version|v [options]                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
@@ -252,7 +252,7 @@ Commands:
   loader|l [output-path] [options]                 Scaffold a loader.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
-  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  version|v [options]                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
@@ -1845,7 +1845,7 @@ Commands:
   loader|l [output-path] [options]                 Scaffold a loader.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
-  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  version|v [options]                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
@@ -1904,7 +1904,7 @@ Commands:
   loader|l [output-path] [options]                 Scaffold a loader.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
-  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  version|v [options]                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
@@ -2153,7 +2153,7 @@ Commands:
   loader|l [output-path] [options]                 Scaffold a loader.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
-  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  version|v [options]                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
@@ -2210,7 +2210,7 @@ Commands:
   loader|l [output-path] [options]                 Scaffold a loader.
   plugin|p [output-path] [options]                 Scaffold a plugin.
   serve|server|s [entries...] [options]            Run the webpack dev server.
-  version|v [commands...]                          Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  version|v [options]                              Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                   Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.

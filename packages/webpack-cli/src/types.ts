@@ -47,6 +47,8 @@ interface IWebpackCLI {
   doInstall(packageName: string, options?: PackageInstallOptions): Promise<string>;
   loadJSONFile<T = unknown>(path: Path, handleError: boolean): Promise<T>;
   tryRequireThenImport<T = unknown>(module: ModuleName, handleError: boolean): Promise<T>;
+  getInfoOptions(): WebpackCLIBuiltInOption[];
+  getInfoOutput(options: { output: string; additionalPackage: string[] }): Promise<string>;
   makeCommand(
     commandOptions: WebpackCLIOptions,
     options: WebpackCLICommandOptions,
