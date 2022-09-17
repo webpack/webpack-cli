@@ -148,7 +148,10 @@ class WebpackCLI implements IWebpackCLI {
 
     do {
       try {
-        if (fs.statSync(path.join(dir, "node_modules", packageName)).isDirectory()) {
+        const packagePath = process.env.NODE_PATH
+          ? path.join(process.env.NODE_PATH, packageName)
+          : path.join(dir, "node_modules", packageName);
+        if (fs.statSync(packagePath).isDirectory()) {
           return true;
         }
       } catch (_error) {
