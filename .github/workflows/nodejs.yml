@@ -84,9 +84,7 @@ jobs:
         run: yarn test:smoketests
 
       - name: Run tests and generate coverage
-        run: |
-          yarn prepsuite
-          yarn test:coverage --ci --shard=${{ matrix.shard }}
+        run: yarn test:coverage --ci --shard=${{ matrix.shard }}
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
