@@ -1,4 +1,3 @@
-/* eslint-disable   node/no-unpublished-require */
 const { run } = require("../../../utils/test-utils");
 
 describe("entry point", () => {
