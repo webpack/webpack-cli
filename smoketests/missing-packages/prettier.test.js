@@ -3,11 +3,12 @@
 const { runTestStdout, runTestStdoutWithInput } = require("../helpers");
 // eslint-disable-next-line node/no-unpublished-require
 const rimraf = require("rimraf");
+const os = require("os");
 const { resolve } = require("path");
 
 const prettierTest = async () => {
   const packageName = "prettier";
-  const rootPath = resolve(__dirname, "./test-assets");
+  const rootPath = resolve(os.tmpdir(), "./test-assets");
   const cliArgs = ["init", rootPath, "--force"];
   const logMessage = "Do you like to install prettier to format generated configuration?";
   const status = await runTestStdout({ packageName, cliArgs, logMessage });
@@ -17,7 +18,7 @@ const prettierTest = async () => {
 
 const prettierTestWithNoAnswer = async () => {
   const packageName = "prettier";
-  const rootPath = resolve(__dirname, "./test-assets");
+  const rootPath = resolve(os.tmpdir(), "./test-assets-2");
   const cliArgs = ["init", rootPath, "--force"];
   const inputs = {
     "Do you like to install prettier to format generated configuration?": "n\n",
