@@ -80,9 +80,6 @@ jobs:
       - name: Prepare environment for tests
         run: yarn build:ci
 
-      - name: Run smoketests
-        run: yarn test:smoketests
-
       - name: Run tests and generate coverage
         run: |
           yarn prepsuite
@@ -90,6 +87,33 @@ jobs:
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+
+  smoketests:
+    name: Smoketests - ${{ matrix.os }} - Node v${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --ignore-engines
+
+      - name: Prepare environment for tests
+        run: yarn build:ci
+
+      - name: Run smoketests
+        run: yarn test:smoketests
 
   commitlint:
     name: Lint Commit Messages
