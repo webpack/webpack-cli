@@ -128,8 +128,6 @@ jobs:
 
       - run: yarn --frozen-lockfile
 
-      - name: conventional-changelog-lint-config-cz
-        # $GITHUB_WORKSPACE is the path to your repository
-        run: echo "NODE_PATH=$GITHUB_WORKSPACE/node_modules" >> $GITHUB_ENV
-
-      - uses: wagoid/commitlint-github-action@v4
+      - uses: wagoid/commitlint-github-action@v5
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules
