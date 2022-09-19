@@ -3,7 +3,7 @@
 exports[`invalid schema should log webpack error and exit process on invalid config: stderr 1`] = `
 "[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
  - configuration.mode should be one of these:
-   \\"development\\" | \\"production\\" | \\"none\\"
+   "development" | "production" | "none"
    -> Enable production optimizations or development hints."
 `;
 

@@ -19,7 +19,7 @@ exports[`'configtest' command with the configuration path option should throw sy
 exports[`'configtest' command with the configuration path option should throw validation error: stderr 1`] = `
 "[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
  - configuration.mode should be one of these:
-   \\"development\\" | \\"production\\" | \\"none\\"
+   "development" | "production" | "none"
    -> Enable production optimizations or development hints."
 `;
 
@@ -28,7 +28,7 @@ exports[`'configtest' command with the configuration path option should throw va
 exports[`'configtest' command with the configuration path option should validate the config with alias 't': stderr 1`] = `
 "[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
  - configuration.mode should be one of these:
-   \\"development\\" | \\"production\\" | \\"none\\"
+   "development" | "production" | "none"
    -> Enable production optimizations or development hints."
 `;
 
