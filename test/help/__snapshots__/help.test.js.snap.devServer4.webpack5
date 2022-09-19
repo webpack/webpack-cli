@@ -579,7 +579,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -606,7 +606,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -715,7 +715,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -742,7 +742,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -920,7 +920,7 @@ Arguments:
                           ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default
                           answers
 
@@ -950,7 +950,7 @@ Arguments:
                           ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default
                           answers
 
@@ -979,7 +979,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -1006,7 +1006,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -1033,7 +1033,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1059,7 +1059,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1085,7 +1085,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1112,7 +1112,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1139,7 +1139,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1165,7 +1165,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./loaderName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1191,7 +1191,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -1218,7 +1218,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -1245,7 +1245,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -1272,7 +1272,7 @@ Arguments:
   generation-path         Path to the installation directory, e.g. ./projectName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
   -f, --force             Generate without questions (ideally) using default answers
 
 Global options:
@@ -1299,7 +1299,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1325,7 +1325,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1351,7 +1351,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1378,7 +1378,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1405,7 +1405,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1431,7 +1431,7 @@ Arguments:
   output-path             Path to the output directory, e.g. ./pluginName
 
 Options:
-  -t, --template <value>  Type of template (default: \\"default\\")
+  -t, --template <value>  Type of template (default: "default")
 
 Global options:
   --color                 Enable colors on console.
@@ -1919,7 +1919,7 @@ exports[`help should show help information using the "help --cache-type" option:
 exports[`help should show help information using the "help --cache-type" option: stdout 1`] = `
 "Usage: webpack --cache-type <value>
 Description: In memory caching. Filesystem caching.
-Possible values: \\"memory | filesystem\\"
+Possible values: "memory | filesystem"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1946,7 +1946,7 @@ exports[`help should show help information using the "help --mode" option: stder
 exports[`help should show help information using the "help --mode" option: stdout 1`] = `
 "Usage: webpack --mode <value>
 Description: Enable production optimizations or development hints.
-Possible values: \\"development | production | none\\"
+Possible values: "development | production | none"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -1986,7 +1986,7 @@ exports[`help should show help information using the "help --stats" option: stde
 exports[`help should show help information using the "help --stats" option: stdout 1`] = `
 "Usage: webpack --stats [value]
 Description: Stats options object or preset name.
-Possible values: \\"none | summary | errors-only | errors-warnings | minimal | normal | detailed | verbose\\"
+Possible values: "none | summary | errors-only | errors-warnings | minimal | normal | detailed | verbose"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -2001,7 +2001,7 @@ exports[`help should show help information using the "help --target" option: std
 "Usage: webpack --target <value...>
 Short: webpack -t <value...>
 Description: Environment to build for. Environment to build for. An array of environments to build for all of them when possible.
-Possible values: \\"false\\"
+Possible values: "false"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
@@ -2056,7 +2056,7 @@ exports[`help should show help information using the "help serve --mode" option:
 exports[`help should show help information using the "help serve --mode" option: stdout 1`] = `
 "Usage: webpack serve --mode <value>
 Description: Enable production optimizations or development hints.
-Possible values: \\"development | production | none\\"
+Possible values: "development | production | none"
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
