@@ -1,6 +1,5 @@
 "use strict";
 
-// eslint-disable-next-line node/no-unpublished-require
 const { run } = require("../../utils/test-utils");
 
 describe("loader error regression test for #1581", () => {

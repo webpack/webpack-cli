@@ -1,4 +1,4 @@
-// eslint-disable-next-line node/no-missing-require
+// eslint-disable-next-line node/no-unpublished-require
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
