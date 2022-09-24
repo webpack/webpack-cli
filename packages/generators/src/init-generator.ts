@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 
 import { CustomGenerator, InitGeneratorOptions, CustomGeneratorOptions } from "./types";
 import { getInstaller, getTemplate } from "./utils/helpers";
