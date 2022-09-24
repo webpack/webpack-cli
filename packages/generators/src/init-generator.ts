@@ -19,20 +19,6 @@ export default class InitGenerator<
   }
 
   public async prompting(): Promise<void> {
-    if (!existsSync(this.generationPath)) {
-      this.cli.logger.log(
-        `${this.cli.colors.blue(
-          "ℹ INFO ",
-        )} supplied generation path doesn't exist, required folders will be created.`,
-      );
-      try {
-        mkdirSync(this.generationPath, { recursive: true });
-      } catch (error) {
-        this.cli.logger.error(`Failed to create directory.\n ${error}`);
-        process.exit(2);
-      }
-    }
-
     this.template = await getTemplate.call(this);
 
     await handlers[this.template as keyof typeof handlers].questions(this, Question);

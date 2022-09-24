@@ -77,12 +77,12 @@ describe("init command", () => {
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate folders if non existing generation path is given", async () => {
+  it.only("should generate folders if non existing generation path is given", async () => {
     const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
     const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
 
-    expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
     expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stderr).toContain(`create ${path.relative(__dirname, assetsPath)}`);
     expect(stderr).toContain("webpack.config.js");
 
     // Test files
@@ -94,12 +94,12 @@ describe("init command", () => {
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
 
-  it("should configure assets modules by default", async () => {
+  it.only("should configure assets modules by default", async () => {
     const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
     const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
 
-    expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
     expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stderr).toContain(`create ${path.relative(__dirname, assetsPath)}`);
     expect(stderr).toContain("webpack.config.js");
 
     // Test files
@@ -499,7 +499,7 @@ describe("init command", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should throw if the current path is not writable", async () => {
+  it.only("should throw if the current path is not writable", async () => {
     if (isWindows) {
       return;
     }
@@ -512,7 +512,7 @@ describe("init command", () => {
     const { exitCode, stderr } = await run(projectPath, ["init", "my-app"], { reject: false });
 
     expect(exitCode).toBe(2);
-    expect(stderr).toContain("Failed to create directory");
+    expect(stderr).toContain("Failed to initialize the project.");
   });
 
   it("should work with 'new' alias", async () => {
