@@ -53,7 +53,10 @@ const createProcess = (cwd, args, options) => {
     reject: false,
     stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
     maxBuffer: Infinity,
-    env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
+    env: {
+      WEBPACK_CLI_HELP_WIDTH: 1024,
+      NODE_PATH: path.resolve(__dirname, "../../node_modules"),
+    },
     ...options,
   });
 };
