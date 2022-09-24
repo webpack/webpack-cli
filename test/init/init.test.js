@@ -77,7 +77,7 @@ describe("init command", () => {
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
 
-  it.only("should generate folders if non existing generation path is given", async () => {
+  it("should generate folders if non existing generation path is given", async () => {
     const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
     const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
 
@@ -94,7 +94,7 @@ describe("init command", () => {
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
 
-  it.only("should configure assets modules by default", async () => {
+  it("should configure assets modules by default", async () => {
     const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
     const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
 
@@ -499,7 +499,7 @@ describe("init command", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it.only("should throw if the current path is not writable", async () => {
+  it("should throw if the current path is not writable", async () => {
     if (isWindows) {
       return;
     }
