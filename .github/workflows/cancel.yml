@@ -1,5 +1,13 @@
 name: Cancel
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - next
+  pull_request:
+    branches:
+      - master
+      - next
 jobs:
   cancel:
     name: Cancel Previous Runs
