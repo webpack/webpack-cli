@@ -65,7 +65,6 @@
     "concat-stream": "^2.0.0",
     "cspell": "^4.2.8",
     "css-loader": "^6.7.1",
-    "cz-customizable": "^6.3.0",
     "del-cli": "^5.0.0",
     "eslint": "^8.23.1",
     "eslint-config-prettier": "^8.5.0",
