@@ -81,8 +81,8 @@ describe("init command", () => {
     const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
     const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
 
-    expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
     expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stderr).toContain(`create ${path.relative(__dirname, assetsPath)}`);
     expect(stderr).toContain("webpack.config.js");
 
     // Test files
@@ -98,8 +98,8 @@ describe("init command", () => {
     const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
     const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
 
-    expect(stdout).toContain("generation path doesn't exist, required folders will be created.");
     expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stderr).toContain(`create ${path.relative(__dirname, assetsPath)}`);
     expect(stderr).toContain("webpack.config.js");
 
     // Test files
@@ -512,7 +512,7 @@ describe("init command", () => {
     const { exitCode, stderr } = await run(projectPath, ["init", "my-app"], { reject: false });
 
     expect(exitCode).toBe(2);
-    expect(stderr).toContain("Failed to create directory");
+    expect(stderr).toContain("Failed to initialize the project.");
   });
 
   it("should work with 'new' alias", async () => {

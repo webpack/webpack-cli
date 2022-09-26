@@ -6,6 +6,9 @@ import { CustomGenerator } from "./types";
 import type { CustomGeneratorOptions, BaseCustomGeneratorOptions } from "./types";
 import { getInstaller, getTemplate } from "./utils/helpers";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+Object.assign(Generator.prototype, require("yeoman-generator/lib/actions/install"));
+
 // Helper to get the template-directory content
 const getFiles = (dir: string): string[] => {
   return fs.readdirSync(dir).reduce((list, file) => {
