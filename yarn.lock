@@ -12108,9 +12108,9 @@ yeoman-environment@^2.10.3, yeoman-environment@^2.9.5:
     yeoman-generator "^4.8.2"
 
 yeoman-environment@^3.9.1:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/yeoman-environment/-/yeoman-environment-3.10.0.tgz#d8c56571b68d16b4af8abfb950f83acc503eed77"
-  integrity sha512-sYtSxBK9daq21QjoskJTHKLQ1xEsRPURkmFV/aM8HS8ZlQVzwx57Rz1zCs8EGPhK4vqsmTE8H92Gp1jg1fT3EA==
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/yeoman-environment/-/yeoman-environment-3.11.0.tgz#5a4bed3448fb02362e284cd1d9c90fabd1ed5719"
+  integrity sha512-xdBbfxla29ltaGCAHYCdBjiF7cxLDNBIWYG7CVMj6f8lJZ8NBWgPOVU9TjOsewB5QsFbhEIhe6z0WvCbI5+B1A==
   dependencies:
     "@npmcli/arborist" "^4.0.4"
     are-we-there-yet "^2.0.0"
