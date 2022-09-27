@@ -156,6 +156,17 @@ class WebpackCLI implements IWebpackCLI {
       }
     } while (dir !== (dir = path.dirname(dir)));
 
+    // https://github.com/nodejs/node/blob/v18.9.1/lib/internal/modules/cjs/loader.js#L1274
+    for (const internalPath of require("module").globalPaths) {
+      try {
+        if (fs.statSync(path.join(internalPath, packageName)).isDirectory()) {
+          return true;
+        }
+      } catch (_error) {
+        // Nothing
+      }
+    }
+
     return false;
   }
 
