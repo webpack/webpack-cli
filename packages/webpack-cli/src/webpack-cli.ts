@@ -144,18 +144,6 @@ class WebpackCLI implements IWebpackCLI {
       return true;
     }
 
-    // Respect NODE_PATH environment variable
-    try {
-      if (
-        process.env.NODE_PATH &&
-        fs.statSync(path.join(process.env.NODE_PATH, packageName)).isDirectory()
-      ) {
-        return true;
-      }
-    } catch (_error) {
-      // Nothing
-    }
-
     let dir = __dirname;
 
     do {
@@ -167,6 +155,17 @@ class WebpackCLI implements IWebpackCLI {
         // Nothing
       }
     } while (dir !== (dir = path.dirname(dir)));
+
+    // https://github.com/nodejs/node/blob/v18.9.1/lib/internal/modules/cjs/loader.js#L1274
+    for (const internalPath of require("module").globalPaths) {
+      try {
+        if (fs.statSync(path.join(internalPath, packageName)).isDirectory()) {
+          return true;
+        }
+      } catch (_error) {
+        // Nothing
+      }
+    }
 
     return false;
   }
