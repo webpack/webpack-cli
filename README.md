@@ -100,7 +100,7 @@ The webpack family welcomes any contributor, small or big. We are happy to elabo
 
 ## Funding
 
-If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
+If you like **webpack**, please consider donating through [Open Collective](https://opencollective.com/webpack) to help us maintain it.
 
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
 [npm-url]: https://www.npmjs.com/package/webpack-cli
