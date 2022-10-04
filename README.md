@@ -28,7 +28,7 @@
 - [Getting started](#getting-started)
 - [Exit codes and their meanings](#exit-codes-and-their-meanings)
 - [Contributing and Internal Documentation](#contributing-and-internal-documentation)
-- [Open Collective](#open-collective)
+- [Funding](#funding)
 
 ## About
 
@@ -98,9 +98,9 @@ You will be prompted for some questions about which features you want to use, su
 
 The webpack family welcomes any contributor, small or big. We are happy to elaborate, guide you through the source code and find issues you might want to work on! To get started have a look at our [contribution documentation](./.github/CONTRIBUTING.md).
 
-## Open Collective
+## Funding
 
-If you like **webpack**, please consider donating to our [Open Collective](https://opencollective.com/webpack) to help us maintain it.
+If you like **webpack**, please consider donating through [Open Collective](https://opencollective.com/webpack) to help us maintain it.
 
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
 [npm-url]: https://www.npmjs.com/package/webpack-cli
