@@ -63,7 +63,7 @@
     "coffeescript": "^2.7.0",
     "colorette": "^2.0.16",
     "concat-stream": "^2.0.0",
-    "cspell": "^4.2.8",
+    "cspell": "^6.12.0",
     "css-loader": "^6.7.1",
     "del-cli": "^5.0.0",
     "eslint": "^8.23.1",
