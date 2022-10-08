@@ -97,7 +97,8 @@
     "esbenp",
     "msuccessfully",
     "mfirst",
-    "msecond"
+    "msecond",
+    "sourcemaps"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [
