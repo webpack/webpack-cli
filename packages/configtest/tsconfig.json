@@ -5,6 +5,8 @@
     "rootDir": "./src"
   },
   "include": ["./src"],
+  "module": "node16",
+  "moduleResolution": "node16",
   "references": [
     {
       "path": "../webpack-cli"
