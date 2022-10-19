@@ -2171,8 +2171,8 @@ class WebpackCLI implements IWebpackCLI {
     options: Partial<WebpackDevServerOptions>,
     callback?: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
   ): Promise<WebpackCompiler> {
-    if (typeof options.nodeEnv === "string") {
-      process.env.NODE_ENV = options.nodeEnv;
+    if (typeof options.defineProcessEnvNodeEnv === "string") {
+      process.env.NODE_ENV = options.defineProcessEnvNodeEnv;
     }
 
     let config = await this.loadConfig(options);
