@@ -1,1 +1,1 @@
-console.log('--node-env test');
+console.log('--define-process-env-node-env test');

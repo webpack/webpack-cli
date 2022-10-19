@@ -887,7 +887,7 @@ class WebpackCLI implements IWebpackCLI {
         description: "Environment passed to the configuration when it is a function.",
       },
       {
-        name: "node-env",
+        name: "define-process-env-node-env",
         configs: [
           {
             type: "string",
