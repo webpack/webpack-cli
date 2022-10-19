@@ -1,8 +1,8 @@
 module.exports = (isUsingDevServer) => {
   const scripts = {
-    build: "webpack --mode=production --node-env=production",
+    build: "webpack --mode=production --define-process-env-node-env=production",
     "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
+    "build:prod": "webpack --mode=production --define-process-env-node-env=production",
     watch: "webpack --watch",
   };
   if (isUsingDevServer) {
