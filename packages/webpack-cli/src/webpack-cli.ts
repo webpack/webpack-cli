@@ -479,7 +479,10 @@ class WebpackCLI implements IWebpackCLI {
     }) as WebpackCLICommand;
 
     if (commandOptions.description) {
-      command.description(commandOptions.description, commandOptions.argsDescription);
+      command.description(
+        commandOptions.description,
+        commandOptions.argsDescription as { [argName: string]: string },
+      );
     }
 
     if (commandOptions.usage) {
@@ -1412,7 +1415,7 @@ class WebpackCLI implements IWebpackCLI {
             // Arguments
             const argumentList = helper
               .visibleArguments(command)
-              .map((argument) => formatItem(argument.term, argument.description));
+              .map((argument) => formatItem(argument.name(), argument.description));
 
             if (argumentList.length > 0) {
               output = output.concat([bold("Arguments:"), formatList(argumentList), ""]);
