@@ -1248,14 +1248,6 @@ class WebpackCLI implements IWebpackCLI {
               this.logger.error("Run 'webpack --help' to see available commands and options");
               process.exit(2);
             }
-
-            const levenshtein = require("fastest-levenshtein");
-
-            (command as WebpackCLICommand).options.forEach((option) => {
-              if (!option.hidden && levenshtein.distance(name, option.long?.slice(2)) < 3) {
-                this.logger.error(`Did you mean '--${option.name()}'?`);
-              }
-            });
           }
         }
       }
@@ -1338,7 +1330,7 @@ class WebpackCLI implements IWebpackCLI {
           // Support multiple aliases
           subcommandTerm: (command: WebpackCLICommand) => {
             const humanReadableArgumentName = (argument: WebpackCLICommandOption) => {
-              const nameOutput = argument.name + (argument.variadic === true ? "..." : "");
+              const nameOutput = argument.name() + (argument.variadic === true ? "..." : "");
 
               return argument.required ? "<" + nameOutput + ">" : "[" + nameOutput + "]";
             };
