@@ -236,7 +236,7 @@ docs: update README.md
 
 ## Contributor License Agreement
 
-When submitting your contribution, a CLA (Contributor License Agreement) bot will come by to verify that you signed the CLA. If you are submitting a PR for the first time, it will link you to the right place to sign it. If you have committed your contributions using an email that is not the same as your email used on GitHub, the CLA bot can't accept your contribution.
+When submitting your contribution, a CLA (Contributor License Agreement) bot will come by to verify that you signed the [CLA](https://easycla.lfx.linuxfoundation.org/#/?version=2). If you are submitting a PR for the first time, it will link you to the right place to sign it. If you have committed your contributions using an email that is not the same as your email used on GitHub, the CLA bot can't accept your contribution.
 
 Run `git config user.email` to see your Git email, and verify it with [your GitHub email](https://github.com/settings/emails).
 
