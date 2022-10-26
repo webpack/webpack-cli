@@ -479,7 +479,10 @@ class WebpackCLI implements IWebpackCLI {
     }) as WebpackCLICommand;
 
     if (commandOptions.description) {
-      command.description(commandOptions.description, commandOptions.argsDescription);
+      command.description(
+        commandOptions.description,
+        commandOptions.argsDescription as { [argName: string]: string },
+      );
     }
 
     if (commandOptions.usage) {
@@ -1292,6 +1295,9 @@ class WebpackCLI implements IWebpackCLI {
       "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
     );
 
+    // webpack-cli has it's own logic for showing suggestions
+    this.program.showSuggestionAfterError(false);
+
     const outputHelp = async (
       options: string[],
       isVerbose: boolean,
@@ -1335,7 +1341,7 @@ class WebpackCLI implements IWebpackCLI {
           // Support multiple aliases
           subcommandTerm: (command: WebpackCLICommand) => {
             const humanReadableArgumentName = (argument: WebpackCLICommandOption) => {
-              const nameOutput = argument.name + (argument.variadic === true ? "..." : "");
+              const nameOutput = argument.name() + (argument.variadic === true ? "..." : "");
 
               return argument.required ? "<" + nameOutput + ">" : "[" + nameOutput + "]";
             };
@@ -1412,7 +1418,7 @@ class WebpackCLI implements IWebpackCLI {
             // Arguments
             const argumentList = helper
               .visibleArguments(command)
-              .map((argument) => formatItem(argument.term, argument.description));
+              .map((argument) => formatItem(argument.name(), argument.description));
 
             if (argumentList.length > 0) {
               output = output.concat([bold("Arguments:"), formatList(argumentList), ""]);

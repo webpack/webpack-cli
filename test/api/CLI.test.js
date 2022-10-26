@@ -1340,7 +1340,7 @@ describe("CLI API", () => {
         ],
         (options) => {
           expect(options).toEqual({
-            booleanAndNumberAndString: "default",
+            booleanAndNumberAndString: true,
           });
         },
       );
