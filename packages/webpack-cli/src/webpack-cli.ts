@@ -1248,6 +1248,14 @@ class WebpackCLI implements IWebpackCLI {
               this.logger.error("Run 'webpack --help' to see available commands and options");
               process.exit(2);
             }
+
+            const levenshtein = require("fastest-levenshtein");
+
+            (command as WebpackCLICommand).options.forEach((option) => {
+              if (!option.hidden && levenshtein.distance(name, option.long?.slice(2)) < 3) {
+                this.logger.error(`Did you mean '--${option.name()}'?`);
+              }
+            });
           }
         }
       }
@@ -1286,6 +1294,9 @@ class WebpackCLI implements IWebpackCLI {
       "-v, --version",
       "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
     );
+
+    // webpack-cli has it's own logic for showing suggestions
+    this.program.showSuggestionAfterError(false);
 
     const outputHelp = async (
       options: string[],
