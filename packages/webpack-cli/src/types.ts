@@ -19,7 +19,7 @@ import webpack, {
 import { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
 
 import { Colorette } from "colorette";
-import { Command, CommandOptions, OptionConstructor, ParseOptions } from "commander";
+import { Command, CommandOptions, Option, ParseOptions } from "commander";
 import { prepare } from "rechoir";
 import { stringifyStream } from "@discoveryjs/json-ext";
 
@@ -278,7 +278,7 @@ interface ImportLoaderError extends Error {
 /**
  * External libraries types
  */
-
+type OptionConstructor = new (flags: string, description?: string) => Option;
 type CommanderOption = InstanceType<OptionConstructor>;
 
 interface Rechoir {
