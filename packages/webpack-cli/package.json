@@ -43,7 +43,7 @@
     "cross-spawn": "^7.0.3",
     "fastest-levenshtein": "^1.0.12",
     "import-local": "^3.0.2",
-    "interpret": "^2.2.0",
+    "interpret": "^3.1.1",
     "rechoir": "^0.7.0",
     "webpack-merge": "^5.7.3"
   },
