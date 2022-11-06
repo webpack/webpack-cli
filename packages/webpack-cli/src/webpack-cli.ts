@@ -51,13 +51,13 @@ import { Help, ParseOptions } from "commander";
 
 import { CLIPlugin as CLIPluginClass } from "./plugins/CLIPlugin";
 
-const fs = require("fs");
-const path = require("path");
-const { pathToFileURL } = require("url");
-const util = require("util");
+import fs from "fs";
+import path from "path";
+import { pathToFileURL } from "url";
+import util from "util";
 
-const { program, Option } = require("commander");
-const envinfo = require("envinfo");
+import { program, Option } from "commander";
+import envinfo from "envinfo";
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
@@ -83,7 +83,7 @@ class WebpackCLI implements IWebpackCLI {
     this.logger = this.getLogger();
 
     // Initialize program
-    this.program = program;
+    this.program = program as WebpackCLICommand;
     this.program.name("webpack");
     this.program.configureOutput({
       writeErr: this.logger.error,
@@ -694,7 +694,7 @@ class WebpackCLI implements IWebpackCLI {
             }
 
             return mainOption.multiple
-              ? ([] as number[]).concat(prev).concat(Number(value))
+              ? ([] as number[]).concat(prev as number[]).concat(Number(value))
               : Number(value);
           })
           .default(mainOption.defaultValue);
@@ -715,7 +715,9 @@ class WebpackCLI implements IWebpackCLI {
               skipDefault = false;
             }
 
-            return mainOption.multiple ? ([] as string[]).concat(prev).concat(value) : value;
+            return mainOption.multiple
+              ? ([] as string[]).concat(prev as string[]).concat(value)
+              : value;
           })
           .default(mainOption.defaultValue);
 
@@ -723,16 +725,22 @@ class WebpackCLI implements IWebpackCLI {
 
         command.addOption(optionForCommand);
       } else if (mainOption.type.has(Boolean)) {
-        const optionForCommand = new Option(mainOption.flags, mainOption.description).default(
-          mainOption.defaultValue,
-        );
+        const optionForCommand: WebpackCLICommandOption = new Option(
+          mainOption.flags,
+          mainOption.description,
+        ).default(mainOption.defaultValue);
 
         optionForCommand.helpLevel = option.helpLevel;
 
         command.addOption(optionForCommand);
       } else {
-        const optionForCommand = new Option(mainOption.flags, mainOption.description)
-          .argParser(Array.from(mainOption.type)[0])
+        const optionForCommand: WebpackCLICommandOption = new Option(
+          mainOption.flags,
+          mainOption.description,
+        )
+          .argParser(
+            Array.from(mainOption.type)[0] as (value: string, previous: boolean) => boolean,
+          )
           .default(mainOption.defaultValue);
 
         optionForCommand.helpLevel = option.helpLevel;
@@ -742,10 +750,9 @@ class WebpackCLI implements IWebpackCLI {
     } else if (mainOption.type.size > 1) {
       let skipDefault = true;
 
-      const optionForCommand = new Option(
+      const optionForCommand: WebpackCLICommandOption = new Option(
         mainOption.flags,
         mainOption.description,
-        mainOption.defaultValue,
       )
         .argParser((value: string, prev = []) => {
           if (mainOption.defaultValue && mainOption.multiple && skipDefault) {
@@ -758,13 +765,15 @@ class WebpackCLI implements IWebpackCLI {
 
             if (!isNaN(numberValue)) {
               return mainOption.multiple
-                ? ([] as number[]).concat(prev).concat(numberValue)
+                ? ([] as number[]).concat(prev as number[]).concat(numberValue)
                 : numberValue;
             }
           }
 
           if (mainOption.type.has(String)) {
-            return mainOption.multiple ? ([] as string[]).concat(prev).concat(value) : value;
+            return mainOption.multiple
+              ? ([] as string[]).concat(prev as string[]).concat(value)
+              : value;
           }
 
           return value;
@@ -775,7 +784,10 @@ class WebpackCLI implements IWebpackCLI {
 
       command.addOption(optionForCommand);
     } else if (mainOption.type.size === 0 && negativeOption) {
-      const optionForCommand = new Option(mainOption.flags, mainOption.description);
+      const optionForCommand: WebpackCLICommandOption = new Option(
+        mainOption.flags,
+        mainOption.description,
+      );
 
       // Hide stub option
       optionForCommand.hideHelp();
@@ -785,7 +797,10 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     if (negativeOption) {
-      const optionForCommand = new Option(negativeOption.flags, negativeOption.description);
+      const optionForCommand: WebpackCLICommandOption = new Option(
+        negativeOption.flags,
+        negativeOption.description,
+      );
 
       optionForCommand.helpLevel = option.helpLevel;
 
@@ -2329,4 +2344,4 @@ class WebpackCLI implements IWebpackCLI {
   }
 }
 
-module.exports = WebpackCLI;
+export default WebpackCLI;

@@ -12,4 +12,4 @@ function dynamicImportLoader<T>(): DynamicImport<T> | null {
   return importESM as DynamicImport<T>;
 }
 
-module.exports = dynamicImportLoader;
+export default dynamicImportLoader;

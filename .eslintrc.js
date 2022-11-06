@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   reportUnusedDisableDirectives: true,
   extends: ["eslint:recommended", "plugin:node/recommended", "prettier"],
-  parserOptions: { ecmaVersion: 2018, sourceType: "script" },
+  parserOptions: { ecmaVersion: 2018, sourceType: "module" },
   plugins: ["node"],
   settings: {
     node: {
@@ -22,6 +22,7 @@ module.exports = {
     "no-loop-func": "error",
     "no-undef": "error",
     "prefer-const": "error",
+    "node/no-unsupported-features/es-syntax": "off",
   },
   overrides: [
     {

@@ -1,7 +1,5 @@
-import { IWebpackCLI } from "./types";
+import CLI from "./webpack-cli";
+
 export * from "./types";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const CLI: IWebpackCLI = require("./webpack-cli");
-
-module.exports = CLI;
+export default CLI;

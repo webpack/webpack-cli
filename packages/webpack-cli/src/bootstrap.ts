@@ -1,7 +1,6 @@
 import { IWebpackCLI } from "./types";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const WebpackCLI = require("./webpack-cli");
+import WebpackCLI from "./webpack-cli";
 
 const runCLI = async (args: Parameters<IWebpackCLI["run"]>[0]) => {
   // Create a new instance of the CLI object
@@ -15,4 +14,4 @@ const runCLI = async (args: Parameters<IWebpackCLI["run"]>[0]) => {
   }
 };
 
-module.exports = runCLI;
+export default runCLI;

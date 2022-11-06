@@ -269,7 +269,7 @@ interface Env {
   WEBPACK_DEV_SERVER_PACKAGE?: string;
 }
 
-type DynamicImport<T> = (url: string) => Promise<{ default: T }>;
+type DynamicImport<T> = (url: URL) => Promise<{ default: T }>;
 
 interface ImportLoaderError extends Error {
   code?: string;
