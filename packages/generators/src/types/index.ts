@@ -1,6 +1,6 @@
 import Generator from "yeoman-generator";
 import path from "path";
-import { IWebpackCLI } from "webpack-cli";
+import { IWebpackCLI } from "../../../webpack-cli/src";
 
 export type InitOptions = { template: string; force?: boolean };
 export type LoaderOptions = { template: string };

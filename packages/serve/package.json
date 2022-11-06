@@ -2,7 +2,8 @@
   "name": "@webpack-cli/serve",
   "version": "1.7.0",
   "description": "",
-  "main": "lib/index.js",
+  "type": "module",
+  "exports": "./lib/index.js",
   "types": "lib/index.d.ts",
   "keywords": [],
   "publishConfig": {

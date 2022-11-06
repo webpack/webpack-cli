@@ -16,7 +16,13 @@
   "bin": {
     "webpack-cli": "./bin/cli.js"
   },
-  "main": "./lib/index.js",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "default": "./lib/index.js"
+    }
+  },
   "engines": {
     "node": ">=14.15.0"
   },

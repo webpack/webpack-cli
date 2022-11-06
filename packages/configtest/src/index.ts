@@ -1,4 +1,4 @@
-import { IWebpackCLI } from "webpack-cli";
+import { IWebpackCLI } from "webpack-cli/src";
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 
