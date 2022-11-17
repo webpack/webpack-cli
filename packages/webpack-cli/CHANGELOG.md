@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.10.0...webpack-cli@5.0.0) (2022-11-17)
+
+### Bug Fixes
+
+- improve description of the `--disable-interpret` option ([#3364](https://github.com/webpack/webpack-cli/issues/3364)) ([bdb7e20](https://github.com/webpack/webpack-cli/commit/bdb7e20a3fc5a676bf5ba9912c091a2c9b3a1cfd))
+- remove the redundant `utils` export ([#3343](https://github.com/webpack/webpack-cli/issues/3343)) ([a9ce5d0](https://github.com/webpack/webpack-cli/commit/a9ce5d077f90492558e2d5c14841b3b5b85f1186))
+- respect `NODE_PATH` env variable ([#3411](https://github.com/webpack/webpack-cli/issues/3411)) ([83d1f58](https://github.com/webpack/webpack-cli/commit/83d1f58fb52d9dcfa3499efb342dfc47d0cca73a))
+- show all CLI specific flags in the minimum help output ([#3354](https://github.com/webpack/webpack-cli/issues/3354)) ([35843e8](https://github.com/webpack/webpack-cli/commit/35843e87c61fd27be92afce11bd66ebf4f9519ae))
+
+### Features
+
+- failOnWarnings option ([#3317](https://github.com/webpack/webpack-cli/issues/3317)) ([c48c848](https://github.com/webpack/webpack-cli/commit/c48c848c6c84eb73fbd829dc41bee301b0b7e2de))
+- update commander to v9 ([#3460](https://github.com/webpack/webpack-cli/issues/3460)) ([6621c02](https://github.com/webpack/webpack-cli/commit/6621c023ab59cc510a5f76e262f2c81676d1920b))
+- added the `--define-process-env-node-env` option
+- update `interpret` to v3 and `rechoir` to v0.8
+- add an option for preventing interpret ([#3329](https://github.com/webpack/webpack-cli/issues/3329)) ([c737383](https://github.com/webpack/webpack-cli/commit/c7373832b96af499ad0813e07d114bdc927afdf4))
+
+### BREAKING CHANGES
+
+- the minimum supported webpack version is v5.0.0 (#3342) ([b1af0dc](https://github.com/webpack/webpack-cli/commit/b1af0dc7ebcdf746bc37889e4c1f978c65acc4a5)), closes [#3342](https://github.com/webpack/webpack-cli/issues/3342)
+- webpack-cli no longer supports webpack v4, the minimum supported version is webpack v5.0.0
+- webpack-cli no longer supports webpack-dev-server v3, the minimum supported version is webpack-dev-server v4.0.0
+- remove the `migrate` command (#3291) ([56b43e4](https://github.com/webpack/webpack-cli/commit/56b43e4baf76c166ade3b282b40ad9d007cc52b6)), closes [#3291](https://github.com/webpack/webpack-cli/issues/3291)
+- remove the `--prefetch` option in favor the `PrefetchPlugin` plugin
+- remove the `--node-env` option in favor `--define-process-env-node-env`
+- remove the `--hot` option in favor of directly using the `HotModuleReplacement` plugin (only for `build` command, for `serve` it will work)
+- the behavior logic of the `--entry` option has been changed - previously it replaced your entries, now the option adds a specified entry, if you want to return the previous behavior please use ` webpack --entry-reset --entry './src/my-entry.js'`
+
 # [4.10.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.9.2...webpack-cli@4.10.0) (2022-06-13)
 
 ### Bug Fixes

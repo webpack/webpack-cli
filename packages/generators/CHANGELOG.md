@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.5.0...@webpack-cli/generators@3.0.0) (2022-11-17)
+
+### Bug Fixes
+
+- add style and css loader to sass/less/stylus replaces [#3172](https://github.com/webpack/webpack-cli/issues/3172) ([#3412](https://github.com/webpack/webpack-cli/issues/3412)) ([2d3eea1](https://github.com/webpack/webpack-cli/commit/2d3eea16877e63e80019a318cf05894295877bd3))
+
+### BREAKING CHANGES
+
+- the minimum supported webpack version is v5.0.0 (#3342) ([b1af0dc](https://github.com/webpack/webpack-cli/commit/b1af0dc7ebcdf746bc37889e4c1f978c65acc4a5)), closes [#3342](https://github.com/webpack/webpack-cli/issues/3342)
+- webpack-cli no longer supports webpack v4, the minimum supported version is webpack v5.0.0
+
 # [2.5.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@2.4.2...@webpack-cli/generators@2.5.0) (2022-06-13)
 
 ### Bug Fixes

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.5.0...@webpack-cli/info@2.0.0) (2022-11-17)
+
+### Features
+
+- **info:** show information for webpack-cli packages by default ([#3362](https://github.com/webpack/webpack-cli/issues/3362)) ([a1161a8](https://github.com/webpack/webpack-cli/commit/a1161a83d1c8be942ebd2fc93c20e463db38f632))
+
+### BREAKING CHANGES
+
+- the minimum supported webpack version is v5.0.0 (#3342) ([b1af0dc](https://github.com/webpack/webpack-cli/commit/b1af0dc7ebcdf746bc37889e4c1f978c65acc4a5)), closes [#3342](https://github.com/webpack/webpack-cli/issues/3342)
+- webpack-cli no longer supports webpack v4, the minimum supported version is webpack v5.0.0
+
 # [1.5.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@1.4.1...@webpack-cli/info@1.5.0) (2022-06-13)
 
 ### Features
