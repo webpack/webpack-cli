@@ -2107,8 +2107,6 @@ class WebpackCLI implements IWebpackCLI {
         }
       }
 
-      // TODO respect `--entry-reset` in th next major release
-
       // Respect `process.env.NODE_ENV`
       if (
         !item.mode &&

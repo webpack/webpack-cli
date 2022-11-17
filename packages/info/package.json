@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/info",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "Outputs info about system and webpack config",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -22,6 +22,6 @@
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9",
   "peerDependencies": {
     "webpack": "5.x.x",
-    "webpack-cli": "4.x.x"
+    "webpack-cli": "5.x.x"
   }
 }
