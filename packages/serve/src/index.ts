@@ -118,14 +118,7 @@ class ServeCommand {
 
         const servers: typeof DevServer[] = [];
 
-        if (cli.needWatchStdin(compiler) || devServerCLIOptions.stdin) {
-          // TODO remove in the next major release
-          // Compatibility with old `stdin` option for `webpack-dev-server`
-          // Should be removed for the next major release on both sides
-          if (devServerCLIOptions.stdin) {
-            delete devServerCLIOptions.stdin;
-          }
-
+        if (cli.needWatchStdin(compiler)) {
           process.stdin.on("end", () => {
             Promise.all(
               servers.map((server) => {
