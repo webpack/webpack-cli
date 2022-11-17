@@ -50,7 +50,7 @@
     "prepare": "husky install"
   },
   "peerDependencies": {
-    "webpack": "4.x.x || 5.x.x"
+    "webpack": "5.x.x"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
