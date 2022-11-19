@@ -1,5 +1,4 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
-/** eslint-disable **/
+// eslint-disable-next-line node/no-unsupported-features/es-syntax
 import * as path from "path";
 
 const config = {
