@@ -2177,6 +2177,8 @@ class WebpackCLI implements IWebpackCLI {
   ): Promise<WebpackCompiler> {
     if (typeof options.defineProcessEnvNodeEnv === "string") {
       process.env.NODE_ENV = options.defineProcessEnvNodeEnv;
+    } else if (typeof options.nodeEnv === "string") {
+      process.env.NODE_ENV = options.nodeEnv;
     }
 
     let config = await this.loadConfig(options);
