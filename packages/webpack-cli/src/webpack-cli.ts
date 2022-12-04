@@ -890,7 +890,7 @@ class WebpackCLI implements IWebpackCLI {
         description: "Environment passed to the configuration when it is a function.",
       },
       {
-        name: "define-process-env-node-env",
+        name: "node-env",
         configs: [
           {
             type: "string",
@@ -898,6 +898,17 @@ class WebpackCLI implements IWebpackCLI {
         ],
         multiple: false,
         description: "Sets process.env.NODE_ENV to the specified value.",
+      },
+      {
+        name: "define-process-env-node-env",
+        configs: [
+          {
+            type: "string",
+          },
+        ],
+        multiple: false,
+        description:
+          "Sets process.env.NODE_ENV to the specified value. (Currently an alias for `--node-env`)",
       },
 
       // Adding more plugins
@@ -2176,7 +2187,10 @@ class WebpackCLI implements IWebpackCLI {
     callback?: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
   ): Promise<WebpackCompiler> {
     if (typeof options.defineProcessEnvNodeEnv === "string") {
+      // TODO: This should only set NODE_ENV for the runtime not for the config too. Change this during next breaking change.
       process.env.NODE_ENV = options.defineProcessEnvNodeEnv;
+    } else if (typeof options.nodeEnv === "string") {
+      process.env.NODE_ENV = options.nodeEnv;
     }
 
     let config = await this.loadConfig(options);
