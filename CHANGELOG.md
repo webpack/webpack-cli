@@ -1,3 +1,9 @@
+## [5.0.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.0.0...webpack-cli@5.0.1) (2022-12-05)
+
+### Bug Fixes
+
+- make `define-process-env-node-env` alias `node-env` ([#3514](https://github.com/webpack/webpack-cli/issues/3514)) ([346a518](https://github.com/webpack/webpack-cli/commit/346a518dd7423a726810ef1012031f92d318c9c5))
+
 # [5.0.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@4.10.0...webpack-cli@5.0.0) (2022-11-17)
 
 ### Bug Fixes
