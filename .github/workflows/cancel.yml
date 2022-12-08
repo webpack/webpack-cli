@@ -8,8 +8,12 @@ on:
     branches:
       - master
       - next
+permissions: {}
 jobs:
   cancel:
+    permissions:
+      actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
+
     name: Cancel Previous Runs
     runs-on: ubuntu-latest
     timeout-minutes: 3
