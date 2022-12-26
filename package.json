@@ -28,7 +28,7 @@
   "scripts": {
     "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/*/lib/!(*.tpl)\" \"**/.yo-rc.json\"",
     "prebuild": "yarn clean",
-    "prebuild:ci": "yarn clean && node ./scripts/setupBuild.js",
+    "prebuild:ci": "yarn clean && node ./scripts/setup-build.js",
     "build": "tsc --build",
     "build:ci": "tsc --build",
     "watch": "tsc --build --watch",
@@ -46,7 +46,7 @@
     "test:ci": "yarn test:cli && yarn test:packages",
     "test:watch": "jest test/ packages/ --watch",
     "publish:monorepo": "yarn build && lerna version && lerna publish from-git",
-    "update:docs": "node ./scripts/updateDocs",
+    "update:docs": "node ./scripts/update-docs",
     "prepare": "husky install"
   },
   "peerDependencies": {

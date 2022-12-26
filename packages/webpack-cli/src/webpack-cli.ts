@@ -49,7 +49,7 @@ import { Compiler, MultiCompiler, WebpackError, StatsOptions } from "webpack";
 import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
-import { CLIPlugin as CLIPluginClass } from "./plugins/CLIPlugin";
+import { CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
 
 const fs = require("fs");
 const path = require("path");
@@ -2003,7 +2003,7 @@ class WebpackCLI implements IWebpackCLI {
 
     const CLIPlugin = await this.tryRequireThenImport<
       Instantiable<CLIPluginClass, [CLIPluginOptions]>
-    >("./plugins/CLIPlugin");
+    >("./plugins/cli-plugin");
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
       // Output warnings
