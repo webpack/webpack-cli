@@ -7,7 +7,7 @@
 <h1 align="center">webpack CLI</h1>
 
 <p align="center">
-  The official CLI of webpack
+  The official Command Line Interface of webpack
 </p>
 <br>
 
@@ -24,7 +24,6 @@
 - [Supported arguments and commands](#supported-arguments-and-commands)
 - [Packages](#packages)
   - [Commands](#commands)
-  - [Utilities](#utilities)
 - [Getting started](#getting-started)
 - [Exit codes and their meanings](#exit-codes-and-their-meanings)
 - [Contributing and Internal Documentation](#contributing-and-internal-documentation)
@@ -32,13 +31,13 @@
 
 ## About
 
-webpack CLI provides the interface of options webpack uses in its configuration file. The CLI options override options passed in the configuration file.
+Webpack CLI provides the interface of options webpack uses in its configuration file. The CLI options override options passed in the configuration file.
 
 The CLI provides a rich set of commands that helps you develop your application faster.
 
 ### How to install
 
-When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed!
+If you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed!
 
 Otherwise `npm install --save-dev webpack-cli` or `yarn add webpack-cli --dev` will install it.
 
@@ -48,7 +47,9 @@ Get to know what are the available commands and arguments [here](./packages/webp
 
 ## Packages
 
-We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). The main CLI logic resides in `packages/webpack-cli`, while commands supported by the CLI, has dedicated subfolders in the folder `packages`. A summary of supported commands is described below.
+We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). The main CLI logic using options, resides in [`packages/webpack-cli`](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli), while commands supported by the CLI, has dedicated subfolders in the folder [`packages`](https://github.com/webpack/webpack-cli/tree/master/packages). 
+
+A summary of supported commands is described below.
 
 ### Commands
 
@@ -66,24 +67,23 @@ Thus, webpack CLI provides different commands for many common tasks.
 - [`version|v [commands...]`](https://webpack.js.org/api/cli/#version) - Output the version number of `webpack`, `webpack-cli`, `webpack-dev-server`, and commands.
 - [`watch|w [entries...] [options]`](https://webpack.js.org/api/cli/#watch) - Run webpack and watch for files changes.
 
-### Utilities
-
-The project has several utility packages which are used by other commands
-
-- [`generators`](./packages/generators/README.md) - Contains all webpack-cli related yeoman generators.
 
 ## Getting started
 
-When you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack, then webpack CLI is already installed!
+If you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack, then webpack CLI is already installed!
 
-Otherwise, you would need to install webpack CLI and the packages you want to use. If you want to use the `init` command to create a new configuration file:
+Otherwise, you would need to install webpack CLI and the packages you want to use. 
+
+If you want to create a fresh webpack project, the `init` command will guide you through setting up a project. Run the command as stated below.
 
 ```sh
 npm i webpack-cli @webpack-cli/init
+```
+```sh
 npx webpack-cli init
 ```
 
-You will be prompted for some questions about which features you want to use, such as `scss`, PWA support or multiple entry-points.
+You will then be prompted for some questions about which features you want to use, such as `scss`, `typescript`, `PWA` support or other features.
 
 ## Exit codes and their meanings
 
