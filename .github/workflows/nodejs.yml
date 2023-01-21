@@ -22,7 +22,7 @@ jobs:
     name: Lint - ${{ matrix.os }} - Node v${{ matrix.node-version }}
 
     runs-on: ${{ matrix.os }}
-    
+
     concurrency:
       group: lint-${{ github.ref }}
       cancel-in-progress: true
