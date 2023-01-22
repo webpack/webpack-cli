@@ -47,7 +47,7 @@ Get to know what are the available commands and arguments [here](./packages/webp
 
 ## Packages
 
-We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). The main CLI logic using options, resides in [`packages/webpack-cli`](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli), while commands supported by the CLI, has dedicated subfolders in the folder [`packages`](https://github.com/webpack/webpack-cli/tree/master/packages). 
+We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). The main CLI logic using options, resides in [`packages/webpack-cli`](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli), while commands supported by the CLI, has dedicated subfolders in the folder [`packages`](https://github.com/webpack/webpack-cli/tree/master/packages).
 
 A summary of supported commands is described below.
 
@@ -67,18 +67,18 @@ Thus, webpack CLI provides different commands for many common tasks.
 - [`version|v [commands...]`](https://webpack.js.org/api/cli/#version) - Output the version number of `webpack`, `webpack-cli`, `webpack-dev-server`, and commands.
 - [`watch|w [entries...] [options]`](https://webpack.js.org/api/cli/#watch) - Run webpack and watch for files changes.
 
-
 ## Getting started
 
 If you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack, then webpack CLI is already installed!
 
-Otherwise, you would need to install webpack CLI and the packages you want to use. 
+Otherwise, you would need to install webpack CLI and the packages you want to use.
 
 If you want to create a fresh webpack project, the `init` command will guide you through setting up a project. Run the command as stated below.
 
 ```sh
 npm i webpack-cli @webpack-cli/init
 ```
+
 ```sh
 npx webpack-cli init
 ```
