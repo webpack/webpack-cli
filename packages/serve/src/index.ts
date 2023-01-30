@@ -4,7 +4,7 @@ import { IWebpackCLI, WebpackDevServerOptions } from "webpack-cli";
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
-type Problem = NonNullable<ReturnType<typeof cli["processArguments"]>>[0];
+type Problem = NonNullable<ReturnType<(typeof cli)["processArguments"]>>[0];
 
 class ServeCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
@@ -116,7 +116,7 @@ class ServeCommand {
           return;
         }
 
-        const servers: typeof DevServer[] = [];
+        const servers: (typeof DevServer)[] = [];
 
         if (cli.needWatchStdin(compiler)) {
           process.stdin.on("end", () => {
