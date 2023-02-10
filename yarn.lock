@@ -10522,9 +10522,9 @@ yargs@^17.0.0, yargs@^17.3.1, yargs@^17.6.2:
     yargs-parser "^21.1.1"
 
 yeoman-environment@^3.9.1:
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/yeoman-environment/-/yeoman-environment-3.13.0.tgz#9db29f47352cb4a38eb0ef830a86091be3fd7240"
-  integrity sha512-eBPpBZCvFzx6yk17x+ZrOHp8ADDv6qHradV+SgdugaQKIy9NjEX5AkbwdTHLOgccSTkQ9rN791xvYOu6OmqjBg==
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/yeoman-environment/-/yeoman-environment-3.14.0.tgz#6d317ec39855134a45099a6e1861737ea796e5cc"
+  integrity sha512-KegPxm34Dz04+xhLwWupzuigZ1N93V6q3YQoBEAbeaavYT3XOwQt/U0MW3l6W8DpcDndPeBOsuOEBZymT+IovQ==
   dependencies:
     "@npmcli/arborist" "^4.0.4"
     are-we-there-yet "^2.0.0"
