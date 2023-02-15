@@ -6823,10 +6823,10 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==
 
-"mem-fs-editor@^8.1.2 || ^9.0.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/mem-fs-editor/-/mem-fs-editor-9.5.0.tgz#9368724bd37f76eebfcf24d71fc6624b01588969"
-  integrity sha512-7p+bBDqsSisO20YIZf2ntYvST27fFJINn7CKE21XdPUQDcLV62b/yB5sTOooQeEoiZ3rldZQ+4RfONgL/gbRoA==
+"mem-fs-editor@^8.1.2 || ^9.0.0", mem-fs-editor@^9.0.0:
+  version "9.6.0"
+  resolved "https://registry.yarnpkg.com/mem-fs-editor/-/mem-fs-editor-9.6.0.tgz#a867377737b12c0d02ca756d90bc70c51883aa38"
+  integrity sha512-CsuAd+s0UPZnGzm3kQ5X7gGmVmwiX9XXRAmXj9Mbq0CJa8YWUkPqneelp0aG2g+7uiwCBHlJbl30FYtToLT3VQ==
   dependencies:
     binaryextensions "^4.16.0"
     commondir "^1.0.1"
@@ -10156,9 +10156,9 @@ yeoman-environment@^3.9.1:
     untildify "^4.0.0"
 
 yeoman-generator@^5.7.0:
-  version "5.7.0"
-  resolved "https://registry.yarnpkg.com/yeoman-generator/-/yeoman-generator-5.7.0.tgz#5cf24b9fca331646263749121d4f8d477698a83a"
-  integrity sha512-z9ZwgKoDOd+llPDCwn8Ax2l4In5FMhlslxdeByW4AMxhT+HbTExXKEAahsClHSbwZz1i5OzRwLwRIUdOJBr5Bw==
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/yeoman-generator/-/yeoman-generator-5.8.0.tgz#a1951ce0d95555f94adc5975a517d4741b5ce24d"
+  integrity sha512-dsrwFn9/c2/MOe80sa2nKfbZd/GaPTgmmehdgkFifs1VN/I7qPsW2xcBfvSkHNGK+PZly7uHyH8kaVYSFNUDhQ==
   dependencies:
     chalk "^4.1.0"
     dargs "^7.0.0"
@@ -10166,6 +10166,7 @@ yeoman-generator@^5.7.0:
     execa "^5.1.1"
     github-username "^6.0.0"
     lodash "^4.17.11"
+    mem-fs-editor "^9.0.0"
     minimist "^1.2.5"
     read-pkg-up "^7.0.1"
     run-async "^2.0.0"
