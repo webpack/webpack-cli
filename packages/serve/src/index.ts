@@ -225,6 +225,16 @@ class ServeCommand {
             usedPorts.push(portNumber);
           }
 
+          // Set WEBPACK_HOT env variable to "true" if hot is specified in devServer options or via CLI
+          // If not specified, default to "true" as it is the default value for the hot option in devServer
+          if (typeof devServerOptions.hot !== "undefined") {
+            process.env.WEBPACK_HOT = String(
+              devServerOptions.hot === true || devServerOptions.hot === "only",
+            );
+          } else {
+            process.env.WEBPACK_HOT = "true";
+          }
+
           try {
             const server = new DevServer(devServerOptions, compiler);
 

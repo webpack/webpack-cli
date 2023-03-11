@@ -19,6 +19,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -33,6 +34,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -50,6 +52,7 @@ describe("basic serve usage", () => {
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("WEBPACK_SERVE: true");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("foo: 'bar'");
     expect(stdout).toContain("development");
   });
@@ -68,6 +71,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("hot: true");
     expect(stdout).toContain("WEBPACK_SERVE: true");
     expect(stdout).toContain("foo: 'bar'");
@@ -85,6 +89,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("one");
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
@@ -101,6 +106,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("one");
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
@@ -112,6 +118,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("development");
     expect(stdout).toContain("main.js");
   });
@@ -121,6 +128,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("compiled successfully");
   });
 
@@ -129,6 +137,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
 
     const isMacOS = process.platform === "darwin";
 
@@ -143,6 +152,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("production");
     expect(stdout).toContain("main.js");
   });
@@ -152,6 +162,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("compiled successfully");
     expect(stdout).toContain("development");
     expect(stdout).toContain("main.js");
@@ -162,6 +173,7 @@ describe("basic serve usage", () => {
 
     expect(stderr).toContain("webpack.Progress");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stderr).toContain("webpack.Progress");
     expect(stdout).toContain("main.js");
   });
@@ -171,6 +183,7 @@ describe("basic serve usage", () => {
 
     expect(stderr).toContain("webpack.Progress");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -179,6 +192,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -187,6 +201,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -195,6 +210,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -203,6 +219,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).not.toContain("HotModuleReplacementPlugin");
+    expect(stdout).not.toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -211,6 +228,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -219,6 +237,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -233,6 +252,7 @@ describe("basic serve usage", () => {
 
     expect(stderr).toContain("webpack.Progress");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -241,6 +261,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -256,6 +277,7 @@ describe("basic serve usage", () => {
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("/my-public-path/");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -268,6 +290,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
     expect(stdout).toContain("/my-public-path/");
   });
@@ -283,6 +306,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("one");
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
@@ -299,6 +323,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -323,6 +348,7 @@ describe("basic serve usage", () => {
 
     expect(normalizedStderr).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("main.js");
   });
 
@@ -337,6 +363,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("one");
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
@@ -353,6 +380,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("development");
   });
 
@@ -367,6 +395,7 @@ describe("basic serve usage", () => {
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("WEBPACK_HOT: true");
     expect(stdout).toContain("development");
   });
 

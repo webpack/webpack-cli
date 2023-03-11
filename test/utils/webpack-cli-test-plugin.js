@@ -30,6 +30,13 @@ class WebpackCLITestPlugin {
           console.log(config.value);
         });
       }
+
+      // Print all environment variables starting with "WEBPACK"
+      for (const [key, value] of Object.entries(process.env)) {
+        if (key.startsWith("WEBPACK")) {
+          console.log(`${key}: ${value}`);
+        }
+      }
     });
   }
 }
