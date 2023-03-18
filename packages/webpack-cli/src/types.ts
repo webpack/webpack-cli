@@ -11,6 +11,7 @@ import type {
   Argument,
   AssetEmittedInfo,
   FileCacheOptions,
+  WebpackPluginInstance,
 } from "webpack";
 import type webpack from "webpack";
 
@@ -210,6 +211,7 @@ type ProcessedArguments = Record<string, BasicPrimitive | RegExp | (BasicPrimiti
 type CommandAction = Parameters<WebpackCLICommand["action"]>[0];
 
 interface WebpackRunOptions extends WebpackOptionsNormalized {
+  progress?: boolean | "profile";
   json?: boolean;
   argv?: Argv;
   env: Env;
@@ -240,7 +242,6 @@ interface CLIPluginOptions {
   configPath?: string[];
   helpfulOutput: boolean;
   hot?: boolean | "only";
-  progress?: boolean | "profile";
   prefetch?: string;
   analyze?: boolean;
 }
@@ -319,6 +320,7 @@ export {
   WebpackRunOptions,
   WebpackCompiler,
   WebpackConfiguration,
+  WebpackPluginInstance,
   Argv,
   Argument,
   BasicPrimitive,

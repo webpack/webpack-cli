@@ -21,19 +21,6 @@ export class CLIPlugin {
     }
   }
 
-  setupProgressPlugin(compiler: Compiler) {
-    const { ProgressPlugin } = compiler.webpack || require("webpack");
-    const progressPlugin = Boolean(
-      compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin),
-    );
-
-    if (!progressPlugin) {
-      new ProgressPlugin({
-        profile: this.options.progress === "profile",
-      }).apply(compiler);
-    }
-  }
-
   setupHelpfulOutput(compiler: Compiler) {
     const pluginName = "webpack-cli";
     const getCompilationName = () => (compiler.name ? `'${compiler.name}'` : "");
@@ -104,10 +91,6 @@ export class CLIPlugin {
 
   apply(compiler: Compiler) {
     this.logger = compiler.getInfrastructureLogger("webpack-cli");
-
-    if (this.options.progress) {
-      this.setupProgressPlugin(compiler);
-    }
 
     if (this.options.analyze) {
       this.setupBundleAnalyzerPlugin(compiler);

@@ -17,6 +17,7 @@ import type {
   WebpackRunOptions,
   WebpackCompiler,
   WebpackConfiguration,
+  WebpackPluginInstance,
   Argv,
   BasicPrimitive,
   CallableOption,
@@ -2346,7 +2347,6 @@ class WebpackCLI implements IWebpackCLI {
         new CLIPlugin({
           configPath: config.path.get(item),
           helpfulOutput: !options.json,
-          progress: options.progress,
           analyze: options.analyze,
         }),
       );
@@ -2464,7 +2464,7 @@ class WebpackCLI implements IWebpackCLI {
           process.exit(2);
         };
 
-        if (options.json === true) {
+        if (options.json) {
           createJsonStringifyStream(stats.toJson(statsOptions as StatsOptions))
             .on("error", handleWriteError)
             .pipe(process.stdout)
@@ -2509,6 +2509,32 @@ class WebpackCLI implements IWebpackCLI {
 
     if (!compiler) {
       return;
+    }
+
+    if (options.progress) {
+      const isMultiCompiler = this.isMultipleCompiler(compiler);
+      const firstCompiler = isMultiCompiler ? (compiler as MultiCompiler).compilers[0] : compiler;
+      const { ProgressPlugin } = (firstCompiler as Compiler).webpack || require("webpack");
+
+      const progressPlugin = isMultiCompiler
+        ? Boolean(
+            (compiler as MultiCompiler).compilers.find((compiler: Compiler) =>
+              compiler.options.plugins.find(
+                (plugin: WebpackPluginInstance) => plugin instanceof ProgressPlugin,
+              ),
+            ),
+          )
+        : Boolean(
+            (compiler as Compiler).options.plugins.find(
+              (plugin: WebpackPluginInstance) => plugin instanceof ProgressPlugin,
+            ),
+          );
+
+      if (!progressPlugin) {
+        new ProgressPlugin({
+          profile: options.progress === "profile",
+        }).apply(compiler);
+      }
     }
 
     const isWatch = (compiler: WebpackCompiler): boolean =>
