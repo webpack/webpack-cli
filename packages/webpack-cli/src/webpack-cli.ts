@@ -1772,6 +1772,11 @@ class WebpackCLI implements IWebpackCLI {
         process.exit(2);
       }
 
+      if (!options) {
+        this.logger.error(`Failed to load '${configPath}' config. Unable to find default export.`);
+        process.exit(2);
+      }
+
       if (Array.isArray(options)) {
         // reassign the value to assert type
         const optionsArray: ConfigOptions[] = options;
