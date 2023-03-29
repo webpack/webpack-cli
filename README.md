@@ -39,7 +39,7 @@ The CLI provides a rich set of commands that helps you develop your application 
 
 If you have followed the [Getting Started](https://webpack.js.org/guides/getting-started/) guide of webpack then webpack CLI is already installed!
 
-Otherwise `npm install --save-dev webpack-cli` or `yarn add webpack-cli --dev` will install it.
+Otherwise `npm install --save-dev webpack-cli`, `yarn add webpack-cli --dev` or `pnpm add --D webpack-cli` will install it.
 
 ## Supported arguments and commands
 
