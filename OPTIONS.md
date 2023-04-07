@@ -650,6 +650,7 @@ Options:
   --output-library-commonjs <value>                                                  Name of the exposed commonjs export in the UMD.
   --output-library-root <value...>                                                   Part of the name of the property exposed globally by a UMD library.
   --output-library-root-reset                                                        Clear all items provided in 'output.library.root' configuration. Name of the property exposed globally by a UMD library.
+  --output-library-amd-container <value>                                             Add a container for define/require functions in the AMD module.
   --output-library-auxiliary-comment <value>                                         Append the same comment above each import style.
   --output-library-auxiliary-comment-amd <value>                                     Set comment for `amd` section in UMD.
   --output-library-auxiliary-comment-commonjs <value>                                Set comment for `commonjs` (exports) section in UMD.
@@ -688,6 +689,7 @@ Options:
   --output-webassembly-module-filename <value>                                       The filename of WebAssembly modules as relative path inside the 'output.path' directory.
   --output-worker-chunk-loading <value>                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --no-output-worker-chunk-loading                                                   Negative 'output-worker-chunk-loading' option.
+  --output-worker-public-path <value>                                                Worker public path. Much like the public path, this sets the location where the worker script file is intended to be found. If not set, webpack will use the publicPath. Don't set this option unless your worker scripts are located at a different path from your other script files.
   --output-worker-wasm-loading <value>                                               The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --no-output-worker-wasm-loading                                                    Negative 'output-worker-wasm-loading' option.
   --parallelism <value>                                                              The number of parallel processed modules in the compilation.
