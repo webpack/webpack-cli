@@ -33,7 +33,7 @@ export default class InitGenerator<
         "installPrettier",
         "Do you like to install prettier to format generated configuration?",
         true,
-        false,
+        this.force,
       );
 
       if (installPrettier) {
