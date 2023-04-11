@@ -19,7 +19,7 @@
 
 ## Table of Contents
 
-- [About](#about)
+- [Introduction](#introduction)
   - [How to install](#how-to-install)
 - [Supported arguments and commands](#supported-arguments-and-commands)
 - [Packages](#packages)
@@ -29,7 +29,7 @@
 - [Contributing and Internal Documentation](#contributing-and-internal-documentation)
 - [Funding](#funding)
 
-## About
+## Introduction
 
 Webpack CLI provides the interface of options webpack uses in its configuration file. The CLI options override options passed in the configuration file.
 
