@@ -962,6 +962,17 @@ class WebpackCLI implements IWebpackCLI {
         ],
         description: "Stop webpack-cli process with non-zero exit code on warnings from webpack",
       },
+      {
+        name: "extends",
+        alias: "e",
+        configs: [
+          {
+            type: "string",
+          },
+        ],
+        multiple: true,
+        description: "Extend webpack configuration",
+      },
     ];
 
     const minimumHelpFlags = [
@@ -1935,6 +1946,21 @@ class WebpackCLI implements IWebpackCLI {
         );
         process.exit(2);
       }
+    }
+
+    if (options.extends && options.extends.length > 0) {
+      // load the config from the extends option
+      options.extends = Array.isArray(options.extends) ? options.extends : [options.extends];
+      options.extends = await Promise.all(
+        options.extends.map((configPath: string) =>
+          loadConfigByPath(path.resolve(configPath), options.argv),
+        ),
+      );
+      config.options = options.extends.concat(
+        Array.isArray(config.options) ? config.options : [config.options],
+      );
+
+      options.merge = true;
     }
 
     if (options.merge) {
