@@ -1965,10 +1965,25 @@ class WebpackCLI implements IWebpackCLI {
         Array.isArray(extendedConfig.options) ? extendedConfig.options : [extendedConfig.options],
       );
 
+      // recursively flatten the configs by looking for extends property
+      for (let i = 0; i < extendedConfigOptions.length; i++) {
+        const extendedConfigs = extendedConfigOptions[i];
+        for (let j = 0; j < extendedConfigs.length; j++) {
+          const extendedConfig = extendedConfigs[j] as WebpackConfiguration;
+          if (extendedConfig.extends) {
+            const flattenedExtendedConfig = await flattenConfigs(extendedConfig.extends);
+            extendedConfigOptions[i][j] = webpackMerge(flattenedExtendedConfig, extendedConfig);
+          }
+        }
+      }
+
       const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
-      return extendedConfigOptions.reduce((accumulator: object, options) => {
+      const mergedConfig = extendedConfigOptions.reduce((accumulator: object, options) => {
         return merge(accumulator, options);
       }, {});
+
+      delete (mergedConfig as WebpackConfiguration).extends;
+      return mergedConfig;
     };
 
     // extends param in CLI gets priority over extends in config file
