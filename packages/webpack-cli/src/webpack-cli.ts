@@ -1948,29 +1948,42 @@ class WebpackCLI implements IWebpackCLI {
       }
     }
 
-    // extends param in CLI gets priority over extends in config file
-    if (options.extends && options.extends.length > 0) {
-      // load the config from the extends option
-      const extendedConfigs = await Promise.all(
-        options.extends.map((configPath: string) =>
+    const flattenConfigs = async (
+      configPaths: string | string[],
+    ): Promise<WebpackConfiguration> => {
+      configPaths = Array.isArray(configPaths) ? configPaths : [configPaths];
+
+      // fetch configs by path
+      const configs = await Promise.all(
+        configPaths.map((configPath: string) =>
           loadConfigByPath(path.resolve(configPath), options.argv),
         ),
       );
 
+      // extract options from configs
+      const extendedConfigOptions = configs.map((extendedConfig) =>
+        Array.isArray(extendedConfig.options) ? extendedConfig.options : [extendedConfig.options],
+      );
+
+      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
+      return extendedConfigOptions.reduce((accumulator: object, options) => {
+        return merge(accumulator, options);
+      }, {});
+    };
+
+    // extends param in CLI gets priority over extends in config file
+    if (options.extends && options.extends.length > 0) {
+      // load the config from the extends option
+      const extendedConfig = await flattenConfigs(options.extends);
+
       const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
 
-      const mergedConfig = extendedConfigs.reduce((accumulator: object, config) => {
-        return merge(accumulator, config.options);
-      }, {});
+      config.options = Array.isArray(config.options) ? config.options : [config.options];
 
-      if (Array.isArray(config.options)) {
-        // merge extended config with all configs
-        config.options = config.options.map((options) => {
-          return merge(mergedConfig, options);
-        });
-      } else {
-        config.options = merge(mergedConfig, config.options);
-      }
+      // merge extended config with all configs
+      config.options = config.options.map((options) => {
+        return merge(extendedConfig, options);
+      });
     }
     // if no extends option is passed, check if the config file has extends
     else if (
@@ -1984,27 +1997,10 @@ class WebpackCLI implements IWebpackCLI {
       for (let index = 0; index < config.options.length; index++) {
         const configOptions = config.options[index];
         if (configOptions.extends) {
-          let extendedConfig = {};
-
-          if (Array.isArray(configOptions.extends)) {
-            const extendedConfigs = await Promise.all(
-              configOptions.extends.map((configPath: string) =>
-                loadConfigByPath(path.resolve(configPath), options.argv),
-              ),
-            );
-
-            extendedConfig = extendedConfigs.reduce((accumulator: object, config) => {
-              return merge(accumulator, config.options);
-            }, {});
-          } else {
-            // load the config from the extends option
-            extendedConfig = await loadConfigByPath(
-              path.resolve(configOptions.extends),
-              options.argv,
-            );
-          }
+          const extendedConfig = await flattenConfigs(configOptions.extends);
 
           config.options[index] = merge(extendedConfig, configOptions);
+          delete config.options[index].extends;
         }
       }
     }
