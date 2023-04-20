@@ -50,15 +50,12 @@ import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
 import { CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
-import interpret from "interpret";
 
 const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const util = require("util");
-
 const { program, Option } = require("commander");
-const envinfo = require("envinfo");
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
@@ -449,6 +446,8 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     defaultInformation.npmPackages = `{${defaultPackages.map((item) => `*${item}*`).join(",")}}`;
+
+    const envinfo = await this.tryRequireThenImport<typeof import("envinfo")>("envinfo", false);
 
     let info = await envinfo.run(defaultInformation, envinfoConfig);
 
@@ -1875,8 +1874,9 @@ class WebpackCLI implements IWebpackCLI {
       ]
         .map((filename) =>
           // Prioritize popular extensions first to avoid unnecessary fs calls
-          [".js", ".mjs", ".cjs", ".ts", ".mts", ".cts", ...Object.keys(interpret.extensions)].map(
-            (ext) => path.resolve(filename + ext),
+          // TODO ".mts" is not supported by `interpret`, need to add it
+          [".js", ".mjs", ".cjs", ".ts", ".cts", ...Object.keys(interpret.extensions)].map((ext) =>
+            path.resolve(filename + ext),
           ),
         )
         .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
