@@ -55,9 +55,7 @@ const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const util = require("util");
-
 const { program, Option } = require("commander");
-const envinfo = require("envinfo");
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
@@ -448,6 +446,8 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     defaultInformation.npmPackages = `{${defaultPackages.map((item) => `*${item}*`).join(",")}}`;
+
+    const envinfo = await this.tryRequireThenImport<typeof import("envinfo")>("envinfo", false);
 
     let info = await envinfo.run(defaultInformation, envinfoConfig);
 
@@ -1873,19 +1873,18 @@ class WebpackCLI implements IWebpackCLI {
         ".webpack/webpackfile",
       ]
         .map((filename) =>
-          // Since .cjs is not available on interpret side add it manually to default config extension list
-          [...Object.keys(interpret.extensions), ".cjs"].map((ext) => ({
-            path: path.resolve(filename + ext),
-            ext: ext,
-            module: interpret.extensions[ext],
-          })),
+          // Prioritize popular extensions first to avoid unnecessary fs calls
+          // TODO ".mts" is not supported by `interpret`, need to add it
+          [".js", ".mjs", ".cjs", ".ts", ".cts", ...Object.keys(interpret.extensions)].map((ext) =>
+            path.resolve(filename + ext),
+          ),
         )
         .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
 
       let foundDefaultConfigFile;
 
       for (const defaultConfigFile of defaultConfigFiles) {
-        if (!fs.existsSync(defaultConfigFile.path)) {
+        if (!fs.existsSync(defaultConfigFile)) {
           continue;
         }
 
@@ -1894,7 +1893,7 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       if (foundDefaultConfigFile) {
-        const loadedConfig = await loadConfigByPath(foundDefaultConfigFile.path, options.argv);
+        const loadedConfig = await loadConfigByPath(foundDefaultConfigFile, options.argv);
 
         config.options = loadedConfig.options as WebpackConfiguration[];
 
