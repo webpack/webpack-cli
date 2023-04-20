@@ -50,6 +50,7 @@ import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
 import { CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
+import interpret from "interpret";
 
 const fs = require("fs");
 const path = require("path");
@@ -1873,19 +1874,17 @@ class WebpackCLI implements IWebpackCLI {
         ".webpack/webpackfile",
       ]
         .map((filename) =>
-          // Since .cjs is not available on interpret side add it manually to default config extension list
-          [...Object.keys(interpret.extensions), ".cjs"].map((ext) => ({
-            path: path.resolve(filename + ext),
-            ext: ext,
-            module: interpret.extensions[ext],
-          })),
+          // Prioritize popular extensions first to avoid unnecessary fs calls
+          [".js", ".mjs", ".cjs", ".ts", ".mts", ".cts", ...Object.keys(interpret.extensions)].map(
+            (ext) => path.resolve(filename + ext),
+          ),
         )
         .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
 
       let foundDefaultConfigFile;
 
       for (const defaultConfigFile of defaultConfigFiles) {
-        if (!fs.existsSync(defaultConfigFile.path)) {
+        if (!fs.existsSync(defaultConfigFile)) {
           continue;
         }
 
@@ -1894,7 +1893,7 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       if (foundDefaultConfigFile) {
-        const loadedConfig = await loadConfigByPath(foundDefaultConfigFile.path, options.argv);
+        const loadedConfig = await loadConfigByPath(foundDefaultConfigFile, options.argv);
 
         config.options = loadedConfig.options as WebpackConfiguration[];
 
