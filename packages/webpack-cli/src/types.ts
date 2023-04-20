@@ -187,8 +187,10 @@ type Callback<T extends unknown[]> = (...args: T) => void;
 /**
  * Webpack
  */
-
-type WebpackConfiguration = Configuration;
+type WebpackConfiguration = Configuration & {
+  // TODO add extends to webpack types
+  extends?: string | string[];
+};
 type ConfigOptions = PotentialPromise<WebpackConfiguration | CallableOption>;
 type CallableOption = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
 type WebpackCompiler = Compiler | MultiCompiler;

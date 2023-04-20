@@ -1974,12 +1974,8 @@ class WebpackCLI implements IWebpackCLI {
     }
     // if no extends option is passed, check if the config file has extends
     else if (
-      (!Array.isArray(config.options) &&
-        // @ts-expect-error TODO remove when extends property type is added to webpack
-        config.options.extends) ||
-      (Array.isArray(config.options) &&
-        // @ts-expect-error TODO remove when extends property type is added to webpack
-        config.options.some((options) => options.extends))
+      (!Array.isArray(config.options) && config.options.extends) ||
+      (Array.isArray(config.options) && config.options.some((options) => options.extends))
     ) {
       config.options = Array.isArray(config.options) ? config.options : [config.options];
 
@@ -1987,17 +1983,11 @@ class WebpackCLI implements IWebpackCLI {
 
       for (let index = 0; index < config.options.length; index++) {
         const configOptions = config.options[index];
-        // @ts-expect-error TODO remove when extends property type is added to webpack
         if (configOptions.extends) {
           let extendedConfig = {};
 
-          // @ts-expect-error TODO remove when extends property type is added to webpack
           if (Array.isArray(configOptions.extends)) {
-            const extendedConfigs: {
-              options: ConfigOptions | ConfigOptions[];
-              path: string;
-            }[] = await Promise.all(
-              // @ts-expect-error TODO remove when extends property type is added to webpack
+            const extendedConfigs = await Promise.all(
               configOptions.extends.map((configPath: string) =>
                 loadConfigByPath(path.resolve(configPath), options.argv),
               ),
@@ -2008,7 +1998,6 @@ class WebpackCLI implements IWebpackCLI {
             }, {});
           } else {
             // load the config from the extends option
-            // @ts-expect-error TODO remove when extends property type is added to webpack
             extendedConfig = loadConfigByPath(path.resolve(configOptions.extends), options.argv);
           }
 
