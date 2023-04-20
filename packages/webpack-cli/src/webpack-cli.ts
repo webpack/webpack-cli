@@ -1948,6 +1948,7 @@ class WebpackCLI implements IWebpackCLI {
       }
     }
 
+    // extends param in CLI gets priority over extends in config file
     if (options.extends && options.extends.length > 0) {
       // load the config from the extends option
       const extendedConfigs = await Promise.all(
@@ -1970,42 +1971,18 @@ class WebpackCLI implements IWebpackCLI {
       } else {
         config.options = merge(mergedConfig, config.options);
       }
-    } else if (
-      !Array.isArray(config.options) &&
-      // @ts-expect-error TODO remove when extends property type is added to webpack
-      config.options.extends
-    ) {
-      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
-
-      let extendedConfig = {};
-
-      // @ts-expect-error TODO remove when extends property type is added to webpack
-      if (Array.isArray(config.options.extends)) {
-        const extendedConfigs: {
-          options: ConfigOptions | ConfigOptions[];
-          path: string;
-        }[] = await Promise.all(
-          // @ts-expect-error TODO remove when extends property type is added to webpack
-          config.options.extends.map((configPath: string) =>
-            loadConfigByPath(path.resolve(configPath), options.argv),
-          ),
-        );
-
-        extendedConfig = extendedConfigs.reduce((accumulator: object, config) => {
-          return merge(accumulator, config.options);
-        }, {});
-      } else {
-        // load the config from the extends option
+    }
+    // if no extends option is passed, check if the config file has extends
+    else if (
+      (!Array.isArray(config.options) &&
         // @ts-expect-error TODO remove when extends property type is added to webpack
-        extendedConfig = loadConfigByPath(path.resolve(config.options.extends), options.argv);
-      }
-
-      config.options = merge(extendedConfig, config.options);
-    } else if (
-      Array.isArray(config.options) &&
-      // @ts-expect-error TODO remove when extends property type is added to webpack
-      config.options.some((options) => options.extends)
+        config.options.extends) ||
+      (Array.isArray(config.options) &&
+        // @ts-expect-error TODO remove when extends property type is added to webpack
+        config.options.some((options) => options.extends))
     ) {
+      config.options = Array.isArray(config.options) ? config.options : [config.options];
+
       const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
 
       for (let index = 0; index < config.options.length; index++) {
