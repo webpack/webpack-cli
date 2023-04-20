@@ -1950,17 +1950,94 @@ class WebpackCLI implements IWebpackCLI {
 
     if (options.extends && options.extends.length > 0) {
       // load the config from the extends option
-      options.extends = Array.isArray(options.extends) ? options.extends : [options.extends];
-      options.extends = await Promise.all(
+      const extendedConfigs = await Promise.all(
         options.extends.map((configPath: string) =>
           loadConfigByPath(path.resolve(configPath), options.argv),
         ),
       );
-      config.options = options.extends.concat(
-        Array.isArray(config.options) ? config.options : [config.options],
-      );
 
-      options.merge = true;
+      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
+
+      const mergedConfig = extendedConfigs.reduce((accumulator: object, config) => {
+        return merge(accumulator, config.options);
+      }, {});
+
+      if (Array.isArray(config.options)) {
+        // merge extended config with all configs
+        config.options = config.options.map((options) => {
+          return merge(mergedConfig, options);
+        });
+      } else {
+        config.options = merge(mergedConfig, config.options);
+      }
+    } else if (
+      !Array.isArray(config.options) &&
+      // @ts-expect-error TODO remove when extends property type is added to webpack
+      config.options.extends
+    ) {
+      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
+
+      let extendedConfig = {};
+
+      // @ts-expect-error TODO remove when extends property type is added to webpack
+      if (Array.isArray(config.options.extends)) {
+        const extendedConfigs: {
+          options: ConfigOptions | ConfigOptions[];
+          path: string;
+        }[] = await Promise.all(
+          // @ts-expect-error TODO remove when extends property type is added to webpack
+          config.options.extends.map((configPath: string) =>
+            loadConfigByPath(path.resolve(configPath), options.argv),
+          ),
+        );
+
+        extendedConfig = extendedConfigs.reduce((accumulator: object, config) => {
+          return merge(accumulator, config.options);
+        }, {});
+      } else {
+        // load the config from the extends option
+        // @ts-expect-error TODO remove when extends property type is added to webpack
+        extendedConfig = loadConfigByPath(path.resolve(config.options.extends), options.argv);
+      }
+
+      config.options = merge(extendedConfig, config.options);
+    } else if (
+      Array.isArray(config.options) &&
+      // @ts-expect-error TODO remove when extends property type is added to webpack
+      config.options.some((options) => options.extends)
+    ) {
+      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
+
+      for (let index = 0; index < config.options.length; index++) {
+        const configOptions = config.options[index];
+        // @ts-expect-error TODO remove when extends property type is added to webpack
+        if (configOptions.extends) {
+          let extendedConfig = {};
+
+          // @ts-expect-error TODO remove when extends property type is added to webpack
+          if (Array.isArray(configOptions.extends)) {
+            const extendedConfigs: {
+              options: ConfigOptions | ConfigOptions[];
+              path: string;
+            }[] = await Promise.all(
+              // @ts-expect-error TODO remove when extends property type is added to webpack
+              configOptions.extends.map((configPath: string) =>
+                loadConfigByPath(path.resolve(configPath), options.argv),
+              ),
+            );
+
+            extendedConfig = extendedConfigs.reduce((accumulator: object, config) => {
+              return merge(accumulator, config.options);
+            }, {});
+          } else {
+            // load the config from the extends option
+            // @ts-expect-error TODO remove when extends property type is added to webpack
+            extendedConfig = loadConfigByPath(path.resolve(configOptions.extends), options.argv);
+          }
+
+          config.options[index] = merge(extendedConfig, configOptions);
+        }
+      }
     }
 
     if (options.merge) {

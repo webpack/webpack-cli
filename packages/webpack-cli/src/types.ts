@@ -178,6 +178,7 @@ type WebpackDevServerOptions = DevServerConfig &
     config: string[];
     configName?: string[];
     disableInterpret?: boolean;
+    extends?: string[];
     argv: Argv;
   };
 
