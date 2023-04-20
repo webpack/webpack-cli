@@ -26,6 +26,7 @@ class GeneratorsCommand {
           configs: [{ type: "string" }],
           description: "Type of template",
           defaultValue: "default",
+          helpLevel: "minimum",
         },
         {
           name: "force",
@@ -37,6 +38,7 @@ class GeneratorsCommand {
             },
           ],
           description: "Generate without questions (ideally) using default answers",
+          helpLevel: "minimum",
         },
       ],
       async (generationPath: string, options: InitOptions) => {
@@ -76,6 +78,7 @@ class GeneratorsCommand {
           configs: [{ type: "string" }],
           description: "Type of template",
           defaultValue: "default",
+          helpLevel: "minimum",
         },
       ],
       async (outputPath: string, options: LoaderOptions) => {
@@ -115,6 +118,7 @@ class GeneratorsCommand {
           configs: [{ type: "string" }],
           description: "Type of template",
           defaultValue: "default",
+          helpLevel: "minimum",
         },
       ],
       async (outputPath: string, options: PluginOptions) => {
