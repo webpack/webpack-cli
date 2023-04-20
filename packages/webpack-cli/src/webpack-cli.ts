@@ -1998,7 +1998,10 @@ class WebpackCLI implements IWebpackCLI {
             }, {});
           } else {
             // load the config from the extends option
-            extendedConfig = loadConfigByPath(path.resolve(configOptions.extends), options.argv);
+            extendedConfig = await loadConfigByPath(
+              path.resolve(configOptions.extends),
+              options.argv,
+            );
           }
 
           config.options[index] = merge(extendedConfig, configOptions);
