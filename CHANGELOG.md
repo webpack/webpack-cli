@@ -1,3 +1,10 @@
+## [5.0.2](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.0.1...webpack-cli@5.0.2) (2023-04-21)
+
+### Bug Fixes
+
+- error message for missing default export in configuration ([#3685](https://github.com/webpack/webpack-cli/issues/3685)) ([e0a4a09](https://github.com/webpack/webpack-cli/commit/e0a4a0991cdfccdaf18e7eb479f87bc2ee4e2e5f))
+- **perf:** reduced startup time ([3b79059](https://github.com/webpack/webpack-cli/commit/3b79059fe2ee16f4b4ad1f1ed3dfeb680d624128))
+
 ## [5.0.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.0.0...webpack-cli@5.0.1) (2022-12-05)
 
 ### Bug Fixes
