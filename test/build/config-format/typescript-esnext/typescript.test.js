@@ -16,6 +16,9 @@ describe("webpack cli", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
       nodeOptions: ["--loader=ts-node/esm"],
     });
+    console.log("Stderr: ", stderr);
+    console.log("Stdout: ", stdout);
+    console.log("Exit code: ", exitCode);
     expect(stderr).not.toBeFalsy(); // Deprecation warning logs on stderr
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
