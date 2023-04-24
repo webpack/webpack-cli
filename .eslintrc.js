@@ -22,6 +22,7 @@ module.exports = {
     "no-loop-func": "error",
     "no-undef": "error",
     "prefer-const": "error",
+    "node/no-unpublished-require": "off",
   },
   overrides: [
     {

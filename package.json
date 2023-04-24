@@ -66,6 +66,7 @@
     "cspell": "^6.12.0",
     "css-loader": "^6.7.1",
     "del-cli": "^5.0.0",
+    "dotenv-webpack": "^8.0.1",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-node": "^11.1.0",
