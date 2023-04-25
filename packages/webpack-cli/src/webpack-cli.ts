@@ -985,6 +985,7 @@ class WebpackCLI implements IWebpackCLI {
         ],
         multiple: true,
         description: "Extend webpack configuration",
+        helpLevel: "minimum",
       },
     ];
 
