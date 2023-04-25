@@ -10,7 +10,7 @@ describe("extends property", () => {
     expect(stderr).toBeFalsy();
     expect(stdout).toContain("base.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
-    expect(stdout).toContain("entry: './src/index.js'");
+    expect(stdout).toContain("name: 'base_config'");
     expect(stdout).toContain("mode: 'development'");
   });
 
@@ -22,7 +22,7 @@ describe("extends property", () => {
     expect(stdout).toContain("base1.webpack.config.js");
     expect(stdout).toContain("base2.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
-    expect(stdout).toContain("entry: './src/index2.js'");
+    expect(stdout).toContain("name: 'base_config2'");
     expect(stdout).toContain("mode: 'production'");
   });
 
@@ -34,7 +34,7 @@ describe("extends property", () => {
     expect(stdout).toContain("base1.webpack.config.js");
     expect(stdout).toContain("base2.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
-    expect(stdout).toContain("entry: './src/index1.js'");
+    expect(stdout).toContain("name: 'base_config1'");
     expect(stdout).toContain("mode: 'production'");
   });
 
@@ -48,7 +48,21 @@ describe("extends property", () => {
     expect(stderr).toBeFalsy();
     expect(stdout).toContain("base.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
-    expect(stdout).toContain("entry: './src/index.js'");
+    expect(stdout).toContain("name: 'base_config'");
     expect(stdout).toContain("mode: 'development'");
+  });
+
+  it("extends a provided webpack config for multiple configs correctly", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname + "/multiple-configs");
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain("base.webpack.config.js");
+    expect(stdout).toContain("derived.webpack.config.js");
+    expect(stdout).toContain("name: 'derived_config1'");
+    expect(stdout).toContain("name: 'derived_config2'");
+    expect(stdout).not.toContain("name: 'base_config'");
+    expect(stdout).toContain("mode: 'development'");
+    expect(stdout).toContain("topLevelAwait: true");
   });
 });
