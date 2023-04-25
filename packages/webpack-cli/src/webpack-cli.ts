@@ -1977,8 +1977,16 @@ class WebpackCLI implements IWebpackCLI {
         }
       }
 
+      const flattenedConfigs = extendedConfigOptions.reduce(
+        (acc: Array<ConfigOptions>, options) => {
+          acc.push(options[0]);
+          return acc;
+        },
+        [],
+      );
+
       const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
-      const mergedConfig = extendedConfigOptions.reduce((accumulator: object, options) => {
+      const mergedConfig = flattenedConfigs.reduce((accumulator: object, options) => {
         return merge(accumulator, options);
       }, {});
 
