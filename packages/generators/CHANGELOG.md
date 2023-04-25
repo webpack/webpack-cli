@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@3.0.1...@webpack-cli/generators@3.0.2) (2023-04-21)
+
+### Bug Fixes
+
+- **init:** don't ask to install prettier when using `--force` ([#3720](https://github.com/webpack/webpack-cli/issues/3720)) ([72d11c9](https://github.com/webpack/webpack-cli/commit/72d11c9d6f8f28e845caa8b3f72e1b056a7e3fe8))
+
 ## [3.0.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@3.0.0...@webpack-cli/generators@3.0.1) (2022-12-05)
 
 ### Bug Fixes
