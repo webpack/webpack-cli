@@ -28,7 +28,6 @@ describe("extends property", () => {
 
   it("extends a multilevel config correctly", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname + "/multi-level-extends");
-    console.log(stdout);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -37,5 +36,19 @@ describe("extends property", () => {
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("entry: './src/index1.js'");
     expect(stdout).toContain("mode: 'production'");
+  });
+
+  it("extends a provided webpack config passed in the cli correctly", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname + "/extends-cli-option", [
+      "--extends",
+      "./base.webpack.config.js",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain("base.webpack.config.js");
+    expect(stdout).toContain("derived.webpack.config.js");
+    expect(stdout).toContain("entry: './src/index.js'");
+    expect(stdout).toContain("mode: 'development'");
   });
 });
