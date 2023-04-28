@@ -1,19 +1,19 @@
 ```
 Usage: webpack serve|server|s [entries...] [options]
 
-Run the webpack dev server.
+Run the webpack dev server and watch for source file changes while serving.
 
 Options:
-  -c, --config <value...>                             Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                            Name of the configuration to use.
+  -c, --config <pathToConfigFile...>                  Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".
+  --config-name <name...>                             Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.
   -m, --merge                                         Merge two or more configurations using 'webpack-merge'.
   --disable-interpret                                 Disable interpret for loading the config file.
-  --env <value...>                                    Environment passed to the configuration when it is a function.
+  --env <value...>                                    Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".
   --node-env <value>                                  Sets process.env.NODE_ENV to the specified value.
   --define-process-env-node-env <value>               Sets process.env.NODE_ENV to the specified value. (Currently an alias for `--node-env`)
   --analyze                                           It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                  Print compilation progress during build.
-  -j, --json [value]                                  Prints result as JSON or store it in a file.
+  -j, --json [pathToJsonFile]                         Prints result as JSON or store it in a file.
   --fail-on-warnings                                  Stop webpack-cli process with non-zero exit code on warnings from webpack
   -d, --devtool <value>                               A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                        Negative 'devtool' option.

@@ -811,7 +811,8 @@ class WebpackCLI implements IWebpackCLI {
           },
         ],
         multiple: true,
-        description: "Provide path to a webpack configuration file e.g. ./webpack.config.js.",
+        description:
+          'Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".',
         helpLevel: "minimum",
       },
       {
@@ -822,7 +823,8 @@ class WebpackCLI implements IWebpackCLI {
           },
         ],
         multiple: true,
-        description: "Name of the configuration to use.",
+        description:
+          "Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.",
         helpLevel: "minimum",
       },
       {
@@ -893,7 +895,8 @@ class WebpackCLI implements IWebpackCLI {
           return previous;
         },
         multiple: true,
-        description: "Environment passed to the configuration when it is a function.",
+        description:
+          "Environment variables passed to the configuration when it is a function, e.g. `myvar` or `myvar=myval`.",
         helpLevel: "minimum",
       },
       {

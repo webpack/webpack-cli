@@ -28,7 +28,7 @@ class ServeCommand {
       {
         name: "serve [entries...]",
         alias: ["server", "s"],
-        description: "Run the webpack dev server.",
+        description: "Run the webpack dev server and watch for source file changes while serving.",
         usage: "[entries...] [options]",
         pkg: "@webpack-cli/serve",
         dependencies: [WEBPACK_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE],
