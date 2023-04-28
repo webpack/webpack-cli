@@ -56,8 +56,6 @@ const path = require("path");
 const { pathToFileURL } = require("url");
 const util = require("util");
 const { program, Option } = require("commander");
-const dotenv = require("dotenv");
-const dotenvExpand = require("dotenv-expand");
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
@@ -1954,65 +1952,6 @@ class WebpackCLI implements IWebpackCLI {
       }, {});
       config.path.set(config.options, mergedConfigPaths as unknown as string);
     }
-
-    const runFunctionOnEachConfiguration = (
-      options: Configuration | Configuration[],
-      fn: CallableFunction,
-    ) => {
-      if (Array.isArray(options)) {
-        for (let item of options) {
-          item = fn(item);
-        }
-      } else {
-        options = fn(options);
-      }
-
-      return options;
-    };
-
-    // plugin env variables using dot env package
-    const _envDirectory = path.resolve(process.cwd(), "environment");
-
-    config.options = runFunctionOnEachConfiguration(config.options, (options: Configuration) => {
-      const mode = options.mode || "development";
-      // .local file variables will get precedence
-      const environmentFiles = [
-        `${_envDirectory}/.env`, // loaded in all cases
-        `${_envDirectory}/.env.local`, // loaded in all cases, ignored by git
-        `${_envDirectory}/.env.${mode}`, // only loaded in specified mode
-        `${_envDirectory}/.env.${mode}.local`, // only loaded in specified mode, ignored by git
-      ];
-
-      let envVariables: Record<string, string> = {};
-      // parse environment vars from .env files
-      environmentFiles.forEach((environmentFile) => {
-        if (fs.existsSync(environmentFile)) {
-          try {
-            const environmentFileContents: string = fs.readFileSync(environmentFile);
-            const parsedEnvVariables: Record<string, string> =
-              dotenv.parse(environmentFileContents);
-            for (const [key, value] of Object.entries(parsedEnvVariables)) {
-              // only add variables starting with WEBPACK_
-              if (key.startsWith("WEBPACK_")) envVariables[`process.env.${key}`] = value;
-            }
-          } catch (err) {
-            this.logger.error(`Could not read ${environmentFile}`);
-          }
-        }
-      });
-
-      // expand environment vars
-      envVariables = dotenvExpand({
-        parsed: envVariables,
-        // don't write to process.env
-        ignoreProcessEnv: true,
-      }).parsed;
-
-      options.plugins = (options.plugins || []).concat([new webpack.DefinePlugin(envVariables)]);
-
-      return options;
-    });
-
     return config;
   }
 
