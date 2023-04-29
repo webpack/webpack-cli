@@ -53,7 +53,11 @@ export class CLIPlugin {
       logCompilation(`Compiler${name ? ` ${name}` : ""} starting... `);
 
       if (configPath) {
-        this.logger.log(`Compiler${name ? ` ${name}` : ""} is using config: '${configPath}'`);
+        this.logger.log(
+          `Compiler${name ? ` ${name}` : ""} is using config: ${configPath
+            .map((path) => `'${path}'`)
+            .join(", ")}`,
+        );
       }
     });
 

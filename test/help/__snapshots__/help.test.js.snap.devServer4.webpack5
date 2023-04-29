@@ -105,6 +105,7 @@ Options:
   --progress [value]                               Print compilation progress during build.
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>                         Extend webpack configuration
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
@@ -165,6 +166,7 @@ Options:
   --progress [value]                               Print compilation progress during build.
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>                         Extend webpack configuration
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
@@ -225,6 +227,7 @@ Options:
   --progress [value]                               Print compilation progress during build.
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>                         Extend webpack configuration
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
@@ -284,6 +287,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -331,6 +335,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -378,6 +383,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -425,6 +431,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -472,6 +479,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -519,6 +527,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -1500,6 +1509,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -1545,6 +1555,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -1590,6 +1601,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -1635,6 +1647,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -1680,6 +1693,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -1725,6 +1739,7 @@ Options:
   --progress [value]                     Print compilation progress during build.
   -j, --json [value]                     Prints result as JSON or store it in a file.
   --fail-on-warnings                     Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>               Extend webpack configuration
   -d, --devtool <value>                  A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                           Negative 'devtool' option.
   --entry <value...>                     A module that is loaded upon startup. Only the last one is exported.
@@ -1771,6 +1786,7 @@ Options:
   --progress [value]                               Print compilation progress during build.
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>                         Extend webpack configuration
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
@@ -1831,6 +1847,7 @@ Options:
   --progress [value]                               Print compilation progress during build.
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>                         Extend webpack configuration
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
@@ -2081,6 +2098,7 @@ Options:
   --progress [value]                               Print compilation progress during build.
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>                         Extend webpack configuration
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
@@ -2139,6 +2157,7 @@ Options:
   --progress [value]                               Print compilation progress during build.
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack
+  -e, --extends <value...>                         Extend webpack configuration
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.

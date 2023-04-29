@@ -21,13 +21,19 @@ class ConfigTestCommand {
 
         if (Array.isArray(config.options)) {
           config.options.forEach((options) => {
-            if (config.path.get(options)) {
-              configPaths.add(config.path.get(options) as string);
+            const loadedConfigPaths = config.path.get(options);
+
+            if (loadedConfigPaths) {
+              loadedConfigPaths.forEach((path) => configPaths.add(path));
             }
           });
         } else {
           if (config.path.get(config.options)) {
-            configPaths.add(config.path.get(config.options) as string);
+            const loadedConfigPaths = config.path.get(config.options);
+
+            if (loadedConfigPaths) {
+              loadedConfigPaths.forEach((path) => configPaths.add(path));
+            }
           }
         }
 

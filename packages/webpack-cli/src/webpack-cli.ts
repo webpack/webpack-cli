@@ -975,6 +975,18 @@ class WebpackCLI implements IWebpackCLI {
         description: "Stop webpack-cli process with non-zero exit code on warnings from webpack",
         helpLevel: "minimum",
       },
+      {
+        name: "extends",
+        alias: "e",
+        configs: [
+          {
+            type: "string",
+          },
+        ],
+        multiple: true,
+        description: "Extend webpack configuration",
+        helpLevel: "minimum",
+      },
     ];
 
     const minimumHelpFlags = [
@@ -1814,6 +1826,7 @@ class WebpackCLI implements IWebpackCLI {
       return { options, path: configPath };
     };
 
+    // TODO better name and better type
     const config: WebpackCLIConfig = {
       options: {} as WebpackConfiguration,
       path: new WeakMap(),
@@ -1850,10 +1863,10 @@ class WebpackCLI implements IWebpackCLI {
 
         if (isArray) {
           (loadedConfig.options as ConfigOptions[]).forEach((options) => {
-            config.path.set(options, loadedConfig.path);
+            config.path.set(options, [loadedConfig.path]);
           });
         } else {
-          config.path.set(loadedConfig.options, loadedConfig.path);
+          config.path.set(loadedConfig.options, [loadedConfig.path]);
         }
       });
 
@@ -1892,10 +1905,10 @@ class WebpackCLI implements IWebpackCLI {
 
         if (Array.isArray(config.options)) {
           config.options.forEach((item) => {
-            config.path.set(item, loadedConfig.path);
+            config.path.set(item, [loadedConfig.path]);
           });
         } else {
-          config.path.set(loadedConfig.options, loadedConfig.path);
+          config.path.set(loadedConfig.options, [loadedConfig.path]);
         }
       }
     }
@@ -1929,6 +1942,92 @@ class WebpackCLI implements IWebpackCLI {
       }
     }
 
+    const resolveExtends = async (
+      config: WebpackConfiguration,
+      configPaths: WebpackCLIConfig["path"],
+      extendsPaths: string[],
+    ): Promise<WebpackConfiguration> => {
+      delete config.extends;
+
+      const loadedConfigs = await Promise.all(
+        extendsPaths.map((extendsPath) =>
+          loadConfigByPath(path.resolve(extendsPath), options.argv),
+        ),
+      );
+
+      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
+      const loadedOptions = loadedConfigs.flatMap((config) => config.options);
+
+      if (loadedOptions.length > 0) {
+        const prevPaths = configPaths.get(config);
+        const loadedPaths = loadedConfigs.flatMap((config) => config.path);
+
+        if (prevPaths) {
+          const intersection = loadedPaths.filter((element) => prevPaths.includes(element));
+
+          if (intersection.length > 0) {
+            this.logger.error(`Recursive configuration detected, exiting.`);
+            process.exit(2);
+          }
+        }
+
+        config = merge(
+          ...(loadedOptions as [WebpackConfiguration, ...WebpackConfiguration[]]),
+          config,
+        );
+
+        if (prevPaths) {
+          configPaths.set(config, [...prevPaths, ...loadedPaths]);
+        }
+      }
+
+      if (config.extends) {
+        const extendsPaths = typeof config.extends === "string" ? [config.extends] : config.extends;
+
+        config = await resolveExtends(config, configPaths, extendsPaths);
+      }
+
+      return config;
+    };
+
+    // The `extends` param in CLI gets priority over extends in config file
+    if (options.extends && options.extends.length > 0) {
+      const extendsPaths = options.extends;
+
+      if (Array.isArray(config.options)) {
+        config.options = await Promise.all(
+          config.options.map((options) => resolveExtends(options, config.path, extendsPaths)),
+        );
+      } else {
+        // load the config from the extends option
+        config.options = await resolveExtends(config.options, config.path, extendsPaths);
+      }
+    }
+    // if no extends option is passed, check if the config file has extends
+    else if (Array.isArray(config.options) && config.options.some((options) => options.extends)) {
+      config.options = await Promise.all(
+        config.options.map((options) => {
+          if (options.extends) {
+            return resolveExtends(
+              options,
+              config.path,
+              typeof options.extends === "string" ? [options.extends] : options.extends,
+            );
+          } else {
+            return options;
+          }
+        }),
+      );
+    } else if (!Array.isArray(config.options) && config.options.extends) {
+      config.options = await resolveExtends(
+        config.options,
+        config.path,
+        typeof config.options.extends === "string"
+          ? [config.options.extends]
+          : config.options.extends,
+      );
+    }
+
     if (options.merge) {
       const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
 
@@ -1946,11 +2045,13 @@ class WebpackCLI implements IWebpackCLI {
         const configPath = config.path.get(options);
         const mergedOptions = merge(accumulator, options);
 
-        mergedConfigPaths.push(configPath as string);
+        if (configPath) {
+          mergedConfigPaths.push(...configPath);
+        }
 
         return mergedOptions;
       }, {});
-      config.path.set(config.options, mergedConfigPaths as unknown as string);
+      config.path.set(config.options, mergedConfigPaths);
     }
 
     return config;
