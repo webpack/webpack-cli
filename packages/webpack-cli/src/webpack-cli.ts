@@ -1957,18 +1957,25 @@ class WebpackCLI implements IWebpackCLI {
       const loadedOptions = loadedConfigs.flatMap((config) => config.options);
 
       if (loadedOptions.length > 0) {
-        const prevConfigPath = configPaths.get(config);
+        const prevPaths = configPaths.get(config);
+        const loadedPaths = loadedConfigs.flatMap((config) => config.path);
+
+        if (prevPaths) {
+          const intersection = loadedPaths.filter((element) => prevPaths.includes(element));
+
+          if (intersection.length > 0) {
+            this.logger.error(`Recursive configuration detected, exiting.`);
+            process.exit(2);
+          }
+        }
 
         config = merge(
           ...(loadedOptions as [WebpackConfiguration, ...WebpackConfiguration[]]),
           config,
         );
 
-        if (prevConfigPath) {
-          configPaths.set(config, [
-            ...prevConfigPath,
-            ...loadedConfigs.flatMap((config) => config.path),
-          ]);
+        if (prevPaths) {
+          configPaths.set(config, [...prevPaths, ...loadedPaths]);
         }
       }
 
@@ -1983,9 +1990,7 @@ class WebpackCLI implements IWebpackCLI {
       return config;
     };
 
-    // TODO set paths for all configs
-    // TODO check with options
-    // extends param in CLI gets priority over extends in config file
+    // The `extends` param in CLI gets priority over extends in config file
     if (options.extends && options.extends.length > 0) {
       const extendsPaths = options.extends;
 
