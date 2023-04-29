@@ -16,9 +16,8 @@ This folder is the collection of those packages.
 1. [configtest](https://github.com/webpack/webpack-cli/tree/master/packages/configtest)
 2. [generators](https://github.com/webpack/webpack-cli/tree/master/packages/generators)
 3. [info](https://github.com/webpack/webpack-cli/tree/master/packages/info)
-4. [migrate](https://www.npmjs.com/package/@webpack-cli/migrate)
-5. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
-6. [webpack-cli](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli)
+4. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
+5. [webpack-cli](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli)
 
 ## Generic Installation
 
