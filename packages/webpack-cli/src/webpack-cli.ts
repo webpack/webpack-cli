@@ -1826,6 +1826,7 @@ class WebpackCLI implements IWebpackCLI {
       return { options, path: configPath };
     };
 
+    // TODO better name
     const config: WebpackCLIConfig = {
       options: {} as WebpackConfiguration,
       path: new WeakMap(),
@@ -1941,84 +1942,72 @@ class WebpackCLI implements IWebpackCLI {
       }
     }
 
-    const flattenConfigs = async (
-      configPaths: string | string[],
+    const resolveExtends = async (
+      config: WebpackConfiguration,
+      extendsPaths: string[],
     ): Promise<WebpackConfiguration> => {
-      configPaths = Array.isArray(configPaths) ? configPaths : [configPaths];
-
-      // fetch configs by path
-      const configs = await Promise.all(
-        configPaths.map((configPath: string) =>
-          loadConfigByPath(path.resolve(configPath), options.argv),
+      const loadedConfigs = await Promise.all(
+        extendsPaths.map((extendsPath) =>
+          loadConfigByPath(path.resolve(extendsPath), options.argv),
         ),
       );
 
-      // extract options from configs
-      const extendedConfigOptions = configs.map((extendedConfig) =>
-        Array.isArray(extendedConfig.options) ? extendedConfig.options : [extendedConfig.options],
-      );
+      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
+      const loadedOptions = loadedConfigs.flatMap((config) => config.options);
 
-      // recursively flatten the configs by looking for extends property
-      for (let i = 0; i < extendedConfigOptions.length; i++) {
-        const extendedConfigs = extendedConfigOptions[i];
-        for (let j = 0; j < extendedConfigs.length; j++) {
-          const extendedConfig = extendedConfigs[j] as WebpackConfiguration;
-          if (extendedConfig.extends) {
-            const flattenedExtendedConfig = await flattenConfigs(extendedConfig.extends);
-            extendedConfigOptions[i][j] = webpackMerge(flattenedExtendedConfig, extendedConfig);
-          }
-        }
+      if (loadedOptions.length > 0) {
+        config = merge(
+          ...(loadedOptions as [WebpackConfiguration, ...WebpackConfiguration[]]),
+          config,
+        );
       }
 
-      const flattenedConfigs = extendedConfigOptions.reduce(
-        (acc: Array<ConfigOptions>, options) => {
-          acc.push(options[0]);
-          return acc;
-        },
-        [],
-      );
+      if (config.extends) {
+        const extendsPaths = typeof config.extends === "string" ? [config.extends] : config.extends;
 
-      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
-      const mergedConfig = flattenedConfigs.reduce((accumulator: object, options) => {
-        return merge(accumulator, options);
-      }, {});
+        delete config.extends;
 
-      delete (mergedConfig as WebpackConfiguration).extends;
-      return mergedConfig;
+        config = await resolveExtends(config, extendsPaths);
+      }
+
+      return config;
     };
 
+    // TODO set paths for all configs
     // extends param in CLI gets priority over extends in config file
     if (options.extends && options.extends.length > 0) {
-      // load the config from the extends option
-      const extendedConfig = await flattenConfigs(options.extends);
+      const extendsPaths = options.extends;
 
-      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
-
-      config.options = Array.isArray(config.options) ? config.options : [config.options];
-
-      // merge extended config with all configs
-      config.options = config.options.map((options) => {
-        return merge(extendedConfig, options);
-      });
+      if (Array.isArray(config.options)) {
+        config.options = await Promise.all(
+          config.options.map((config) => resolveExtends(config, extendsPaths)),
+        );
+      } else {
+        // load the config from the extends option
+        config.options = await resolveExtends(config.options, extendsPaths);
+      }
     }
     // if no extends option is passed, check if the config file has extends
-    else if (
-      (!Array.isArray(config.options) && config.options.extends) ||
-      (Array.isArray(config.options) && config.options.some((options) => options.extends))
-    ) {
-      config.options = Array.isArray(config.options) ? config.options : [config.options];
-
-      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
-
-      for (let index = 0; index < config.options.length; index++) {
-        const configOptions = config.options[index];
-        if (configOptions.extends) {
-          const extendedConfig = await flattenConfigs(configOptions.extends);
-
-          config.options[index] = merge(extendedConfig, configOptions);
-          delete config.options[index].extends;
-        }
-      }
+    else if (Array.isArray(config.options) && config.options.some((options) => options.extends)) {
+      config.options = await Promise.all(
+        config.options.map((config) => {
+          if (config.extends) {
+            return resolveExtends(
+              config,
+              typeof config.extends === "string" ? [config.extends] : config.extends,
+            );
+          } else {
+            return config;
+          }
+        }),
+      );
+    } else if (!Array.isArray(config.options) && config.options.extends) {
+      config.options = await resolveExtends(
+        config.options,
+        typeof config.options.extends === "string"
+          ? [config.options.extends]
+          : config.options.extends,
+      );
     }
 
     if (options.merge) {
