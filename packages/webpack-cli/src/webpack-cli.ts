@@ -1944,6 +1944,7 @@ class WebpackCLI implements IWebpackCLI {
 
     const resolveExtends = async (
       config: WebpackConfiguration,
+      configPaths: WeakMap<WebpackConfiguration, string>,
       extendsPaths: string[],
     ): Promise<WebpackConfiguration> => {
       const loadedConfigs = await Promise.all(
@@ -1956,10 +1957,23 @@ class WebpackCLI implements IWebpackCLI {
       const loadedOptions = loadedConfigs.flatMap((config) => config.options);
 
       if (loadedOptions.length > 0) {
+        const prevConfigPath =
+          typeof configPaths.get(config) === "string"
+            ? [configPaths.get(config)]
+            : configPaths.get(config);
+
         config = merge(
           ...(loadedOptions as [WebpackConfiguration, ...WebpackConfiguration[]]),
           config,
         );
+
+        if (prevConfigPath) {
+          // @ts-ignore
+          configPaths.set(config, [
+            ...prevConfigPath,
+            ...loadedConfigs.flatMap((config) => config.path),
+          ]);
+        }
       }
 
       if (config.extends) {
@@ -1967,43 +1981,46 @@ class WebpackCLI implements IWebpackCLI {
 
         delete config.extends;
 
-        config = await resolveExtends(config, extendsPaths);
+        config = await resolveExtends(config, configPaths, extendsPaths);
       }
 
       return config;
     };
 
     // TODO set paths for all configs
+    // TODO check with options
     // extends param in CLI gets priority over extends in config file
     if (options.extends && options.extends.length > 0) {
       const extendsPaths = options.extends;
 
       if (Array.isArray(config.options)) {
         config.options = await Promise.all(
-          config.options.map((config) => resolveExtends(config, extendsPaths)),
+          config.options.map((options) => resolveExtends(options, config.path, extendsPaths)),
         );
       } else {
         // load the config from the extends option
-        config.options = await resolveExtends(config.options, extendsPaths);
+        config.options = await resolveExtends(config.options, config.path, extendsPaths);
       }
     }
     // if no extends option is passed, check if the config file has extends
     else if (Array.isArray(config.options) && config.options.some((options) => options.extends)) {
       config.options = await Promise.all(
-        config.options.map((config) => {
-          if (config.extends) {
+        config.options.map((options) => {
+          if (options.extends) {
             return resolveExtends(
-              config,
-              typeof config.extends === "string" ? [config.extends] : config.extends,
+              options,
+              config.path,
+              typeof options.extends === "string" ? [options.extends] : options.extends,
             );
           } else {
-            return config;
+            return options;
           }
         }),
       );
     } else if (!Array.isArray(config.options) && config.options.extends) {
       config.options = await resolveExtends(
         config.options,
+        config.path,
         typeof config.options.extends === "string"
           ? [config.options.extends]
           : config.options.extends,
