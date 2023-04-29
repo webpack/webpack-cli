@@ -3,7 +3,9 @@ module.exports = () => {
 
   return {
     name: "base_config2",
-    mode: "production",
     entry: "./src/index2.js",
+    externals: {
+      jquery: "jQuery",
+    },
   };
 };

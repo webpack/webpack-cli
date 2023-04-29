@@ -1947,6 +1947,8 @@ class WebpackCLI implements IWebpackCLI {
       configPaths: WebpackCLIConfig["path"],
       extendsPaths: string[],
     ): Promise<WebpackConfiguration> => {
+      delete config.extends;
+
       const loadedConfigs = await Promise.all(
         extendsPaths.map((extendsPath) =>
           loadConfigByPath(path.resolve(extendsPath), options.argv),
@@ -1981,8 +1983,6 @@ class WebpackCLI implements IWebpackCLI {
 
       if (config.extends) {
         const extendsPaths = typeof config.extends === "string" ? [config.extends] : config.extends;
-
-        delete config.extends;
 
         config = await resolveExtends(config, configPaths, extendsPaths);
       }
