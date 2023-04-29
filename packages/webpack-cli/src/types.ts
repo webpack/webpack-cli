@@ -94,7 +94,7 @@ interface WebpackCLICommandOption extends CommanderOption {
 
 interface WebpackCLIConfig {
   options: WebpackConfiguration | WebpackConfiguration[];
-  path: WeakMap<object, string>;
+  path: WeakMap<object, string[]>;
 }
 
 interface WebpackCLICommand extends Command {
@@ -239,7 +239,7 @@ interface BasicPackageJsonContent {
  */
 
 interface CLIPluginOptions {
-  configPath?: string;
+  configPath?: string[];
   helpfulOutput: boolean;
   hot?: boolean | "only";
   progress?: boolean | "profile";

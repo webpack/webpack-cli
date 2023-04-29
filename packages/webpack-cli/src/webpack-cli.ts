@@ -1826,7 +1826,7 @@ class WebpackCLI implements IWebpackCLI {
       return { options, path: configPath };
     };
 
-    // TODO better name
+    // TODO better name and better type
     const config: WebpackCLIConfig = {
       options: {} as WebpackConfiguration,
       path: new WeakMap(),
@@ -1863,10 +1863,10 @@ class WebpackCLI implements IWebpackCLI {
 
         if (isArray) {
           (loadedConfig.options as ConfigOptions[]).forEach((options) => {
-            config.path.set(options, loadedConfig.path);
+            config.path.set(options, [loadedConfig.path]);
           });
         } else {
-          config.path.set(loadedConfig.options, loadedConfig.path);
+          config.path.set(loadedConfig.options, [loadedConfig.path]);
         }
       });
 
@@ -1905,10 +1905,10 @@ class WebpackCLI implements IWebpackCLI {
 
         if (Array.isArray(config.options)) {
           config.options.forEach((item) => {
-            config.path.set(item, loadedConfig.path);
+            config.path.set(item, [loadedConfig.path]);
           });
         } else {
-          config.path.set(loadedConfig.options, loadedConfig.path);
+          config.path.set(loadedConfig.options, [loadedConfig.path]);
         }
       }
     }
@@ -1944,7 +1944,7 @@ class WebpackCLI implements IWebpackCLI {
 
     const resolveExtends = async (
       config: WebpackConfiguration,
-      configPaths: WeakMap<WebpackConfiguration, string>,
+      configPaths: WebpackCLIConfig["path"],
       extendsPaths: string[],
     ): Promise<WebpackConfiguration> => {
       const loadedConfigs = await Promise.all(
@@ -1957,10 +1957,7 @@ class WebpackCLI implements IWebpackCLI {
       const loadedOptions = loadedConfigs.flatMap((config) => config.options);
 
       if (loadedOptions.length > 0) {
-        const prevConfigPath =
-          typeof configPaths.get(config) === "string"
-            ? [configPaths.get(config)]
-            : configPaths.get(config);
+        const prevConfigPath = configPaths.get(config);
 
         config = merge(
           ...(loadedOptions as [WebpackConfiguration, ...WebpackConfiguration[]]),
@@ -1968,7 +1965,6 @@ class WebpackCLI implements IWebpackCLI {
         );
 
         if (prevConfigPath) {
-          // @ts-ignore
           configPaths.set(config, [
             ...prevConfigPath,
             ...loadedConfigs.flatMap((config) => config.path),
@@ -2044,11 +2040,13 @@ class WebpackCLI implements IWebpackCLI {
         const configPath = config.path.get(options);
         const mergedOptions = merge(accumulator, options);
 
-        mergedConfigPaths.push(configPath as string);
+        if (configPath) {
+          mergedConfigPaths.push(...configPath);
+        }
 
         return mergedOptions;
       }, {});
-      config.path.set(config.options, mergedConfigPaths as unknown as string);
+      config.path.set(config.options, mergedConfigPaths);
     }
 
     return config;
