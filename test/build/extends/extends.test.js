@@ -52,6 +52,19 @@ describe("extends property", () => {
     expect(stdout).toContain("topLevelAwait: true");
   });
 
+  it("extends a provided webpack config for multiple configs correctly #2", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname + "/multiple-configs2");
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain("base.webpack.config.js");
+    expect(stdout).toContain("derived.webpack.config.js");
+    expect(stdout).toContain("name: 'base_config'");
+    expect(stdout).toContain("name: 'derived_config2'");
+    expect(stdout).toContain("mode: 'development'");
+    expect(stdout).toContain("topLevelAwait: true");
+  });
+
   it("multiple extends a provided webpack config passed in the cli correctly", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname + "/extends-cli-option", [
       "--extends",
@@ -68,6 +81,24 @@ describe("extends property", () => {
     expect(stdout).toContain("name: 'base_config'");
     expect(stdout).toContain("mode: 'development'");
     expect(stdout).toContain("bail: true");
+  });
+
+  it("should work with multiple extends and multiple configuration", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname + "/multiple-configs1", [
+      "--extends",
+      "./base.webpack.config.js",
+      "--extends",
+      "./other.config.js",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain("derived.webpack.config.js");
+    expect(stdout).toContain("base.webpack.config.js");
+    expect(stdout).toContain("other.config.js");
+    expect(stdout).toContain("name: 'derived_config1'");
+    expect(stdout).toContain("name: 'derived_config2'");
+    expect(stdout).toContain("topLevelAwait: true");
   });
 
   it("CLI `extends` should override `extends` in a configuration", async () => {
