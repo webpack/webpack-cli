@@ -6,10 +6,17 @@ const { DefinePlugin } = require("webpack");
 
 class DotenvWebpackPlugin {
   constructor(config = {}) {
+    const currentDirectory = path.resolve(process.cwd(), "environment");
+
     this.config = Object.assign(
       {},
       {
-        envFiles: [],
+        envFiles: [
+          `${currentDirectory}/.env`, // loaded in all cases
+          `${currentDirectory}/.env.local`, // loaded in all cases, ignored by git
+          `${currentDirectory}/.env.[mode]`, // only loaded in specified mode
+          `${currentDirectory}/.env.[mode].local`, // only loaded in specified mode, ignored by git
+        ],
         prefixes: ["process.env.", "import.meta.env."],
       },
       config,
@@ -17,19 +24,16 @@ class DotenvWebpackPlugin {
   }
 
   apply(compiler) {
-    const currentDirectory = path.resolve(process.cwd(), "environment");
-
     const mode = compiler.options.mode || "production";
+
     // .local file variables will get precedence
-    const environmentFiles =
-      this.config.envFiles.length > 0
-        ? this.config.envFiles
-        : [
-            `${currentDirectory}/.env`, // loaded in all cases
-            `${currentDirectory}/.env.local`, // loaded in all cases, ignored by git
-            `${currentDirectory}/.env.${mode}`, // only loaded in specified mode
-            `${currentDirectory}/.env.${mode}.local`, // only loaded in specified mode, ignored by git
-          ];
+    let environmentFiles = Array.isArray(this.config.envFiles)
+      ? this.config.envFiles
+      : [this.config.envFiles];
+
+    environmentFiles = environmentFiles.map((environmentFile) =>
+      environmentFile.replace(/\[mode\]/g, mode),
+    );
 
     let envVariables = {};
     // parse environment vars from .env files
