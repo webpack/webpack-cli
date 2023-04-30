@@ -14,7 +14,6 @@ class DotenvWebpackPlugin {
       },
       config,
     );
-    this.cache = new Map();
   }
 
   apply(compiler) {

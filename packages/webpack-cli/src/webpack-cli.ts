@@ -45,7 +45,7 @@ import {
 
 import webpackMerge from "webpack-merge";
 import webpack from "webpack";
-import { Compiler, MultiCompiler, WebpackError, StatsOptions, Configuration } from "webpack";
+import { Compiler, MultiCompiler, WebpackError, StatsOptions } from "webpack";
 import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
@@ -1952,6 +1952,7 @@ class WebpackCLI implements IWebpackCLI {
       }, {});
       config.path.set(config.options, mergedConfigPaths as unknown as string);
     }
+
     return config;
   }
 
