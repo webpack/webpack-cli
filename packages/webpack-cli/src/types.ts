@@ -94,7 +94,7 @@ interface WebpackCLICommandOption extends CommanderOption {
 
 interface WebpackCLIConfig {
   options: WebpackConfiguration | WebpackConfiguration[];
-  path: WeakMap<object, string>;
+  path: WeakMap<object, string[]>;
 }
 
 interface WebpackCLICommand extends Command {
@@ -178,6 +178,7 @@ type WebpackDevServerOptions = DevServerConfig &
     config: string[];
     configName?: string[];
     disableInterpret?: boolean;
+    extends?: string[];
     argv: Argv;
   };
 
@@ -186,8 +187,10 @@ type Callback<T extends unknown[]> = (...args: T) => void;
 /**
  * Webpack
  */
-
-type WebpackConfiguration = Configuration;
+type WebpackConfiguration = Configuration & {
+  // TODO add extends to webpack types
+  extends?: string | string[];
+};
 type ConfigOptions = PotentialPromise<WebpackConfiguration | CallableOption>;
 type CallableOption = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
 type WebpackCompiler = Compiler | MultiCompiler;
@@ -236,7 +239,7 @@ interface BasicPackageJsonContent {
  */
 
 interface CLIPluginOptions {
-  configPath?: string;
+  configPath?: string[];
   helpfulOutput: boolean;
   hot?: boolean | "only";
   progress?: boolean | "profile";
