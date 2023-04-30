@@ -19,7 +19,7 @@ class DotenvWebpackPlugin {
   apply(compiler) {
     const currentDirectory = path.resolve(process.cwd(), "environment");
 
-    const mode = compiler.options.mode || "development";
+    const mode = compiler.options.mode || "production";
     // .local file variables will get precedence
     const environmentFiles =
       this.config.envFiles.length > 0
