@@ -56,6 +56,7 @@ const path = require("path");
 const { pathToFileURL } = require("url");
 const util = require("util");
 const { program, Option } = require("commander");
+const DotenvWebpackPlugin = require("dotenv-webpack-plugin");
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
@@ -2053,6 +2054,26 @@ class WebpackCLI implements IWebpackCLI {
       }, {});
       config.path.set(config.options, mergedConfigPaths);
     }
+
+    const runFunctionOnEachConfig = (
+      options: WebpackConfiguration | WebpackConfiguration[],
+      fn: CallableFunction,
+    ) => {
+      if (Array.isArray(options)) {
+        for (let item of options) {
+          item = fn(item);
+        }
+      } else {
+        options = fn(options);
+      }
+
+      return options;
+    };
+
+    config.options = runFunctionOnEachConfig(config.options, (options: WebpackConfiguration) => {
+      options.plugins = options.plugins || [];
+      options.plugins.unshift(new DotenvWebpackPlugin());
+    });
 
     return config;
   }

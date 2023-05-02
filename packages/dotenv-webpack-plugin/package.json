@@ -2,7 +2,7 @@
   "name": "dotenv-webpack-plugin",
   "version": "1.0.0",
   "description": "A webpack plugin to support env files",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/webpack/webpack-cli",
   "author": "Burhanuddin Udaipurwala (burhanuday)",
   "license": "MIT",
