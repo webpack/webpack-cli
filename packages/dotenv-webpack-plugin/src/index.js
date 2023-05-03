@@ -1,12 +1,11 @@
 const fs = require("fs");
-const path = require("path");
 const dotenv = require("dotenv");
 const dotenvExpand = require("dotenv-expand");
 const { DefinePlugin } = require("webpack");
 
 class DotenvWebpackPlugin {
   constructor(config = {}) {
-    const currentDirectory = path.resolve(process.cwd(), "environment");
+    const currentDirectory = process.cwd();
 
     this.config = Object.assign(
       {},
@@ -58,7 +57,7 @@ class DotenvWebpackPlugin {
     });
 
     // expand environment vars
-    envVariables = dotenvExpand({
+    envVariables = dotenvExpand.expand({
       parsed: envVariables,
       // don't write to process.env
       ignoreProcessEnv: true,
