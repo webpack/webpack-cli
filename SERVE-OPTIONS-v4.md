@@ -10,14 +10,15 @@ Options:
   --disable-interpret                                 Disable interpret for loading the config file.
   --env <value...>                                    Environment passed to the configuration when it is a function.
   --node-env <value>                                  Sets process.env.NODE_ENV to the specified value.
-  --define-process-env-node-env <value>               Sets process.env.NODE_ENV to the specified value. (Currently an alias for `--node-env`)
   --analyze                                           It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                  Print compilation progress during build.
   -j, --json [value]                                  Prints result as JSON or store it in a file.
-  --fail-on-warnings                                  Stop webpack-cli process with non-zero exit code on warnings from webpack
+  --fail-on-warnings                                  Stop webpack-cli process with non-zero exit code on warnings from webpack.
+  -e, --extends <value...>                            Path to the configuration to be extended (only works when using webpack-cli).
   -d, --devtool <value>                               A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                        Negative 'devtool' option.
   --entry <value...>                                  A module that is loaded upon startup. Only the last one is exported.
+  --extends <value...>                                Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>                                      Enable production optimizations or development hints.
   --name <value>                                      Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                           The output directory as **absolute path** (required).
