@@ -34,13 +34,10 @@ import {
   PackageInstallOptions,
   PackageManager,
   Path,
-  ProcessedArguments,
   PromptOptions,
   PotentialPromise,
   Rechoir,
   RechoirError,
-  Argument,
-  Problem,
 } from "./types";
 
 import webpackMerge from "webpack-merge";
@@ -2122,67 +2119,6 @@ class WebpackCLI implements IWebpackCLI {
 
         if (options.argv.env["WEBPACK_SERVE"]) {
           item.watch = false;
-        }
-      }
-
-      // Apply options
-      const args: Record<string, Argument> = this.getBuiltInOptions()
-        .filter((flag) => flag.group === "core")
-        .reduce((accumulator: Record<string, Argument>, flag) => {
-          accumulator[flag.name] = flag as unknown as Argument;
-          return accumulator;
-        }, {});
-
-      const values: ProcessedArguments = Object.keys(options).reduce(
-        (accumulator: ProcessedArguments, name) => {
-          if (name === "argv") {
-            return accumulator;
-          }
-
-          const kebabName = this.toKebabCase(name);
-
-          if (args[kebabName]) {
-            accumulator[kebabName] = options[name as keyof typeof options as string];
-          }
-
-          return accumulator;
-        },
-        {},
-      );
-
-      if (Object.keys(values).length > 0) {
-        const problems: Problem[] | null = this.webpack.cli.processArguments(args, item, values);
-
-        if (problems) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const groupBy = (xs: Record<string, any>[], key: string) => {
-            return xs.reduce((rv, x) => {
-              (rv[x[key]] = rv[x[key]] || []).push(x);
-
-              return rv;
-            }, {});
-          };
-          const problemsByPath = groupBy(problems, "path");
-
-          for (const path in problemsByPath) {
-            const problems = problemsByPath[path];
-
-            problems.forEach((problem: Problem) => {
-              this.logger.error(
-                `${this.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
-                  problem.value ? ` '${problem.value}'` : ""
-                } for the '--${problem.argument}' option${
-                  problem.index ? ` by index '${problem.index}'` : ""
-                }`,
-              );
-
-              if (problem.expected) {
-                this.logger.error(`Expected: '${problem.expected}'`);
-              }
-            });
-          }
-
-          process.exit(2);
         }
       }
 

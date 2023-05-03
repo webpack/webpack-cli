@@ -7,8 +7,6 @@ import webpack, {
   WebpackOptionsNormalized,
   Compiler,
   MultiCompiler,
-  Problem,
-  Argument,
   AssetEmittedInfo,
   FileCacheOptions,
 } from "webpack";
@@ -187,10 +185,7 @@ type Callback<T extends unknown[]> = (...args: T) => void;
 /**
  * Webpack
  */
-type WebpackConfiguration = Configuration & {
-  // TODO add extends to webpack types
-  extends?: string | string[];
-};
+type WebpackConfiguration = Configuration;
 type ConfigOptions = PotentialPromise<WebpackConfiguration | CallableOption>;
 type CallableOption = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
 type WebpackCompiler = Compiler | MultiCompiler;
@@ -207,9 +202,6 @@ type FileSystemCacheOptions = WebpackConfiguration & {
   cache: FileCacheOptions & { defaultConfig: string[] };
 };
 
-type ProcessedArguments = Record<string, BasicPrimitive | RegExp | (BasicPrimitive | RegExp)[]>;
-
-type MultipleCompilerStatsOptions = StatsOptions & { children: StatsOptions[] };
 type CommandAction = Parameters<WebpackCLICommand["action"]>[0];
 
 interface WebpackRunOptions extends WebpackOptionsNormalized {
@@ -322,7 +314,6 @@ export {
   WebpackCompiler,
   WebpackConfiguration,
   Argv,
-  Argument,
   BasicPrimitive,
   BasicPackageJsonContent,
   CallableOption,
@@ -339,13 +330,10 @@ export {
   Instantiable,
   JsonExt,
   ModuleName,
-  MultipleCompilerStatsOptions,
   PackageInstallOptions,
   PackageManager,
   Path,
-  ProcessedArguments,
   PromptOptions,
-  Problem,
   PotentialPromise,
   Rechoir,
   RechoirError,
