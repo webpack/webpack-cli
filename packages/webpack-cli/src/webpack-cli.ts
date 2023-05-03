@@ -916,8 +916,8 @@ class WebpackCLI implements IWebpackCLI {
         ],
         multiple: false,
         description:
-          "Sets process.env.NODE_ENV to the specified value. (Currently an alias for `--node-env`)",
-        helpLevel: "minimum",
+          "Sets process.env.NODE_ENV to the specified value. (Currently an alias for `--node-env`).",
+        helpLevel: "verbose",
       },
 
       // Adding more plugins
@@ -972,9 +972,10 @@ class WebpackCLI implements IWebpackCLI {
             values: [true],
           },
         ],
-        description: "Stop webpack-cli process with non-zero exit code on warnings from webpack",
+        description: "Stop webpack-cli process with non-zero exit code on warnings from webpack.",
         helpLevel: "minimum",
       },
+      // TODO remove this in the next major release, because not all webpack versions have this flag in CLI options
       {
         name: "extends",
         alias: "e",
@@ -984,7 +985,8 @@ class WebpackCLI implements IWebpackCLI {
           },
         ],
         multiple: true,
-        description: "Extend webpack configuration",
+        description:
+          "Path to the configuration to be extended (only works when using webpack-cli).",
         helpLevel: "minimum",
       },
     ];
@@ -999,6 +1001,7 @@ class WebpackCLI implements IWebpackCLI {
       "target",
       "name",
       "output-path",
+      "extends",
     ];
 
     // Extract all the flags being exported from core.

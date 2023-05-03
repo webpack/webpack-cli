@@ -97,6 +97,8 @@ Options:
   --no-experiments-sync-web-assembly                                                 Negative 'experiments-sync-web-assembly' option.
   --experiments-top-level-await                                                      Allow using top-level-await in EcmaScript Modules.
   --no-experiments-top-level-await                                                   Negative 'experiments-top-level-await' option.
+  --extends <value...>                                                               Path to the configuration to be extended (only works when using webpack-cli).
+  --extends-reset                                                                    Clear all items provided in 'extends' configuration. Extend configuration from another configuration (only works when using webpack-cli).
   --externals <value...>                                                             Every matched dependency becomes external. An exact matched dependency becomes external. The same string is used as external dependency.
   --externals-reset                                                                  Clear all items provided in 'externals' configuration. Specify dependencies that shouldn't be resolved by webpack, but should become dependencies of the resulting bundle. The kind of the dependency depends on `output.libraryTarget`.
   --externals-presets-electron                                                       Treat common electron built-in modules in main and preload context like 'electron', 'ipc' or 'shell' as external and load them via require() when used.
@@ -640,6 +642,8 @@ Options:
   --output-hot-update-chunk-filename <value>                                         The filename of the Hot Update Chunks. They are inside the output.path directory.
   --output-hot-update-global <value>                                                 The global variable used by webpack for loading of hot update chunks.
   --output-hot-update-main-filename <value>                                          The filename of the Hot Update Main File. It is inside the 'output.path' directory.
+  --output-ignore-browser-warnings                                                   Ignore warnings in the browser.
+  --no-output-ignore-browser-warnings                                                Negative 'output-ignore-browser-warnings' option.
   --output-iife                                                                      Wrap javascript code into IIFE's to avoid leaking into global scope.
   --no-output-iife                                                                   Negative 'output-iife' option.
   --output-import-function-name <value>                                              The name of the native import() function (can be exchanged for a polyfill).
@@ -682,6 +686,7 @@ Options:
   --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost (Deprecated). This will handle module error compatible with the Node.js CommonJS way.
   --no-output-strict-module-exception-handling                                       Negative 'output-strict-module-exception-handling' option.
   --output-trusted-types [value]                                                     Use a Trusted Types policy to create urls for chunks. 'output.uniqueName' is used a default policy name. Passing a string sets a custom policy name. The name of the Trusted Types policy created by webpack to serve bundle chunks.
+  --output-trusted-types-on-policy-creation-failure <value>                          If the call to `trustedTypes.createPolicy(...)` fails -- e.g., due to the policy name missing from the CSP `trusted-types` list, or it being a duplicate name, etc. -- controls whether to continue with loading in the hope that `require-trusted-types-for 'script'` isn't enforced yet, versus fail immediately. Default behavior is 'stop'.
   --output-trusted-types-policy-name <value>                                         The name of the Trusted Types policy created by webpack to serve bundle chunks.
   --output-unique-name <value>                                                       A unique name of the webpack build to avoid multiple webpack runtimes to conflict when using globals.
   --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
@@ -890,6 +895,7 @@ Options:
   --no-stats-errors                                                                  Negative 'stats-errors' option.
   --stats-errors-count                                                               Add errors count.
   --no-stats-errors-count                                                            Negative 'stats-errors-count' option.
+  --stats-errors-space <value>                                                       Space to display errors (value is in number of lines).
   --stats-exclude-assets <value...>                                                  Suppress assets that match the specified filters. Filters can be Strings, RegExps or Functions.
   --stats-exclude-assets-reset                                                       Clear all items provided in 'stats.excludeAssets' configuration. Suppress assets that match the specified filters. Filters can be Strings, RegExps or Functions.
   --stats-exclude-modules [value...]                                                 Suppress modules that match the specified filters. Filters can be Strings, RegExps, Booleans or Functions.
@@ -978,6 +984,7 @@ Options:
   --no-stats-warnings-count                                                          Negative 'stats-warnings-count' option.
   --stats-warnings-filter <value...>                                                 Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
   --stats-warnings-filter-reset                                                      Clear all items provided in 'stats.warningsFilter' configuration. Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
+  --stats-warnings-space <value>                                                     Space to display warnings (value is in number of lines).
   -t, --target <value...>                                                            Environment to build for. Environment to build for. An array of environments to build for all of them when possible.
   --no-target                                                                        Negative 'target' option.
   --target-reset                                                                     Clear all items provided in 'target' configuration. Environment to build for. An array of environments to build for all of them when possible.
