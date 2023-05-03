@@ -2055,26 +2055,6 @@ class WebpackCLI implements IWebpackCLI {
       config.path.set(config.options, mergedConfigPaths);
     }
 
-    const runFunctionOnEachConfig = (
-      options: WebpackConfiguration | WebpackConfiguration[],
-      fn: CallableFunction,
-    ) => {
-      if (Array.isArray(options)) {
-        for (let item of options) {
-          item = fn(item);
-        }
-      } else {
-        options = fn(options);
-      }
-
-      return options;
-    };
-
-    config.options = runFunctionOnEachConfig(config.options, (options: WebpackConfiguration) => {
-      options.plugins = options.plugins || [];
-      options.plugins.unshift(new DotenvWebpackPlugin());
-    });
-
     return config;
   }
 
@@ -2287,6 +2267,7 @@ class WebpackCLI implements IWebpackCLI {
           progress: options.progress,
           analyze: options.analyze,
         }),
+        new DotenvWebpackPlugin(),
       );
 
       return options;
