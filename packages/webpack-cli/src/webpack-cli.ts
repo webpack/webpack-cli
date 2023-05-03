@@ -50,6 +50,7 @@ import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
 import { CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
+import levenshtein from "fastest-levenshtein";
 
 const fs = require("fs");
 const path = require("path");
@@ -562,9 +563,9 @@ class WebpackCLI implements IWebpackCLI {
         }
       }
 
-      options.forEach((optionForCommand) => {
-        this.makeOption(command, optionForCommand);
-      });
+      for (const option of options) {
+        this.makeOption(command, option);
+      }
     }
 
     command.action(action);
@@ -586,7 +587,7 @@ class WebpackCLI implements IWebpackCLI {
       let negatedDescription;
       const mainOptionType: WebpackCLIMainOption["type"] = new Set();
 
-      option.configs.forEach((config) => {
+      for (const config of option.configs) {
         switch (config.type) {
           case "reset":
             mainOptionType.add(Boolean);
@@ -637,7 +638,7 @@ class WebpackCLI implements IWebpackCLI {
             return enumTypes;
           }
         }
-      });
+      }
 
       mainOption = {
         flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
@@ -1268,11 +1269,11 @@ class WebpackCLI implements IWebpackCLI {
 
             const levenshtein = require("fastest-levenshtein");
 
-            (command as WebpackCLICommand).options.forEach((option) => {
+            for (const option of (command as WebpackCLICommand).options) {
               if (!option.hidden && levenshtein.distance(name, option.long?.slice(2)) < 3) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
-            });
+            }
           }
         }
       }
@@ -1744,9 +1745,9 @@ class WebpackCLI implements IWebpackCLI {
           if ((error as RechoirError)?.failures) {
             this.logger.error(`Unable load '${configPath}'`);
             this.logger.error((error as RechoirError).message);
-            (error as RechoirError).failures.forEach((failure) => {
+            for (const failure of (error as RechoirError).failures) {
               this.logger.error(failure.error.message);
-            });
+            }
             this.logger.error("Please install one of them");
             process.exit(2);
           }
@@ -1854,18 +1855,18 @@ class WebpackCLI implements IWebpackCLI {
           }
 
           if (isArray) {
-            (loadedConfig.options as ConfigOptions[]).forEach((item) => {
+            for (const item of loadedConfig.options as ConfigOptions[]) {
               (config.options as ConfigOptions[]).push(item);
-            });
+            }
           } else {
             config.options.push(loadedConfig.options as WebpackConfiguration);
           }
         }
 
         if (isArray) {
-          (loadedConfig.options as ConfigOptions[]).forEach((options) => {
+          for (const options of loadedConfig.options as ConfigOptions[]) {
             config.path.set(options, [loadedConfig.path]);
-          });
+          }
         } else {
           config.path.set(loadedConfig.options, [loadedConfig.path]);
         }
@@ -1905,9 +1906,9 @@ class WebpackCLI implements IWebpackCLI {
         config.options = loadedConfig.options as WebpackConfiguration[];
 
         if (Array.isArray(config.options)) {
-          config.options.forEach((item) => {
+          for (const item of config.options) {
             config.path.set(item, [loadedConfig.path]);
-          });
+          }
         } else {
           config.path.set(loadedConfig.options, [loadedConfig.path]);
         }
@@ -2149,7 +2150,7 @@ class WebpackCLI implements IWebpackCLI {
           for (const path in problemsByPath) {
             const problems = problemsByPath[path];
 
-            problems.forEach((problem: Problem) => {
+            for (const problem of problems) {
               this.logger.error(
                 `${this.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
                   problem.value ? ` '${problem.value}'` : ""
@@ -2161,7 +2162,7 @@ class WebpackCLI implements IWebpackCLI {
               if (problem.expected) {
                 this.logger.error(`Expected: '${problem.expected}'`);
               }
-            });
+            }
           }
 
           process.exit(2);
@@ -2208,13 +2209,13 @@ class WebpackCLI implements IWebpackCLI {
           }
 
           if (Array.isArray(configPath)) {
-            configPath.forEach((oneOfConfigPath) => {
+            for (const oneOfConfigPath of configPath) {
               (
                 item.cache.buildDependencies as NonNullable<
                   FileSystemCacheOptions["cache"]["buildDependencies"]
                 >
               ).defaultConfig.push(oneOfConfigPath);
-            });
+            }
           } else {
             item.cache.buildDependencies.defaultConfig.push(configPath);
           }
