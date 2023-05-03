@@ -7,6 +7,8 @@ import webpack, {
   WebpackOptionsNormalized,
   Compiler,
   MultiCompiler,
+  Problem,
+  Argument,
   AssetEmittedInfo,
   FileCacheOptions,
 } from "webpack";
@@ -202,6 +204,8 @@ type FileSystemCacheOptions = WebpackConfiguration & {
   cache: FileCacheOptions & { defaultConfig: string[] };
 };
 
+type ProcessedArguments = Record<string, BasicPrimitive | RegExp | (BasicPrimitive | RegExp)[]>;
+
 type CommandAction = Parameters<WebpackCLICommand["action"]>[0];
 
 interface WebpackRunOptions extends WebpackOptionsNormalized {
@@ -314,6 +318,7 @@ export {
   WebpackCompiler,
   WebpackConfiguration,
   Argv,
+  Argument,
   BasicPrimitive,
   BasicPackageJsonContent,
   CallableOption,
@@ -333,7 +338,9 @@ export {
   PackageInstallOptions,
   PackageManager,
   Path,
+  ProcessedArguments,
   PromptOptions,
+  Problem,
   PotentialPromise,
   Rechoir,
   RechoirError,
