@@ -2126,12 +2126,15 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       // Apply options
-      const args: Record<string, Argument> = this.getBuiltInOptions()
-        .filter((flag) => flag.group === "core")
-        .reduce((accumulator: Record<string, Argument>, flag) => {
-          accumulator[flag.name] = flag as unknown as Argument;
+      const args: Record<string, Argument> = this.getBuiltInOptions().reduce(
+        (accumulator: Record<string, Argument>, flag) => {
+          if (flag.group === "core") {
+            accumulator[flag.name] = flag as unknown as Argument;
+          }
           return accumulator;
-        }, {});
+        },
+        {},
+      );
       const values: ProcessedArguments = Object.keys(options).reduce(
         (accumulator: ProcessedArguments, name) => {
           if (name === "argv") {
