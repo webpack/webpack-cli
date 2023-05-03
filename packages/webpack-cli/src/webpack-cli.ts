@@ -2150,38 +2150,40 @@ class WebpackCLI implements IWebpackCLI {
         {},
       );
 
-      const problems: Problem[] | null = this.webpack.cli.processArguments(args, item, values);
+      if (Object.keys(values).length > 0) {
+        const problems: Problem[] | null = this.webpack.cli.processArguments(args, item, values);
 
-      if (problems) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const groupBy = (xs: Record<string, any>[], key: string) => {
-          return xs.reduce((rv, x) => {
-            (rv[x[key]] = rv[x[key]] || []).push(x);
+        if (problems) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const groupBy = (xs: Record<string, any>[], key: string) => {
+            return xs.reduce((rv, x) => {
+              (rv[x[key]] = rv[x[key]] || []).push(x);
 
-            return rv;
-          }, {});
-        };
-        const problemsByPath = groupBy(problems, "path");
+              return rv;
+            }, {});
+          };
+          const problemsByPath = groupBy(problems, "path");
 
-        for (const path in problemsByPath) {
-          const problems = problemsByPath[path];
+          for (const path in problemsByPath) {
+            const problems = problemsByPath[path];
 
-          problems.forEach((problem: Problem) => {
-            this.logger.error(
-              `${this.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
-                problem.value ? ` '${problem.value}'` : ""
-              } for the '--${problem.argument}' option${
-                problem.index ? ` by index '${problem.index}'` : ""
-              }`,
-            );
+            problems.forEach((problem: Problem) => {
+              this.logger.error(
+                `${this.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
+                  problem.value ? ` '${problem.value}'` : ""
+                } for the '--${problem.argument}' option${
+                  problem.index ? ` by index '${problem.index}'` : ""
+                }`,
+              );
 
-            if (problem.expected) {
-              this.logger.error(`Expected: '${problem.expected}'`);
-            }
-          });
+              if (problem.expected) {
+                this.logger.error(`Expected: '${problem.expected}'`);
+              }
+            });
+          }
+
+          process.exit(2);
         }
-
-        process.exit(2);
       }
 
       const isFileSystemCacheOptions = (
