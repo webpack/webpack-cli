@@ -13,7 +13,8 @@ Options:
   --analyze                                           It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                  Print compilation progress during build.
   -j, --json [value]                                  Prints result as JSON or store it in a file.
-  --fail-on-warnings                                  Stop webpack-cli process with non-zero exit code on warnings from webpack
+  --fail-on-warnings                                  Stop webpack-cli process with non-zero exit code on warnings from webpack.
+  -e, --extends <value...>                            Path to the configuration to be extended (only works when using webpack-cli).
   -d, --devtool <value>                               A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                        Negative 'devtool' option.
   --entry <value...>                                  A module that is loaded upon startup. Only the last one is exported.
