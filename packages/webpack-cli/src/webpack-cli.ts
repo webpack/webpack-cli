@@ -1147,9 +1147,7 @@ class WebpackCLI implements IWebpackCLI {
           async () => {
             this.webpack = await this.loadWebpack();
 
-            return isWatchCommandUsed
-              ? this.getBuiltInOptions().filter((option) => option.name !== "watch")
-              : this.getBuiltInOptions();
+            return this.getBuiltInOptions();
           },
           async (entries, options) => {
             if (entries.length > 0) {
@@ -2107,24 +2105,6 @@ class WebpackCLI implements IWebpackCLI {
     >("./plugins/cli-plugin");
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
-      // Output warnings
-      if (
-        item.watch &&
-        options.argv &&
-        options.argv.env &&
-        (options.argv.env["WEBPACK_WATCH"] || options.argv.env["WEBPACK_SERVE"])
-      ) {
-        this.logger.warn(
-          `No need to use the '${
-            options.argv.env["WEBPACK_WATCH"] ? "watch" : "serve"
-          }' command together with '{ watch: true }' configuration, it does not make sense.`,
-        );
-
-        if (options.argv.env["WEBPACK_SERVE"]) {
-          item.watch = false;
-        }
-      }
-
       // Apply options
       const args: Record<string, Argument> = this.getBuiltInOptions().reduce(
         (accumulator: Record<string, Argument>, flag) => {
@@ -2185,6 +2165,24 @@ class WebpackCLI implements IWebpackCLI {
           }
 
           process.exit(2);
+        }
+      }
+
+      // Output warnings
+      if (
+        item.watch &&
+        options.argv &&
+        options.argv.env &&
+        (options.argv.env["WEBPACK_WATCH"] || options.argv.env["WEBPACK_SERVE"])
+      ) {
+        this.logger.warn(
+          `No need to use the '${
+            options.argv.env["WEBPACK_WATCH"] ? "watch" : "serve"
+          }' command together with '{ watch: true }' or '--watch' configuration, it does not make sense.`,
+        );
+
+        if (options.argv.env["WEBPACK_SERVE"]) {
+          item.watch = false;
         }
       }
 
