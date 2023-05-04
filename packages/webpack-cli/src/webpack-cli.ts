@@ -56,7 +56,6 @@ const path = require("path");
 const { pathToFileURL } = require("url");
 const util = require("util");
 const { program, Option } = require("commander");
-const DotenvWebpackPlugin = require("dotenv-webpack-plugin");
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
@@ -2260,6 +2259,10 @@ class WebpackCLI implements IWebpackCLI {
         item.plugins = [];
       }
 
+      const DotenvWebpackPlugin = this.checkPackageExists("webpack")
+        ? require("dotenv-webpack-plugin")
+        : null;
+
       item.plugins.unshift(
         new CLIPlugin({
           configPath: config.path.get(item),
@@ -2267,7 +2270,7 @@ class WebpackCLI implements IWebpackCLI {
           progress: options.progress,
           analyze: options.analyze,
         }),
-        ...(this.checkPackageExists(WEBPACK_PACKAGE) ? [new DotenvWebpackPlugin()] : []),
+        ...(DotenvWebpackPlugin ? [new DotenvWebpackPlugin()] : []),
       );
 
       return options;
