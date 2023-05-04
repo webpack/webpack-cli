@@ -50,7 +50,6 @@ import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
 import { CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
-import levenshtein from "fastest-levenshtein";
 
 const fs = require("fs");
 const path = require("path");
@@ -1828,7 +1827,6 @@ class WebpackCLI implements IWebpackCLI {
       return { options, path: configPath };
     };
 
-    // TODO better name and better type
     const config: WebpackCLIConfig = {
       options: {} as WebpackConfiguration,
       path: new WeakMap(),
