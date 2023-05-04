@@ -100,7 +100,6 @@ interface WebpackCLIConfig {
 interface WebpackCLICommand extends Command {
   pkg: string | undefined;
   forHelp: boolean | undefined;
-  options: WebpackCLICommandOption[];
   _args: WebpackCLICommandOption[];
 }
 
