@@ -2096,7 +2096,7 @@ class WebpackCLI implements IWebpackCLI {
     >("./plugins/cli-plugin");
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
-      const isWatchOption = item.watch || (options.argv || {}).watch;
+      const isWatchOption = item.watch;
 
       // Apply options
       const args: Record<string, Argument> = this.getBuiltInOptions().reduce(
