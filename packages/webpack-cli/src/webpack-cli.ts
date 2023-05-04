@@ -50,7 +50,6 @@ import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
 import { CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
-import interpret from "interpret";
 import * as console from "console";
 
 const fs = require("fs");
@@ -612,7 +611,7 @@ class WebpackCLI implements IWebpackCLI {
           case "enum": {
             let hasFalseEnum = false;
 
-            const enumTypes = (config.values || []).map((value) => {
+            for (const value of config.values || []) {
               switch (typeof value) {
                 case "string":
                   mainOptionType.add(String);
@@ -629,14 +628,12 @@ class WebpackCLI implements IWebpackCLI {
                   mainOptionType.add(Boolean);
                   break;
               }
-            });
+            }
 
             if (!needNegativeOption) {
               needNegativeOption = hasFalseEnum;
               negatedDescription = config.negatedDescription;
             }
-
-            return enumTypes;
           }
         }
       }
