@@ -50,7 +50,6 @@ import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
 import { CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
-import * as console from "console";
 
 const fs = require("fs");
 const path = require("path");
