@@ -22,7 +22,7 @@ exports[`basic serve usage should log error on using '-w' alias with serve: stde
 exports[`basic serve usage should log error on using '-w' alias with serve: stdout 1`] = `""`;
 
 exports[`basic serve usage should log used supplied config with serve: stderr 1`] = `
-"    [webpack-cli] Compiler starting...
+"    [webpack-cli] Compiler starting... 
     [webpack-cli] Compiler is using config: '<cwd>/test/serve/basic/log.config.js'
 <i> [webpack-dev-server] Project is running at:
 <i> [webpack-dev-server] Loopback: http://localhost:<port>/
