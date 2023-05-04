@@ -2061,21 +2061,6 @@ class WebpackCLI implements IWebpackCLI {
     config: WebpackCLIConfig,
     options: Partial<WebpackDevServerOptions>,
   ): Promise<WebpackCLIConfig> {
-    const runFunctionOnEachConfig = (
-      options: ConfigOptions | ConfigOptions[],
-      fn: CallableFunction,
-    ) => {
-      if (Array.isArray(options)) {
-        for (let item of options) {
-          item = fn(item);
-        }
-      } else {
-        options = fn(options);
-      }
-
-      return options;
-    };
-
     if (options.analyze) {
       if (!this.checkPackageExists("webpack-bundle-analyzer")) {
         await this.doInstall("webpack-bundle-analyzer", {
@@ -2271,11 +2256,15 @@ class WebpackCLI implements IWebpackCLI {
           analyze: options.analyze,
         }),
       );
-
-      return options;
     };
 
-    runFunctionOnEachConfig(config.options, internalBuildConfig);
+    if (Array.isArray(config.options)) {
+      for (const item of config.options) {
+        internalBuildConfig(item);
+      }
+    } else {
+      internalBuildConfig(config.options);
+    }
 
     return config;
   }
