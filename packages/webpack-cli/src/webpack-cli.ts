@@ -2267,7 +2267,7 @@ class WebpackCLI implements IWebpackCLI {
           progress: options.progress,
           analyze: options.analyze,
         }),
-        new DotenvWebpackPlugin(),
+        ...(this.checkPackageExists(WEBPACK_PACKAGE) ? [new DotenvWebpackPlugin()] : []),
       );
 
       return options;
