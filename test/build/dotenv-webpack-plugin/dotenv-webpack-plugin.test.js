@@ -57,5 +57,6 @@ describe("dotenv-webpack-plugin", () => {
     expect(data).toContain("Hello from index.js");
     expect(data).toContain('"process.env.NON_WEBPACK_VARIABLE:",process.env.NON_WEBPACK_VARIABLE');
     expect(data).toContain('"import.meta.env.NON_WEBPACK_VARIABLE:",(void 0).NON_WEBPACK_VARIABLE');
+    expect(data).not.toContain("variable_value");
   });
 });
