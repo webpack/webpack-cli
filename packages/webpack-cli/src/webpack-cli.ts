@@ -50,6 +50,8 @@ import { stringifyStream } from "@discoveryjs/json-ext";
 import { Help, ParseOptions } from "commander";
 
 import { CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
+import interpret from "interpret";
+import * as console from "console";
 
 const fs = require("fs");
 const path = require("path");
@@ -1872,20 +1874,22 @@ class WebpackCLI implements IWebpackCLI {
 
       config.options = config.options.length === 1 ? config.options[0] : config.options;
     } else {
+      // TODO ".mts" is not supported by `interpret`, need to add it
+      // Prioritize popular extensions first to avoid unnecessary fs calls
+      const extensions = [
+        ".js",
+        ".mjs",
+        ".cjs",
+        ".ts",
+        ".cts",
+        ...Object.keys(interpret.extensions),
+      ];
       // Order defines the priority, in decreasing order
       const defaultConfigFiles = [
         "webpack.config",
         ".webpack/webpack.config",
         ".webpack/webpackfile",
-      ]
-        .map((filename) =>
-          // Prioritize popular extensions first to avoid unnecessary fs calls
-          // TODO ".mts" is not supported by `interpret`, need to add it
-          [".js", ".mjs", ".cjs", ".ts", ".cts", ...Object.keys(interpret.extensions)].map((ext) =>
-            path.resolve(filename + ext),
-          ),
-        )
-        .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
+      ].flatMap((filename) => extensions.map((ext) => path.resolve(filename + ext)));
 
       let foundDefaultConfigFile;
 
