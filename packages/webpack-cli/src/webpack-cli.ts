@@ -475,7 +475,6 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     const command = this.program.command(commandOptions.name, {
-      noHelp: commandOptions.noHelp,
       hidden: commandOptions.hidden,
       isDefault: commandOptions.isDefault,
     }) as WebpackCLICommand;
@@ -1356,7 +1355,7 @@ class WebpackCLI implements IWebpackCLI {
           // Support multiple aliases
           subcommandTerm: (command: WebpackCLICommand) => {
             const humanReadableArgumentName = (argument: WebpackCLICommandOption) => {
-              const nameOutput = argument.name() + (argument.variadic === true ? "..." : "");
+              const nameOutput = argument.name() + (argument.variadic ? "..." : "");
 
               return argument.required ? "<" + nameOutput + ">" : "[" + nameOutput + "]";
             };
@@ -1373,6 +1372,14 @@ class WebpackCLI implements IWebpackCLI {
           ): WebpackCLICommandOption[] {
             return command.options.filter((option: WebpackCLICommandOption) => {
               if (option.hidden) {
+                return false;
+              }
+
+              // Hide `--watch` option when developer use `webpack watch --help`
+              if (
+                (options[0] === "w" || options[0] === "watch") &&
+                (option.name() === "watch" || option.name() === "no-watch")
+              ) {
                 return false;
               }
 
@@ -2089,6 +2096,8 @@ class WebpackCLI implements IWebpackCLI {
     >("./plugins/cli-plugin");
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
+      const isWatchOption = item.watch || (options.argv || {}).watch;
+
       // Apply options
       const args: Record<string, Argument> = this.getBuiltInOptions().reduce(
         (accumulator: Record<string, Argument>, flag) => {
@@ -2154,7 +2163,7 @@ class WebpackCLI implements IWebpackCLI {
 
       // Output warnings
       if (
-        item.watch &&
+        isWatchOption &&
         options.argv &&
         options.argv.env &&
         (options.argv.env["WEBPACK_WATCH"] || options.argv.env["WEBPACK_SERVE"])
