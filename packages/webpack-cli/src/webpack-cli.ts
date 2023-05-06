@@ -987,6 +987,17 @@ class WebpackCLI implements IWebpackCLI {
         description: "Extend webpack configuration",
         helpLevel: "minimum",
       },
+      {
+        name: "dot-env",
+        configs: [
+          {
+            type: "enum",
+            values: [true],
+          },
+        ],
+        description: "Read environment variables from .env files",
+        helpLevel: "minimum",
+      },
     ];
 
     const minimumHelpFlags = [
