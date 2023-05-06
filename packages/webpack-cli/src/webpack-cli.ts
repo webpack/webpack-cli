@@ -2273,10 +2273,6 @@ class WebpackCLI implements IWebpackCLI {
         item.plugins = [];
       }
 
-      const DotenvWebpackPlugin = this.checkPackageExists("webpack")
-        ? require("dotenv-webpack-plugin")
-        : null;
-
       item.plugins.unshift(
         new CLIPlugin({
           configPath: config.path.get(item),
@@ -2284,11 +2280,29 @@ class WebpackCLI implements IWebpackCLI {
           progress: options.progress,
           analyze: options.analyze,
         }),
-        ...(DotenvWebpackPlugin ? [new DotenvWebpackPlugin()] : []),
       );
 
       return options;
     };
+
+    if (!!options.dotEnv && !this.checkPackageExists("webpack")) {
+      this.logger.error("The 'webpack' package is required to use the '--dot-env' option.");
+    }
+
+    const shouldAddDotEnvPlugin = !!options.dotEnv && this.checkPackageExists("webpack");
+
+    if (shouldAddDotEnvPlugin) {
+      const DotenvWebpackPlugin = await this.tryRequireThenImport<Instantiable<new () => void, []>>(
+        "dotenv-webpack-plugin",
+      );
+      runFunctionOnEachConfig(config.options, (item: WebpackConfiguration) => {
+        if (!item.plugins) {
+          item.plugins = [];
+        }
+
+        item.plugins.unshift(new DotenvWebpackPlugin());
+      });
+    }
 
     runFunctionOnEachConfig(config.options, internalBuildConfig);
 
