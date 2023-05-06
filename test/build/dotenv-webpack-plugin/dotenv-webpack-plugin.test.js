@@ -22,7 +22,11 @@ const getBuildOutput = async (testDir) => {
 describe("dotenv-webpack-plugin", () => {
   it("reads .env file and defines variables correctly", async () => {
     const testDir = __dirname + "/builtin-config";
-    const { exitCode, stderr, stdout } = await run(testDir, ["--entry", "./src/index.js"]);
+    const { exitCode, stderr, stdout } = await run(testDir, [
+      "--entry",
+      "./src/index.js",
+      "--dot-env",
+    ]);
 
     assertNoErrors(exitCode, stderr, stdout, testDir);
 
@@ -35,7 +39,11 @@ describe("dotenv-webpack-plugin", () => {
 
   it("reads .env.production file and overrides values from .env variables correctly", async () => {
     const testDir = __dirname + "/overrides-config";
-    const { exitCode, stderr, stdout } = await run(testDir, ["--entry", "./src/index.js"]);
+    const { exitCode, stderr, stdout } = await run(testDir, [
+      "--entry",
+      "./src/index.js",
+      "--dot-env",
+    ]);
 
     assertNoErrors(exitCode, stderr, stdout, testDir);
 
@@ -48,7 +56,11 @@ describe("dotenv-webpack-plugin", () => {
 
   it("reads .env file and does not define a variable when it does not start with WEBPACK_", async () => {
     const testDir = __dirname + "/non-webpack-variable";
-    const { exitCode, stderr, stdout } = await run(testDir, ["--entry", "./src/index.js"]);
+    const { exitCode, stderr, stdout } = await run(testDir, [
+      "--entry",
+      "./src/index.js",
+      "--dot-env",
+    ]);
 
     assertNoErrors(exitCode, stderr, stdout, testDir);
 
