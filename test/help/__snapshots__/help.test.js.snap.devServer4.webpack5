@@ -105,10 +105,10 @@ Options:
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>                         Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                                        Read environment variables from .env files
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>                             Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>                                   Enable production optimizations or development hints.
   --name <value>                                   Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                        The output directory as **absolute path** (required).
@@ -166,10 +166,10 @@ Options:
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>                         Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                                        Read environment variables from .env files
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>                             Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>                                   Enable production optimizations or development hints.
   --name <value>                                   Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                        The output directory as **absolute path** (required).
@@ -227,10 +227,10 @@ Options:
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>                         Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                                        Read environment variables from .env files
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>                             Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>                                   Enable production optimizations or development hints.
   --name <value>                                   Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                        The output directory as **absolute path** (required).
@@ -287,10 +287,10 @@ Options:
   -j, --json [value]         Prints result as JSON or store it in a file.
   --fail-on-warnings         Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>             Enable production optimizations or development hints.
   --name <value>             Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>  The output directory as **absolute path** (required).
@@ -335,10 +335,10 @@ Options:
   -j, --json [value]         Prints result as JSON or store it in a file.
   --fail-on-warnings         Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>             Enable production optimizations or development hints.
   --name <value>             Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>  The output directory as **absolute path** (required).
@@ -389,14 +389,13 @@ Options:
                              on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only
                              works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false |
                              eval |
                              [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the
                              last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only
-                             works when using webpack-cli).
   --mode <value>             Enable production optimizations or development
                              hints.
   --name <value>             Name of the configuration. Used when loading
@@ -454,14 +453,13 @@ Options:
                              on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only
                              works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false |
                              eval |
                              [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the
                              last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only
-                             works when using webpack-cli).
   --mode <value>             Enable production optimizations or development
                              hints.
   --name <value>             Name of the configuration. Used when loading
@@ -513,10 +511,10 @@ Options:
   -j, --json [value]         Prints result as JSON or store it in a file.
   --fail-on-warnings         Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>             Enable production optimizations or development hints.
   --name <value>             Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>  The output directory as **absolute path** (required).
@@ -561,10 +559,10 @@ Options:
   -j, --json [value]         Prints result as JSON or store it in a file.
   --fail-on-warnings         Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>             Enable production optimizations or development hints.
   --name <value>             Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>  The output directory as **absolute path** (required).
@@ -1543,10 +1541,10 @@ Options:
   -j, --json [value]         Prints result as JSON or store it in a file.
   --fail-on-warnings         Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>             Enable production optimizations or development hints.
   --name <value>             Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>  The output directory as **absolute path** (required).
@@ -1589,10 +1587,10 @@ Options:
   -j, --json [value]         Prints result as JSON or store it in a file.
   --fail-on-warnings         Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>             Enable production optimizations or development hints.
   --name <value>             Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>  The output directory as **absolute path** (required).
@@ -1641,14 +1639,13 @@ Options:
                              on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only
                              works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false |
                              eval |
                              [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the
                              last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only
-                             works when using webpack-cli).
   --mode <value>             Enable production optimizations or development
                              hints.
   --name <value>             Name of the configuration. Used when loading
@@ -1704,14 +1701,13 @@ Options:
                              on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only
                              works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false |
                              eval |
                              [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the
                              last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only
-                             works when using webpack-cli).
   --mode <value>             Enable production optimizations or development
                              hints.
   --name <value>             Name of the configuration. Used when loading
@@ -1761,10 +1757,10 @@ Options:
   -j, --json [value]         Prints result as JSON or store it in a file.
   --fail-on-warnings         Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>             Enable production optimizations or development hints.
   --name <value>             Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>  The output directory as **absolute path** (required).
@@ -1807,10 +1803,10 @@ Options:
   -j, --json [value]         Prints result as JSON or store it in a file.
   --fail-on-warnings         Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>   Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                  Read environment variables from .env files
   -d, --devtool <value>      A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool               Negative 'devtool' option.
   --entry <value...>         A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>       Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>             Enable production optimizations or development hints.
   --name <value>             Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>  The output directory as **absolute path** (required).
@@ -1854,10 +1850,10 @@ Options:
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>                         Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                                        Read environment variables from .env files
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>                             Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>                                   Enable production optimizations or development hints.
   --name <value>                                   Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                        The output directory as **absolute path** (required).
@@ -1915,10 +1911,10 @@ Options:
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>                         Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                                        Read environment variables from .env files
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>                             Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>                                   Enable production optimizations or development hints.
   --name <value>                                   Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                        The output directory as **absolute path** (required).
@@ -2166,10 +2162,10 @@ Options:
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>                         Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                                        Read environment variables from .env files
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>                             Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>                                   Enable production optimizations or development hints.
   --name <value>                                   Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                        The output directory as **absolute path** (required).
@@ -2225,10 +2221,10 @@ Options:
   -j, --json [value]                               Prints result as JSON or store it in a file.
   --fail-on-warnings                               Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>                         Path to the configuration to be extended (only works when using webpack-cli).
+  --dot-env                                        Read environment variables from .env files
   -d, --devtool <value>                            A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                     Negative 'devtool' option.
   --entry <value...>                               A module that is loaded upon startup. Only the last one is exported.
-  --extends <value...>                             Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>                                   Enable production optimizations or development hints.
   --name <value>                                   Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                        The output directory as **absolute path** (required).
