@@ -2096,7 +2096,7 @@ class WebpackCLI implements IWebpackCLI {
     >("./plugins/cli-plugin");
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
-      const isWatchOption = item.watch;
+      const originalWatchValue = item.watch;
 
       // Apply options
       const args: Record<string, Argument> = this.getBuiltInOptions().reduce(
@@ -2163,7 +2163,8 @@ class WebpackCLI implements IWebpackCLI {
 
       // Output warnings
       if (
-        isWatchOption &&
+        (typeof originalWatchValue !== "undefined" ||
+          (options.argv && typeof options.argv.watch !== "undefined")) &&
         options.argv &&
         options.argv.env &&
         (options.argv.env["WEBPACK_WATCH"] || options.argv.env["WEBPACK_SERVE"])
@@ -2171,7 +2172,7 @@ class WebpackCLI implements IWebpackCLI {
         this.logger.warn(
           `No need to use the '${
             options.argv.env["WEBPACK_WATCH"] ? "watch" : "serve"
-          }' command together with '{ watch: true }' or '--watch' configuration, it does not make sense.`,
+          }' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.`,
         );
 
         if (options.argv.env["WEBPACK_SERVE"]) {
