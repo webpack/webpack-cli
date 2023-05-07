@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/configtest@2.0.1...@webpack-cli/configtest@2.1.0) (2023-05-07)
+
+### Features
+
+- shareable webpack configs using `extends` ([#3738](https://github.com/webpack/webpack-cli/issues/3738)) ([d04d0b9](https://github.com/webpack/webpack-cli/commit/d04d0b98b69948966c8de5dacf771ac324ba5658))
+
 ## [2.0.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/configtest@2.0.0...@webpack-cli/configtest@2.0.1) (2022-12-05)
 
 **Note:** Version bump only for package @webpack-cli/configtest
