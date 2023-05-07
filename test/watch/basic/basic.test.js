@@ -150,7 +150,51 @@ describe("basic", () => {
       const data = chunk.toString();
 
       expect(data).toContain(
-        "No need to use the 'watch' command together with '{ watch: true }' configuration, it does not make sense.",
+        " No need to use the 'watch' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.",
+      );
+    });
+  });
+
+  it("should log warning about the `watch` option in the configuration and recompile upon file change using the `watch` command #2", (done) => {
+    const proc = runAndGetProcess(__dirname, [
+      "--watch",
+      "--mode",
+      "development",
+      "--config",
+      "./no-watch.config.js",
+    ]);
+
+    let modified = false;
+
+    proc.stdout.on("data", (chunk) => {
+      const data = chunk.toString();
+
+      if (data.includes("index.js")) {
+        for (const word of wordsInStatsv5) {
+          expect(data).toContain(word);
+        }
+
+        if (!modified) {
+          process.nextTick(() => {
+            writeFileSync(
+              resolve(__dirname, "./src/index.js"),
+              `console.log('watch flag test');\n`,
+            );
+          });
+
+          modified = true;
+        } else {
+          processKill(proc);
+          done();
+        }
+      }
+    });
+
+    proc.stderr.on("data", (chunk) => {
+      const data = chunk.toString();
+
+      expect(data).toContain(
+        "No need to use the 'watch' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.",
       );
     });
   });
@@ -177,31 +221,79 @@ describe("basic", () => {
     });
   });
 
-  it("should recompile upon file change using the `command` option and the `--watch` option and log warning", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "watch",
-      "--watch",
-      "--mode",
-      "development",
-    ]);
+  it("should recompile upon file change using the `command` option and the `--watch` option and log warning", (done) => {
+    const proc = runAndGetProcess(__dirname, ["watch", "--watch", "--mode", "development"]);
 
-    expect(exitCode).toBe(2);
-    expect(stderr).toContain("Error: Unknown option '--watch'");
-    expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-    expect(stdout).toBeFalsy();
+    let modified = false;
+
+    proc.stdout.on("data", (chunk) => {
+      const data = chunk.toString();
+
+      if (data.includes("index.js")) {
+        for (const word of wordsInStatsv5) {
+          expect(data).toContain(word);
+        }
+
+        if (!modified) {
+          process.nextTick(() => {
+            writeFileSync(
+              resolve(__dirname, "./src/index.js"),
+              `console.log('watch flag test');\n`,
+            );
+          });
+
+          modified = true;
+        } else {
+          processKill(proc);
+          done();
+        }
+      }
+    });
+
+    proc.stderr.on("data", (chunk) => {
+      const data = chunk.toString();
+
+      expect(data).toContain(
+        "No need to use the 'watch' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.",
+      );
+    });
   });
 
-  it("should recompile upon file change using the `command` option and the `--no-watch` option and log warning", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "watch",
-      "--no-watch",
-      "--mode",
-      "development",
-    ]);
+  it("should recompile upon file change using the `command` option and the `--watch` option and log warning", (done) => {
+    const proc = runAndGetProcess(__dirname, ["watch", "--no-watch", "--mode", "development"]);
 
-    expect(exitCode).toBe(2);
-    expect(stderr).toContain("Error: Unknown option '--no-watch'");
-    expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
-    expect(stdout).toBeFalsy();
+    let modified = false;
+
+    proc.stdout.on("data", (chunk) => {
+      const data = chunk.toString();
+
+      if (data.includes("index.js")) {
+        for (const word of wordsInStatsv5) {
+          expect(data).toContain(word);
+        }
+
+        if (!modified) {
+          process.nextTick(() => {
+            writeFileSync(
+              resolve(__dirname, "./src/index.js"),
+              `console.log('watch flag test');\n`,
+            );
+          });
+
+          modified = true;
+        } else {
+          processKill(proc);
+          done();
+        }
+      }
+    });
+
+    proc.stderr.on("data", (chunk) => {
+      const data = chunk.toString();
+
+      expect(data).toContain(
+        "No need to use the 'watch' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.",
+      );
+    });
   });
 });

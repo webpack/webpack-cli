@@ -193,7 +193,7 @@ class ServeCommand {
             for (const path in problemsByPath) {
               const problems = problemsByPath[path];
 
-              problems.forEach((problem: Problem) => {
+              for (const problem of problems) {
                 cli.logger.error(
                   `${cli.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
                     problem.value ? ` '${problem.value}'` : ""
@@ -205,7 +205,7 @@ class ServeCommand {
                 if (problem.expected) {
                   cli.logger.error(`Expected: '${problem.expected}'`);
                 }
-              });
+              }
             }
 
             process.exit(2);

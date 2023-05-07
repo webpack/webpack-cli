@@ -11,22 +11,14 @@ describe('"bail" option', () => {
   });
 
   it('should not log warning without the "bail" option', async () => {
-    const { stderr, stdout } = await runWatch(__dirname, [
-      "-c",
-      "no-bail-webpack.config.js",
-      "--watch",
-    ]);
+    const { stderr, stdout } = await runWatch(__dirname, ["-c", "no-bail-webpack.config.js"]);
 
     expect(stderr).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 
   it('should not log warning without the "bail" option', async () => {
-    const { stderr, stdout } = await runWatch(__dirname, [
-      "-c",
-      "no-bail-webpack.config.js",
-      "--watch",
-    ]);
+    const { stderr, stdout } = await runWatch(__dirname, ["-c", "no-bail-webpack.config.js"]);
 
     expect(stderr).toBeFalsy();
     expect(stdout).toBeTruthy();
