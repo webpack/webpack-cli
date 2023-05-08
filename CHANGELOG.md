@@ -1,3 +1,13 @@
+# [5.1.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.0.2...webpack-cli@5.1.0) (2023-05-07)
+
+### Features
+
+- shareable webpack configs using `extends` ([#3738](https://github.com/webpack/webpack-cli/issues/3738)) ([d04d0b9](https://github.com/webpack/webpack-cli/commit/d04d0b98b69948966c8de5dacf771ac324ba5658))
+
+### Performance Improvements
+
+- simplify logic, reduce extra loops and perf ([#3767](https://github.com/webpack/webpack-cli/issues/3767)) ([6afe1d3](https://github.com/webpack/webpack-cli/commit/6afe1d3be41e191aa7c4865919d092d952e98605))
+
 ## [5.0.2](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.0.1...webpack-cli@5.0.2) (2023-04-21)
 
 ### Bug Fixes

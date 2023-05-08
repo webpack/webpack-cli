@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "description": "CLI for webpack & friends",
   "license": "MIT",
   "repository": {
@@ -35,9 +35,9 @@
   ],
   "dependencies": {
     "@discoveryjs/json-ext": "^0.5.0",
-    "@webpack-cli/configtest": "^2.0.1",
+    "@webpack-cli/configtest": "^2.1.0",
     "@webpack-cli/info": "^2.0.1",
-    "@webpack-cli/serve": "^2.0.2",
+    "@webpack-cli/serve": "^2.0.3",
     "colorette": "^2.0.14",
     "commander": "^10.0.1",
     "cross-spawn": "^7.0.3",

@@ -475,7 +475,6 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     const command = this.program.command(commandOptions.name, {
-      noHelp: commandOptions.noHelp,
       hidden: commandOptions.hidden,
       isDefault: commandOptions.isDefault,
     }) as WebpackCLICommand;
@@ -562,9 +561,9 @@ class WebpackCLI implements IWebpackCLI {
         }
       }
 
-      options.forEach((optionForCommand) => {
-        this.makeOption(command, optionForCommand);
-      });
+      for (const option of options) {
+        this.makeOption(command, option);
+      }
     }
 
     command.action(action);
@@ -586,7 +585,7 @@ class WebpackCLI implements IWebpackCLI {
       let negatedDescription;
       const mainOptionType: WebpackCLIMainOption["type"] = new Set();
 
-      option.configs.forEach((config) => {
+      for (const config of option.configs) {
         switch (config.type) {
           case "reset":
             mainOptionType.add(Boolean);
@@ -610,7 +609,7 @@ class WebpackCLI implements IWebpackCLI {
           case "enum": {
             let hasFalseEnum = false;
 
-            const enumTypes = (config.values || []).map((value) => {
+            for (const value of config.values || []) {
               switch (typeof value) {
                 case "string":
                   mainOptionType.add(String);
@@ -627,17 +626,15 @@ class WebpackCLI implements IWebpackCLI {
                   mainOptionType.add(Boolean);
                   break;
               }
-            });
+            }
 
             if (!needNegativeOption) {
               needNegativeOption = hasFalseEnum;
               negatedDescription = config.negatedDescription;
             }
-
-            return enumTypes;
           }
         }
-      });
+      }
 
       mainOption = {
         flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
@@ -1158,9 +1155,7 @@ class WebpackCLI implements IWebpackCLI {
           async () => {
             this.webpack = await this.loadWebpack();
 
-            return isWatchCommandUsed
-              ? this.getBuiltInOptions().filter((option) => option.name !== "watch")
-              : this.getBuiltInOptions();
+            return this.getBuiltInOptions();
           },
           async (entries, options) => {
             if (entries.length > 0) {
@@ -1281,11 +1276,11 @@ class WebpackCLI implements IWebpackCLI {
 
             const levenshtein = require("fastest-levenshtein");
 
-            (command as WebpackCLICommand).options.forEach((option) => {
+            for (const option of (command as WebpackCLICommand).options) {
               if (!option.hidden && levenshtein.distance(name, option.long?.slice(2)) < 3) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
-            });
+            }
           }
         }
       }
@@ -1371,7 +1366,7 @@ class WebpackCLI implements IWebpackCLI {
           // Support multiple aliases
           subcommandTerm: (command: WebpackCLICommand) => {
             const humanReadableArgumentName = (argument: WebpackCLICommandOption) => {
-              const nameOutput = argument.name() + (argument.variadic === true ? "..." : "");
+              const nameOutput = argument.name() + (argument.variadic ? "..." : "");
 
               return argument.required ? "<" + nameOutput + ">" : "[" + nameOutput + "]";
             };
@@ -1388,6 +1383,14 @@ class WebpackCLI implements IWebpackCLI {
           ): WebpackCLICommandOption[] {
             return command.options.filter((option: WebpackCLICommandOption) => {
               if (option.hidden) {
+                return false;
+              }
+
+              // Hide `--watch` option when developer use `webpack watch --help`
+              if (
+                (options[0] === "w" || options[0] === "watch") &&
+                (option.name() === "watch" || option.name() === "no-watch")
+              ) {
                 return false;
               }
 
@@ -1757,9 +1760,9 @@ class WebpackCLI implements IWebpackCLI {
           if ((error as RechoirError)?.failures) {
             this.logger.error(`Unable load '${configPath}'`);
             this.logger.error((error as RechoirError).message);
-            (error as RechoirError).failures.forEach((failure) => {
+            for (const failure of (error as RechoirError).failures) {
               this.logger.error(failure.error.message);
-            });
+            }
             this.logger.error("Please install one of them");
             process.exit(2);
           }
@@ -1840,7 +1843,6 @@ class WebpackCLI implements IWebpackCLI {
       return { options, path: configPath };
     };
 
-    // TODO better name and better type
     const config: WebpackCLIConfig = {
       options: {} as WebpackConfiguration,
       path: new WeakMap(),
@@ -1867,18 +1869,18 @@ class WebpackCLI implements IWebpackCLI {
           }
 
           if (isArray) {
-            (loadedConfig.options as ConfigOptions[]).forEach((item) => {
+            for (const item of loadedConfig.options as ConfigOptions[]) {
               (config.options as ConfigOptions[]).push(item);
-            });
+            }
           } else {
             config.options.push(loadedConfig.options as WebpackConfiguration);
           }
         }
 
         if (isArray) {
-          (loadedConfig.options as ConfigOptions[]).forEach((options) => {
+          for (const options of loadedConfig.options as ConfigOptions[]) {
             config.path.set(options, [loadedConfig.path]);
-          });
+          }
         } else {
           config.path.set(loadedConfig.options, [loadedConfig.path]);
         }
@@ -1886,20 +1888,22 @@ class WebpackCLI implements IWebpackCLI {
 
       config.options = config.options.length === 1 ? config.options[0] : config.options;
     } else {
+      // TODO ".mts" is not supported by `interpret`, need to add it
+      // Prioritize popular extensions first to avoid unnecessary fs calls
+      const extensions = [
+        ".js",
+        ".mjs",
+        ".cjs",
+        ".ts",
+        ".cts",
+        ...Object.keys(interpret.extensions),
+      ];
       // Order defines the priority, in decreasing order
       const defaultConfigFiles = [
         "webpack.config",
         ".webpack/webpack.config",
         ".webpack/webpackfile",
-      ]
-        .map((filename) =>
-          // Prioritize popular extensions first to avoid unnecessary fs calls
-          // TODO ".mts" is not supported by `interpret`, need to add it
-          [".js", ".mjs", ".cjs", ".ts", ".cts", ...Object.keys(interpret.extensions)].map((ext) =>
-            path.resolve(filename + ext),
-          ),
-        )
-        .reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
+      ].flatMap((filename) => extensions.map((ext) => path.resolve(filename + ext)));
 
       let foundDefaultConfigFile;
 
@@ -1918,9 +1922,9 @@ class WebpackCLI implements IWebpackCLI {
         config.options = loadedConfig.options as WebpackConfiguration[];
 
         if (Array.isArray(config.options)) {
-          config.options.forEach((item) => {
+          for (const item of config.options) {
             config.path.set(item, [loadedConfig.path]);
-          });
+          }
         } else {
           config.path.set(loadedConfig.options, [loadedConfig.path]);
         }
@@ -2075,21 +2079,6 @@ class WebpackCLI implements IWebpackCLI {
     config: WebpackCLIConfig,
     options: Partial<WebpackDevServerOptions>,
   ): Promise<WebpackCLIConfig> {
-    const runFunctionOnEachConfig = (
-      options: ConfigOptions | ConfigOptions[],
-      fn: CallableFunction,
-    ) => {
-      if (Array.isArray(options)) {
-        for (let item of options) {
-          item = fn(item);
-        }
-      } else {
-        options = fn(options);
-      }
-
-      return options;
-    };
-
     if (options.analyze) {
       if (!this.checkPackageExists("webpack-bundle-analyzer")) {
         await this.doInstall("webpack-bundle-analyzer", {
@@ -2118,32 +2107,18 @@ class WebpackCLI implements IWebpackCLI {
     >("./plugins/cli-plugin");
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
-      // Output warnings
-      if (
-        item.watch &&
-        options.argv &&
-        options.argv.env &&
-        (options.argv.env["WEBPACK_WATCH"] || options.argv.env["WEBPACK_SERVE"])
-      ) {
-        this.logger.warn(
-          `No need to use the '${
-            options.argv.env["WEBPACK_WATCH"] ? "watch" : "serve"
-          }' command together with '{ watch: true }' configuration, it does not make sense.`,
-        );
-
-        if (options.argv.env["WEBPACK_SERVE"]) {
-          item.watch = false;
-        }
-      }
+      const originalWatchValue = item.watch;
 
       // Apply options
-      const args: Record<string, Argument> = this.getBuiltInOptions()
-        .filter((flag) => flag.group === "core")
-        .reduce((accumulator: Record<string, Argument>, flag) => {
-          accumulator[flag.name] = flag as unknown as Argument;
+      const args: Record<string, Argument> = this.getBuiltInOptions().reduce(
+        (accumulator: Record<string, Argument>, flag) => {
+          if (flag.group === "core") {
+            accumulator[flag.name] = flag as unknown as Argument;
+          }
           return accumulator;
-        }, {});
-
+        },
+        {},
+      );
       const values: ProcessedArguments = Object.keys(options).reduce(
         (accumulator: ProcessedArguments, name) => {
           if (name === "argv") {
@@ -2161,38 +2136,59 @@ class WebpackCLI implements IWebpackCLI {
         {},
       );
 
-      const problems: Problem[] | null = this.webpack.cli.processArguments(args, item, values);
+      if (Object.keys(values).length > 0) {
+        const problems: Problem[] | null = this.webpack.cli.processArguments(args, item, values);
 
-      if (problems) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const groupBy = (xs: Record<string, any>[], key: string) => {
-          return xs.reduce((rv, x) => {
-            (rv[x[key]] = rv[x[key]] || []).push(x);
+        if (problems) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const groupBy = (xs: Record<string, any>[], key: string) => {
+            return xs.reduce((rv, x) => {
+              (rv[x[key]] = rv[x[key]] || []).push(x);
 
-            return rv;
-          }, {});
-        };
-        const problemsByPath = groupBy(problems, "path");
+              return rv;
+            }, {});
+          };
+          const problemsByPath = groupBy(problems, "path");
 
-        for (const path in problemsByPath) {
-          const problems = problemsByPath[path];
+          for (const path in problemsByPath) {
+            const problems = problemsByPath[path];
 
-          problems.forEach((problem: Problem) => {
-            this.logger.error(
-              `${this.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
-                problem.value ? ` '${problem.value}'` : ""
-              } for the '--${problem.argument}' option${
-                problem.index ? ` by index '${problem.index}'` : ""
-              }`,
-            );
+            for (const problem of problems) {
+              this.logger.error(
+                `${this.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
+                  problem.value ? ` '${problem.value}'` : ""
+                } for the '--${problem.argument}' option${
+                  problem.index ? ` by index '${problem.index}'` : ""
+                }`,
+              );
 
-            if (problem.expected) {
-              this.logger.error(`Expected: '${problem.expected}'`);
+              if (problem.expected) {
+                this.logger.error(`Expected: '${problem.expected}'`);
+              }
             }
-          });
-        }
+          }
 
-        process.exit(2);
+          process.exit(2);
+        }
+      }
+
+      // Output warnings
+      if (
+        (typeof originalWatchValue !== "undefined" ||
+          (options.argv && typeof options.argv.watch !== "undefined")) &&
+        options.argv &&
+        options.argv.env &&
+        (options.argv.env["WEBPACK_WATCH"] || options.argv.env["WEBPACK_SERVE"])
+      ) {
+        this.logger.warn(
+          `No need to use the '${
+            options.argv.env["WEBPACK_WATCH"] ? "watch" : "serve"
+          }' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.`,
+        );
+
+        if (options.argv.env["WEBPACK_SERVE"]) {
+          item.watch = false;
+        }
       }
 
       const isFileSystemCacheOptions = (
@@ -2217,13 +2213,13 @@ class WebpackCLI implements IWebpackCLI {
           }
 
           if (Array.isArray(configPath)) {
-            configPath.forEach((oneOfConfigPath) => {
+            for (const oneOfConfigPath of configPath) {
               (
                 item.cache.buildDependencies as NonNullable<
                   FileSystemCacheOptions["cache"]["buildDependencies"]
                 >
               ).defaultConfig.push(oneOfConfigPath);
-            });
+            }
           } else {
             item.cache.buildDependencies.defaultConfig.push(configPath);
           }
@@ -2281,8 +2277,6 @@ class WebpackCLI implements IWebpackCLI {
           analyze: options.analyze,
         }),
       );
-
-      return options;
     };
 
     if (!!options.readDotEnv && !this.checkPackageExists("webpack")) {
@@ -2295,16 +2289,31 @@ class WebpackCLI implements IWebpackCLI {
       const DotenvWebpackPlugin = await this.tryRequireThenImport<Instantiable<new () => void, []>>(
         "dotenv-webpack-plugin",
       );
-      runFunctionOnEachConfig(config.options, (item: WebpackConfiguration) => {
+
+      const addDotEnvPlugin = (item: WebpackConfiguration) => {
         if (!item.plugins) {
           item.plugins = [];
         }
 
         item.plugins.unshift(new DotenvWebpackPlugin());
-      });
+      };
+
+      if (Array.isArray(config.options)) {
+        for (const item of config.options) {
+          addDotEnvPlugin(item);
+        }
+      } else {
+        addDotEnvPlugin(config.options);
+      }
     }
 
-    runFunctionOnEachConfig(config.options, internalBuildConfig);
+    if (Array.isArray(config.options)) {
+      for (const item of config.options) {
+        internalBuildConfig(item);
+      }
+    } else {
+      internalBuildConfig(config.options);
+    }
 
     return config;
   }

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@2.0.2...@webpack-cli/serve@2.0.3) (2023-05-07)
+
+### Performance Improvements
+
+- simplify logic, reduce extra loops and perf ([#3767](https://github.com/webpack/webpack-cli/issues/3767)) ([6afe1d3](https://github.com/webpack/webpack-cli/commit/6afe1d3be41e191aa7c4865919d092d952e98605))
+
 ## [2.0.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@2.0.1...@webpack-cli/serve@2.0.2) (2023-04-21)
 
 **Note:** Version bump only for package @webpack-cli/serve
