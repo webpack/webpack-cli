@@ -11,6 +11,7 @@ class DotenvWebpackPlugin {
       {},
       {
         envFiles: [
+          `${currentDirectory}/.env.example`, // loaded in all cases
           `${currentDirectory}/.env`, // loaded in all cases
           `${currentDirectory}/.env.local`, // loaded in all cases, ignored by git
           `${currentDirectory}/.env.[mode]`, // only loaded in specified mode
