@@ -178,7 +178,7 @@ type WebpackDevServerOptions = DevServerConfig &
     configName?: string[];
     disableInterpret?: boolean;
     extends?: string[];
-    dotEnv?: boolean;
+    readDotEnv?: boolean;
     argv: Argv;
   };
 
