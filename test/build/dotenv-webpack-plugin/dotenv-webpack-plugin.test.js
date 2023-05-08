@@ -4,16 +4,16 @@ const { run, readFile } = require("../../utils/test-utils");
 const { resolve, join } = require("path");
 const { existsSync } = require("fs");
 
-const assertNoErrors = (exitCode, stderr, stdout, testDir) => {
+const assertNoErrors = (exitCode, stderr, stdout, testDir, buildPath = "dist") => {
   expect(exitCode).toBe(0);
   expect(stderr).toBeFalsy();
   expect(stdout).toBeTruthy();
-  expect(existsSync(resolve(testDir, "./dist/main.js"))).toBeTruthy();
+  expect(existsSync(resolve(testDir, join(buildPath, "main.js")))).toBeTruthy();
 };
 
-const getBuildOutput = async (testDir) => {
+const getBuildOutput = async (testDir, buildPath = "dist") => {
   try {
-    return readFile(resolve(testDir, "./dist/main.js"), "utf-8");
+    return readFile(resolve(testDir, join(buildPath, "main.js")), "utf-8");
   } catch (error) {
     expect(error).toBe(null);
   }
@@ -188,5 +188,24 @@ describe("dotenv-webpack-plugin", () => {
     expect(data).toContain('"process.env.WEBPACK_VARIABLE:",local_value');
     expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",local_value');
     expect(data).not.toContain("production_value");
+  });
+
+  it("reads .env file and applies for all configs", async () => {
+    const testDir = join(__dirname, "/multiple-configs");
+    const { exitCode, stderr, stdout } = await run(testDir, ["--read-dot-env"]);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir, "dist1");
+
+    let data = await getBuildOutput(testDir, "dist1");
+
+    expect(data).toContain("Hello from index.js");
+    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",default_value');
+    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",default_value');
+
+    data = await getBuildOutput(testDir, "dist2");
+
+    expect(data).toContain("Hello from index.js");
+    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",default_value');
+    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",default_value');
   });
 });

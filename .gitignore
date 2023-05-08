@@ -64,5 +64,7 @@ test/**/**/**/bin/
 test/**/**/binary/**
 test/**/dist
 test/**/**/dist
+test/**/**/dist1
+test/**/**/dist2
 test/**/**/**/dist
 test/**/stats.json
