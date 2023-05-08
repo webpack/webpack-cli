@@ -171,4 +171,22 @@ describe("dotenv-webpack-plugin", () => {
     expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",local_value');
     expect(data).not.toContain("default_value");
   });
+
+  it("overrides value from .env.[mode] when same key in .env.[mode].local is present", async () => {
+    const testDir = join(__dirname, "/overrides-local");
+    const { exitCode, stderr, stdout } = await run(testDir, [
+      "--entry",
+      "./src/index.js",
+      "--read-dot-env",
+    ]);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir);
+
+    const data = await getBuildOutput(testDir);
+
+    expect(data).toContain("Hello from index.js");
+    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",local_value');
+    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",local_value');
+    expect(data).not.toContain("production_value");
+  });
 });
