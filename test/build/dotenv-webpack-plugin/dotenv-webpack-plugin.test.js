@@ -71,4 +71,104 @@ describe("dotenv-webpack-plugin", () => {
     expect(data).toContain('"import.meta.env.NON_WEBPACK_VARIABLE:",(void 0).NON_WEBPACK_VARIABLE');
     expect(data).not.toContain("variable_value");
   });
+
+  it("reads .env.production when mode is set to production", async () => {
+    const testDir = join(__dirname, "/mode-production");
+    const { exitCode, stderr, stdout } = await run(testDir, [
+      "--entry",
+      "./src/index.js",
+      "--read-dot-env",
+      "--mode",
+      "production",
+    ]);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir);
+
+    const data = await getBuildOutput(testDir);
+
+    expect(data).toContain("Hello from index.js");
+    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",production_value');
+    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",production_value');
+    expect(data).not.toContain("default_value");
+    expect(data).not.toContain("development_value");
+  });
+
+  it("reads .env.development when mode is set to development", async () => {
+    const testDir = join(__dirname, "/mode-development");
+    const { exitCode, stderr, stdout } = await run(testDir, [
+      "--entry",
+      "./src/index.js",
+      "--read-dot-env",
+      "--mode",
+      "development",
+    ]);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir);
+
+    const data = await getBuildOutput(testDir);
+
+    expect(data).toContain("Hello from index.js");
+    // TODO check why webpack adds "\\" to the value only in development mode
+    expect(data).toContain('"process.env.WEBPACK_VARIABLE:\\", development_value');
+    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:\\", development_value');
+    expect(data).not.toContain("default_value");
+    expect(data).not.toContain("production_value");
+  });
+
+  it("reads .env.none when mode is set to none", async () => {
+    const testDir = join(__dirname, "/mode-none");
+    const { exitCode, stderr, stdout } = await run(testDir, [
+      "--entry",
+      "./src/index.js",
+      "--read-dot-env",
+      "--mode",
+      "none",
+    ]);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir);
+
+    const data = await getBuildOutput(testDir);
+
+    expect(data).toContain("Hello from index.js");
+    expect(data).toContain('"process.env.WEBPACK_VARIABLE:", none_value');
+    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:", none_value');
+    expect(data).not.toContain("default_value");
+    expect(data).not.toContain("production_value");
+    expect(data).not.toContain("development_value");
+  });
+
+  it("reads .env.example when file is present", async () => {
+    const testDir = join(__dirname, "/env-example");
+    const { exitCode, stderr, stdout } = await run(testDir, [
+      "--entry",
+      "./src/index.js",
+      "--read-dot-env",
+    ]);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir);
+
+    const data = await getBuildOutput(testDir);
+
+    expect(data).toContain("Hello from index.js");
+    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",example_value');
+    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",example_value');
+  });
+
+  it("overrides value from .env when same key in .env.local is present", async () => {
+    const testDir = join(__dirname, "/overrides-local");
+    const { exitCode, stderr, stdout } = await run(testDir, [
+      "--entry",
+      "./src/index.js",
+      "--read-dot-env",
+    ]);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir);
+
+    const data = await getBuildOutput(testDir);
+
+    expect(data).toContain("Hello from index.js");
+    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",local_value');
+    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",local_value');
+    expect(data).not.toContain("default_value");
+  });
 });
