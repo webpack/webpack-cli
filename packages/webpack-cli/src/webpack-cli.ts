@@ -990,7 +990,7 @@ class WebpackCLI implements IWebpackCLI {
         helpLevel: "minimum",
       },
       {
-        name: "dot-env",
+        name: "read-dot-env",
         configs: [
           {
             type: "enum",
@@ -2285,11 +2285,11 @@ class WebpackCLI implements IWebpackCLI {
       return options;
     };
 
-    if (!!options.dotEnv && !this.checkPackageExists("webpack")) {
-      this.logger.error("The 'webpack' package is required to use the '--dot-env' option.");
+    if (!!options.readDotEnv && !this.checkPackageExists("webpack")) {
+      this.logger.error("The 'webpack' package is required to use the '--read-dot-env' option.");
     }
 
-    const shouldAddDotEnvPlugin = !!options.dotEnv && this.checkPackageExists("webpack");
+    const shouldAddDotEnvPlugin = !!options.readDotEnv && this.checkPackageExists("webpack");
 
     if (shouldAddDotEnvPlugin) {
       const DotenvWebpackPlugin = await this.tryRequireThenImport<Instantiable<new () => void, []>>(
