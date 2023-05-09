@@ -2163,11 +2163,10 @@ class WebpackCLI implements IWebpackCLI {
 
       // Output warnings
       if (
-        (typeof originalWatchValue !== "undefined" ||
-          (options.argv && typeof options.argv.watch !== "undefined")) &&
+        options.isWatchingLikeCommand &&
         options.argv &&
         options.argv.env &&
-        (options.argv.env["WEBPACK_WATCH"] || options.argv.env["WEBPACK_SERVE"])
+        (typeof originalWatchValue !== "undefined" || typeof options.argv.watch !== "undefined")
       ) {
         this.logger.warn(
           `No need to use the '${
@@ -2418,6 +2417,7 @@ class WebpackCLI implements IWebpackCLI {
 
     if (isWatchCommand) {
       options.watch = true;
+      options.isWatchingLikeCommand = true;
     }
 
     compiler = await this.createCompiler(options as WebpackDevServerOptions, callback);
