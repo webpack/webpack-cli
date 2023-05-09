@@ -7,7 +7,7 @@ class DotenvWebpackPlugin {
   constructor(config = {}) {
     const currentDirectory = process.cwd();
 
-    this.config = Object.assign(
+    this.options = Object.assign(
       {},
       {
         envFiles: [
@@ -26,12 +26,21 @@ class DotenvWebpackPlugin {
   apply(compiler) {
     const mode = compiler.options.mode || "production";
 
-    // .local file variables will get precedence
-    let environmentFiles = Array.isArray(this.config.envFiles)
-      ? this.config.envFiles
-      : [this.config.envFiles];
+    // throw error if envFiles is not an array
+    if (!Array.isArray(this.options.envFiles)) {
+      const logger = compiler.getInfrastructureLogger("webpack-cli");
+      logger.error(`envFiles option must be an array, received ${typeof this.options.envFiles}`);
+      return;
+    }
 
-    environmentFiles = environmentFiles.map((environmentFile) =>
+    // throw error if prefixes is not an array
+    if (!Array.isArray(this.options.prefixes)) {
+      const logger = compiler.getInfrastructureLogger("webpack-cli");
+      logger.error(`prefixes option must be an array, received ${typeof this.options.prefixes}`);
+      return;
+    }
+
+    const environmentFiles = this.options.envFiles.map((environmentFile) =>
       environmentFile.replace(/\[mode\]/g, mode),
     );
 
@@ -45,14 +54,15 @@ class DotenvWebpackPlugin {
           for (const [key, value] of Object.entries(parsedEnvVariables)) {
             // only add variables starting with WEBPACK_
             if (key.startsWith("WEBPACK_")) {
-              for (let index = 0; index < this.config.prefixes.length; index++) {
-                const prefix = this.config.prefixes[index];
+              for (let index = 0; index < this.options.prefixes.length; index++) {
+                const prefix = this.options.prefixes[index];
                 envVariables[`${prefix}${key}`] = value;
               }
             }
           }
         } catch (err) {
-          this.logger.error(`Could not read ${environmentFile}`);
+          const logger = compiler.getInfrastructureLogger("webpack-cli");
+          logger.error(`Could not read ${environmentFile}`);
         }
       }
     });
