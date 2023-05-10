@@ -89,7 +89,7 @@ jobs:
         run: yarn build:ci
 
       - name: Run tests and generate coverage
-        run: yarn test:coverage --ci --shard=${{ matrix.shard }}
+        run: yarn jest serve-basic
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

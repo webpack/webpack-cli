@@ -379,8 +379,11 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("main.js");
   });
 
-  it("should log warning on using '-w' alias with serve", async () => {
+  it.only("should log warning on using '-w' alias with serve", async () => {
     const { exitCode, stdout, stderr } = await runWatch(testPath, ["serve", "-w"]);
+    console.log("🚀 ~ file: serve-basic.test.js:384 ~ it.only ~ stderr:", stderr);
+    console.log("🚀 ~ file: serve-basic.test.js:384 ~ it.only ~ stdout:", stdout);
+    console.log("🚀 ~ file: serve-basic.test.js:384 ~ it ~ exitCode:", exitCode);
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
