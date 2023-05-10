@@ -7,9 +7,8 @@ const stripAnsi = require("strip-ansi");
 const path = require("path");
 const fs = require("fs");
 const execa = require("execa");
-const util = require("util");
 const internalIp = require("internal-ip");
-const exec = util.promisify(require("child_process").exec);
+const { exec } = require("child_process");
 const { node: execaNode } = execa;
 const { Writable } = require("readable-stream");
 const concat = require("concat-stream");
@@ -29,23 +28,9 @@ const hyphenToUpperCase = (name) => {
   });
 };
 
-const processKill = async (process) => {
-  process.kill();
-  console.log("🚀 ~ file: test-utils.js:38 ~ processKill ~ process:", process);
+const processKill = (process) => {
   if (isWindows) {
-    const { stdout, stderr, error } = await exec("taskkill /pid " + process.pid + " /T /F");
-    console.log(`exec stdout: ${stdout}`);
-    console.error(`exec stderr: ${stderr}`);
-    console.error(`exec error: ${error}`);
-
-    // exec("taskkill /pid " + process.pid + " /T /F", (error, stdout, stderr) => {
-    //   if (error) {
-
-    //     return;
-    //   }
-
-    // });
-    // execa.sync("taskkill /pid " + process.pid + " /T /F");
+    exec("taskkill /pid " + process.pid + " /T /F");
   } else {
     process.kill();
   }
@@ -112,16 +97,11 @@ const runWatch = (cwd, args = [], options = {}) => {
 
     process.stdout.pipe(
       new Writable({
-        async write(chunk, encoding, callback) {
+        write(chunk, encoding, callback) {
           const output = stripAnsi(chunk.toString("utf8"));
-          console.log("🚀 ~ file: test-utils.js:102 ~ write ~ output:", output);
 
           if (outputKillStr.test(output)) {
-            console.log(
-              "🚀 ~ file: test-utils.js:104 ~ write ~ outputKillStr.test(output):",
-              outputKillStr.test(output),
-            );
-            await processKill(process);
+            processKill(process);
           }
 
           callback();
