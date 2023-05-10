@@ -566,15 +566,12 @@ class WebpackCLI implements IWebpackCLI {
         let skipInstallation = false;
 
         // Allow to use `./path/to/webpack.js` outside `node_modules`
-        if (dependency === WEBPACK_PACKAGE && fs.existsSync(WEBPACK_PACKAGE)) {
+        if (dependency === WEBPACK_PACKAGE) {
           skipInstallation = true;
         }
 
         // Allow to use `./path/to/webpack-dev-server.js` outside `node_modules`
-        if (
-          dependency === WEBPACK_DEV_SERVER_PACKAGE &&
-          fs.existsSync(WEBPACK_DEV_SERVER_PACKAGE)
-        ) {
+        if (dependency === WEBPACK_DEV_SERVER_PACKAGE) {
           skipInstallation = true;
         }
 
