@@ -213,6 +213,7 @@ interface WebpackRunOptions extends WebpackOptionsNormalized {
   argv?: Argv;
   env: Env;
   failOnWarnings?: boolean;
+  isWatchingLikeCommand?: boolean;
 }
 
 /**

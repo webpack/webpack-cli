@@ -47,10 +47,7 @@ class ServeCommand {
           process.exit(2);
         }
 
-        const builtInOptions = cli.getBuiltInOptions().filter(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (option: any) => option.name !== "watch",
-        );
+        const builtInOptions = cli.getBuiltInOptions();
 
         return [...builtInOptions, ...devServerFlags];
       },
@@ -109,6 +106,8 @@ class ServeCommand {
           ...options,
           env: { WEBPACK_SERVE: true, ...options.env },
         };
+
+        webpackCLIOptions.isWatchingLikeCommand = true;
 
         const compiler = await cli.createCompiler(webpackCLIOptions);
 

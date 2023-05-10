@@ -47,6 +47,14 @@ describe("basic", () => {
         }
       }
     });
+
+    proc.stderr.on("data", (chunk) => {
+      const data = chunk.toString();
+
+      expect(data).not.toContain(
+        " No need to use the 'watch' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.",
+      );
+    });
   });
 
   it("should recompile upon file change using the `watch` command", (done) => {
@@ -76,6 +84,14 @@ describe("basic", () => {
           done();
         }
       }
+    });
+
+    proc.stderr.on("data", (chunk) => {
+      const data = chunk.toString();
+
+      expect(data).not.toContain(
+        " No need to use the 'watch' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.",
+      );
     });
   });
 
