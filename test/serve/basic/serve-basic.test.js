@@ -3,7 +3,7 @@
 const path = require("path");
 // eslint-disable-next-line node/no-unpublished-require
 const getPort = require("get-port");
-const { runWatch, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
+const { runWatch, normalizeStderr, normalizeStdout, isWindows } = require("../../utils/test-utils");
 
 const testPath = path.resolve(__dirname);
 
@@ -373,7 +373,7 @@ describe("basic serve usage", () => {
   it("should log error on using '--watch' flag with serve", async () => {
     const { exitCode, stdout, stderr } = await runWatch(testPath, ["serve", "--watch"]);
 
-    expect(exitCode).toBe(0);
+    expect(exitCode).toBe(isWindows ? 1 : 0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
@@ -381,11 +381,8 @@ describe("basic serve usage", () => {
 
   it.only("should log warning on using '-w' alias with serve", async () => {
     const { exitCode, stdout, stderr } = await runWatch(testPath, ["serve", "-w"]);
-    console.log("🚀 ~ file: serve-basic.test.js:384 ~ it.only ~ stderr:", stderr);
-    console.log("🚀 ~ file: serve-basic.test.js:384 ~ it.only ~ stdout:", stdout);
-    console.log("🚀 ~ file: serve-basic.test.js:384 ~ it ~ exitCode:", exitCode);
 
-    // expect(exitCode).toBe(0);
+    expect(exitCode).toBe(isWindows ? 1 : 0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");

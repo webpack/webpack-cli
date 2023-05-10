@@ -29,8 +29,16 @@ const hyphenToUpperCase = (name) => {
 };
 
 const processKill = (process) => {
+  console.log("🚀 ~ file: test-utils.js:38 ~ processKill ~ process:", process);
   if (isWindows) {
-    exec("taskkill /pid " + process.pid + " /T /F");
+    exec("taskkill /pid " + process.pid + " /T /F", (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`exec stdout: ${stdout}`);
+      console.error(`exec stderr: ${stderr}`);
+    });
   } else {
     process.kill();
   }
@@ -99,8 +107,13 @@ const runWatch = (cwd, args = [], options = {}) => {
       new Writable({
         write(chunk, encoding, callback) {
           const output = stripAnsi(chunk.toString("utf8"));
+          console.log("🚀 ~ file: test-utils.js:102 ~ write ~ output:", output);
 
           if (outputKillStr.test(output)) {
+            console.log(
+              "🚀 ~ file: test-utils.js:104 ~ write ~ outputKillStr.test(output):",
+              outputKillStr.test(output),
+            );
             processKill(process);
           }
 
