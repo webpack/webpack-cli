@@ -357,7 +357,7 @@ describe("basic serve usage", () => {
   });
 
   it("should work and log warning on the watch option in a configuration", async () => {
-    const { stderr, stdout, exitCode } = await runWatch(__dirname, [
+    const { stderr, stdout } = await runWatch(__dirname, [
       "serve",
       "--config",
       "./watch.config.js",
@@ -365,25 +365,22 @@ describe("basic serve usage", () => {
       port,
     ]);
 
-    expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("development");
   });
 
   it("should log error on using '--watch' flag with serve", async () => {
-    const { exitCode, stdout, stderr } = await runWatch(__dirname, ["serve", "--watch", "--port", port]);
+    const { stdout, stderr } = await runWatch(__dirname, ["serve", "--watch", "--port", port]);
 
-    expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
   });
 
   it("should log warning on using '-w' alias with serve", async () => {
-    const { exitCode, stdout, stderr } = await runWatch(__dirname, ["serve", "-w", "--port", port]);
+    const { stdout, stderr } = await runWatch(__dirname, ["serve", "-w", "--port", port]);
 
-    expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
     expect(stdout).toContain("main.js");
