@@ -29,6 +29,7 @@ const hyphenToUpperCase = (name) => {
 };
 
 const processKill = (process) => {
+  process.kill();
   console.log("🚀 ~ file: test-utils.js:38 ~ processKill ~ process:", process);
   if (isWindows) {
     // exec("taskkill /pid " + process.pid + " /T /F", (error, stdout, stderr) => {
