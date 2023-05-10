@@ -28,14 +28,14 @@ class DotenvWebpackPlugin {
 
     // throw error if envFiles is not an array
     if (!Array.isArray(this.options.envFiles)) {
-      const logger = compiler.getInfrastructureLogger("webpack-cli");
+      const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
       logger.error(`envFiles option must be an array, received ${typeof this.options.envFiles}`);
       return;
     }
 
     // throw error if prefixes is not an array
     if (!Array.isArray(this.options.prefixes)) {
-      const logger = compiler.getInfrastructureLogger("webpack-cli");
+      const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
       logger.error(`prefixes option must be an array, received ${typeof this.options.prefixes}`);
       return;
     }
@@ -61,7 +61,7 @@ class DotenvWebpackPlugin {
             }
           }
         } catch (err) {
-          const logger = compiler.getInfrastructureLogger("webpack-cli");
+          const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
           logger.error(`Could not read ${environmentFile}`);
         }
       }
