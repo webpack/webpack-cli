@@ -3,7 +3,13 @@ const dotenv = require("dotenv");
 const dotenvExpand = require("dotenv-expand");
 const { DefinePlugin } = require("webpack");
 
+/** @typedef {import("./types").Config} Config */
+
 class DotenvWebpackPlugin {
+  /**
+   * Dotenv Webpack Plugin
+   * @param {Config} config - Configuration options
+   */
   constructor(config = {}) {
     const currentDirectory = process.cwd();
 
@@ -23,6 +29,11 @@ class DotenvWebpackPlugin {
     );
   }
 
+  /**
+   * Webpack apply hook
+   * @param {Object} compiler - Webpack compiler
+   * @returns {void}
+   */
   apply(compiler) {
     const mode = compiler.options.mode || "production";
 

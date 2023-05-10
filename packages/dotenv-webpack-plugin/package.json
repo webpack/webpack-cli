@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A webpack plugin to support env files",
   "main": "src/index.js",
+  "types": "src/types.d.ts",
   "repository": "https://github.com/webpack/webpack-cli",
   "author": "Burhanuddin Udaipurwala (burhanuday)",
   "license": "MIT",
