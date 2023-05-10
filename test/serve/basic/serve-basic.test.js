@@ -356,7 +356,7 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("development");
   });
 
-  it("should work and log warning on the watch option in a configuration", async () => {
+  it("should work and log warning on the 'watch' option in a configuration", async () => {
     const { stderr, stdout } = await runWatch(__dirname, [
       "serve",
       "--config",
