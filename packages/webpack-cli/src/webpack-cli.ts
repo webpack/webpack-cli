@@ -638,6 +638,7 @@ class WebpackCLI implements IWebpackCLI {
 
       mainOption = {
         flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
+        valueName: option.valueName || "value",
         description: option.description || "",
         type: mainOptionType,
         multiple: option.multiple,
@@ -654,6 +655,7 @@ class WebpackCLI implements IWebpackCLI {
     } else {
       mainOption = {
         flags: option.alias ? `-${option.alias}, --${option.name}` : `--${option.name}`,
+        valueName: option.valueName || "value",
         description: option.description || "",
         type: option.type
           ? new Set(Array.isArray(option.type) ? option.type : [option.type])
@@ -672,10 +674,18 @@ class WebpackCLI implements IWebpackCLI {
       }
     }
 
+    let bracket: string | undefined;
+
     if (mainOption.type.size > 1 && mainOption.type.has(Boolean)) {
-      mainOption.flags = `${mainOption.flags} [value${mainOption.multiple ? "..." : ""}]`;
+      bracket = "[]";
     } else if (mainOption.type.size > 0 && !mainOption.type.has(Boolean)) {
-      mainOption.flags = `${mainOption.flags} <value${mainOption.multiple ? "..." : ""}>`;
+      bracket = "<>";
+    }
+
+    if (bracket?.length === 2) {
+      mainOption.flags = `${mainOption.flags} ${bracket[0]}${mainOption.valueName || "value"}${
+        mainOption.multiple ? "..." : ""
+      }${bracket[1]}`;
     }
 
     if (mainOption.type.size === 1) {
@@ -808,7 +818,9 @@ class WebpackCLI implements IWebpackCLI {
           },
         ],
         multiple: true,
-        description: "Provide path to a webpack configuration file e.g. ./webpack.config.js.",
+        valueName: "pathToConfigFile",
+        description:
+          'Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".',
         helpLevel: "minimum",
       },
       {
@@ -819,7 +831,9 @@ class WebpackCLI implements IWebpackCLI {
           },
         ],
         multiple: true,
-        description: "Name of the configuration to use.",
+        valueName: "name",
+        description:
+          "Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.",
         helpLevel: "minimum",
       },
       {
@@ -890,7 +904,8 @@ class WebpackCLI implements IWebpackCLI {
           return previous;
         },
         multiple: true,
-        description: "Environment passed to the configuration when it is a function.",
+        description:
+          'Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".',
         helpLevel: "minimum",
       },
       {
@@ -958,6 +973,7 @@ class WebpackCLI implements IWebpackCLI {
           },
         ],
         alias: "j",
+        valueName: "pathToJsonFile",
         description: "Prints result as JSON or store it in a file.",
         helpLevel: "minimum",
       },

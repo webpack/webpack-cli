@@ -109,7 +109,7 @@ interface WebpackCLIStats extends Stats {
 
 type WebpackCLIMainOption = Pick<
   WebpackCLIBuiltInOption,
-  "description" | "defaultValue" | "multiple"
+  "valueName" | "description" | "defaultValue" | "multiple"
 > & {
   flags: string;
   type: Set<BooleanConstructor | StringConstructor | NumberConstructor>;
@@ -139,6 +139,7 @@ interface WebpackCLIBuiltInFlag {
   configs?: Partial<FlagConfig>[];
   negative?: boolean;
   multiple?: boolean;
+  valueName?: string;
   description: string;
   describe?: string;
   negatedDescription?: string;
