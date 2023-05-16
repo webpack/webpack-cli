@@ -1,4 +1,3 @@
-const fs = require("fs");
 const dotenv = require("dotenv");
 const dotenvExpand = require("dotenv-expand");
 const { DefinePlugin } = require("webpack");
@@ -7,6 +6,7 @@ const schema = require("./options.json");
 
 /** @typedef {import("./types").Config} Config */
 /** @typedef {import("schema-utils/declarations/validate").Schema} Schema */
+/** @typedef {import("webpack").Compiler} Compiler */
 
 class DotenvWebpackPlugin {
   /**
@@ -39,23 +39,29 @@ class DotenvWebpackPlugin {
   }
 
   /**
-   * Webpack apply hook
-   * @param {Object} compiler - Webpack compiler
-   * @returns {void}
+   * Read file from path and parse it
+   * @param {Compiler} compiler - Webpack compiler
+   * @param {string} environmentFile - Path to environment file
    */
-  apply(compiler) {
-    const mode = compiler.options.mode || "production";
+  readFile(compiler, environmentFile) {
+    return new Promise((resolve, reject) => {
+      const envVariables = {};
 
-    const environmentFiles = this.options.envFiles.map((environmentFile) =>
-      environmentFile.replace(/\[mode\]/g, mode),
-    );
+      const fs = compiler.inputFileSystem;
 
-    let envVariables = {};
-    // parse environment vars from .env files
-    environmentFiles.forEach((environmentFile) => {
-      if (fs.existsSync(environmentFile)) {
-        try {
-          const environmentFileContents = fs.readFileSync(environmentFile);
+      fs.stat(environmentFile, (err) => {
+        // File does not exist
+        if (err) {
+          return resolve();
+        }
+
+        fs.readFile(environmentFile, (err, environmentFileContents) => {
+          if (err) {
+            const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
+            logger.error(`Could not read ${environmentFile}`);
+            return reject(err);
+          }
+
           const parsedEnvVariables = dotenv.parse(environmentFileContents);
           for (const [key, value] of Object.entries(parsedEnvVariables)) {
             // only add variables starting with WEBPACK_
@@ -66,21 +72,51 @@ class DotenvWebpackPlugin {
               }
             }
           }
-        } catch (err) {
-          const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
-          logger.error(`Could not read ${environmentFile}`);
-        }
-      }
+
+          resolve(envVariables);
+        });
+      });
     });
+  }
 
-    // expand environment vars
-    envVariables = dotenvExpand.expand({
-      parsed: envVariables,
-      // don't write to process.env
-      ignoreProcessEnv: true,
-    }).parsed;
+  /**
+   * Webpack apply hook
+   * @param {Compiler} compiler - Webpack compiler
+   * @returns {void}
+   */
+  apply(compiler) {
+    const mode = compiler.options.mode || "production";
 
-    new DefinePlugin(envVariables).apply(compiler);
+    const environmentFiles = this.options.envFiles.map((environmentFile) =>
+      environmentFile.replace(/\[mode\]/g, mode),
+    );
+
+    compiler.hooks.beforeRun.tapPromise("DotenvWebpackPlugin", () => {
+      return Promise.all(
+        environmentFiles.map((environmentFile) => this.readFile(compiler, environmentFile)),
+      )
+        .then((valuesList) => {
+          let envVariables = {};
+
+          valuesList.forEach((values) => {
+            if (values) {
+              Object.entries(values).forEach(([key, value]) => {
+                envVariables[key] = value;
+              });
+            }
+          });
+
+          // expand environment vars
+          envVariables = dotenvExpand.expand({
+            parsed: envVariables,
+            // don't write to process.env
+            ignoreProcessEnv: true,
+          }).parsed;
+
+          new DefinePlugin(envVariables).apply(compiler);
+        })
+        .catch(() => {});
+    });
   }
 }
 
