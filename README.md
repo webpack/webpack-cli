@@ -15,7 +15,7 @@
 [![Build Status][build-status]][build-status-url]
 [![codecov][codecov-badge]][codecov-url]
 [![Install Size][size]][size-url]
-[![Chat on gitter][chat]][chat-url]
+[![GitHub Discussions][discussion]][discussion-url]
 
 ## Table of Contents
 
@@ -109,8 +109,8 @@ If you like **webpack**, please consider donating through [Open Collective](http
 [codecov-url]: https://codecov.io/gh/webpack/webpack-cli
 [size]: https://packagephobia.com/badge?p=webpack-cli
 [size-url]: https://packagephobia.com/result?p=webpack-cli
-[chat]: https://badges.gitter.im/webpack/webpack.svg
-[chat-url]: https://gitter.im/webpack/webpack
+[discussion]: https://img.shields.io/github/discussions/webpack/webpack
+[discussion-url]: https://github.com/webpack/webpack/discussions
 
 ## Code of Conduct
 
