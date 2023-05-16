@@ -10,7 +10,8 @@
   "private": true,
   "dependencies": {
     "dotenv": "^16.0.3",
-    "dotenv-expand": "^10.0.0"
+    "dotenv-expand": "^10.0.0",
+    "schema-utils": "^4.0.1"
   },
   "peerDependencies": {
     "webpack": "5.x.x"
