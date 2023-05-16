@@ -1,0 +1,22 @@
+{
+  "definitions": {},
+  "title": "DotenvWebpackPlugin",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "envFiles": {
+      "description": "The paths to the .env files to load",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prefixes": {
+      "description": "The prefixes to use for the environment variables",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -2,15 +2,23 @@ const fs = require("fs");
 const dotenv = require("dotenv");
 const dotenvExpand = require("dotenv-expand");
 const { DefinePlugin } = require("webpack");
+const { validate } = require("schema-utils");
+const schema = require("./options.json");
 
 /** @typedef {import("./types").Config} Config */
+/** @typedef {import("schema-utils/declarations/validate").Schema} Schema */
 
 class DotenvWebpackPlugin {
   /**
    * Dotenv Webpack Plugin
-   * @param {Config} config - Configuration options
+   * @param {Config} options - Configuration options
    */
-  constructor(config = {}) {
+  constructor(options = {}) {
+    validate(/** @type {Schema} */ (schema), options || {}, {
+      name: "DotenvWebpackPlugin",
+      baseDataPath: "options",
+    });
+
     const currentDirectory = process.cwd();
 
     this.options = Object.assign(
@@ -25,7 +33,7 @@ class DotenvWebpackPlugin {
         ],
         prefixes: ["process.env.", "import.meta.env."],
       },
-      config,
+      options,
     );
   }
 
@@ -36,20 +44,6 @@ class DotenvWebpackPlugin {
    */
   apply(compiler) {
     const mode = compiler.options.mode || "production";
-
-    // throw error if envFiles is not an array
-    if (!Array.isArray(this.options.envFiles)) {
-      const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
-      logger.error(`envFiles option must be an array, received ${typeof this.options.envFiles}`);
-      return;
-    }
-
-    // throw error if prefixes is not an array
-    if (!Array.isArray(this.options.prefixes)) {
-      const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
-      logger.error(`prefixes option must be an array, received ${typeof this.options.prefixes}`);
-      return;
-    }
 
     const environmentFiles = this.options.envFiles.map((environmentFile) =>
       environmentFile.replace(/\[mode\]/g, mode),
