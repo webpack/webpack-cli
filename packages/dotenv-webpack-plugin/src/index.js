@@ -21,20 +21,21 @@ class DotenvWebpackPlugin {
 
     const currentDirectory = process.cwd();
 
-    this.options = Object.assign(
-      {},
-      {
-        envFiles: [
-          `${currentDirectory}/.env.example`, // loaded in all cases
-          `${currentDirectory}/.env`, // loaded in all cases
-          `${currentDirectory}/.env.local`, // loaded in all cases, ignored by git
-          `${currentDirectory}/.env.[mode]`, // only loaded in specified mode
-          `${currentDirectory}/.env.[mode].local`, // only loaded in specified mode, ignored by git
-        ],
-        prefixes: ["process.env.", "import.meta.env."],
-      },
-      options,
-    );
+    const {
+      envFiles = [
+        `${currentDirectory}/.env.example`, // loaded in all cases
+        `${currentDirectory}/.env`, // loaded in all cases
+        `${currentDirectory}/.env.local`, // loaded in all cases, ignored by git
+        `${currentDirectory}/.env.[mode]`, // only loaded in specified mode
+        `${currentDirectory}/.env.[mode].local`, // only loaded in specified mode, ignored by git
+      ],
+      prefixes = ["process.env.", "import.meta.env."],
+    } = options;
+
+    this.options = {
+      envFiles,
+      prefixes,
+    };
   }
 
   /**
