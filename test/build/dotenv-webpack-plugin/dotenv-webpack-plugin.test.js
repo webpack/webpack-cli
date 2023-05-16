@@ -238,13 +238,13 @@ describe("dotenv-webpack-plugin", () => {
     const testDir = join(__dirname, "validate-config-paths");
     const { stderr } = await run(testDir);
 
-    expect(stderr).toContain("envFiles option must be an array, received string");
+    expect(stderr).toContain("options.envFiles should be an array");
   });
 
   it("validates custom prefixes", async () => {
     const testDir = join(__dirname, "validates-prefixes");
     const { stderr } = await run(testDir);
 
-    expect(stderr).toContain("prefixes option must be an array, received string");
+    expect(stderr).toContain("options.prefixes should be an array");
   });
 });
