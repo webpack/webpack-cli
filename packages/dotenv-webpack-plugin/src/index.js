@@ -39,6 +39,26 @@ class DotenvWebpackPlugin {
   }
 
   /**
+   * Check if file exists
+   * @param {Compiler} compiler - Webpack compiler
+   * @param {string} environmentFile - Path to environment file
+   */
+  fileExists(compiler, environmentFile) {
+    return new Promise((resolve) => {
+      const fs = compiler.inputFileSystem;
+
+      fs.stat(environmentFile, (err) => {
+        // File does not exist
+        if (err) {
+          return resolve(false);
+        }
+
+        return resolve(environmentFile);
+      });
+    });
+  }
+
+  /**
    * Read file from path and parse it
    * @param {Compiler} compiler - Webpack compiler
    * @param {string} environmentFile - Path to environment file
@@ -49,9 +69,8 @@ class DotenvWebpackPlugin {
 
       const fs = compiler.inputFileSystem;
 
-      fs.stat(environmentFile, (err) => {
-        // File does not exist
-        if (err) {
+      this.fileExists(compiler, environmentFile).then((exists) => {
+        if (!exists) {
           return resolve();
         }
 
