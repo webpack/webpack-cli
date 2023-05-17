@@ -247,4 +247,16 @@ describe("dotenv-webpack-plugin", () => {
 
     expect(stderr).toContain("options.prefixes should be an array");
   });
+
+  it("uses the passed env var prefix correctly", async () => {
+    const testDir = join(__dirname, "env-var-prefix");
+    const { exitCode, stderr, stdout } = await run(testDir, ["--read-dot-env"]);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir);
+
+    const data = await getBuildOutput(testDir);
+
+    expect(data).toContain("Hello from index.js");
+    expect(data).toContain("default_value");
+  });
 });
