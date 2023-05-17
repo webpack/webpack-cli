@@ -2294,7 +2294,7 @@ class WebpackCLI implements IWebpackCLI {
           item.plugins = [];
         }
 
-        item.plugins.unshift(new DotenvWebpackPlugin());
+        item.plugins.push(new DotenvWebpackPlugin());
       };
 
       if (Array.isArray(config.options)) {
