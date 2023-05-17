@@ -17,6 +17,10 @@
       "items": {
         "type": "string"
       }
+    },
+    "envVarPrefix": {
+      "description": "The prefix to use for the environment variables",
+      "type": "string"
     }
   }
 }

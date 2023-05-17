@@ -30,11 +30,13 @@ class DotenvWebpackPlugin {
         `${currentDirectory}/.env.[mode].local`, // only loaded in specified mode, ignored by git
       ],
       prefixes = ["process.env.", "import.meta.env."],
+      envVarPrefix = "WEBPACK_",
     } = options;
 
     this.options = {
       envFiles,
       prefixes,
+      envVarPrefix,
     };
   }
 
@@ -83,8 +85,8 @@ class DotenvWebpackPlugin {
 
           const parsedEnvVariables = dotenv.parse(environmentFileContents);
           for (const [key, value] of Object.entries(parsedEnvVariables)) {
-            // only add variables starting with WEBPACK_
-            if (key.startsWith("WEBPACK_")) {
+            // only add variables starting with the provided prefix
+            if (key.startsWith(this.options.envVarPrefix)) {
               for (let index = 0; index < this.options.prefixes.length; index++) {
                 const prefix = this.options.prefixes[index];
                 envVariables[`${prefix}${key}`] = value;
