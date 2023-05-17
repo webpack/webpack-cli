@@ -9,7 +9,7 @@ module.exports = {
   },
   plugins: [
     new DotenvWebpackPlugin({
-      envVarPrefix: "PUBLIC_",
+      envVarPrefix: "WEBPACK_",
     }),
   ],
 };

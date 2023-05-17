@@ -50,11 +50,11 @@ describe("dotenv-webpack-plugin", () => {
     const data = await getBuildOutput(testDir);
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",production_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",production_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:",production_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:",production_value');
   });
 
-  it("reads .env file and does not define a variable when it does not start with WEBPACK_", async () => {
+  it("reads .env file and does not define a variable when it does not start with PUBLIC_", async () => {
     const testDir = join(__dirname, "non-webpack-variable");
     const { exitCode, stderr, stdout } = await run(testDir, [
       "--entry",
@@ -67,8 +67,8 @@ describe("dotenv-webpack-plugin", () => {
     const data = await getBuildOutput(testDir);
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.NON_WEBPACK_VARIABLE:",process.env.NON_WEBPACK_VARIABLE');
-    expect(data).toContain('"import.meta.env.NON_WEBPACK_VARIABLE:",(void 0).NON_WEBPACK_VARIABLE');
+    expect(data).toContain('"process.env.NON_PUBLIC_VARIABLE:",process.env.NON_PUBLIC_VARIABLE');
+    expect(data).toContain('"import.meta.env.NON_PUBLIC_VARIABLE:",(void 0).NON_PUBLIC_VARIABLE');
     expect(data).not.toContain("variable_value");
   });
 
@@ -87,8 +87,8 @@ describe("dotenv-webpack-plugin", () => {
     const data = await getBuildOutput(testDir);
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",production_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",production_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:",production_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:",production_value');
     expect(data).not.toContain("default_value");
     expect(data).not.toContain("development_value");
   });
@@ -109,8 +109,8 @@ describe("dotenv-webpack-plugin", () => {
 
     expect(data).toContain("Hello from index.js");
     // TODO check why webpack adds "\\" to the value only in development mode
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:\\", development_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:\\", development_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:\\", development_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:\\", development_value');
     expect(data).not.toContain("default_value");
     expect(data).not.toContain("production_value");
   });
@@ -130,8 +130,8 @@ describe("dotenv-webpack-plugin", () => {
     const data = await getBuildOutput(testDir);
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:", none_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:", none_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:", none_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:", none_value');
     expect(data).not.toContain("default_value");
     expect(data).not.toContain("production_value");
     expect(data).not.toContain("development_value");
@@ -150,8 +150,8 @@ describe("dotenv-webpack-plugin", () => {
     const data = await getBuildOutput(testDir);
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",example_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",example_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:",example_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:",example_value');
   });
 
   it("overrides value from .env when same key in .env.local is present", async () => {
@@ -167,8 +167,8 @@ describe("dotenv-webpack-plugin", () => {
     const data = await getBuildOutput(testDir);
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",local_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",local_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:",local_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:",local_value');
     expect(data).not.toContain("default_value");
   });
 
@@ -185,8 +185,8 @@ describe("dotenv-webpack-plugin", () => {
     const data = await getBuildOutput(testDir);
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",local_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",local_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:",local_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:",local_value');
     expect(data).not.toContain("production_value");
   });
 
@@ -199,14 +199,14 @@ describe("dotenv-webpack-plugin", () => {
     let data = await getBuildOutput(testDir, "dist1");
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",default_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",default_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:",default_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:",default_value');
 
     data = await getBuildOutput(testDir, "dist2");
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",default_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",default_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:",default_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:",default_value');
   });
 
   it("reads env vars from a custom file path correctly", async () => {
@@ -218,8 +218,8 @@ describe("dotenv-webpack-plugin", () => {
     const data = await getBuildOutput(testDir);
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"process.env.WEBPACK_VARIABLE:",default_value');
-    expect(data).toContain('"import.meta.env.WEBPACK_VARIABLE:",default_value');
+    expect(data).toContain('"process.env.PUBLIC_VARIABLE:",default_value');
+    expect(data).toContain('"import.meta.env.PUBLIC_VARIABLE:",default_value');
   });
 
   it("creates variables with custom prefixes when passed", async () => {
@@ -231,7 +231,7 @@ describe("dotenv-webpack-plugin", () => {
     const data = await getBuildOutput(testDir);
 
     expect(data).toContain("Hello from index.js");
-    expect(data).toContain('"custom_prefix_WEBPACK_VARIABLE:",default_value');
+    expect(data).toContain('"custom_prefix_PUBLIC_VARIABLE:",default_value');
   });
 
   it("validates env files paths", async () => {

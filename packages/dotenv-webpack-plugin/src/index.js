@@ -30,7 +30,7 @@ class DotenvWebpackPlugin {
         `${currentDirectory}/.env.[mode].local`, // only loaded in specified mode, ignored by git
       ],
       prefixes = ["process.env.", "import.meta.env."],
-      envVarPrefix = "WEBPACK_",
+      envVarPrefix = "PUBLIC_",
     } = options;
 
     this.options = {
