@@ -91,7 +91,11 @@ class DotenvWebpackPlugin {
       environmentFile.replace(/\[mode\]/g, mode),
     );
 
-    compiler.hooks.beforeRun.tapPromise("DotenvWebpackPlugin", () => {
+    compiler.hooks.beforeRun.tapPromise("DotenvWebpackPlugin", (compiler) => {
+      compiler.hooks.compilation.tap("DotenvWebpackPlugin", (compilation) => {
+        compilation.buildDependencies.addAll(environmentFiles);
+      });
+
       return Promise.all(
         environmentFiles.map((environmentFile) => this.readFile(compiler, environmentFile)),
       )
