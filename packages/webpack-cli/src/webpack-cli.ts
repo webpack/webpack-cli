@@ -674,18 +674,14 @@ class WebpackCLI implements IWebpackCLI {
       }
     }
 
-    let bracket: string | undefined;
-
     if (mainOption.type.size > 1 && mainOption.type.has(Boolean)) {
-      bracket = "[]";
-    } else if (mainOption.type.size > 0 && !mainOption.type.has(Boolean)) {
-      bracket = "<>";
-    }
-
-    if (bracket?.length === 2) {
-      mainOption.flags = `${mainOption.flags} ${bracket[0]}${mainOption.valueName || "value"}${
+      mainOption.flags = `${mainOption.flags} [${mainOption.valueName || "value"}${
         mainOption.multiple ? "..." : ""
-      }${bracket[1]}`;
+      }]`;
+    } else if (mainOption.type.size > 0 && !mainOption.type.has(Boolean)) {
+      mainOption.flags = `${mainOption.flags} <${mainOption.valueName || "value"}${
+        mainOption.multiple ? "..." : ""
+      }>`;
     }
 
     if (mainOption.type.size === 1) {
