@@ -5,16 +5,16 @@ Alternative usage to run commands: webpack [command] [options]
 The build tool for modern web applications.
 
 Options:
-  -c, --config <value...>                                                            Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                                                           Name of the configuration to use.
+  -c, --config <pathToConfigFile...>                                                 Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".
+  --config-name <name...>                                                            Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
   --disable-interpret                                                                Disable interpret for loading the config file.
-  --env <value...>                                                                   Environment passed to the configuration when it is a function.
+  --env <value...>                                                                   Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".
   --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value.
   --define-process-env-node-env <value>                                              Sets process.env.NODE_ENV to the specified value. (Currently an alias for `--node-env`).
   --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                                                 Print compilation progress during build.
-  -j, --json [value]                                                                 Prints result as JSON or store it in a file.
+  -j, --json [pathToJsonFile]                                                        Prints result as JSON or store it in a file.
   --fail-on-warnings                                                                 Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>                                                           Path to the configuration to be extended (only works when using webpack-cli).
   --no-amd                                                                           Negative 'amd' option.
@@ -1015,7 +1015,7 @@ Commands:
   init|create|new|c|n [generation-path] [options]                                    Initialize a new webpack project.
   loader|l [output-path] [options]                                                   Scaffold a loader.
   plugin|p [output-path] [options]                                                   Scaffold a plugin.
-  serve|server|s [entries...] [options]                                              Run the webpack dev server.
+  serve|server|s [entries...] [options]                                              Run the webpack dev server and watch for source file changes while serving.
   version|v [options]                                                                Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                                                     Run webpack and watch for files changes.
 
