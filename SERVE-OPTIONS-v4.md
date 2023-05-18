@@ -1,18 +1,18 @@
 ```
 Usage: webpack serve|server|s [entries...] [options]
 
-Run the webpack dev server.
+Run the webpack dev server and watch for source file changes while serving.
 
 Options:
-  -c, --config <value...>                             Provide path to a webpack configuration file e.g. ./webpack.config.js.
-  --config-name <value...>                            Name of the configuration to use.
+  -c, --config <pathToConfigFile...>                  Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".
+  --config-name <name...>                             Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.
   -m, --merge                                         Merge two or more configurations using 'webpack-merge'.
   --disable-interpret                                 Disable interpret for loading the config file.
-  --env <value...>                                    Environment passed to the configuration when it is a function.
+  --env <value...>                                    Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".
   --node-env <value>                                  Sets process.env.NODE_ENV to the specified value.
   --analyze                                           It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                  Print compilation progress during build.
-  -j, --json [value]                                  Prints result as JSON or store it in a file.
+  -j, --json [pathToJsonFile]                         Prints result as JSON or store it in a file.
   --fail-on-warnings                                  Stop webpack-cli process with non-zero exit code on warnings from webpack.
   -e, --extends <value...>                            Path to the configuration to be extended (only works when using webpack-cli).
   -d, --devtool <value>                               A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
@@ -26,6 +26,8 @@ Options:
   --no-stats                                          Negative 'stats' option.
   -t, --target <value...>                             Environment to build for. Environment to build for. An array of environments to build for all of them when possible.
   --no-target                                         Negative 'target' option.
+  -w, --watch                                         Enter watch mode, which rebuilds on file change.
+  --no-watch                                          Negative 'watch' option.
   --watch-options-stdin                               Stop watching when stdin stream has ended.
   --no-watch-options-stdin                            Negative 'watch-options-stdin' option.
   --allowed-hosts <value...>                          Allows to enumerate the hosts from which access to the dev server are allowed (useful when you are proxying dev server, by default is 'auto').
