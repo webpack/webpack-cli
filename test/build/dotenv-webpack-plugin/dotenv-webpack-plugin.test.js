@@ -259,4 +259,23 @@ describe("dotenv-webpack-plugin", () => {
     expect(data).toContain("Hello from index.js");
     expect(data).toContain("default_value");
   });
+
+  it("overrides the variables according to priority order correctly", async () => {
+    const testDir = join(__dirname, "priority-order");
+    const { exitCode, stderr, stdout } = await run(testDir, ["--read-dot-env"]);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir);
+
+    const data = await getBuildOutput(testDir);
+
+    expect(data).toContain("Hello from index.js");
+    expect(data).toContain(`"process.env.PUBLIC_EXAMPLE_VARIABLE:",public_example_value_override`);
+    expect(data).toContain(`"process.env.PUBLIC_ENV_VARIABLE:",public_env_value_override`);
+    expect(data).toContain(
+      `"process.env.PUBLIC_ENV_MODE_VARIABLE:",public_env_mode_value_override`,
+    );
+    expect(data).toContain(
+      `"process.env.PUBLIC_ENV_LOCAL_VARIABLE:",public_env_local_value_override`,
+    );
+  });
 });
