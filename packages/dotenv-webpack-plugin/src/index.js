@@ -21,16 +21,18 @@ class DotenvWebpackPlugin {
 
     const currentDirectory = process.cwd();
 
+    this.defaultFileList = [
+      `${currentDirectory}/.env.example`, // loaded in all cases
+      `${currentDirectory}/.env`, // loaded in all cases
+      `${currentDirectory}/.env.[mode]`, // only loaded in specified mode
+      `${currentDirectory}/.env.local`, // loaded in all cases, ignored by git
+      `${currentDirectory}/.env.[mode].local`, // only loaded in specified mode, ignored by git
+    ];
+
     const {
       // priority is in ascending order
       // files at the end of the array have higher priority
-      envFiles = [
-        `${currentDirectory}/.env.example`, // loaded in all cases
-        `${currentDirectory}/.env`, // loaded in all cases
-        `${currentDirectory}/.env.[mode]`, // only loaded in specified mode
-        `${currentDirectory}/.env.local`, // loaded in all cases, ignored by git
-        `${currentDirectory}/.env.[mode].local`, // only loaded in specified mode, ignored by git
-      ],
+      envFiles = this.defaultFileList,
       prefixes = ["process.env.", "import.meta.env."],
       envVarPrefix = "PUBLIC_",
     } = options;
@@ -43,23 +45,17 @@ class DotenvWebpackPlugin {
   }
 
   /**
-   * Check if file exists
-   * @param {Compiler} compiler - Webpack compiler
-   * @param {string} environmentFile - Path to environment file
+   * Default file list and the options file list are updated with the
+   * value of the mode if [mode] placeholder is used
+   * @param {String} mode - Webpack mode
    */
-  fileExists(compiler, environmentFile) {
-    return new Promise((resolve) => {
-      const fs = compiler.inputFileSystem;
-
-      fs.stat(environmentFile, (err) => {
-        // File does not exist
-        if (err) {
-          return resolve(false);
-        }
-
-        return resolve(environmentFile);
-      });
-    });
+  updateFileListWithMode(mode) {
+    this.options.envFiles = this.options.envFiles.map((environmentFile) =>
+      environmentFile.replace(/\[mode\]/g, mode),
+    );
+    this.defaultFileList = this.defaultFileList.map((environmentFile) =>
+      environmentFile.replace(/\[mode\]/g, mode),
+    );
   }
 
   /**
@@ -73,31 +69,29 @@ class DotenvWebpackPlugin {
 
       const fs = compiler.inputFileSystem;
 
-      this.fileExists(compiler, environmentFile).then((exists) => {
-        if (!exists) {
-          return resolve();
-        }
-
-        fs.readFile(environmentFile, (err, environmentFileContents) => {
-          if (err) {
+      fs.readFile(environmentFile, (err, environmentFileContents) => {
+        if (err) {
+          if (!this.defaultFileList.includes(environmentFile)) {
             const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
             logger.error(`Could not read ${environmentFile}`);
             return reject(err);
+          } else {
+            return resolve();
           }
+        }
 
-          const parsedEnvVariables = dotenv.parse(environmentFileContents);
-          for (const [key, value] of Object.entries(parsedEnvVariables)) {
-            // only add variables starting with the provided prefix
-            if (key.startsWith(this.options.envVarPrefix)) {
-              for (let index = 0; index < this.options.prefixes.length; index++) {
-                const prefix = this.options.prefixes[index];
-                envVariables[`${prefix}${key}`] = value;
-              }
+        const parsedEnvVariables = dotenv.parse(environmentFileContents);
+        for (const [key, value] of Object.entries(parsedEnvVariables)) {
+          // only add variables starting with the provided prefix
+          if (key.startsWith(this.options.envVarPrefix)) {
+            for (let index = 0; index < this.options.prefixes.length; index++) {
+              const prefix = this.options.prefixes[index];
+              envVariables[`${prefix}${key}`] = value;
             }
           }
+        }
 
-          resolve(envVariables);
-        });
+        resolve(envVariables);
       });
     });
   }
@@ -109,18 +103,15 @@ class DotenvWebpackPlugin {
    */
   apply(compiler) {
     const mode = compiler.options.mode || "production";
-
-    const environmentFiles = this.options.envFiles.map((environmentFile) =>
-      environmentFile.replace(/\[mode\]/g, mode),
-    );
+    this.updateFileListWithMode(mode);
 
     compiler.hooks.beforeRun.tapPromise("DotenvWebpackPlugin", (compiler) => {
       compiler.hooks.compilation.tap("DotenvWebpackPlugin", (compilation) => {
-        compilation.buildDependencies.addAll(environmentFiles);
+        compilation.buildDependencies.addAll(this.options.envFiles);
       });
 
       return Promise.all(
-        environmentFiles.map((environmentFile) => this.readFile(compiler, environmentFile)),
+        this.options.envFiles.map((environmentFile) => this.readFile(compiler, environmentFile)),
       )
         .then((valuesList) => {
           let envVariables = {};
