@@ -2290,31 +2290,44 @@ class WebpackCLI implements IWebpackCLI {
       );
     };
 
-    if (!!options.readDotEnv && !this.checkPackageExists("webpack")) {
-      this.logger.error("The 'webpack' package is required to use the '--read-dot-env' option.");
-    }
+    if (options.readDotEnv) {
+      const isWebpackInstalled = this.checkPackageExists("webpack");
 
-    const shouldAddDotEnvPlugin = !!options.readDotEnv && this.checkPackageExists("webpack");
+      if (!isWebpackInstalled) {
+        this.logger.error("The 'webpack' package is required to use the '--read-dot-env' option.");
+      }
 
-    if (shouldAddDotEnvPlugin) {
-      const DotenvWebpackPlugin = await this.tryRequireThenImport<Instantiable<new () => void, []>>(
-        "dotenv-webpack-plugin",
-      );
+      const isDotEnvPluginInstalled = this.checkPackageExists("dotenv-webpack-plugin");
 
-      const addDotEnvPlugin = (item: WebpackConfiguration) => {
-        if (!item.plugins) {
-          item.plugins = [];
+      if (!isDotEnvPluginInstalled) {
+        this.logger.error(
+          "The 'dotenv-webpack-plugin' package is required to use the '--read-dot-env' option.",
+        );
+      }
+
+      const shouldAddDotEnvPlugin =
+        !!options.readDotEnv && isWebpackInstalled && isDotEnvPluginInstalled;
+
+      if (shouldAddDotEnvPlugin) {
+        const DotenvWebpackPlugin = await this.tryRequireThenImport<
+          Instantiable<new () => void, []>
+        >("dotenv-webpack-plugin");
+
+        const addDotEnvPlugin = (item: WebpackConfiguration) => {
+          if (!item.plugins) {
+            item.plugins = [];
+          }
+
+          item.plugins.push(new DotenvWebpackPlugin());
+        };
+
+        if (Array.isArray(config.options)) {
+          for (const item of config.options) {
+            addDotEnvPlugin(item);
+          }
+        } else {
+          addDotEnvPlugin(config.options);
         }
-
-        item.plugins.push(new DotenvWebpackPlugin());
-      };
-
-      if (Array.isArray(config.options)) {
-        for (const item of config.options) {
-          addDotEnvPlugin(item);
-        }
-      } else {
-        addDotEnvPlugin(config.options);
       }
     }
 
