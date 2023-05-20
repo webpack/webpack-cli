@@ -65,8 +65,6 @@ class DotenvWebpackPlugin {
    */
   readFile(compiler, environmentFile) {
     return new Promise((resolve, reject) => {
-      const envVariables = {};
-
       const fs = compiler.inputFileSystem;
 
       fs.readFile(environmentFile, (err, environmentFileContents) => {
@@ -81,19 +79,26 @@ class DotenvWebpackPlugin {
         }
 
         const parsedEnvVariables = dotenv.parse(environmentFileContents);
-        for (const [key, value] of Object.entries(parsedEnvVariables)) {
-          // only add variables starting with the provided prefix
-          if (key.startsWith(this.options.envVarPrefix)) {
-            for (let index = 0; index < this.options.prefixes.length; index++) {
-              const prefix = this.options.prefixes[index];
-              envVariables[`${prefix}${key}`] = value;
-            }
-          }
-        }
 
-        resolve(envVariables);
+        resolve(parsedEnvVariables);
       });
     });
+  }
+
+  filterVariables(envVariables) {
+    const filteredEnvVariables = {};
+
+    for (const [key, value] of Object.entries(envVariables)) {
+      // only add variables starting with the provided prefix
+      if (key.startsWith(this.options.envVarPrefix)) {
+        for (let index = 0; index < this.options.prefixes.length; index++) {
+          const prefix = this.options.prefixes[index];
+          filteredEnvVariables[`${prefix}${key}`] = value;
+        }
+      }
+    }
+
+    return filteredEnvVariables;
   }
 
   /**
@@ -114,7 +119,7 @@ class DotenvWebpackPlugin {
         this.options.envFiles.map((environmentFile) => this.readFile(compiler, environmentFile)),
       )
         .then((valuesList) => {
-          let envVariables = {};
+          const envVariables = {};
 
           valuesList.forEach((values) => {
             if (values) {
@@ -124,14 +129,16 @@ class DotenvWebpackPlugin {
             }
           });
 
+          const filteredEnvVariables = this.filterVariables(envVariables);
+
           // expand environment vars
-          envVariables = dotenvExpand.expand({
-            parsed: envVariables,
+          const expandedEnvVariables = dotenvExpand.expand({
+            parsed: filteredEnvVariables,
             // don't write to process.env
             ignoreProcessEnv: true,
           }).parsed;
 
-          new DefinePlugin(envVariables).apply(compiler);
+          new DefinePlugin(expandedEnvVariables).apply(compiler);
         })
         .catch(() => {});
     });
