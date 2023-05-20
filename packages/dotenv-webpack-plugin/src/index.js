@@ -22,11 +22,13 @@ class DotenvWebpackPlugin {
     const currentDirectory = process.cwd();
 
     const {
+      // priority is in ascending order
+      // files at the end of the array have higher priority
       envFiles = [
         `${currentDirectory}/.env.example`, // loaded in all cases
         `${currentDirectory}/.env`, // loaded in all cases
-        `${currentDirectory}/.env.local`, // loaded in all cases, ignored by git
         `${currentDirectory}/.env.[mode]`, // only loaded in specified mode
+        `${currentDirectory}/.env.local`, // loaded in all cases, ignored by git
         `${currentDirectory}/.env.[mode].local`, // only loaded in specified mode, ignored by git
       ],
       prefixes = ["process.env.", "import.meta.env."],
