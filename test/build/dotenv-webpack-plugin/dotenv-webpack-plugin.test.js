@@ -278,4 +278,11 @@ describe("dotenv-webpack-plugin", () => {
       `"process.env.PUBLIC_ENV_LOCAL_VARIABLE:",public_env_local_value_override`,
     );
   });
+
+  it("throws an error if custom env file path is passed and file could not be read", async () => {
+    const testDir = join(__dirname, "validates-file-exists");
+    const { stderr } = await run(testDir);
+
+    expect(stderr).toContain("Could not read ./env.custom");
+  });
 });
