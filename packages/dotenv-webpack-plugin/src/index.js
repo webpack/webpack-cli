@@ -35,12 +35,14 @@ class DotenvWebpackPlugin {
       envFiles = this.defaultFileList,
       prefixes = ["process.env.", "import.meta.env."],
       envVarPrefix = "PUBLIC_",
+      allowEmptyValues = false,
     } = options;
 
     this.options = {
       envFiles,
       prefixes,
       envVarPrefix,
+      allowEmptyValues,
     };
   }
 
@@ -91,14 +93,41 @@ class DotenvWebpackPlugin {
     for (const [key, value] of Object.entries(envVariables)) {
       // only add variables starting with the provided prefix
       if (key.startsWith(this.options.envVarPrefix)) {
-        for (let index = 0; index < this.options.prefixes.length; index++) {
-          const prefix = this.options.prefixes[index];
-          filteredEnvVariables[`${prefix}${key}`] = value;
-        }
+        filteredEnvVariables[key] = value;
       }
     }
 
     return filteredEnvVariables;
+  }
+
+  assignPrefixes(envVariables) {
+    const prefixedEnvVariables = {};
+
+    for (const [key, value] of Object.entries(envVariables)) {
+      for (let index = 0; index < this.options.prefixes.length; index++) {
+        const prefix = this.options.prefixes[index];
+        prefixedEnvVariables[`${prefix}${key}`] = value;
+      }
+    }
+
+    return prefixedEnvVariables;
+  }
+
+  /**
+   * Get list of empty values
+   * @param {Object} envVariables - Environment variables
+   * @returns {Array} - List of empty values
+   */
+  getEmptyValues(envVariables) {
+    const emptyValues = [];
+
+    for (const [key, value] of Object.entries(envVariables)) {
+      if (value === "") {
+        emptyValues.push(key);
+      }
+    }
+
+    return emptyValues;
   }
 
   /**
@@ -131,9 +160,23 @@ class DotenvWebpackPlugin {
 
           const filteredEnvVariables = this.filterVariables(envVariables);
 
+          const emptyValues = this.getEmptyValues(filteredEnvVariables);
+
+          if (!this.options.allowEmptyValues && emptyValues.length > 0) {
+            const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
+            logger.error(
+              `Environment variables cannot have an empty value. The following variables are empty: ${emptyValues.join(
+                ", ",
+              )}`,
+            );
+            return;
+          }
+
+          const prefixedEnvVariables = this.assignPrefixes(filteredEnvVariables);
+
           // expand environment vars
           const expandedEnvVariables = dotenvExpand.expand({
-            parsed: filteredEnvVariables,
+            parsed: prefixedEnvVariables,
             // don't write to process.env
             ignoreProcessEnv: true,
           }).parsed;
