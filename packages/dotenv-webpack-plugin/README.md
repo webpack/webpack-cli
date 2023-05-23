@@ -77,6 +77,8 @@ DotenvWebpackPlugin accepts the following configuration options:
 
 1. `prefixes`: An array of prefixes to prepend to the names of environment variables. By default, DotenvWebpackPlugin will prepend `process.env.` and `import.meta.env.` to the names of environment variables.
 
+1. `allowEmptyValues`: A boolean value indicating whether to allow empty values. By default this value is set to `false`, DotenvWebpackPlugin will throw an error if an environment variable is defined without a value.
+
 You can pass these options when creating an instance of DotenvWebpackPlugin:
 
 ```javascript
@@ -84,5 +86,6 @@ new DotenvWebpackPlugin({
   envFiles: ["./.env", "./.env.local"],
   prefixes: ["process.env.", "import.meta.env."],
   envVarPrefix: "PUBLIC_",
+  allowEmptyValues: false,
 });
 ```
