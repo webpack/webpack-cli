@@ -285,4 +285,20 @@ describe("dotenv-webpack-plugin", () => {
 
     expect(stderr).toContain("Could not read ./env.custom");
   });
+
+  it("throws an error if empty value is passed for an environment variable", async () => {
+    const testDir = join(__dirname, "validates-empty-value");
+    const { stderr } = await run(testDir);
+
+    expect(stderr).toContain(
+      "Environment variables cannot have an empty value. The following variables are empty: PUBLIC_VARIABLE, PUBLIC_VARIABLE2",
+    );
+  });
+
+  it("does not throw an error if empty value is passed for an environment variable and allowEmptyValues is set to true", async () => {
+    const testDir = join(__dirname, "allow-empty-values");
+    const { exitCode, stderr, stdout } = await run(testDir);
+
+    assertNoErrors(exitCode, stderr, stdout, testDir);
+  });
 });
