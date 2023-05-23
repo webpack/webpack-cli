@@ -12,15 +12,19 @@
       }
     },
     "prefixes": {
-      "description": "The prefixes to use for the environment variables",
+      "description": "The prefixes to prepend to the environment variables",
       "type": "array",
       "items": {
         "type": "string"
       }
     },
     "envVarPrefix": {
-      "description": "The prefix to use for the environment variables",
+      "description": "The prefix to filter environment variables by",
       "type": "string"
+    },
+    "allowEmptyValues": {
+      "description": "Whether to allow empty values for environment variables",
+      "type": "boolean"
     }
   }
 }
