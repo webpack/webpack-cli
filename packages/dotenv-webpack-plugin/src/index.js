@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
 const dotenvExpand = require("dotenv-expand");
-const { DefinePlugin } = require("webpack");
+const { DefinePlugin, WebpackError } = require("webpack");
 const { validate } = require("schema-utils");
 const schema = require("./options.json");
 
@@ -120,7 +120,12 @@ class DotenvWebpackPlugin {
    * @param {Compilation} compilation - Webpack compilation
    */
   throwErrors(compilation) {
-    compilation.errors.push(...this.errors);
+    const errors = this.errors.map((error) => {
+      const webpackError = new WebpackError(error);
+      webpackError.name = "DotenvWebpackPluginError";
+      return webpackError;
+    });
+    compilation.errors.push(...errors);
   }
 
   collectError(errorMessage) {
