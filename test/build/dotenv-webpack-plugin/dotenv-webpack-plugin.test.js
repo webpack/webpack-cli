@@ -8,6 +8,7 @@ const assertNoErrors = (exitCode, stderr, stdout, testDir, buildPath = "dist") =
   expect(exitCode).toBe(0);
   expect(stderr).toBeFalsy();
   expect(stdout).toBeTruthy();
+  expect(stdout).not.toContain("ERROR");
   expect(existsSync(resolve(testDir, join(buildPath, "main.js")))).toBeTruthy();
 };
 
@@ -281,16 +282,16 @@ describe("dotenv-webpack-plugin", () => {
 
   it("throws an error if custom env file path is passed and file could not be read", async () => {
     const testDir = join(__dirname, "validates-file-exists");
-    const { stderr } = await run(testDir);
+    const { stdout } = await run(testDir);
 
-    expect(stderr).toContain("Could not read ./env.custom");
+    expect(stdout).toContain("Could not read ./env.custom");
   });
 
   it("throws an error if empty value is passed for an environment variable", async () => {
     const testDir = join(__dirname, "validates-empty-value");
-    const { stderr } = await run(testDir);
+    const { stdout } = await run(testDir);
 
-    expect(stderr).toContain(
+    expect(stdout).toContain(
       "Environment variables cannot have an empty value. The following variables are empty: PUBLIC_VARIABLE, PUBLIC_VARIABLE2",
     );
   });

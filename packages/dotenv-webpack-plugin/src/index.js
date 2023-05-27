@@ -7,6 +7,7 @@ const schema = require("./options.json");
 /** @typedef {import("./types").Config} Config */
 /** @typedef {import("schema-utils/declarations/validate").Schema} Schema */
 /** @typedef {import("webpack").Compiler} Compiler */
+/** @typedef {import("webpack").Compilation} Compilation */
 
 class DotenvWebpackPlugin {
   /**
@@ -44,6 +45,8 @@ class DotenvWebpackPlugin {
       envVarPrefix,
       allowEmptyValues,
     };
+
+    this.errors = [];
   }
 
   /**
@@ -72,8 +75,7 @@ class DotenvWebpackPlugin {
       fs.readFile(environmentFile, (err, environmentFileContents) => {
         if (err) {
           if (!this.defaultFileList.includes(environmentFile)) {
-            const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
-            logger.error(`Could not read ${environmentFile}`);
+            this.collectError(`Could not read ${environmentFile}`);
             return reject(err);
           } else {
             return resolve();
@@ -114,6 +116,18 @@ class DotenvWebpackPlugin {
   }
 
   /**
+   * Throw collected errors to fail the build
+   * @param {Compilation} compilation - Webpack compilation
+   */
+  throwErrors(compilation) {
+    compilation.errors.push(...this.errors);
+  }
+
+  collectError(errorMessage) {
+    this.errors.push(errorMessage);
+  }
+
+  /**
    * Get list of empty values
    * @param {Object} envVariables - Environment variables
    * @returns {Array} - List of empty values
@@ -142,6 +156,9 @@ class DotenvWebpackPlugin {
     compiler.hooks.beforeRun.tapPromise("DotenvWebpackPlugin", (compiler) => {
       compiler.hooks.compilation.tap("DotenvWebpackPlugin", (compilation) => {
         compilation.buildDependencies.addAll(this.options.envFiles);
+        if (this.errors.length > 0) {
+          this.throwErrors(compilation);
+        }
       });
 
       return Promise.all(
@@ -163,8 +180,7 @@ class DotenvWebpackPlugin {
           const emptyValues = this.getEmptyValues(filteredEnvVariables);
 
           if (!this.options.allowEmptyValues && emptyValues.length > 0) {
-            const logger = compiler.getInfrastructureLogger("DotenvWebpackPlugin");
-            logger.error(
+            this.collectError(
               `Environment variables cannot have an empty value. The following variables are empty: ${emptyValues.join(
                 ", ",
               )}`,
