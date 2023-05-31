@@ -40,7 +40,7 @@
     "pretest": "yarn build && yarn lint",
     "test": "jest --reporters=default",
     "test:smoketests": "nyc node smoketests",
-    "test:coverage": "nyc --no-clean jest",
+    "test:coverage": "jest --collect-coverage",
     "test:cli": "jest test --reporters=default",
     "test:packages": "jest packages/ --reporters=default",
     "test:ci": "yarn test:cli && yarn test:packages",
