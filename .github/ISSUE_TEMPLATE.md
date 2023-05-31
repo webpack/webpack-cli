@@ -1,7 +1,6 @@
 <!--
   👉🏽 Need support, advice, or help? Don't open an issue!
-  Head to StackOverflow or https://gitter.im/webpack/webpack.
-
+  Head to StackOverflow or https://github.com/webpack/webpack/discussions
   Hey there!
 
   You arrived at this template because you felt none of the other options
