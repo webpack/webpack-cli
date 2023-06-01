@@ -88,7 +88,7 @@
     "style-loader": "^3.3.1",
     "ts-jest": "^29.0.1",
     "ts-loader": "^9.3.1",
-    "ts-node": "^10.8.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
     "webpack": "^5.72.0",
     "webpack-bundle-analyzer": "^4.5.0",
