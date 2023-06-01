@@ -13,12 +13,18 @@ describe("webpack cli", () => {
       return;
     }
 
+    const env = { ...process.env };
+
+    if (majorNodeVersion >= 20) {
+      // Node.js 20+ change logic, so we need to force esm config loading for test purposes
+      env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG = true;
+    }
+
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
-      nodeOptions: ["--loader=ts-node/esm"],
+      nodeOptions: ["--experimental-loader=ts-node/esm"],
+      env,
     });
-    console.log("Stderr: ", stderr);
-    console.log("Stdout: ", stdout);
-    console.log("Exit code: ", exitCode);
+
     expect(stderr).not.toBeFalsy(); // Deprecation warning logs on stderr
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
