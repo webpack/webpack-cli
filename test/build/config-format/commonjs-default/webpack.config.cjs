@@ -1,7 +1,7 @@
 const path = require("path");
 
 const config = {
-  mode: "production",
+  mode: "development",
   entry: "./main.js",
   output: {
     path: path.resolve(__dirname, "dist"),
