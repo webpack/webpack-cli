@@ -1,7 +1,7 @@
 path = require 'path'
 
 config =
-    mode: 'production'
+    mode: 'development'
     entry: './main.js'
     output:
         path: path.resolve(__dirname, 'dist')

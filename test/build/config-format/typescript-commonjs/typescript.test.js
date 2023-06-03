@@ -4,10 +4,7 @@ const { resolve } = require("path");
 
 describe("webpack cli", () => {
   it("should support typescript file", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
-      // For `nyc`, remove it when we drop `nyc` usage
-      nodeOptions: ["--require=ts-node/register"],
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.cts"]);
 
     expect(stderr).toBeFalsy();
     expect(stdout).toBeTruthy();

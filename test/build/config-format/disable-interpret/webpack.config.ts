@@ -2,7 +2,7 @@
 import * as path from "path";
 
 const config = {
-  mode: "production",
+  mode: "development",
   entry: "./main.ts",
   output: {
     path: path.resolve(__dirname, "dist"),

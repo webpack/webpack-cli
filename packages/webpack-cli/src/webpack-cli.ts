@@ -322,37 +322,83 @@ class WebpackCLI implements IWebpackCLI {
     process.exit(2);
   }
 
-  async tryRequireThenImport<T>(module: ModuleName, handleError = true): Promise<T> {
+  async tryRequireThenImport<T>(
+    module: ModuleName,
+    handleError = true,
+    moduleType: "unknown" | "commonjs" | "esm" = "unknown",
+  ): Promise<T> {
     let result;
 
-    try {
-      result = require(module);
-    } catch (error) {
-      const dynamicImportLoader: null | DynamicImport<T> =
-        require("./utils/dynamic-import-loader")();
-      if (
-        ((error as ImportLoaderError).code === "ERR_REQUIRE_ESM" ||
-          process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
-        pathToFileURL &&
-        dynamicImportLoader
-      ) {
-        const urlForConfig = pathToFileURL(module);
+    switch (moduleType) {
+      case "unknown": {
+        try {
+          result = require(module);
+        } catch (error) {
+          const dynamicImportLoader: null | DynamicImport<T> =
+            require("./utils/dynamic-import-loader")();
+          if (
+            ((error as ImportLoaderError).code === "ERR_REQUIRE_ESM" ||
+              process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
+            pathToFileURL &&
+            dynamicImportLoader
+          ) {
+            const urlForConfig = pathToFileURL(module);
 
-        result = await dynamicImportLoader(urlForConfig);
-        result = result.default;
+            result = await dynamicImportLoader(urlForConfig);
+            result = result.default;
 
-        return result;
+            return result;
+          }
+
+          if (handleError) {
+            this.logger.error(error);
+            process.exit(2);
+          } else {
+            throw error;
+          }
+        }
+        break;
       }
+      case "commonjs": {
+        try {
+          result = require(module);
+        } catch (error) {
+          if (handleError) {
+            this.logger.error(error);
+            process.exit(2);
+          } else {
+            throw error;
+          }
+        }
+        break;
+      }
+      case "esm": {
+        try {
+          const dynamicImportLoader: null | DynamicImport<T> =
+            require("./utils/dynamic-import-loader")();
 
-      if (handleError) {
-        this.logger.error(error);
-        process.exit(2);
-      } else {
-        throw error;
+          if (pathToFileURL && dynamicImportLoader) {
+            const urlForConfig = pathToFileURL(module);
+
+            result = await dynamicImportLoader(urlForConfig);
+            result = result.default;
+
+            return result;
+          }
+        } catch (error) {
+          if (handleError) {
+            this.logger.error(error);
+            process.exit(2);
+          } else {
+            throw error;
+          }
+        }
+
+        break;
       }
     }
 
-    // For babel/typescript
+    // For babel and other, only commonjs
     if (result && typeof result === "object" && "default" in result) {
       result = result.default || {};
     }
@@ -1749,8 +1795,15 @@ class WebpackCLI implements IWebpackCLI {
 
     const interpret = require("interpret");
     const loadConfigByPath = async (configPath: string, argv: Argv = {}) => {
-      const ext = path.extname(configPath);
-      const interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
+      const ext = path.extname(configPath).toLowerCase();
+      let interpreted = interpret.jsVariants[ext];
+
+      // Fallback `.cts` to `.ts`
+      // TODO implement good `.mts` support after https://github.com/gulpjs/rechoir/issues/43
+      // For ESM and `.mts` you need to use: 'NODE_OPTIONS="--loader ts-node/esm" webpack-cli --config ./webpack.config.mts'
+      if (!interpreted && /\.cts$/.test(ext)) {
+        interpreted = interpret.jsVariants[".ts"];
+      }
 
       if (interpreted && !disableInterpret) {
         const rechoir: Rechoir = require("rechoir");
@@ -1777,10 +1830,24 @@ class WebpackCLI implements IWebpackCLI {
 
       type LoadConfigOption = PotentialPromise<WebpackConfiguration>;
 
+      let moduleType: "unknown" | "commonjs" | "esm" = "unknown";
+
+      switch (ext) {
+        case ".cjs":
+        case ".cts":
+          moduleType = "commonjs";
+          break;
+        case ".mjs":
+        case ".mts":
+          moduleType = "esm";
+          break;
+      }
+
       try {
         options = await this.tryRequireThenImport<LoadConfigOption | LoadConfigOption[]>(
           configPath,
           false,
+          moduleType,
         );
         // @ts-expect-error error type assertion
       } catch (error: Error) {
@@ -1897,14 +1964,15 @@ class WebpackCLI implements IWebpackCLI {
         ".cjs",
         ".ts",
         ".cts",
+        ".mts",
         ...Object.keys(interpret.extensions),
       ];
       // Order defines the priority, in decreasing order
-      const defaultConfigFiles = [
-        "webpack.config",
-        ".webpack/webpack.config",
-        ".webpack/webpackfile",
-      ].flatMap((filename) => extensions.map((ext) => path.resolve(filename + ext)));
+      const defaultConfigFiles = new Set(
+        ["webpack.config", ".webpack/webpack.config", ".webpack/webpackfile"].flatMap((filename) =>
+          extensions.map((ext) => path.resolve(filename + ext)),
+        ),
+      );
 
       let foundDefaultConfigFile;
 
