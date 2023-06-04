@@ -53,6 +53,9 @@
     "webpack": "5.x.x"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.1",
+    "@babel/preset-env": "^7.22.4",
+    "@babel/register": "^7.15.8",
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@types/jest": "^29.4.0",
