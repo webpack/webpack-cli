@@ -2465,7 +2465,7 @@ class WebpackCLI implements IWebpackCLI {
           process.exit(2);
         };
 
-        if (options.json) {
+        if (options.json === true) {
           createJsonStringifyStream(stats.toJson(statsOptions as StatsOptions))
             .on("error", handleWriteError)
             .pipe(process.stdout)
