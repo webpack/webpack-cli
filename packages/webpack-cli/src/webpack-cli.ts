@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import {
+import type {
   IWebpackCLI,
   WebpackCLICommandOption,
   WebpackCLIBuiltInOption,
@@ -43,13 +43,13 @@ import {
   Problem,
 } from "./types";
 
-import webpackMerge from "webpack-merge";
-import webpack from "webpack";
-import { Compiler, MultiCompiler, WebpackError, StatsOptions } from "webpack";
-import { stringifyStream } from "@discoveryjs/json-ext";
-import { Help, ParseOptions } from "commander";
+import type webpackMerge from "webpack-merge";
+import type webpack from "webpack";
+import { type Compiler, type MultiCompiler, type WebpackError, type StatsOptions } from "webpack";
+import { type stringifyStream } from "@discoveryjs/json-ext";
+import { type Help, type ParseOptions } from "commander";
 
-import { CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
+import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
 
 const fs = require("fs");
 const path = require("path");

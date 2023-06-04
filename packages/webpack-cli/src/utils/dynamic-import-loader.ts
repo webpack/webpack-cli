@@ -1,4 +1,4 @@
-import { DynamicImport } from "../types";
+import { type DynamicImport } from "../types";
 
 function dynamicImportLoader<T>(): DynamicImport<T> | null {
   let importESM;

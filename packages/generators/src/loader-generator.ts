@@ -1,8 +1,9 @@
 import path from "path";
 import addonGenerator from "./addon-generator";
 import { toKebabCase } from "./utils/helpers";
+
 import type { LoaderGeneratorOptions } from "./types";
-import Generator from "yeoman-generator";
+import type Generator from "yeoman-generator";
 
 /**
  * Formats a string into webpack loader format

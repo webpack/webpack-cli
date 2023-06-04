@@ -1,7 +1,7 @@
 import path from "path";
-import { CustomGenerator } from "../types";
 import { questions as defaultQuestions } from "./default";
-import * as QuestionAPI from "../utils/scaffold-utils";
+import type { CustomGenerator } from "../custom-generator";
+import type * as QuestionAPI from "../utils/scaffold-utils";
 
 const templatePath = path.resolve(__dirname, "../../init-template/react");
 const resolveFile = (file: string): string => {

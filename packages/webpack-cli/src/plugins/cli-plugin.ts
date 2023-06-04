@@ -1,5 +1,5 @@
-import { Compiler } from "webpack";
-import { CLIPluginOptions } from "../types";
+import { type Compiler } from "webpack";
+import { type CLIPluginOptions } from "../types";
 
 export class CLIPlugin {
   logger!: ReturnType<Compiler["getInfrastructureLogger"]>;
