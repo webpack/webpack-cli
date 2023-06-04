@@ -1,3 +1,11 @@
+## [5.1.2](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.1...webpack-cli@5.1.2) (2023-06-04)
+
+### Bug Fixes
+
+- improve check for custom webpack and webpack-dev-server package existance ([0931ab6](https://github.com/webpack/webpack-cli/commit/0931ab6dfd8d9f511036bcb7c1a4ea8dde1ff1cb))
+- improve help for some flags ([f468614](https://github.com/webpack/webpack-cli/commit/f4686141681cfcbc74d57e69a732e176decff225))
+- improved support for `.cts` and `.mts` extensions ([a77daf2](https://github.com/webpack/webpack-cli/commit/a77daf28f8a8ad96410a39d565f011f6bb14f6bb))
+
 ## [5.1.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.0...webpack-cli@5.1.1) (2023-05-09)
 
 ### Bug Fixes
