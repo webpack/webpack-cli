@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.5](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@2.0.4...@webpack-cli/serve@2.0.5) (2023-06-04)
+
+### Bug Fixes
+
+- improve help for some flags ([f468614](https://github.com/webpack/webpack-cli/commit/f4686141681cfcbc74d57e69a732e176decff225))
+
 ## [2.0.4](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@2.0.3...@webpack-cli/serve@2.0.4) (2023-05-09)
 
 ### Bug Fixes

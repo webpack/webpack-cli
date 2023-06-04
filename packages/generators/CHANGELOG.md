@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@3.0.4...@webpack-cli/generators@3.0.5) (2023-06-04)
+
+**Note:** Version bump only for package @webpack-cli/generators
+
 ## [3.0.4](https://github.com/webpack/webpack-cli/compare/@webpack-cli/generators@3.0.3...@webpack-cli/generators@3.0.4) (2023-05-09)
 
 **Note:** Version bump only for package @webpack-cli/generators

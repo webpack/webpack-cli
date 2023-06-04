@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generators",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Webpack-CLI generators",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,7 +25,7 @@
     "plugin-template"
   ],
   "dependencies": {
-    "webpack-cli": "^5.1.1",
+    "webpack-cli": "^5.1.2",
     "yeoman-environment": "^3.9.1",
     "yeoman-generator": "^5.7.0"
   },
