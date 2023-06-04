@@ -239,9 +239,11 @@ interface BasicPackageJsonContent {
  */
 
 interface CLIPluginOptions {
+  isMultiCompiler?: boolean;
   configPath?: string[];
   helpfulOutput: boolean;
   hot?: boolean | "only";
+  progress?: boolean | "profile";
   prefetch?: string;
   analyze?: boolean;
 }
@@ -320,7 +322,6 @@ export {
   WebpackRunOptions,
   WebpackCompiler,
   WebpackConfiguration,
-  WebpackPluginInstance,
   Argv,
   Argument,
   BasicPrimitive,

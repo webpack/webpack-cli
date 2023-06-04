@@ -1,4 +1,4 @@
-import { type Compiler } from "webpack";
+import { type Compiler, ProgressPlugin } from "webpack";
 import { type CLIPluginOptions } from "../types";
 
 export class CLIPlugin {
@@ -19,6 +19,54 @@ export class CLIPlugin {
     if (!bundleAnalyzerPlugin) {
       new BundleAnalyzerPlugin().apply(compiler);
     }
+  }
+
+  static #progressStates: [number, ...string[]][] = [];
+
+  setupProgressPlugin(compiler: Compiler) {
+    const { ProgressPlugin } = compiler.webpack || require("webpack");
+    const progressPlugin = Boolean(
+      compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin),
+    );
+
+    if (progressPlugin) {
+      return;
+    }
+
+    const isProfile = this.options.progress === "profile";
+
+    const options: ConstructorParameters<typeof ProgressPlugin>[0] = {
+      profile: isProfile,
+    };
+
+    if (this.options.isMultiCompiler) {
+      // @ts-expect-error TODO
+      const handler = ProgressPlugin.createDefaultHandler(
+        isProfile,
+        compiler.getInfrastructureLogger("webpack.Progress"),
+      );
+      const idx = CLIPlugin.#progressStates.length;
+
+      CLIPlugin.#progressStates[idx] = [0];
+
+      options.handler = (p: number, msg: string, ...args: string[]) => {
+        CLIPlugin.#progressStates[idx] = [p, msg, ...args];
+
+        let sum = 0;
+
+        for (const [p] of CLIPlugin.#progressStates) {
+          sum += p;
+        }
+
+        handler(
+          sum / CLIPlugin.#progressStates.length,
+          `[${compiler.name ? compiler.name : idx}] ${msg}`,
+          ...args,
+        );
+      };
+    }
+
+    new ProgressPlugin(options).apply(compiler);
   }
 
   setupHelpfulOutput(compiler: Compiler) {
@@ -91,6 +139,10 @@ export class CLIPlugin {
 
   apply(compiler: Compiler) {
     this.logger = compiler.getInfrastructureLogger("webpack-cli");
+
+    if (this.options.progress) {
+      this.setupProgressPlugin(compiler);
+    }
 
     if (this.options.analyze) {
       this.setupBundleAnalyzerPlugin(compiler);
