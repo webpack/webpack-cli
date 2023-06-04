@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.3](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.2...webpack-cli@5.1.3) (2023-06-04)
+
+### Bug Fixes
+
+- regression for custom configurations ([#3834](https://github.com/webpack/webpack-cli/issues/3834)) ([bb4f8eb](https://github.com/webpack/webpack-cli/commit/bb4f8eb4325219afae3203dc4893af2b4655d5fa))
+
 ## [5.1.2](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.1...webpack-cli@5.1.2) (2023-06-04)
 
 ### Bug Fixes
