@@ -1,4 +1,4 @@
-import { IWebpackCLI } from "./types";
+import { type IWebpackCLI } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const WebpackCLI = require("./webpack-cli");

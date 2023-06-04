@@ -1,4 +1,4 @@
-import Generator from "yeoman-generator";
+import type Generator from "yeoman-generator";
 
 type CustomGeneratorStringPrompt = { [x: string]: string } | Promise<{ [x: string]: string }>;
 type CustomGeneratorBoolPrompt = { [x: string]: boolean } | Promise<{ [x: string]: boolean }>;

@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import Generator from "yeoman-generator";
 
-import { CustomGenerator } from "./types";
+import { CustomGenerator } from "./custom-generator";
 import type { CustomGeneratorOptions, BaseCustomGeneratorOptions } from "./types";
 import { getInstaller, getTemplate } from "./utils/helpers";
 

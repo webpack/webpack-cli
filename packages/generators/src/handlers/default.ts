@@ -1,6 +1,6 @@
 import path from "path";
-import { CustomGenerator } from "../types";
-import * as QuestionAPI from "../utils/scaffold-utils";
+import type { CustomGenerator } from "../custom-generator";
+import type * as QuestionAPI from "../utils/scaffold-utils";
 
 const templatePath = path.resolve(__dirname, "../../init-template/default");
 const resolveFile = (file: string): string => {

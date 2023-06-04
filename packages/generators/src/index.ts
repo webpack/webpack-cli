@@ -4,7 +4,7 @@ import pluginGenerator from "./plugin-generator";
 import addonGenerator from "./addon-generator";
 import initGenerator from "./init-generator";
 import type { InitOptions, LoaderOptions, PluginOptions } from "./types";
-import { IWebpackCLI } from "webpack-cli";
+import type { IWebpackCLI } from "webpack-cli";
 
 class GeneratorsCommand {
   async apply(cli: IWebpackCLI): Promise<void> {

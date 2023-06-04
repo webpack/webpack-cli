@@ -1,9 +1,11 @@
 import { readFileSync, writeFileSync } from "fs";
 
-import { CustomGenerator, InitGeneratorOptions, CustomGeneratorOptions } from "./types";
+import { CustomGenerator } from "./custom-generator";
 import { getInstaller, getTemplate } from "./utils/helpers";
 import * as Question from "./utils/scaffold-utils";
 import handlers from "./handlers";
+
+import { type InitGeneratorOptions, type CustomGeneratorOptions } from "./types";
 
 export default class InitGenerator<
   T extends InitGeneratorOptions = InitGeneratorOptions,

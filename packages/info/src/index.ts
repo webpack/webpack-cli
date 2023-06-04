@@ -1,4 +1,4 @@
-import { IWebpackCLI } from "webpack-cli";
+import { type IWebpackCLI } from "webpack-cli";
 
 class InfoCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
