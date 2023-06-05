@@ -5,7 +5,6 @@
   "main": "src/index.js",
   "types": "src/types.d.ts",
   "repository": "https://github.com/webpack/webpack-cli",
-  "author": "Burhanuddin Udaipurwala (burhanuday)",
   "license": "MIT",
   "private": true,
   "dependencies": {
