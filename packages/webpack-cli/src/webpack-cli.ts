@@ -2348,6 +2348,7 @@ class WebpackCLI implements IWebpackCLI {
           helpfulOutput: !options.json,
           progress: options.progress,
           analyze: options.analyze,
+          isMultiCompiler: Array.isArray(config.options),
         }),
       );
     };
