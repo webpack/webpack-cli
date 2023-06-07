@@ -1,3 +1,9 @@
+## [5.1.4](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.3...webpack-cli@5.1.4) (2023-06-07)
+
+### Bug Fixes
+
+- multi compiler progress output ([f659624](https://github.com/webpack/webpack-cli/commit/f6596242c74100bfd6fa391ed2071402a3bd4785))
+
 ## [5.1.3](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.2...webpack-cli@5.1.3) (2023-06-04)
 
 ### Bug Fixes
