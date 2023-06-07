@@ -39,10 +39,7 @@ export class CLIPlugin {
       profile: isProfile,
     };
 
-    // TODO remove `ProgressPlugin.createDefaultHandler` when webpack v5 is dropped
-    // @ts-expect-error Fix me after release
     if (this.options.isMultiCompiler && ProgressPlugin.createDefaultHandler) {
-      // @ts-expect-error Fix me after release
       const handler = ProgressPlugin.createDefaultHandler(
         isProfile,
         compiler.getInfrastructureLogger("webpack.Progress"),
