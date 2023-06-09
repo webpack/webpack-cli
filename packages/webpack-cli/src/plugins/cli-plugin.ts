@@ -1,4 +1,4 @@
-import { type Compiler, ProgressPlugin } from "webpack";
+import { type Compiler } from "webpack";
 import { type CLIPluginOptions } from "../types";
 
 export class CLIPlugin {

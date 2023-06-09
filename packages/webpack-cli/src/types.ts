@@ -11,7 +11,6 @@ import type {
   Argument,
   AssetEmittedInfo,
   FileCacheOptions,
-  WebpackPluginInstance,
 } from "webpack";
 import type webpack from "webpack";
 
