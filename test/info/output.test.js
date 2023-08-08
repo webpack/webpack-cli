@@ -12,6 +12,7 @@ describe("'-o, --output <value>' usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
   });
 
   it("gets info as json", async () => {

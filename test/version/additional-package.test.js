@@ -17,6 +17,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
     expect(stdout).toContain("typescript");
   });
 
@@ -33,6 +34,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
     expect(stdout).toContain("typescript");
   });
 
@@ -51,6 +53,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
     expect(stdout).toContain("typescript");
     expect(stdout).toContain("eslint");
     expect(stdout).toContain("eslint-config-prettier");
@@ -72,6 +75,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
     expect(stdout).toContain("typescript");
     expect(stdout).toContain("eslint");
     expect(stdout).toContain("eslint-config-prettier");

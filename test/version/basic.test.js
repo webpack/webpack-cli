@@ -11,6 +11,7 @@ describe("basic usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
   });
 
   it("should work with v alias", async () => {
@@ -22,6 +23,7 @@ describe("basic usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
   });
 
   it("should work with --version", async () => {
@@ -33,6 +35,7 @@ describe("basic usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
   });
 
   it("should work with -v alias", async () => {
@@ -44,6 +47,7 @@ describe("basic usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
   });
 
   it("should work and gets more info in project root", async () => {
@@ -57,6 +61,7 @@ describe("basic usage", () => {
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
+    expect(stdout).toContain("pnpm");
   });
 
   it("shows an appropriate warning on supplying unknown args", async () => {
