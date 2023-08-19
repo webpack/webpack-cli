@@ -82,7 +82,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
 
-      # Setup pnpm v7 for tests
+      # Setup pnpm v7 for tests which is compatible with Node.js >=14
       - uses: pnpm/action-setup@v2
         with:
           version: 7
