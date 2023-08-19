@@ -86,6 +86,8 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
+      - name: Pnpm version
+        run: pnpm -v
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --ignore-engines
