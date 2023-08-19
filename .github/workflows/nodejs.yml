@@ -82,12 +82,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
 
-      # Setup pnpm for tests
+      # Setup pnpm v7 for tests
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-      - name: Pnpm version
-        run: pnpm -v
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --ignore-engines
