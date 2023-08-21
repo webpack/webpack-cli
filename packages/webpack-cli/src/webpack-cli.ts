@@ -475,7 +475,7 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     const defaultInformation: Information = {
-      Binaries: ["Node", "Yarn", "npm"],
+      Binaries: ["Node", "Yarn", "npm", "pnpm"],
       Browsers: [
         "Brave Browser",
         "Chrome",
