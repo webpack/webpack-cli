@@ -100,7 +100,8 @@
     "Yukii",
     "Yuuji",
     "Zangetsu",
-    "Zenitsu"
+    "Zenitsu",
+    "quickstart"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [

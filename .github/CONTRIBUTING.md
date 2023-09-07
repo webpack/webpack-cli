@@ -131,6 +131,8 @@ This is a multi-package repository and dependencies are managed using [lerna](ht
 
 > If you are adding or updating any dependency, please commit the updated `yarn.lock` file.
 
+To update dependencies, import each dependency and make sure the command line build passes. The dependency should support our minimal supported node version for webpack, found in `package.json`.
+
 ## Branching Model
 
 We base our branching model on [git flow](http://nvie.com/posts/a-successful-git-branching-model/). Instead of working with a `develop` base branch, we use the `master` branch. We do it to ease the workflow a bit. However, we find that adding prefixes to the branches is useful.
