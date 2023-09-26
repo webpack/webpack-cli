@@ -3125,9 +3125,9 @@
     rxjs "^6.4.0"
 
 "@types/yeoman-generator@*", "@types/yeoman-generator@^5.2.8":
-  version "5.2.11"
-  resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-5.2.11.tgz#fa6bdab74b44d27f07e309c8ae387b62edbc6bc1"
-  integrity sha512-Eu56V69QPODdnHhdHil2xzw8SvR6cJdgkQBmGkyYDNz6dTErr3wCCUv+Uvw5jPATZjyB+b2CNyZbidI79KBcdw==
+  version "5.2.12"
+  resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-5.2.12.tgz#bd258530983f0e0e345ca8f1abce3d463e7edce9"
+  integrity sha512-WXJiSuJR1OpiCzMwnKxpA6GJZ0Tlg4u7l15zfNFTVOwT+Pks63uuDCqMj+QMf8FZ6c2sFTpZrw2cBZscI7HOvA==
   dependencies:
     "@types/debug" "*"
     "@types/ejs" "*"
