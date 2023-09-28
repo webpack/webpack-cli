@@ -3018,9 +3018,9 @@
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
 "@types/rechoir@^0.6.1":
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/@types/rechoir/-/rechoir-0.6.1.tgz#e7589df255d2638db48b0dfc3294c87dc9db19ba"
-  integrity sha512-HbMQqyZC8W9NxE3R89rW+hFwFXeIdmCT7x91NQjzB4+0CI42K/CJfRak5/jAQ7L5qi1cGcQQdo+GI9pqqUhbKQ==
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@types/rechoir/-/rechoir-0.6.2.tgz#92788446551f7719b63fdf2d0de3dcb62cbd5610"
+  integrity sha512-CML3U05bLRRDmUItoaTzRE7h1xsST02S0I+a0ZJ/cQdb5fVmgq8wBWn+q+sdwzo4LRsPWOg8ruC6GdZPY2R47w==
   dependencies:
     "@types/interpret" "*"
 
