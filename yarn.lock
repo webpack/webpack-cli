@@ -2811,9 +2811,9 @@
   integrity sha512-ZmiaE3wglXVWBM9fyVC17aGPkLo/UgaOjEiI2FXQfyczrCefORPxIe+2dVmnmk3zkVIbizjrlQzmPGhSYGXG5g==
 
 "@types/envinfo@^7.8.1":
-  version "7.8.1"
-  resolved "https://registry.yarnpkg.com/@types/envinfo/-/envinfo-7.8.1.tgz#1915df82c16d637e92146645c70db9360eb099c6"
-  integrity sha512-pTyshpmGxqB9lRwG75v2YR0oqKYpCrklOYlZWQ88z/JB0fimT8EVmYekuIwpU3IxPZDHSXCqXKzkCrtAcKY25g==
+  version "7.8.2"
+  resolved "https://registry.yarnpkg.com/@types/envinfo/-/envinfo-7.8.2.tgz#0a659c2533e1a08dbcc68d553a1a30da8e0155da"
+  integrity sha512-+EN0gwh9Ux20cLgh2N1lyZ2ufu0tL/KTtfin6omrtU1etKR5EggK1DUIpxIRlQT2/rQHFMbsh7ppc7MfZ5iVfw==
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
