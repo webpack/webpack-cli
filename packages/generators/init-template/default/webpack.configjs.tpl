@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (extractPl
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %><% if (workboxWebpackPlugin) { %>
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');<% } %>
 
-const isProduction = process.env.NODE_ENV == 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 <% if (cssType !== 'none') { %>
 <% if (extractPlugin === "Yes") { %>
 const stylesHandler = MiniCssExtractPlugin.loader;
