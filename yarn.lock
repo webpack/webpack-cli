@@ -3110,14 +3110,15 @@
     rxjs "^6.4.0"
 
 "@types/yeoman-generator@*", "@types/yeoman-generator@^5.2.8":
-  version "5.2.12"
-  resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-5.2.12.tgz#bd258530983f0e0e345ca8f1abce3d463e7edce9"
-  integrity sha512-WXJiSuJR1OpiCzMwnKxpA6GJZ0Tlg4u7l15zfNFTVOwT+Pks63uuDCqMj+QMf8FZ6c2sFTpZrw2cBZscI7HOvA==
+  version "5.2.13"
+  resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-5.2.13.tgz#27e35af3f2e4ec9230a2d8e769847be078b5df14"
+  integrity sha512-3BuUZs1eb2oTti+gzrFPm9bB5gknkmnPko4y75MhGdDp4sioFImL4zjofXFVqnRclgK3St9xZJ3AF1UFvTVevg==
   dependencies:
     "@types/debug" "*"
     "@types/ejs" "*"
     "@types/inquirer" "^8"
     "@types/mem-fs-editor" "*"
+    "@types/node" "*"
     "@types/yeoman-environment" "*"
     rxjs "^6.4.0"
 
