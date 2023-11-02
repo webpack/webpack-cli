@@ -11559,9 +11559,9 @@ yeoman-environment@^3.9.1:
     untildify "^4.0.0"
 
 yeoman-generator@^5.7.0:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/yeoman-generator/-/yeoman-generator-5.9.0.tgz#a83c9e391b0b3442536da677bc204cfa3f81f2c7"
-  integrity sha512-sN1e01Db4fdd8P/n/yYvizfy77HdbwzvXmPxps9Gwz2D24slegrkSn+qyj+0nmZhtFwGX2i/cH29QDrvAFT9Aw==
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/yeoman-generator/-/yeoman-generator-5.10.0.tgz#0dde5be9d815b01f77a7e77ee6f9047edcbeca04"
+  integrity sha512-iDUKykV7L4nDNzeYSedRmSeJ5eMYFucnKDi6KN1WNASXErgPepKqsQw55TgXPHnmpcyOh2Dd/LAZkyc+f0qaAw==
   dependencies:
     chalk "^4.1.0"
     dargs "^7.0.0"
