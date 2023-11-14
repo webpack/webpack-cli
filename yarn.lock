@@ -2996,9 +2996,9 @@
   integrity sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==
 
 "@types/rechoir@^0.6.1":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@types/rechoir/-/rechoir-0.6.3.tgz#e7f49c9160b64a4271edfe60270f3c1d6ae46646"
-  integrity sha512-Ji4kiukk9owaw+VyiPaHvVV3g2yEIY21wnRJhn5MGSPk6BrzZFFPGHwfkTaNEadF1YkzIWvTCUJMn9n07tzAuw==
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@types/rechoir/-/rechoir-0.6.4.tgz#5343a17ea67088e26911c90add2532689835ec5b"
+  integrity sha512-qpb56wvjUSuJQwZzDcmQEFudUsolIabyOE9aP9Wr5s1EYlWQ/4Zz7XSjr69gDhWY5PBX/+M62ZLQgQyUzTiPAA==
   dependencies:
     "@types/interpret" "*"
 
