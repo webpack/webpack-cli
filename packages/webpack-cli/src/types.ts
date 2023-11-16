@@ -216,6 +216,7 @@ interface WebpackRunOptions extends WebpackOptionsNormalized {
   env: Env;
   failOnWarnings?: boolean;
   isWatchingLikeCommand?: boolean;
+  nodeEnv: string;
 }
 
 /**

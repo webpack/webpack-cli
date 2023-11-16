@@ -2435,6 +2435,15 @@ class WebpackCLI implements IWebpackCLI {
       createJsonStringifyStream = jsonExt.stringifyStream;
     }
 
+    // Make sure mode gets set after node_env is loaded
+    if (
+      options &&
+      options.nodeEnv &&
+      (options.nodeEnv === "development" || options.nodeEnv === "production")
+    ) {
+      options.mode = options.nodeEnv;
+    }
+
     const callback = (error: Error | undefined, stats: WebpackCLIStats | undefined): void => {
       if (error) {
         this.logger.error(error);
