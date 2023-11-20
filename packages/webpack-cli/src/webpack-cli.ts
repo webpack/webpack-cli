@@ -1810,6 +1810,11 @@ class WebpackCLI implements IWebpackCLI {
         interpreted = interpret.jsVariants[".ts"];
       }
 
+      if (interpreted && /\.(ts|tsx)$/.test(ext)) {
+        interpret.extensions[".tsx"].push("tsx/dist/esm/index.cjs");
+        interpret.extensions[".ts"].push("tsx/dist/esm/index.cjs");
+      }
+
       if (interpreted && !disableInterpret) {
         const rechoir: Rechoir = require("rechoir");
 
