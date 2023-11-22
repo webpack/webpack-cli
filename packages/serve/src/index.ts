@@ -11,10 +11,8 @@ class ServeCommand {
     const loadDevServerOptions = () => {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
-
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const options: Record<string, any> = cli.webpack.cli.getArguments(devServer.schema);
-
       // New options format
       // { flag1: {}, flag2: {} }
       return Object.keys(options).map((key) => {
@@ -69,7 +67,6 @@ class ServeCommand {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const processors: Array<(opts: Record<string, any>) => void> = [];
-
         for (const optionName in options) {
           const kebabedOption = cli.toKebabCase(optionName);
           const isBuiltInOption = builtInOptions.find(
@@ -93,7 +90,6 @@ class ServeCommand {
             devServerCLIOptions[optionName] = options[optionName];
           }
         }
-
         for (const processor of processors) {
           processor(devServerCLIOptions);
         }
@@ -108,13 +104,11 @@ class ServeCommand {
         };
 
         webpackCLIOptions.isWatchingLikeCommand = true;
-
         const compiler = await cli.createCompiler(webpackCLIOptions);
 
         if (!compiler) {
           return;
         }
-
         const servers: (typeof DevServer)[] = [];
 
         if (cli.needWatchStdin(compiler)) {
@@ -211,7 +205,6 @@ class ServeCommand {
           }
 
           const devServerOptions: WebpackDevServerOptions = result as WebpackDevServerOptions;
-
           if (devServerOptions.port) {
             const portNumber = Number(devServerOptions.port);
 

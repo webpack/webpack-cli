@@ -116,6 +116,16 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("main.js");
   });
 
+  it("should not start dev server when supplied false", async () => {
+    const { stderr, stdout } = await runWatch(__dirname, [
+      "serve",
+      "--config",
+      "dev-server-false.config.js",
+    ]);
+    expect(stdout).toBeFalsy();
+    expect(stderr).toBeFalsy();
+  });
+
   it('should work with the "--stats" option', async () => {
     const { stderr, stdout } = await runWatch(__dirname, ["serve", "--stats"]);
 

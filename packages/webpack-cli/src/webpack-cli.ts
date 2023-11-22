@@ -2378,10 +2378,13 @@ class WebpackCLI implements IWebpackCLI {
     } else if (typeof options.nodeEnv === "string") {
       process.env.NODE_ENV = options.nodeEnv;
     }
-
     let config = await this.loadConfig(options);
     config = await this.buildConfig(config, options);
-
+    const { devServer } = config.options as boolean | WebpackDevServerOptions["options"];
+    const devServerIsFalse = devServer !== undefined && devServer === false;
+    if (devServerIsFalse && options.argv && options.argv.env && options.argv.env.WEBPACK_SERVE) {
+      process.exit(0);
+    }
     let compiler: WebpackCompiler;
     try {
       compiler = this.webpack(
