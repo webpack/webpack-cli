@@ -11,10 +11,8 @@ class ServeCommand {
     const loadDevServerOptions = () => {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
-
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const options: Record<string, any> = cli.webpack.cli.getArguments(devServer.schema);
-
       // New options format
       // { flag1: {}, flag2: {} }
       return Object.keys(options).map((key) => {
@@ -69,7 +67,6 @@ class ServeCommand {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const processors: Array<(opts: Record<string, any>) => void> = [];
-
         for (const optionName in options) {
           const kebabedOption = cli.toKebabCase(optionName);
           const isBuiltInOption = builtInOptions.find(
@@ -93,7 +90,6 @@ class ServeCommand {
             devServerCLIOptions[optionName] = options[optionName];
           }
         }
-
         for (const processor of processors) {
           processor(devServerCLIOptions);
         }
@@ -108,13 +104,11 @@ class ServeCommand {
         };
 
         webpackCLIOptions.isWatchingLikeCommand = true;
-
         const compiler = await cli.createCompiler(webpackCLIOptions);
 
         if (!compiler) {
           return;
         }
-
         const servers: (typeof DevServer)[] = [];
 
         if (cli.needWatchStdin(compiler)) {
@@ -152,7 +146,16 @@ class ServeCommand {
         const usedPorts: number[] = [];
 
         for (const compilerForDevServer of compilersForDevServer) {
-          let devServerOptions: devServerOptionsType | false;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const args = devServerFlags.reduce((accumulator: Record<string, any>, flag: any) => {
+            accumulator[flag.name] = flag;
+
+            return accumulator;
+          }, {});
+          const values = Object.keys(devServerCLIOptions).reduce(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (accumulator: Record<string, any>, name: string) => {
+              const kebabName = cli.toKebabCase(name);
 
               if (args[kebabName]) {
                 accumulator[kebabName] = options[name];
@@ -201,44 +204,7 @@ class ServeCommand {
             process.exit(2);
           }
 
-          if (devServerOptions === false) {
-            continue;
-          }
-
-          // TODO remove in the next major release
-          if (!isDevServer4) {
-            const getPublicPathOption = (): string => {
-              const normalizePublicPath = (publicPath): string =>
-                typeof publicPath === "undefined" || publicPath === "auto" ? "/" : publicPath;
-
-              if (options.outputPublicPath) {
-                return normalizePublicPath(compilerForDevServer.options.output.publicPath);
-              }
-
-              if (devServerOptions !== false && devServerOptions.publicPath) {
-                return normalizePublicPath(devServerOptions.publicPath);
-              }
-
-              return normalizePublicPath(compilerForDevServer.options.output.publicPath);
-            };
-            const getStatsOption = (): string | boolean => {
-              if (options.stats) {
-                return options.stats;
-              }
-
-              if (devServerOptions !== false && devServerOptions.stats) {
-                return devServerOptions.stats;
-              }
-
-              return compilerForDevServer.options.stats;
-            };
-
-            devServerOptions.host = devServerOptions.host || "localhost";
-            devServerOptions.port = devServerOptions.port || 8080;
-            devServerOptions.stats = getStatsOption();
-            devServerOptions.publicPath = getPublicPathOption();
-          }
-
+          const devServerOptions: WebpackDevServerOptions = result as WebpackDevServerOptions;
           if (devServerOptions.port) {
             const portNumber = Number(devServerOptions.port);
 
