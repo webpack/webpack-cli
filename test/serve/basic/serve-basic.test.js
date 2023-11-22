@@ -117,11 +117,6 @@ describe("basic serve usage", () => {
   });
 
   it("should not start dev server when supplied false", async () => {
-    if (!isDevServer4) {
-      expect(true).toBe(true);
-      return;
-    }
-
     const { stderr, stdout } = await runWatch(__dirname, [
       "serve",
       "--config",
