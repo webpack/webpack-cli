@@ -16,6 +16,7 @@
 [![codecov][codecov-badge]][codecov-url]
 [![Install Size][size]][size-url]
 [![GitHub Discussions][discussion]][discussion-url]
+[![Discord][discord-invite]][discord-url]
 
 ## Table of Contents
 
@@ -111,6 +112,8 @@ If you like **webpack**, please consider donating through [Open Collective](http
 [size-url]: https://packagephobia.com/result?p=webpack-cli
 [discussion]: https://img.shields.io/github/discussions/webpack/webpack
 [discussion-url]: https://github.com/webpack/webpack/discussions
+[discord-invite]: https://img.shields.io/discord/1180618526436888586?style=flat&logo=discord&logoColor=white&label=discord
+[discord-url]: https://discord.gg/ARKBCXBu
 
 ## Code of Conduct
 
