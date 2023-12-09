@@ -706,6 +706,7 @@ Options:
   --performance-max-entrypoint-size <value>                                          Total size of an entry point (in bytes).
   --profile                                                                          Capture timing information for each module.
   --no-profile                                                                       Negative 'profile' option.
+  --read-dot-env                                                                     Read environment variables from dotenv files
   --records-input-path <value>                                                       Store compiler state to a json file.
   --no-records-input-path                                                            Negative 'records-input-path' option.
   --records-output-path <value>                                                      Load compiler state from a json file.

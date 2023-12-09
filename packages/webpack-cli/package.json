@@ -58,6 +58,9 @@
     "@webpack-cli/generators": {
       "optional": true
     },
+    "dotenv-webpack-plugin": {
+      "optional": true
+    },
     "webpack-bundle-analyzer": {
       "optional": true
     },

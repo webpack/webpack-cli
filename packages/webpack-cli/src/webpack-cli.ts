@@ -1050,6 +1050,17 @@ class WebpackCLI implements IWebpackCLI {
           "Path to the configuration to be extended (only works when using webpack-cli).",
         helpLevel: "minimum",
       },
+      {
+        name: "read-dot-env",
+        configs: [
+          {
+            type: "enum",
+            values: [true],
+          },
+        ],
+        description: "Read environment variables from .env files",
+        helpLevel: "minimum",
+      },
     ];
 
     const minimumHelpFlags = [
@@ -2352,6 +2363,47 @@ class WebpackCLI implements IWebpackCLI {
         }),
       );
     };
+
+    if (options.readDotEnv) {
+      const isWebpackInstalled = this.checkPackageExists("webpack");
+
+      if (!isWebpackInstalled) {
+        this.logger.error("The 'webpack' package is required to use the '--read-dot-env' option.");
+      }
+
+      const isDotEnvPluginInstalled = this.checkPackageExists("dotenv-webpack-plugin");
+
+      if (!isDotEnvPluginInstalled) {
+        this.logger.error(
+          "The 'dotenv-webpack-plugin' package is required to use the '--read-dot-env' option.",
+        );
+      }
+
+      const shouldAddDotEnvPlugin =
+        !!options.readDotEnv && isWebpackInstalled && isDotEnvPluginInstalled;
+
+      if (shouldAddDotEnvPlugin) {
+        const DotenvWebpackPlugin = await this.tryRequireThenImport<
+          Instantiable<new () => void, []>
+        >("dotenv-webpack-plugin");
+
+        const addDotEnvPlugin = (item: WebpackConfiguration) => {
+          if (!item.plugins) {
+            item.plugins = [];
+          }
+
+          item.plugins.push(new DotenvWebpackPlugin());
+        };
+
+        if (Array.isArray(config.options)) {
+          for (const item of config.options) {
+            addDotEnvPlugin(item);
+          }
+        } else {
+          addDotEnvPlugin(config.options);
+        }
+      }
+    }
 
     if (Array.isArray(config.options)) {
       for (const item of config.options) {

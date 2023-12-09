@@ -18,6 +18,7 @@ This folder is the collection of those packages.
 3. [info](https://github.com/webpack/webpack-cli/tree/master/packages/info)
 4. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
 5. [webpack-cli](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli)
+6. [dotenv-webpack-plugin](https://github.com/webpack/webpack-cli/tree/master/packages/dotenv-webpack-plugin)
 
 ## Generic Installation
 

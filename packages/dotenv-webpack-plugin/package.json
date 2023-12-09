@@ -1,0 +1,21 @@
+{
+  "name": "dotenv-webpack-plugin",
+  "version": "1.0.0",
+  "description": "A webpack plugin to support env files",
+  "main": "src/index.js",
+  "types": "src/types.d.ts",
+  "repository": "https://github.com/webpack/webpack-cli",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "dotenv-expand": "^10.0.0",
+    "schema-utils": "^4.0.1"
+  },
+  "peerDependencies": {
+    "webpack": "5.x.x"
+  },
+  "devDependencies": {
+    "webpack": "^5.81.0"
+  }
+}
