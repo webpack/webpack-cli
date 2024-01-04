@@ -84,6 +84,8 @@ describe("runAndGetWatchProc function", () => {
 
     await new Promise((resolve) => {
       proc.stdout.on("data", (data) => {
+        console.log(data.toString());
+
         if (data.includes("Project has been initialised with webpack!")) {
           found = true;
 
