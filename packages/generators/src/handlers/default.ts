@@ -63,7 +63,7 @@ export async function questions(
     self.force || config.htmlWebpackPlugin.skip,
   );
   if (htmlWebpackPlugin) {
-    self.dependencies.push("html-webpack-plugin");
+    self.dependencies.push("html-webpack-plugin", "html-loader");
   }
 
   // Handle addition of workbox-webpack-plugin

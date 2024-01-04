@@ -4,6 +4,7 @@ exports[`init command recognizes '-f' as an alias for '--force' 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -26,6 +27,7 @@ exports[`init command recognizes '-t' as an alias for '--template' 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -48,6 +50,7 @@ exports[`init command should ask question when wrong template is supplied 1`] = 
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -134,6 +137,7 @@ exports[`init command should configure assets modules by default 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -185,6 +189,11 @@ const config = {
         type: "asset",
       },
 
+      {
+        test: /\\.html$/i,
+        use: ["html-loader"],
+      },
+
       // Add your rules for custom modules here
       // Learn more about loaders from https://webpack.js.org/loaders/
     ],
@@ -208,6 +217,7 @@ exports[`init command should configure html-webpack-plugin as opted 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -251,6 +261,11 @@ const config = {
         type: "asset",
       },
 
+      {
+        test: /\\.html$/i,
+        use: ["html-loader"],
+      },
+
       // Add your rules for custom modules here
       // Learn more about loaders from https://webpack.js.org/loaders/
     ],
@@ -272,6 +287,7 @@ exports[`init command should configure workbox-webpack-plugin as opted 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -315,6 +331,11 @@ const config = {
       {
         test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: "asset",
+      },
+
+      {
+        test: /\\.html$/i,
+        use: ["html-loader"],
       },
 
       // Add your rules for custom modules here
@@ -405,6 +426,7 @@ exports[`init command should generate default project when nothing is passed 1`]
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -427,6 +449,7 @@ exports[`init command should generate folders if non existing generation path is
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -449,6 +472,7 @@ exports[`init command should generate project when generationPath is supplied 1`
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -475,6 +499,7 @@ exports[`init command should generate react template with --force 1`] = `
     "@babel/preset-env": "x.x.x",
     "@babel/preset-react": "x.x.x",
     "babel-loader": "x.x.x",
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "react": "x.x.x",
     "react-dom": "x.x.x",
@@ -566,6 +591,7 @@ exports[`init command should generate react template with prompt answers 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -615,6 +641,11 @@ const config = {
       {
         test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: "asset",
+      },
+
+      {
+        test: /\\.html$/i,
+        use: ["html-loader"],
       },
 
       // Add your rules for custom modules here
@@ -1195,6 +1226,7 @@ exports[`init command should work with 'c' alias 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -1217,6 +1249,7 @@ exports[`init command should work with 'create' alias 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -1239,6 +1272,7 @@ exports[`init command should work with 'n' alias 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -1261,6 +1295,7 @@ exports[`init command should work with 'new' alias 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
+    "html-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
