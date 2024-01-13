@@ -319,6 +319,24 @@ const normalizeStderr = (stderr) => {
     normalizedStderr = normalizedStderr.join("\n");
   }
 
+  // Suppress warnings for Node.js version >= v21
+  // [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+  // Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+  if (process.version.startsWith("v21")) {
+    normalizedStderr = normalizedStderr
+      .split("\n")
+      .filter((line) => {
+        return (
+          !line.includes("DeprecationWarning: The `punycode` module is deprecated.") &&
+          !line.includes("Use `node --trace-deprecation ...`") &&
+          !line.includes(
+            "Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.",
+          )
+        );
+      })
+      .join("\n");
+  }
+
   // the warning below is causing CI failure on some jobs
   if (/Gracefully shutting down/.test(stderr)) {
     normalizedStderr = normalizedStderr.replace(
