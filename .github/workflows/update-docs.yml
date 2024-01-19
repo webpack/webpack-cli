@@ -22,13 +22,13 @@ jobs:
 
     steps:
       - name: Checkout Codebase
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ env.GITHUB_ACCESS_TOKEN }}
 
       - name: Using Node v${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
