@@ -1052,6 +1052,7 @@ class WebpackCLI implements IWebpackCLI {
       },
     ];
 
+    // Options from webpack core to be included in the minimum help output
     const minimumHelpFlags = [
       "mode",
       "watch",
@@ -1062,7 +1063,6 @@ class WebpackCLI implements IWebpackCLI {
       "target",
       "name",
       "output-path",
-      "extends",
     ];
 
     // Extract all the flags being exported from core.
