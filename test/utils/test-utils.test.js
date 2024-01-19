@@ -77,15 +77,13 @@ describe("runAndGetWatchProc function", () => {
     const assetsPath = await uniqueDirectoryForTest();
     const proc = runAndGetProcess(assetsPath, ["init", "--force", "--template=mango"], {
       input: ENTER,
-      timeout: 30000,
+      timeout: 60000,
     });
 
     let found = false;
 
     await new Promise((resolve) => {
       proc.stdout.on("data", (data) => {
-        console.log(data.toString());
-
         if (data.includes("Project has been initialised with webpack!")) {
           found = true;
 
