@@ -39,8 +39,7 @@
     }
   },
   "devDependencies": {
-    "@types/yeoman-generator": "^5.2.8",
-    "rimraf": "^3.0.2"
+    "@types/yeoman-generator": "^5.2.8"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
