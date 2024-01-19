@@ -179,27 +179,36 @@ export function generate(self: CustomGenerator): void {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const destPkgJson = require(resolveFile("package.json.js"))(self.answers.devServer);
   const sourcePkgJsonPath = self.destinationPath("package.json");
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const sourcePkgJson = require(sourcePkgJsonPath);
-  // Make sure that we do not override set metadata
-  if (sourcePkgJson.name) {
-    delete destPkgJson.name;
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const sourcePkgJson = require(sourcePkgJsonPath);
+
+    // Make sure that we do not override set metadata
+    if (sourcePkgJson.name) {
+      delete destPkgJson.name;
+    }
+    if (sourcePkgJson.description) {
+      delete destPkgJson.description;
+    }
+    if (sourcePkgJson.version) {
+      delete destPkgJson.version;
+    }
+  } catch (_err) {
+    // Ignore if `package.json` doesn't exist
   }
-  if (sourcePkgJson.description) {
-    delete destPkgJson.description;
-  }
-  if (sourcePkgJson.version) {
-    delete destPkgJson.version;
-  }
+
   self.fs.extendJSON(sourcePkgJsonPath, destPkgJson);
 
   // Generate entry file
   let entry = "./src/index.";
+
   if (self.answers.langType == "Typescript") {
     entry += "ts";
   } else {
     entry += "js";
   }
+
   self.fs.copyTpl(resolveFile("index.js"), self.destinationPath(entry));
 
   // Generate README

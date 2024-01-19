@@ -32,7 +32,7 @@
     "build": "tsc --build",
     "build:ci": "tsc --build",
     "watch": "tsc --build --watch",
-    "lint:prettier": "prettier --list-different .",
+    "lint:prettier": "prettier --cache --list-different .",
     "lint:eslint": "eslint --cache --ext .js --ext .ts .",
     "lint:spelling": "cspell --cache --no-must-find-files --quiet \"**/*.*\"",
     "lint": "yarn lint:eslint && yarn lint:prettier && yarn lint:spelling",
