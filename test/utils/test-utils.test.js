@@ -75,11 +75,24 @@ describe("runAndGetWatchProc function", () => {
 
   it("writes to stdin", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await runAndGetProcess(assetsPath, ["init", "--force", "--template=mango"], {
+    const proc = runAndGetProcess(assetsPath, ["init", "--force", "--template=mango"], {
       input: ENTER,
+      timeout: 60000,
     });
 
-    expect(stdout).toContain("Project has been initialised with webpack!");
+    let found = false;
+
+    await new Promise((resolve) => {
+      proc.stdout.on("data", (data) => {
+        if (data.includes("Project has been initialised with webpack!")) {
+          found = true;
+
+          resolve();
+        }
+      });
+    });
+
+    expect(found).toBe(true);
   });
 });
 

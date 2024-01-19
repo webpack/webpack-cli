@@ -176,11 +176,22 @@ export async function questions(
  * @param self Generator values
  */
 export function generate(self: CustomGenerator): void {
-  self.fs.extendJSON(
-    self.destinationPath("package.json"),
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require(resolveFile("package.json.js"))(self.answers.devServer),
-  );
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const destPkgJson = require(resolveFile("package.json.js"))(self.answers.devServer);
+  const sourcePkgJsonPath = self.destinationPath("package.json");
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const sourcePkgJson = require(sourcePkgJsonPath);
+  // Make sure that we do not override set metadata
+  if (sourcePkgJson.name) {
+    delete destPkgJson.name;
+  }
+  if (sourcePkgJson.description) {
+    delete destPkgJson.description;
+  }
+  if (sourcePkgJson.version) {
+    delete destPkgJson.version;
+  }
+  self.fs.extendJSON(sourcePkgJsonPath, destPkgJson);
 
   // Generate entry file
   let entry = "./src/index.";
