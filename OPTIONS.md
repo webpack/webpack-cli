@@ -47,6 +47,8 @@ Options:
   --cache-name <value>                                                               Name for the cache. Different names will lead to different coexisting caches.
   --cache-profile                                                                    Track and log detailed timing information for individual cache items.
   --no-cache-profile                                                                 Negative 'cache-profile' option.
+  --cache-readonly                                                                   Enable/disable readonly mode.
+  --no-cache-readonly                                                                Negative 'cache-readonly' option.
   --cache-store <value>                                                              When to store data to the filesystem. (pack: Store data when compiler is idle in a single file).
   --cache-version <value>                                                            Version of the cache data. Different versions won't allow to reuse the cache and override existing content. Update the version when config changed in a way which doesn't allow to reuse cache. This will invalidate the cache.
   --context <value>                                                                  The base directory (absolute path!) for resolving the `entry` option. If `output.pathinfo` is set, the included pathinfo is shortened to this directory.
@@ -98,7 +100,6 @@ Options:
   --no-experiments-sync-web-assembly                                                 Negative 'experiments-sync-web-assembly' option.
   --experiments-top-level-await                                                      Allow using top-level-await in EcmaScript Modules.
   --no-experiments-top-level-await                                                   Negative 'experiments-top-level-await' option.
-  --extends <value...>                                                               Path to the configuration to be extended (only works when using webpack-cli).
   --extends-reset                                                                    Clear all items provided in 'extends' configuration. Extend configuration from another configuration (only works when using webpack-cli).
   --externals <value...>                                                             Every matched dependency becomes external. An exact matched dependency becomes external. The same string is used as external dependency.
   --externals-reset                                                                  Clear all items provided in 'externals' configuration. Specify dependencies that shouldn't be resolved by webpack, but should become dependencies of the resulting bundle. The kind of the dependency depends on `output.libraryTarget`.
@@ -168,6 +169,8 @@ Options:
   --no-module-parser-javascript-commonjs-magic-comments                              Negative 'module-parser-javascript-commonjs-magic-comments' option.
   --module-parser-javascript-create-require [value]                                  Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
   --no-module-parser-javascript-create-require                                       Negative 'module-parser-javascript-create-require' option.
+  --module-parser-javascript-dynamic-import-fetch-priority <value>                   Specifies global fetchPriority for dynamic import.
+  --no-module-parser-javascript-dynamic-import-fetch-priority                        Negative 'module-parser-javascript-dynamic-import-fetch-priority' option.
   --module-parser-javascript-dynamic-import-mode <value>                             Specifies global mode for dynamic import.
   --module-parser-javascript-dynamic-import-prefetch [value]                         Specifies global prefetch for dynamic import.
   --no-module-parser-javascript-dynamic-import-prefetch                              Negative 'module-parser-javascript-dynamic-import-prefetch' option.
@@ -241,6 +244,8 @@ Options:
   --no-module-parser-javascript-auto-commonjs-magic-comments                         Negative 'module-parser-javascript-auto-commonjs-magic-comments' option.
   --module-parser-javascript-auto-create-require [value]                             Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
   --no-module-parser-javascript-auto-create-require                                  Negative 'module-parser-javascript-auto-create-require' option.
+  --module-parser-javascript-auto-dynamic-import-fetch-priority <value>              Specifies global fetchPriority for dynamic import.
+  --no-module-parser-javascript-auto-dynamic-import-fetch-priority                   Negative 'module-parser-javascript-auto-dynamic-import-fetch-priority' option.
   --module-parser-javascript-auto-dynamic-import-mode <value>                        Specifies global mode for dynamic import.
   --module-parser-javascript-auto-dynamic-import-prefetch [value]                    Specifies global prefetch for dynamic import.
   --no-module-parser-javascript-auto-dynamic-import-prefetch                         Negative 'module-parser-javascript-auto-dynamic-import-prefetch' option.
@@ -314,6 +319,8 @@ Options:
   --no-module-parser-javascript-dynamic-commonjs-magic-comments                      Negative 'module-parser-javascript-dynamic-commonjs-magic-comments' option.
   --module-parser-javascript-dynamic-create-require [value]                          Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
   --no-module-parser-javascript-dynamic-create-require                               Negative 'module-parser-javascript-dynamic-create-require' option.
+  --module-parser-javascript-dynamic-dynamic-import-fetch-priority <value>           Specifies global fetchPriority for dynamic import.
+  --no-module-parser-javascript-dynamic-dynamic-import-fetch-priority                Negative 'module-parser-javascript-dynamic-dynamic-import-fetch-priority' option.
   --module-parser-javascript-dynamic-dynamic-import-mode <value>                     Specifies global mode for dynamic import.
   --module-parser-javascript-dynamic-dynamic-import-prefetch [value]                 Specifies global prefetch for dynamic import.
   --no-module-parser-javascript-dynamic-dynamic-import-prefetch                      Negative 'module-parser-javascript-dynamic-dynamic-import-prefetch' option.
@@ -387,6 +394,8 @@ Options:
   --no-module-parser-javascript-esm-commonjs-magic-comments                          Negative 'module-parser-javascript-esm-commonjs-magic-comments' option.
   --module-parser-javascript-esm-create-require [value]                              Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
   --no-module-parser-javascript-esm-create-require                                   Negative 'module-parser-javascript-esm-create-require' option.
+  --module-parser-javascript-esm-dynamic-import-fetch-priority <value>               Specifies global fetchPriority for dynamic import.
+  --no-module-parser-javascript-esm-dynamic-import-fetch-priority                    Negative 'module-parser-javascript-esm-dynamic-import-fetch-priority' option.
   --module-parser-javascript-esm-dynamic-import-mode <value>                         Specifies global mode for dynamic import.
   --module-parser-javascript-esm-dynamic-import-prefetch [value]                     Specifies global prefetch for dynamic import.
   --no-module-parser-javascript-esm-dynamic-import-prefetch                          Negative 'module-parser-javascript-esm-dynamic-import-prefetch' option.
@@ -626,8 +635,12 @@ Options:
   --no-output-environment-destructuring                                              Negative 'output-environment-destructuring' option.
   --output-environment-dynamic-import                                                The environment supports an async import() function to import EcmaScript modules.
   --no-output-environment-dynamic-import                                             Negative 'output-environment-dynamic-import' option.
+  --output-environment-dynamic-import-in-worker                                      The environment supports an async import() is available when creating a worker.
+  --no-output-environment-dynamic-import-in-worker                                   Negative 'output-environment-dynamic-import-in-worker' option.
   --output-environment-for-of                                                        The environment supports 'for of' iteration ('for (const x of array) { ... }').
   --no-output-environment-for-of                                                     Negative 'output-environment-for-of' option.
+  --output-environment-global-this                                                   The environment supports 'globalThis'.
+  --no-output-environment-global-this                                                Negative 'output-environment-global-this' option.
   --output-environment-module                                                        The environment supports EcmaScript Module syntax to import EcmaScript modules (import ... from '...').
   --no-output-environment-module                                                     Negative 'output-environment-module' option.
   --output-environment-optional-chaining                                             The environment supports optional chaining ('obj?.a' or 'obj?.()').
