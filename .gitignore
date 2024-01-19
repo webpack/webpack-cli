@@ -51,6 +51,7 @@ packages/**/*.map
 
 # cache
 .eslintcache
+.cspellcache
 
 # build files
 packages/**/lib
