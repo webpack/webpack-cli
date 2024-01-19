@@ -77,7 +77,6 @@ describe("runAndGetWatchProc function", () => {
     const assetsPath = await uniqueDirectoryForTest();
     const proc = runAndGetProcess(assetsPath, ["init", "--force", "--template=mango"], {
       input: ENTER,
-      timeout: 60000,
     });
 
     let found = false;
