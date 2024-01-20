@@ -2364,12 +2364,6 @@ class WebpackCLI implements IWebpackCLI {
           isMultiCompiler: Array.isArray(config.options),
         }),
       );
-
-      // Handle when `devServer` is false
-      // TODO improve type on the webpack side
-      if ((item as any).devServer === false) {
-        delete item.devServer;
-      }
     };
 
     if (Array.isArray(config.options)) {
