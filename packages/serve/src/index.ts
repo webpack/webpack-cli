@@ -1,5 +1,5 @@
 import { type Compiler, type cli } from "webpack";
-import { type IWebpackCLI, WebpackCompiler, type WebpackDevServerOptions } from "webpack-cli";
+import { type IWebpackCLI, type WebpackDevServerOptions } from "webpack-cli";
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
