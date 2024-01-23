@@ -5,7 +5,7 @@
     "target": "es6",
     "moduleResolution": "node",
     "noEmitOnError": false,
-    "outDir": "./dist"
+    "outDir": "./dist",
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

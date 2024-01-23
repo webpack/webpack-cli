@@ -15,26 +15,26 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@webpack-cli/*": ["packages/*/src"]
+      "@webpack-cli/*": ["packages/*/src"],
     },
     "composite": true,
-    "declaration": true
+    "declaration": true,
   },
   "references": [
     {
-      "path": "packages/configtest"
+      "path": "packages/configtest",
     },
     {
-      "path": "packages/generators"
+      "path": "packages/generators",
     },
     {
-      "path": "packages/info"
+      "path": "packages/info",
     },
     {
-      "path": "packages/serve"
+      "path": "packages/serve",
     },
     {
-      "path": "packages/webpack-cli"
-    }
-  ]
+      "path": "packages/webpack-cli",
+    },
+  ],
 }

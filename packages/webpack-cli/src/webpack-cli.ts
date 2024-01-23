@@ -1220,7 +1220,7 @@ class WebpackCLI implements IWebpackCLI {
         );
       } else if (isCommand(commandName, helpCommandOptions)) {
         // Stub for the `help` command
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
+
         this.makeCommand(helpCommandOptions, [], () => {});
       } else if (isCommand(commandName, versionCommandOptions)) {
         // Stub for the `version` command
@@ -1624,8 +1624,8 @@ class WebpackCLI implements IWebpackCLI {
         const value = option.required
           ? "<" + nameOutput + ">"
           : option.optional
-          ? "[" + nameOutput + "]"
-          : "";
+            ? "[" + nameOutput + "]"
+            : "";
 
         this.logger.raw(
           `${bold("Usage")}: webpack${isCommandSpecified ? ` ${commandName}` : ""} ${option.long}${
@@ -1652,13 +1652,16 @@ class WebpackCLI implements IWebpackCLI {
         const flag = this.getBuiltInOptions().find((flag) => option.long === `--${flag.name}`);
 
         if (flag && flag.configs) {
-          const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
-            if (currentValue.values) {
-              return accumulator.concat(currentValue.values);
-            } else {
-              return accumulator;
-            }
-          }, <FlagConfig["values"]>[]);
+          const possibleValues = flag.configs.reduce(
+            (accumulator, currentValue) => {
+              if (currentValue.values) {
+                return accumulator.concat(currentValue.values);
+              } else {
+                return accumulator;
+              }
+            },
+            <FlagConfig["values"]>[],
+          );
 
           if (possibleValues.length > 0) {
             this.logger.raw(
@@ -2176,9 +2179,10 @@ class WebpackCLI implements IWebpackCLI {
       process.exit(2);
     }
 
-    const CLIPlugin = await this.tryRequireThenImport<
-      Instantiable<CLIPluginClass, [CLIPluginOptions]>
-    >("./plugins/cli-plugin");
+    const CLIPlugin =
+      await this.tryRequireThenImport<Instantiable<CLIPluginClass, [CLIPluginOptions]>>(
+        "./plugins/cli-plugin",
+      );
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
       const originalWatchValue = item.watch;
@@ -2459,8 +2463,8 @@ class WebpackCLI implements IWebpackCLI {
             ),
           }
         : compiler.options
-        ? compiler.options.stats
-        : undefined;
+          ? compiler.options.stats
+          : undefined;
 
       if (options.json && createJsonStringifyStream) {
         const handleWriteError = (error: WebpackError) => {
