@@ -1,5 +1,3 @@
-const { cli } = require("webpack");
-
 module.exports = {
   testEnvironment: "node",
   collectCoverage: true,
