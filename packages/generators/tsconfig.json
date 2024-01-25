@@ -3,12 +3,12 @@
   "exclude": ["src/utils/__tests__"],
   "compilerOptions": {
     "outDir": "lib",
-    "rootDir": "src",
+    "rootDir": "src"
   },
   "include": ["src"],
   "references": [
     {
-      "path": "../webpack-cli",
-    },
-  ],
+      "path": "../webpack-cli"
+    }
+  ]
 }

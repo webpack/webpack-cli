@@ -3,8 +3,8 @@
   "compilerOptions": {
     "outDir": "./lib",
     "rootDir": "./src",
-    "typeRoots": ["./src/types.ts"],
+    "typeRoots": ["./src/types.ts"]
   },
 
-  "include": ["./src"],
+  "include": ["./src"]
 }
