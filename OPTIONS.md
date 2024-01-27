@@ -54,6 +54,7 @@ Options:
   --context <value>                                                                  The base directory (absolute path!) for resolving the `entry` option. If `output.pathinfo` is set, the included pathinfo is shortened to this directory.
   --dependencies <value...>                                                          References to another configuration to depend on.
   --dependencies-reset                                                               Clear all items provided in 'dependencies' configuration. References to other configurations to depend on.
+  --no-dev-server                                                                    Negative 'dev-server' option.
   -d, --devtool <value>                                                              A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                                                       Negative 'devtool' option.
   --entry <value...>                                                                 A module that is loaded upon startup. Only the last one is exported.
@@ -76,8 +77,6 @@ Options:
   --no-experiments-cache-unaffected                                                  Negative 'experiments-cache-unaffected' option.
   --experiments-css                                                                  Enable css support.
   --no-experiments-css                                                               Negative 'experiments-css' option.
-  --experiments-css-exports-only                                                     Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
-  --no-experiments-css-exports-only                                                  Negative 'experiments-css-exports-only' option.
   --experiments-future-defaults                                                      Apply defaults of next major version.
   --no-experiments-future-defaults                                                   Negative 'experiments-future-defaults' option.
   --experiments-layers                                                               Enable module layers.
@@ -100,6 +99,7 @@ Options:
   --no-experiments-sync-web-assembly                                                 Negative 'experiments-sync-web-assembly' option.
   --experiments-top-level-await                                                      Allow using top-level-await in EcmaScript Modules.
   --no-experiments-top-level-await                                                   Negative 'experiments-top-level-await' option.
+  --extends <value...>                                                               Path to the configuration to be extended (only works when using webpack-cli).
   --extends-reset                                                                    Clear all items provided in 'extends' configuration. Extend configuration from another configuration (only works when using webpack-cli).
   --externals <value...>                                                             Every matched dependency becomes external. An exact matched dependency becomes external. The same string is used as external dependency.
   --externals-reset                                                                  Clear all items provided in 'externals' configuration. Specify dependencies that shouldn't be resolved by webpack, but should become dependencies of the resulting bundle. The kind of the dependency depends on `output.libraryTarget`.
@@ -157,9 +157,25 @@ Options:
   --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-generator-asset-resource-output-path <value>                              Emit the asset in the specified folder relative to 'output.path'. This should only be needed when custom 'publicPath' is specified to match the folder structure there.
   --module-generator-asset-resource-public-path <value>                              The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
+  --module-generator-css-exports-only                                                Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
+  --no-module-generator-css-exports-only                                             Negative 'module-generator-css-exports-only' option.
+  --module-generator-css-auto-exports-only                                           Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
+  --no-module-generator-css-auto-exports-only                                        Negative 'module-generator-css-auto-exports-only' option.
+  --module-generator-css-global-exports-only                                         Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
+  --no-module-generator-css-global-exports-only                                      Negative 'module-generator-css-global-exports-only' option.
+  --module-generator-css-module-exports-only                                         Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
+  --no-module-generator-css-module-exports-only                                      Negative 'module-generator-css-module-exports-only' option.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
+  --module-parser-css-named-exports                                                  Use ES modules named export for css exports.
+  --no-module-parser-css-named-exports                                               Negative 'module-parser-css-named-exports' option.
+  --module-parser-css-auto-named-exports                                             Use ES modules named export for css exports.
+  --no-module-parser-css-auto-named-exports                                          Negative 'module-parser-css-auto-named-exports' option.
+  --module-parser-css-global-named-exports                                           Use ES modules named export for css exports.
+  --no-module-parser-css-global-named-exports                                        Negative 'module-parser-css-global-named-exports' option.
+  --module-parser-css-module-named-exports                                           Use ES modules named export for css exports.
+  --no-module-parser-css-module-named-exports                                        Negative 'module-parser-css-module-named-exports' option.
   --no-module-parser-javascript-amd                                                  Negative 'module-parser-javascript-amd' option.
   --module-parser-javascript-browserify                                              Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-browserify                                           Negative 'module-parser-javascript-browserify' option.
@@ -627,6 +643,8 @@ Options:
   --output-enabled-wasm-loading-types-reset                                          Clear all items provided in 'output.enabledWasmLoadingTypes' configuration. List of wasm loading types enabled for use by entry points.
   --output-environment-arrow-function                                                The environment supports arrow functions ('() => { ... }').
   --no-output-environment-arrow-function                                             Negative 'output-environment-arrow-function' option.
+  --output-environment-async-function                                                The environment supports async function and await ('async function () { await ... }').
+  --no-output-environment-async-function                                             Negative 'output-environment-async-function' option.
   --output-environment-big-int-literal                                               The environment supports BigInt as literal (123n).
   --no-output-environment-big-int-literal                                            Negative 'output-environment-big-int-literal' option.
   --output-environment-const                                                         The environment supports const and let for variable declarations.
@@ -849,6 +867,8 @@ Options:
   --no-snapshot-resolve-build-dependencies-hash                                      Negative 'snapshot-resolve-build-dependencies-hash' option.
   --snapshot-resolve-build-dependencies-timestamp                                    Use timestamps of the files/directories to determine invalidation.
   --no-snapshot-resolve-build-dependencies-timestamp                                 Negative 'snapshot-resolve-build-dependencies-timestamp' option.
+  --snapshot-unmanaged-paths <value...>                                              A RegExp matching an unmanaged directory. A path to an unmanaged directory.
+  --snapshot-unmanaged-paths-reset                                                   Clear all items provided in 'snapshot.unmanagedPaths' configuration. List of paths that are not managed by a package manager and the contents are subject to change.
   --stats [value]                                                                    Stats options object or preset name.
   --no-stats                                                                         Negative 'stats' option.
   --stats-all                                                                        Fallback value for stats options when an option is not defined (has precedence over local webpack defaults).
