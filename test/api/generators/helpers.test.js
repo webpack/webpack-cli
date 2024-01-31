@@ -11,10 +11,9 @@ jest.mock(path.join(utilsDirectory.generators, "scaffold-utils"), () => ({
   List: jest.fn(),
 }));
 
-const { getInstaller, getTemplate, toKebabCase, toUpperCamelCase } = require(path.join(
-  utilsDirectory.generators,
-  "helpers",
-));
+const { getInstaller, getTemplate, toKebabCase, toUpperCamelCase } = require(
+  path.join(utilsDirectory.generators, "helpers"),
+);
 const { List } = require(path.join(utilsDirectory.generators, "scaffold-utils"));
 
 describe("helpers", () => {

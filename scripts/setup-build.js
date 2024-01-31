@@ -2,7 +2,7 @@ const { writeFileSync, readFileSync } = require("fs");
 const { resolve } = require("path");
 
 const tsConfigPath = resolve(__dirname, "../tsconfig.json");
-const tsConfigRaw = readFileSync(tsConfigPath);
+const tsConfigRaw = readFileSync(tsConfigPath, "utf-8");
 const tsConfig = JSON.parse(tsConfigRaw);
 
 tsConfig.compilerOptions.sourceMap = true;

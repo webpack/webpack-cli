@@ -3,8 +3,8 @@
   "dockerFile": "Dockerfile",
   "runArgs": ["-u", "node"],
   "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
+    "terminal.integrated.shell.linux": "/bin/bash",
   },
   "postCreateCommand": "yarn install && yarn build",
-  "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+  "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
 }
