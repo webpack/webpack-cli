@@ -11210,9 +11210,9 @@ webpack-sources@^3.2.3:
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
 webpack@^5.90.0:
-  version "5.90.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.90.0.tgz#313bfe16080d8b2fee6e29b6c986c0714ad4290e"
-  integrity sha512-bdmyXRCXeeNIePv6R6tGPyy20aUobw4Zy8r0LUS2EWO+U+Ke/gYDgsCh7bl5rB6jPpr4r0SZa6dPxBxLooDT3w==
+  version "5.90.2"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.90.2.tgz#189686a8a292427076db9907d495625345805fab"
+  integrity sha512-ziXu8ABGr0InCMEYFnHrYweinHK2PWrMqnwdHk2oK3rRhv/1B+2FnfwYv5oD+RrknK/Pp/Hmyvu+eAsaMYhzCw==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
     "@types/estree" "^1.0.5"
