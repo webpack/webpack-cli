@@ -67,7 +67,7 @@
     "colorette": "^2.0.16",
     "concat-stream": "^2.0.0",
     "cspell": "^8.3.2",
-    "css-loader": "^6.7.1",
+    "css-loader": "^6.10.0",
     "del-cli": "^5.0.0",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.5.0",
@@ -83,7 +83,7 @@
     "mini-css-extract-plugin": "^2.6.1",
     "nyc": "^15.1.0",
     "prettier": "^2.7.0",
-    "readable-stream": "^3.6.0",
+    "readable-stream": "^4.5.2",
     "rimraf": "^3.0.2",
     "sass": "^1.54.9",
     "sass-loader": "^13.0.2",
@@ -93,7 +93,7 @@
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
-    "webpack": "^5.90.0",
+    "webpack": "^5.90.2",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-dev-server": "^4.8.1"
   }

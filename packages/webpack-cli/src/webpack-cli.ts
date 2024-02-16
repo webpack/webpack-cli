@@ -45,7 +45,13 @@ import type {
 
 import type webpackMerge from "webpack-merge";
 import type webpack from "webpack";
-import { type Compiler, type MultiCompiler, type WebpackError, type StatsOptions } from "webpack";
+import {
+  type Compiler,
+  type MultiCompiler,
+  type WebpackError,
+  type StatsOptions,
+  type WebpackOptionsNormalized,
+} from "webpack";
 import { type stringifyStream } from "@discoveryjs/json-ext";
 import { type Help, type ParseOptions } from "commander";
 
@@ -2489,7 +2495,11 @@ class WebpackCLI implements IWebpackCLI {
             });
         }
       } else {
-        const printedStats = stats.toString(statsOptions);
+        const printedStats = stats.toString(
+          // TODO fix me in webpack
+          statsOptions as Exclude<WebpackOptionsNormalized["stats"], boolean>,
+        );
+
         // Avoid extra empty line when `stats: 'none'`
         if (printedStats) {
           this.logger.raw(printedStats);
