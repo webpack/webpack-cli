@@ -26,7 +26,7 @@ npx webpack-cli serve
 
 ### Options
 
-Checkout [`SERVE-OPTIONS-v3.md`](https://github.com/webpack/webpack-cli/blob/master/SERVE-OPTIONS-v3.md) or [`SERVE-OPTIONS-v4.md`](https://github.com/webpack/webpack-cli/blob/master/SERVE-OPTIONS-v4.md) to see list of all available options for `serve` command for respective [`webpack-dev-server`](https://github.com/webpack/webpack-dev-server) version.
+Checkout [`SERVE-OPTIONS-v4.md`](https://github.com/webpack/webpack-cli/blob/master/SERVE-OPTIONS-v4.md) or [`SERVE-OPTIONS-v5.md`](https://github.com/webpack/webpack-cli/blob/master/SERVE-OPTIONS-v5.md) to see list of all available options for `serve` command for respective [`webpack-dev-server`](https://github.com/webpack/webpack-dev-server) version.
 
 [downloads]: https://img.shields.io/npm/dm/@webpack-cli/serve.svg
 [downloads-url]: https://www.npmjs.com/package/@webpack-cli/serve

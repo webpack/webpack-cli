@@ -94,13 +94,24 @@ const runWatch = (cwd, args = [], options = {}) => {
   return new Promise((resolve, reject) => {
     const process = createProcess(cwd, args, options);
     const outputKillStr = options.killString || /webpack \d+\.\d+\.\d/;
+    const stdoutKillStr = options.stdoutKillStr;
+    const stderrKillStr = options.stderrKillStr;
+
+    let isStdoutDone = false;
+    let isStderrDone = false;
 
     process.stdout.pipe(
       new Writable({
         write(chunk, encoding, callback) {
           const output = stripAnsi(chunk.toString("utf8"));
 
-          if (outputKillStr.test(output)) {
+          if (stdoutKillStr && stdoutKillStr.test(output)) {
+            isStdoutDone = true;
+          } else if (!stdoutKillStr && outputKillStr.test(output)) {
+            processKill(process);
+          }
+
+          if (isStdoutDone && isStderrDone) {
             processKill(process);
           }
 
@@ -114,7 +125,13 @@ const runWatch = (cwd, args = [], options = {}) => {
         write(chunk, encoding, callback) {
           const output = stripAnsi(chunk.toString("utf8"));
 
-          if (outputKillStr.test(output)) {
+          if (stderrKillStr && stderrKillStr.test(output)) {
+            isStderrDone = true;
+          } else if (!stderrKillStr && outputKillStr.test(output)) {
+            processKill(process);
+          }
+
+          if (isStdoutDone && isStderrDone) {
             processKill(process);
           }
 
