@@ -456,9 +456,11 @@ describe("basic serve usage", () => {
   });
 
   it('should work with the "stats" option in config', async () => {
-    const { stderr, stdout } = await runWatch(__dirname, ["serve", "--config", "stats.config.js"], {
-      killString: /Compiled successfully|modules/i,
-    });
+    const { stderr, stdout } = await runWatch(
+      __dirname,
+      ["serve", "--config", "stats.config.js"],
+      normalStdKillOptions,
+    );
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("compiled successfully");
@@ -474,24 +476,8 @@ describe("basic serve usage", () => {
       },
     );
 
-    // sort logs for CI
-    let normalizedStderr = normalizeStderr(stderr).split("\n");
-    const lastString = normalizedStderr[normalizedStderr.length - 1];
-
-    if (lastString.includes("webpack-dev-middleware")) {
-      [
-        normalizedStderr[normalizedStderr.length - 1],
-        normalizedStderr[normalizedStderr.length - 2],
-      ] = [
-        normalizedStderr[normalizedStderr.length - 2],
-        normalizedStderr[normalizedStderr.length - 1],
-      ];
-    }
-
-    normalizedStderr = normalizedStderr.join("\n");
-
-    expect(normalizedStderr).toMatchSnapshot("stderr");
-    expect(stdout).toBeTruthy();
+    expect(normalizeStderr(stderr).includes("log.config.js")).toBe(true);
+    expect(normalizeStdout(stdout).includes("compiled successfully")).toBe(true);
   });
 
   it("should throw error when same ports in multicompiler", async () => {

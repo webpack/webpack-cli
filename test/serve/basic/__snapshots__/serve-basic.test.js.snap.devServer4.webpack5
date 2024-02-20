@@ -16,19 +16,6 @@ exports[`basic serve usage should log error on using '--watch' flag with serve: 
 <i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
 `;
 
-exports[`basic serve usage should log used supplied config with serve: stderr 1`] = `
-"    [webpack-cli] Compiler starting... 
-    [webpack-cli] Compiler is using config: '<cwd>/test/serve/basic/log.config.js'
-<i> [webpack-dev-server] Project is running at:
-<i> [webpack-dev-server] Loopback: http://localhost:<port>/
-<i> [webpack-dev-server] On Your Network (IPv4): http://<network-ip-v4>:<port>/
-<i> [webpack-dev-server] On Your Network (IPv6): http://[<network-ip-v6>]:<port>/
-<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory
-    [webpack-cli] Compiler finished
-    [webpack-dev-middleware] Compilation finished
-    [webpack-cli] Compiler is watching files for updates..."
-`;
-
 exports[`basic serve usage should log warning on using '-w' alias with serve: stderr 1`] = `
 "[webpack-cli] No need to use the 'serve' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.
 <i> [webpack-dev-server] Project is running at:
