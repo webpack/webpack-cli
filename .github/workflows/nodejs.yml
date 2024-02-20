@@ -66,7 +66,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18.x, 20.x]
+        node-version: [18.x, 20.x, 21.x]
         shard: ["1/4", "2/4", "3/4", "4/4"]
         webpack-version: [latest]
         dev-server-version: [latest]
@@ -105,7 +105,7 @@ jobs:
 
       - name: Install webpack-dev-server ${{ matrix.dev-server-version }}
         if: matrix.dev-server-version == '4'
-        run: yarn add -W webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines
+        run: yarn add -W -D webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines
 
       - name: Prepare environment for tests
         run: yarn build:ci
