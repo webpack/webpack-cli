@@ -70,6 +70,13 @@ jobs:
         shard: ["1/4", "2/4", "3/4", "4/4"]
         webpack-version: [latest]
         dev-server-version: [latest]
+        include:
+          - node-version: 14.x
+            os: ubuntu-latest
+            dev-server-version: 4
+          - node-version: 20.x
+            os: ubuntu-latest
+            dev-server-version: latest
 
     steps:
       - uses: actions/checkout@v4
@@ -89,6 +96,10 @@ jobs:
 
       - name: Install dependencies
         run: yarn --frozen-lockfile --ignore-engines
+
+      - name: Install webpack-dev-server ${{ matrix.dev-server-version }}
+        if: matrix.dev-server-version == '4'
+        run: yarn add -W webpack-dev-server@${{ matrix.dev-server-version }}
 
       - name: Prepare environment for tests
         run: yarn build:ci
