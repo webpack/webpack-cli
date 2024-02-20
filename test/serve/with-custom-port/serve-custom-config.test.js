@@ -15,7 +15,10 @@ describe("serve with devServer in config", () => {
   });
 
   it("Should pick up the host and port from config", async () => {
-    const { stdout, stderr } = await runWatch(testPath, ["serve"]);
+    const { stdout, stderr } = await runWatch(testPath, ["serve"], {
+      stdoutKillStr: /webpack \d+\.\d+\.\d/,
+      stderrKillStr: /Content not from webpack is served from/,
+    });
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
@@ -23,7 +26,10 @@ describe("serve with devServer in config", () => {
   });
 
   it("Port flag should override the config port", async () => {
-    const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port]);
+    const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port], {
+      stdoutKillStr: /webpack \d+\.\d+\.\d/,
+      stderrKillStr: /Content not from webpack is served from/,
+    });
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
@@ -31,7 +37,10 @@ describe("serve with devServer in config", () => {
   });
 
   it("Passing hot flag works alongside other server config", async () => {
-    const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--hot"]);
+    const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--hot"], {
+      stdoutKillStr: /webpack \d+\.\d+\.\d/,
+      stderrKillStr: /Content not from webpack is served from/,
+    });
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).toContain("HotModuleReplacementPlugin");
@@ -39,7 +48,10 @@ describe("serve with devServer in config", () => {
   });
 
   it("works fine when no-hot flag is passed alongside other server config", async () => {
-    const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--no-hot"]);
+    const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--no-hot"], {
+      stdoutKillStr: /webpack \d+\.\d+\.\d/,
+      stderrKillStr: /Content not from webpack is served from/,
+    });
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(stdout).not.toContain("HotModuleReplacementPlugin");
