@@ -213,7 +213,7 @@ const runPromptWithAnswers = (location, args, answers) => {
       }
 
       if (stdoutDone && stderrDone) {
-        process.kill("SIGKILL");
+        process.kill();
         resolve(obj);
       }
     };
