@@ -39,9 +39,7 @@ describe("json", () => {
   });
 
   it("should work and store json to a file and respect --color flag", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--json", "stats.json", "--color"], {
-      env: { FORCE_COLOR: true },
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--json", "stats.json", "--color"]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toContain(`\u001b[32m${successMessage}`);
