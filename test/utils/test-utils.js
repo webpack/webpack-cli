@@ -168,7 +168,7 @@ const runPromptWithAnswers = (location, args, answers) => {
   const writeAnswer = (output) => {
     if (!answers) {
       process.stdin.write(output);
-      process.kill();
+      processKill(process);
 
       return;
     }
@@ -213,7 +213,7 @@ const runPromptWithAnswers = (location, args, answers) => {
       }
 
       if (stdoutDone && stderrDone) {
-        process.kill();
+        processKill(process);
         resolve(obj);
       }
     };
