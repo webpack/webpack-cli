@@ -5,6 +5,7 @@ const {
   runPromptWithAnswers,
   uniqueDirectoryForTest,
   normalizeStdout,
+  normalizeStderr,
 } = require("../utils/test-utils");
 
 const ENTER = "\x0D";
@@ -33,7 +34,7 @@ describe("plugin command", () => {
     const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["plugin"]);
 
     expect(stdout).toBeTruthy();
-    expect(stderr).toBeFalsy();
+    expect(normalizeStderr(stderr)).toBeFalsy();
     expect(normalizeStdout(stdout)).toContain(firstPrompt);
   });
 

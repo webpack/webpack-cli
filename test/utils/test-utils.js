@@ -168,7 +168,7 @@ const runPromptWithAnswers = (location, args, answers) => {
   const writeAnswer = (output) => {
     if (!answers) {
       process.stdin.write(output);
-      process.kill();
+      processKill(process);
 
       return;
     }
@@ -213,7 +213,7 @@ const runPromptWithAnswers = (location, args, answers) => {
       }
 
       if (stdoutDone && stderrDone) {
-        process.kill("SIGKILL");
+        processKill(process);
         resolve(obj);
       }
     };
@@ -317,6 +317,21 @@ const normalizeStderr = (stderr) => {
     }
 
     normalizedStderr = normalizedStderr.join("\n");
+  }
+
+  // TODO remove me after drop old Node.js versions and update deps
+  // Suppress warnings for Node.js version >= v21
+  // [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+  if (process.version.startsWith("v21")) {
+    normalizedStderr = normalizedStderr
+      .split("\n")
+      .filter((line) => {
+        return (
+          !line.includes("DeprecationWarning: The `punycode` module is deprecated.") &&
+          !line.includes("Use `node --trace-deprecation ...`")
+        );
+      })
+      .join("\n");
   }
 
   // the warning below is causing CI failure on some jobs

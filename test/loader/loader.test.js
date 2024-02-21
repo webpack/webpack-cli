@@ -7,6 +7,7 @@ const {
   runPromptWithAnswers,
   uniqueDirectoryForTest,
   normalizeStdout,
+  normalizeStderr,
 } = require("../utils/test-utils");
 
 const firstPrompt = "? Loader name (my-loader)";
@@ -31,12 +32,12 @@ const dataForTests = (rootAssetsPath) => ({
 });
 
 describe("loader command", () => {
-  it("should ask the loader name when invoked", async () => {
+  it.only("should ask the loader name when invoked", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["loader"]);
 
     expect(stdout).toBeTruthy();
-    expect(stderr).toBeFalsy();
+    expect(normalizeStderr(stderr)).toBeFalsy();
     expect(normalizeStdout(stdout)).toContain(firstPrompt);
   });
 

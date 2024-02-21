@@ -57,9 +57,7 @@ describe("help", () => {
   });
 
   it('should show help information and respect the "--color" flag using the "--help" option', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "--color"], {
-      env: { FORCE_COLOR: true },
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "--color"]);
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -68,9 +66,7 @@ describe("help", () => {
   });
 
   it('should show help information and respect the "--no-color" flag using the "--help" option', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "--no-color"], {
-      env: { FORCE_COLOR: true },
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "--no-color"]);
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -150,9 +146,7 @@ describe("help", () => {
     });
 
     it(`should show help information for '${name}' and respect the "--color" flag using the "--help" option`, async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--color"], {
-        env: { FORCE_COLOR: true },
-      });
+      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--color"]);
 
       expect(exitCode).toBe(0);
       expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -164,9 +158,7 @@ describe("help", () => {
     });
 
     it(`should show help information for '${name}' and respect the "--no-color" flag using the "--help" option`, async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--no-color"], {
-        env: { FORCE_COLOR: true },
-      });
+      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--no-color"]);
 
       expect(exitCode).toBe(0);
       expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -280,9 +272,7 @@ describe("help", () => {
   });
 
   it('should show help information using the "help --color" option', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--color"], {
-      env: { FORCE_COLOR: true },
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--color"]);
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -291,9 +281,7 @@ describe("help", () => {
   });
 
   it('should show help information using the "help --no-color" option', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--no-color"], {
-      env: { FORCE_COLOR: true },
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--no-color"]);
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -301,9 +289,7 @@ describe("help", () => {
   });
 
   it('should show help information using the "help serve --color" option', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["help", "serve", "--color"], {
-      env: { FORCE_COLOR: true },
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["help", "serve", "--color"]);
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");

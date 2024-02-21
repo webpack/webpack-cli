@@ -481,11 +481,11 @@ describe("basic serve usage", () => {
   });
 
   it("should throw error when same ports in multicompiler", async () => {
-    const { stderr, stdout } = await runWatch(
-      __dirname,
-      ["serve", "--config", "same-ports-dev-server.config.js"],
-      normalStdKillOptions,
-    );
+    const { stderr, stdout } = await runWatch(__dirname, [
+      "serve",
+      "--config",
+      "same-ports-dev-server.config.js",
+    ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");

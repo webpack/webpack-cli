@@ -100,9 +100,7 @@ describe("unknown behaviour", () => {
   });
 
   it("should log error and respect --color flag", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "--color"], {
-      env: { FORCE_COLOR: true },
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "--color"]);
 
     expect(exitCode).toBe(2);
     expect(stderr).toMatchSnapshot("stderr");
@@ -110,9 +108,7 @@ describe("unknown behaviour", () => {
   });
 
   it("should log error for unknown flag and respect --no-color", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "--no-color"], {
-      env: { FORCE_COLOR: true },
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "--no-color"]);
 
     expect(exitCode).toBe(2);
     expect(stderr).toMatchSnapshot("stderr");
