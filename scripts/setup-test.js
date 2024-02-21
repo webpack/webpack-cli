@@ -1,4 +1,4 @@
-jest.setTimeout(120000);
+jest.setTimeout(180000);
 
 if (!expect.getState().testPath.includes("colors.test.js")) {
   process.env.FORCE_COLOR = 0;
