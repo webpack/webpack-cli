@@ -2402,7 +2402,7 @@ class WebpackCLI implements IWebpackCLI {
                 process.exit(2);
               }
 
-              callback(error, stats);
+              callback(error as Error | undefined, stats);
             }
           : callback,
       );
