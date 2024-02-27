@@ -54,10 +54,6 @@ jobs:
       - name: Lint
         run: yarn lint
 
-      - name: Validate PR commits with commitlint
-        if: github.event_name == 'pull_request'
-        run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
-
   build:
     name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, DevServer ${{ matrix.dev-server-version }} (${{ matrix.shard }})
 
@@ -168,6 +164,8 @@ jobs:
 
       - run: yarn --frozen-lockfile
 
-      - uses: wagoid/commitlint-github-action@v5
+      - name: Validate PR commits with commitlint
+        if: github.event_name == 'pull_request'
+        run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
         env:
           NODE_PATH: ${{ github.workspace }}/node_modules
