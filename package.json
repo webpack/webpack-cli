@@ -2,7 +2,10 @@
   "name": "webpack-cli-monorepo",
   "description": "CLI for webpack & friends",
   "license": "MIT",
-  "private": true,
+  "private": true, 
+  "bin": {
+    "create-webpack-app": "./create-app.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/webpack/webpack-cli.git"
