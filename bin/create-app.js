@@ -13,6 +13,7 @@ if (process.argv.length < 3) {
 const projectName = process.argv[2];
 const currentPath = process.cwd();
 const projectPath = path.join(currentPath, projectName);
+const git_repo = "https://github.com/info-arnav/webpack-cli.git";
 
 try {
     fs.mkdirSync(projectPath);
@@ -39,12 +40,16 @@ try {
 
   async function main() {
     try {
-      console.log(`Creating ${framework} app.....`)
-      console.log('Copying files...');
+      console.log(`Creating webpack-${framework} app.....`)
+      console.log('Downloading files...');
 
-      execSync(`git clone --depth 1 ${git_repo} ${projectPath}`);
+      execSync(`git clone --no-checkout --depth 1 ${git_repo} ${projectPath}`);
 
       process.chdir(projectPath);
+
+      execSync('git config core.sparseCheckout true');
+      execSync(`echo "apps/${framework}" >> .git/info/sparse-checkout`);
+      execSync('git checkout');
 
       console.log('Installing dependencies...');
       execSync('npm install');
@@ -54,8 +59,6 @@ try {
       fs.rmdirSync(path.join(projectPath, 'bin'), { recursive: true});
 
       console.log('The installation is done, this is ready to use !');
-
-    // instead just create new files or copy them from the apps directory
 
     } catch (error) {
       console.log(error);
