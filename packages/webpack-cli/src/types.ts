@@ -74,6 +74,7 @@ interface IWebpackCLI {
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
+  setupAutocompleteForShell(): Promise<void>;
 }
 
 interface WebpackCLIColors extends Colorette {

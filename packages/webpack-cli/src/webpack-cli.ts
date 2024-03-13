@@ -57,6 +57,8 @@ import { type Help, type ParseOptions } from "commander";
 
 import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
 
+import { setupAutoCompleteForShell } from "./utils/autocomplete";
+
 const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
@@ -1118,6 +1120,12 @@ class WebpackCLI implements IWebpackCLI {
       description:
         "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
     };
+    const setupAutocompleteCommandOptions = {
+      name: "setup-autocomplete",
+      alias: "a",
+      usage: "[options]",
+      description: "Setup tab completion for your shell",
+    };
     const helpCommandOptions = {
       name: "help [command] [option]",
       alias: "h",
@@ -1162,6 +1170,7 @@ class WebpackCLI implements IWebpackCLI {
       watchCommandOptions,
       versionCommandOptions,
       helpCommandOptions,
+      setupAutocompleteCommandOptions,
       ...externalBuiltInCommandsInfo,
     ];
     const getCommandName = (name: string) => name.split(" ")[0];
@@ -1239,6 +1248,10 @@ class WebpackCLI implements IWebpackCLI {
             cli.logger.raw(info);
           },
         );
+      } else if (isCommand(commandName, setupAutocompleteCommandOptions)) {
+        this.makeCommand(setupAutocompleteCommandOptions, [], async () => {
+          await this.setupAutocompleteForShell();
+        });
       } else {
         const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
           (externalBuiltInCommandInfo) =>
@@ -2538,6 +2551,23 @@ class WebpackCLI implements IWebpackCLI {
       });
       process.stdin.resume();
     }
+  }
+  async setupAutocompleteForShell() {
+    const supportedShells: string[] = ["bash", "zsh", "fish"];
+    let shell!: string;
+    let shellProfilePath!: string;
+
+    if (!shell && (!process.env.SHELL || !process.env.SHELL.match(supportedShells.join("|")))) {
+      this.logger.error("Current shell cannot be detected, please specify it explicitly");
+    }
+
+    process.on("exit", (code: number) => {
+      if (code === 0) {
+        this.logger.success("Please restart shell to apply changes");
+      }
+    });
+
+    setupAutoCompleteForShell(shellProfilePath, shell);
   }
 }
 

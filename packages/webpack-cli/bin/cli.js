@@ -4,6 +4,7 @@
 
 const importLocal = require("import-local");
 const runCLI = require("../lib/bootstrap");
+const { executeAutoComplete } = require("../lib/utils/autocomplete");
 
 if (!process.env.WEBPACK_CLI_SKIP_IMPORT_LOCAL) {
   // Prefer the local installation of `webpack-cli`
@@ -14,4 +15,5 @@ if (!process.env.WEBPACK_CLI_SKIP_IMPORT_LOCAL) {
 
 process.title = "webpack";
 
+executeAutoComplete();
 runCLI(process.argv);
