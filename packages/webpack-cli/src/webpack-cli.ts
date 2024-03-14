@@ -58,6 +58,7 @@ import { type Help, type ParseOptions } from "commander";
 import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
 
 import { setupAutoCompleteForShell } from "./utils/autocomplete";
+import { getExternalBuiltInCommandsInfo, getKnownCommands } from "./utils/helpers";
 
 const fs = require("fs");
 const path = require("path");
@@ -1098,81 +1099,8 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   async run(args: Parameters<WebpackCLICommand["parseOptions"]>[0], parseOptions: ParseOptions) {
-    // Built-in internal commands
-    const buildCommandOptions = {
-      name: "build [entries...]",
-      alias: ["bundle", "b"],
-      description: "Run webpack (default command, can be omitted).",
-      usage: "[entries...] [options]",
-      dependencies: [WEBPACK_PACKAGE],
-    };
-    const watchCommandOptions = {
-      name: "watch [entries...]",
-      alias: "w",
-      description: "Run webpack and watch for files changes.",
-      usage: "[entries...] [options]",
-      dependencies: [WEBPACK_PACKAGE],
-    };
-    const versionCommandOptions = {
-      name: "version",
-      alias: "v",
-      usage: "[options]",
-      description:
-        "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
-    };
-    const setupAutocompleteCommandOptions = {
-      name: "setup-autocomplete",
-      alias: "a",
-      usage: "[options]",
-      description: "Setup tab completion for your shell",
-    };
-    const helpCommandOptions = {
-      name: "help [command] [option]",
-      alias: "h",
-      description: "Display help for commands and options.",
-    };
-    // Built-in external commands
-    const externalBuiltInCommandsInfo: WebpackCLIExternalCommandInfo[] = [
-      {
-        name: "serve [entries...]",
-        alias: ["server", "s"],
-        pkg: "@webpack-cli/serve",
-      },
-      {
-        name: "info",
-        alias: "i",
-        pkg: "@webpack-cli/info",
-      },
-      {
-        name: "init",
-        alias: ["create", "new", "c", "n"],
-        pkg: "@webpack-cli/generators",
-      },
-      {
-        name: "loader",
-        alias: "l",
-        pkg: "@webpack-cli/generators",
-      },
-      {
-        name: "plugin",
-        alias: "p",
-        pkg: "@webpack-cli/generators",
-      },
-      {
-        name: "configtest [config-path]",
-        alias: "t",
-        pkg: "@webpack-cli/configtest",
-      },
-    ];
+    const knownCommands = getKnownCommands();
 
-    const knownCommands = [
-      buildCommandOptions,
-      watchCommandOptions,
-      versionCommandOptions,
-      helpCommandOptions,
-      setupAutocompleteCommandOptions,
-      ...externalBuiltInCommandsInfo,
-    ];
     const getCommandName = (name: string) => name.split(" ")[0];
     const isKnownCommand = (name: string) =>
       knownCommands.find(
@@ -1180,6 +1108,14 @@ class WebpackCLI implements IWebpackCLI {
           getCommandName(command.name) === name ||
           (Array.isArray(command.alias) ? command.alias.includes(name) : command.alias === name),
       );
+    //duplicate logic from isKnownCommand: Done to prevent readability issues
+    const getKnownCommand = (name: string): WebpackCLIOptions =>
+      knownCommands.find(
+        (command) =>
+          getCommandName(command.name) == name ||
+          (Array.isArray(command.alias) ? command.alias.includes(name) : command.alias == name),
+      ) || knownCommands[0];
+
     const isCommand = (input: string, commandOptions: WebpackCLIOptions) => {
       const longName = getCommandName(commandOptions.name);
 
@@ -1214,12 +1150,12 @@ class WebpackCLI implements IWebpackCLI {
       commandName: WebpackCLIExternalCommandInfo["name"],
       allowToInstall = false,
     ) => {
-      const isBuildCommandUsed = isCommand(commandName, buildCommandOptions);
-      const isWatchCommandUsed = isCommand(commandName, watchCommandOptions);
+      const isBuildCommandUsed = isCommand(commandName, getKnownCommand("build"));
+      const isWatchCommandUsed = isCommand(commandName, getKnownCommand("watch"));
 
       if (isBuildCommandUsed || isWatchCommandUsed) {
         await this.makeCommand(
-          isBuildCommandUsed ? buildCommandOptions : watchCommandOptions,
+          isBuildCommandUsed ? getKnownCommand("build") : getKnownCommand("watch"),
           async () => {
             this.webpack = await this.loadWebpack();
 
@@ -1233,14 +1169,14 @@ class WebpackCLI implements IWebpackCLI {
             await this.runWebpack(options, isWatchCommandUsed);
           },
         );
-      } else if (isCommand(commandName, helpCommandOptions)) {
+      } else if (isCommand(commandName, getKnownCommand("help"))) {
         // Stub for the `help` command
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this.makeCommand(helpCommandOptions, [], () => {});
-      } else if (isCommand(commandName, versionCommandOptions)) {
+        this.makeCommand(getKnownCommand("help"), [], () => {});
+      } else if (isCommand(commandName, getKnownCommand("version"))) {
         // Stub for the `version` command
         this.makeCommand(
-          versionCommandOptions,
+          getKnownCommand("version"),
           this.getInfoOptions(),
           async (options: { output: string; additionalPackage: string[] }) => {
             const info = await cli.getInfoOutput(options);
@@ -1248,12 +1184,12 @@ class WebpackCLI implements IWebpackCLI {
             cli.logger.raw(info);
           },
         );
-      } else if (isCommand(commandName, setupAutocompleteCommandOptions)) {
-        this.makeCommand(setupAutocompleteCommandOptions, [], async () => {
+      } else if (isCommand(commandName, getKnownCommand("setup-autocomplete"))) {
+        this.makeCommand(getKnownCommand("setup-autocomplete"), [], async () => {
           await this.setupAutocompleteForShell();
         });
       } else {
-        const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
+        const builtInExternalCommandInfo = getExternalBuiltInCommandsInfo().find(
           (externalBuiltInCommandInfo) =>
             getCommandName(externalBuiltInCommandInfo.name) === commandName ||
             (Array.isArray(externalBuiltInCommandInfo.alias)
@@ -1335,7 +1271,7 @@ class WebpackCLI implements IWebpackCLI {
           const operand =
             typeof operands[0] !== "undefined"
               ? operands[0]
-              : getCommandName(buildCommandOptions.name);
+              : getCommandName(getKnownCommand("build").name);
 
           if (operand) {
             const command = findCommandByName(operand);
@@ -1571,7 +1507,7 @@ class WebpackCLI implements IWebpackCLI {
             }),
           );
 
-          const buildCommand = findCommandByName(getCommandName(buildCommandOptions.name));
+          const buildCommand = findCommandByName(getCommandName(getKnownCommand("build").name));
 
           buildCommand && this.logger.raw(buildCommand.helpInformation());
         } else {
@@ -1582,7 +1518,7 @@ class WebpackCLI implements IWebpackCLI {
           const command = findCommandByName(name);
 
           if (!command) {
-            const builtInCommandUsed = externalBuiltInCommandsInfo.find(
+            const builtInCommandUsed = getExternalBuiltInCommandsInfo().find(
               (command) => command.name.includes(name) || name === command.alias,
             );
             if (typeof builtInCommandUsed !== "undefined") {
@@ -1600,7 +1536,7 @@ class WebpackCLI implements IWebpackCLI {
         }
       } else if (isHelpCommandSyntax) {
         let isCommandSpecified = false;
-        let commandName = getCommandName(buildCommandOptions.name);
+        let commandName = getCommandName(getKnownCommand("build").name);
         let optionName = "";
 
         if (options.length === 1) {
@@ -1723,11 +1659,11 @@ class WebpackCLI implements IWebpackCLI {
 
       // Command and options
       const { operands, unknown } = this.program.parseOptions(program.args);
-      const defaultCommandToRun = getCommandName(buildCommandOptions.name);
+      const defaultCommandToRun = getCommandName(getKnownCommand("build").name);
       const hasOperand = typeof operands[0] !== "undefined";
       const operand = hasOperand ? operands[0] : defaultCommandToRun;
       const isHelpOption = typeof options.help !== "undefined";
-      const isHelpCommandSyntax = isCommand(operand, helpCommandOptions);
+      const isHelpCommandSyntax = isCommand(operand, getKnownCommand("help"));
 
       if (isHelpOption || isHelpCommandSyntax) {
         let isVerbose = false;
