@@ -4,43 +4,9 @@ import * as Fs from "fs";
 const omelette = require("omelette");
 
 const appName = "webpack-cli";
-const autocompleteTree = {
-  build: [
-    {
-      long: "--config",
-    },
-    {
-      long: "--stats",
-    },
-  ],
-} as IAutocompleteTree;
 
 function getAutoCompleteObject() {
   return omelette(appName);
-}
-
-export function executeAutoComplete() {
-  const autoCompleteObject = getAutoCompleteObject();
-  autoCompleteObject.on(
-    "complete",
-    function (
-      fragment: string,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      data: { before: string; fragment: number; line: string; reply: (answer: any) => void },
-    ) {
-      const line = data.line;
-      const reply = data.reply;
-      const argsLine = line.substring(appName.length);
-      const args = argsLine.match(/\S+/g) || [];
-      const lineEndsWithWhitespaceChar = /\s{1}/.test(last(line));
-
-      const getReply = getReplyHandler(lineEndsWithWhitespaceChar);
-
-      reply(getReply(args, autocompleteTree));
-    },
-  );
-
-  autoCompleteObject.init();
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
