@@ -93,7 +93,7 @@ ${sources}
   }
 }
 
-function getReplyHandler(
+export function getReplyHandler(
   lineEndsWithWhitespaceChar: boolean,
 ): (args: string[], autocompleteTree: IAutocompleteTree) => string[] {
   return function getReply(args: string[], autocompleteTree: IAutocompleteTree): string[] {
@@ -167,7 +167,7 @@ interface IOptionNames {
   long?: string;
 }
 
-interface IAutocompleteTree {
+export interface IAutocompleteTree {
   [entity: string]: IAutocompleteTree | IOptionNames[];
 }
 

@@ -57,7 +57,11 @@ import { type Help, type ParseOptions } from "commander";
 
 import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
 
-import { setupAutoCompleteForShell } from "./utils/autocomplete";
+import {
+  IAutocompleteTree,
+  getReplyHandler,
+  setupAutoCompleteForShell,
+} from "./utils/autocomplete";
 import { getExternalBuiltInCommandsInfo, getKnownCommands } from "./utils/helpers";
 
 const fs = require("fs");
@@ -65,6 +69,7 @@ const path = require("path");
 const { pathToFileURL } = require("url");
 const util = require("util");
 const { program, Option } = require("commander");
+const omelette = require("omelette");
 
 const WEBPACK_PACKAGE_IS_CUSTOM = !!process.env.WEBPACK_PACKAGE;
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -2488,6 +2493,45 @@ class WebpackCLI implements IWebpackCLI {
       process.stdin.resume();
     }
   }
+  executeAutoComplete(): void {
+    function last(line: string): string {
+      return line.substr(-1, 1);
+    }
+
+    const autocompleteTree = {
+      build: [
+        {
+          long: "--config",
+        },
+        {
+          long: "--stats",
+        },
+      ],
+    } as IAutocompleteTree;
+
+    const autoCompleteObject = omelette("webpack-cli");
+    autoCompleteObject.on(
+      "complete",
+      function (
+        fragment: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data: { before: string; fragment: number; line: string; reply: (answer: any) => void },
+      ) {
+        const line = data.line;
+        const reply = data.reply;
+        const argsLine = line.substring("webpack-cli".length);
+        const args = argsLine.match(/\S+/g) || [];
+        const lineEndsWithWhitespaceChar = /\s{1}/.test(last(line));
+
+        const getReply = getReplyHandler(lineEndsWithWhitespaceChar);
+
+        reply(getReply(args, autocompleteTree));
+      },
+    );
+
+    autoCompleteObject.init();
+  }
+
   async setupAutocompleteForShell() {
     const supportedShells: string[] = ["bash", "zsh", "fish"];
     let shell!: string;
