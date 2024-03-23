@@ -1360,36 +1360,36 @@ class WebpackCLI {
     }
     async loadConfig(options) {
         // Reading .env File
-        const envConfigPath = path.resolve(process.cwd(), '.env');
-        if (fs.existsSync(envConfigPath)) {
-            const envConfig = fs.readFileSync(envConfigPath, 'utf8');
-            const envVariables = envConfig.split('\n');
-            envVariables.forEach((line) => {
-                const [key, value] = line.split('=');
-                if (key && value) {
-                    process.env[key.trim()] = value.trim();
-                }
-            });
-        }
-        const disableInterpret = typeof options.disableInterpret !== "undefined" && options.disableInterpret;
+        // const envConfigPath = path.resolve(process.cwd(), '.env');
+        // if (fs.existsSync(envConfigPath)) {
+        //     const envConfig = fs.readFileSync(envConfigPath, 'utf8');
+        //     const envVariables = envConfig.split('\n');
+        //     envVariables.forEach((line) => {
+        //         const [key, value] = line.split('=');
+        //         if (key && value) {
+        //             process.env[key.trim()] = value.trim();
+        //         }
+        //     });
+        // }
+        // const disableInterpret = typeof options.disableInterpret !== "undefined" && options.disableInterpret;
 
-        // Dot env functionalty
-        const interpolate = (env: string, vars: Record<string, string>): string => {
-          const matches: RegExpMatchArray | null = env.match(/\$([a-zA-Z0-9_]+)|\${([a-zA-Z0-9_]+)}/g) || [];
+        // // Dot env functionalty
+        // const interpolate = (env: string, vars: Record<string, string>): string => {
+        //   const matches: RegExpMatchArray | null = env.match(/\$([a-zA-Z0-9_]+)|\${([a-zA-Z0-9_]+)}/g) || [];
         
-          matches.forEach((match: string) => {
-            const key: string = match.replace(/\$|{|}/g, '');
-            let variable: string = vars[key] || '';
-            variable = interpolate(variable, vars);
-            env = env.replace(match, variable);
-          });
+        //   matches.forEach((match: string) => {
+        //     const key: string = match.replace(/\$|{|}/g, '');
+        //     let variable: string = vars[key] || '';
+        //     variable = interpolate(variable, vars);
+        //     env = env.replace(match, variable);
+        //   });
         
-          return env;
-        }
+        //   return env;
+        // }
 
-        Object.keys(envVariables).forEach((key: string) => {
-          process.env[key] = interpolate(envVariables[key], envVariables);
-        });
+        // Object.keys(envVariables).forEach((key: string) => {
+        //   process.env[key] = interpolate(envVariables[key], envVariables);
+        // });
 
         const loadConfigByPath = async (configPath, argv = {}) => {
             const ext = path.extname(configPath).toLowerCase();
@@ -1740,9 +1740,9 @@ class WebpackCLI {
                     else {
                         item.cache.buildDependencies.defaultConfig.push(configPath);
                     }
-                    if (fs.existsSync(envConfigPath)) { 
-                      item.cache.buildDependencies.defaultConfig.push(envConfigPath);
-                  }
+                  //   if (fs.existsSync(envConfigPath)) { 
+                  //     item.cache.buildDependencies.defaultConfig.push(envConfigPath);
+                  // }
                 }
             }
             // Respect `process.env.NODE_ENV`

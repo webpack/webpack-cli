@@ -2,7 +2,7 @@
   "name": "webpack-cli-monorepo",
   "description": "CLI for webpack & friends",
   "license": "MIT",
-  "private": true, 
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/webpack/webpack-cli.git"
@@ -96,5 +96,8 @@
     "webpack": "^5.90.3",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-dev-server": "^5.0.2"
+  },
+  "dependencies": {
+    "dotenv-defaults": "^5.0.2"
   }
 }
