@@ -55,6 +55,7 @@ interface IWebpackCLI {
     options: WebpackCLICommandOptions,
     action: CommandAction,
   ): Promise<WebpackCLICommand | undefined>;
+  getConfigOutput(options: WebpackDevServerOptions): Promise<void>;
   makeOption(command: WebpackCLICommand, option: WebpackCLIBuiltInOption): void;
   run(
     args: Parameters<WebpackCLICommand["parseOptions"]>[0],

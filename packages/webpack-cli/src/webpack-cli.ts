@@ -44,7 +44,7 @@ import type {
 } from "./types";
 
 import type webpackMerge from "webpack-merge";
-import type webpack from "webpack";
+import webpack, { web } from "webpack";
 import {
   type Compiler,
   type MultiCompiler,
@@ -459,6 +459,49 @@ class WebpackCLI implements IWebpackCLI {
     ];
   }
 
+  getConfigOptions(): WebpackCLIBuiltInOption[] {
+    return [
+      {
+        name: "file",
+        alias: "f",
+        configs: [
+          {
+            type: "path",
+          },
+        ],
+        description: "Provide path to one or more webpack configuration files to process.",
+        helpLevel: "minimum",
+      },
+      {
+        name: "name",
+        alias: "n",
+        configs: [
+          {
+            type: "string",
+            values: [],
+          },
+        ],
+        multiple: true,
+        description:
+          "Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.",
+        helpLevel: "minimum",
+      },
+      {
+        name: "include",
+        alias: "i",
+        configs: [
+          {
+            type: "string",
+            values: [],
+          },
+        ],
+        multiple: true,
+        description: "To include the options of webpack-dev-server.",
+        helpLevel: "minimum",
+      },
+    ];
+  }
+
   async getInfoOutput(options: { output: string; additionalPackage: string[] }): Promise<string> {
     let { output } = options;
     const envinfoConfig: { [key: string]: boolean } = {};
@@ -517,6 +560,49 @@ class WebpackCLI implements IWebpackCLI {
     return info;
   }
 
+  async getConfigOutput(options: WebpackDevServerOptions): Promise<void> {
+    const config = await this.loadConfig({
+      config: [options.file ? options.file : "webpack.config.js"],
+      name: options.name,
+      configName: options.name ? (options.name as unknown as string[]) : undefined,
+    });
+    if (options.name) {
+      config.options = Array.isArray(config.options)
+        ? config.options.filter((option: any) => options.name?.includes(option.name))
+        : [];
+    }
+
+    if (options.include) {
+      const includeOptions = webpack.config.getNormalizedWebpackOptions({});
+      Array.isArray(config.options)
+        ? config.options.forEach((option) => {
+            Object.keys(option || {}).forEach((key) => {
+              if (options.include.includes(key) && options.name?.includes(option.name || "")) {
+                let finalOption: any = includeOptions[key as keyof WebpackOptionsNormalized];
+                if (typeof option[key as keyof typeof option] === "string") {
+                  finalOption = option[key as keyof typeof option] as string;
+                } else {
+                  Object.keys(option[key as keyof typeof option] || {}).forEach((subkey) => {
+                    finalOption[subkey] = (option[key as keyof typeof option] as any)?.[subkey];
+                  });
+                }
+                console.log(`\n${key}:`, finalOption);
+              }
+            });
+          })
+        : [];
+    }
+
+    const compiler = webpack(config.options as webpack.Configuration[]);
+    compiler.run((err, stats) => {
+      if (err) {
+        console.error(err);
+        process.exit(1);
+      }
+      this.logger.raw(stats?.toString({ colors: this.colors.isColorSupported }));
+      process.exit(0);
+    });
+  }
   async makeCommand(
     commandOptions: WebpackCLIOptions,
     options: WebpackCLICommandOptions,
@@ -864,33 +950,6 @@ class WebpackCLI implements IWebpackCLI {
     const builtInFlags: WebpackCLIBuiltInFlag[] = [
       // For configs
       {
-        name: "config",
-        alias: "c",
-        configs: [
-          {
-            type: "string",
-          },
-        ],
-        multiple: true,
-        valueName: "pathToConfigFile",
-        description:
-          'Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".',
-        helpLevel: "minimum",
-      },
-      {
-        name: "config-name",
-        configs: [
-          {
-            type: "string",
-          },
-        ],
-        multiple: true,
-        valueName: "name",
-        description:
-          "Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.",
-        helpLevel: "minimum",
-      },
-      {
         name: "merge",
         alias: "m",
         configs: [
@@ -1123,6 +1182,12 @@ class WebpackCLI implements IWebpackCLI {
       alias: "h",
       description: "Display help for commands and options.",
     };
+    const configCommandOptions = {
+      name: "config [command]",
+      alias: "c",
+      description: "Get the configuration of a command.",
+      usage: "[options]",
+    };
     // Built-in external commands
     const externalBuiltInCommandsInfo: WebpackCLIExternalCommandInfo[] = [
       {
@@ -1162,6 +1227,7 @@ class WebpackCLI implements IWebpackCLI {
       watchCommandOptions,
       versionCommandOptions,
       helpCommandOptions,
+      configCommandOptions,
       ...externalBuiltInCommandsInfo,
     ];
     const getCommandName = (name: string) => name.split(" ")[0];
@@ -1239,6 +1305,10 @@ class WebpackCLI implements IWebpackCLI {
             cli.logger.raw(info);
           },
         );
+      } else if (isCommand(commandName, configCommandOptions)) {
+        this.makeCommand(configCommandOptions, this.getConfigOptions(), async (_, options) => {
+          await this.getConfigOutput(options);
+        });
       } else {
         const builtInExternalCommandInfo = externalBuiltInCommandsInfo.find(
           (externalBuiltInCommandInfo) =>

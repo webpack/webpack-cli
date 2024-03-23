@@ -96,5 +96,8 @@
     "webpack": "^5.90.3",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-dev-server": "^5.0.2"
+  },
+  "dependencies": {
+    "yarn": "^1.22.21"
   }
 }
