@@ -1042,6 +1042,7 @@ Global options:
 
 Commands:
   build|bundle|b [entries...] [options]                                              Run webpack (default command, can be omitted).
+  config|c [command] [options]                                                       Get the configuration of a particular project.
   configtest|t [config-path]                                                         Validate a webpack configuration.
   help|h [command] [option]                                                          Display help for commands and options.
   info|i [options]                                                                   Outputs information about your system.
