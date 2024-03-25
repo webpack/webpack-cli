@@ -1,0 +1,23 @@
+{
+  "name": "dot-env-webpack-plugin",
+  "version": "1.0.0",
+  "description": "Plugin to support env files",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack/webpack-cli.git"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/webpack"
+  },
+  "main": "./index.js",
+  "keywords": [
+    "webpack",
+    "plugin",
+    "env"
+  ],
+  "dependencies": {
+    "dotenv-defaults": "^5.0.2"
+  }
+}

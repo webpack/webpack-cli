@@ -73,10 +73,10 @@ class Dotenv {
   }
 
   getEnvs(inputFileSystem) {
-    const { path, silent, safe } = this.config;
+    const { path, safe } = this.config;
 
     const env = dotenv.parse(
-      this.loadFile(path, silent, inputFileSystem),
+      this.loadFile(path, inputFileSystem),
       this.getDefaults(inputFileSystem),
     );
 
@@ -89,7 +89,6 @@ class Dotenv {
       blueprint = dotenv.parse(
         this.loadFile({
           file,
-          silent,
         }),
       );
     }
@@ -101,9 +100,9 @@ class Dotenv {
   }
 
   getDefaults(inputFileSystem) {
-    const { path, silent, defaults } = this.config;
+    const { path, defaults } = this.config;
     const defaultFile = defaults === true ? `${path}.defaults` : defaults;
-    return this.loadFile(defaultFile, silent, inputFileSystem);
+    return this.loadFile(defaultFile, inputFileSystem);
   }
 
   formatData({ variables = {}, target, version }) {
@@ -165,10 +164,9 @@ class Dotenv {
   /**
    * Load a file.
    * @param {String} config.file - The file to load.
-   * @param {Boolean} config.silent - If true, suppress warnings, if false, display warnings.
    * @returns {Object}
    */
-  loadFile(filePath, silent, inputFileSystem) {
+  loadFile(filePath, inputFileSystem) {
     if (this.cache[filePath]) {
       return this.cache[filePath];
     }
@@ -177,18 +175,15 @@ class Dotenv {
       this.cache[filePath] = content;
       return content;
     } catch (err) {
-      if (!silent) console.warn(`Failed to load ${filePath}.`);
       return {};
     }
   }
 
   /**
-   * Displays a console message if 'silent' is falsey
    * @param {String} msg - The message.
-   * @param {Boolean} silent - If true, display the message, if false, suppress the message.
    */
-  warn(msg, silent) {
-    !silent && console.warn(msg);
+  warn(msg) {
+    console.warn(msg);
   }
 }
 
