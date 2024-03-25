@@ -88,6 +88,8 @@ class Dotenv {
   formatData({ variables = {}, target, version }) {
     const { expand, prefixes } = this.config;
 
+    // add a nomencalture like VITE_VAR_NAME to segregate between the imports
+
     const preprocessedVariables = Object.keys(variables).reduce((obj, key) => {
       let value = variables[key];
       if (expand) {
