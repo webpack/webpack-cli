@@ -87,32 +87,32 @@ class Dotenv {
 
   formatData({ variables = {}, target, version }) {
     const { expand, prefixes } = this.config;
-    const formatted = Object.keys(variables).reduce((obj, key) => {
-      prefixes.forEach((prefix) => {
-        const v = variables[key];
-        const vKey = `${prefix}${key}`;
-        let vValue;
-        if (expand) {
-          if (v.substring(0, 2) === "\\$") {
-            vValue = v.substring(1);
-          } else if (v.indexOf("\\$") > 0) {
-            vValue = v.replace(/\\\$/g, "$");
-          } else {
-            vValue = interpolate(v, variables);
-          }
-        } else {
-          vValue = v;
-        }
 
-        obj[vKey] = JSON.stringify(vValue);
-      });
+    const preprocessedVariables = Object.keys(variables).reduce((obj, key) => {
+      let value = variables[key];
+      if (expand) {
+        if (value.startsWith("\\$")) {
+          value = value.substring(1);
+        } else if (value.includes("\\$")) {
+          value = value.replace(/\\\$/g, "$");
+        } else {
+          value = interpolate(value, variables);
+        }
+      }
+      obj[key] = JSON.stringify(value);
       return obj;
     }, {});
+
+    const formatted = {};
+    prefixes.forEach((prefix) => {
+      Object.entries(preprocessedVariables).forEach(([key, value]) => {
+        formatted[`${prefix}${key}`] = value;
+      });
+    });
 
     const shouldStubEnv =
       prefixes.includes("process.env.") &&
       this.shouldStub({ target, version, prefix: "process.env." });
-
     if (shouldStubEnv) {
       formatted["process.env"] = '"MISSING_ENV_VAR"';
     }
