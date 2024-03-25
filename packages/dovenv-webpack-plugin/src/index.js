@@ -16,7 +16,7 @@ class Dotenv {
       {},
       {
         path: "./.env",
-        prefix: "process.env.",
+        prefixes: ["process.env.", "import.meta.env."],
       },
       config,
     );
@@ -38,7 +38,7 @@ class Dotenv {
   }
 
   gatherVariables(inputFileSystem) {
-    const { safe, allowEmptyValues } = this.config;
+    const { allowEmptyValues } = this.config;
     const vars = this.initializeVars();
 
     const { env, blueprint } = this.getEnvs(inputFileSystem);
@@ -49,21 +49,12 @@ class Dotenv {
       const isMissing =
         typeof value === "undefined" || value === null || (!allowEmptyValues && value === "");
 
-      if (safe && isMissing) {
+      if (isMissing) {
         throw new Error(`Missing environment variable: ${key}`);
       } else {
         vars[key] = value;
       }
     });
-
-    // add the leftovers
-    if (safe) {
-      Object.keys(env).forEach((key) => {
-        if (!Object.prototype.hasOwnProperty.call(vars, key)) {
-          vars[key] = env[key];
-        }
-      });
-    }
 
     return vars;
   }
@@ -73,7 +64,7 @@ class Dotenv {
   }
 
   getEnvs(inputFileSystem) {
-    const { path, safe } = this.config;
+    const { path } = this.config;
 
     const env = dotenv.parse(
       this.loadFile(path, inputFileSystem),
@@ -81,17 +72,6 @@ class Dotenv {
     );
 
     let blueprint = env;
-    if (safe) {
-      let file = `${path}.example`;
-      if (safe !== true) {
-        file = safe;
-      }
-      blueprint = dotenv.parse(
-        this.loadFile({
-          file,
-        }),
-      );
-    }
 
     return {
       env,
@@ -106,41 +86,41 @@ class Dotenv {
   }
 
   formatData({ variables = {}, target, version }) {
-    const { expand, prefix } = this.config;
+    const { expand, prefixes } = this.config;
     const formatted = Object.keys(variables).reduce((obj, key) => {
-      const v = variables[key];
-      const vKey = `${prefix}${key}`;
-      let vValue;
-      if (expand) {
-        if (v.substring(0, 2) === "\\$") {
-          vValue = v.substring(1);
-        } else if (v.indexOf("\\$") > 0) {
-          vValue = v.replace(/\\\$/g, "$");
+      prefixes.forEach((prefix) => {
+        const v = variables[key];
+        const vKey = `${prefix}${key}`;
+        let vValue;
+        if (expand) {
+          if (v.substring(0, 2) === "\\$") {
+            vValue = v.substring(1);
+          } else if (v.indexOf("\\$") > 0) {
+            vValue = v.replace(/\\\$/g, "$");
+          } else {
+            vValue = interpolate(v, variables);
+          }
         } else {
-          vValue = interpolate(v, variables);
+          vValue = v;
         }
-      } else {
-        vValue = v;
-      }
 
-      obj[vKey] = JSON.stringify(vValue);
-
+        obj[vKey] = JSON.stringify(vValue);
+      });
       return obj;
     }, {});
 
-    // We have to stub any remaining `process.env`s due to Webpack 5 not polyfilling it anymore
-    // https://github.com/mrsteele/dotenv-webpack/issues/240#issuecomment-710231534
-    // However, if someone targets Node or Electron `process.env` still exists, and should therefore be kept
-    // https://webpack.js.org/configuration/target
-    if (this.shouldStub({ target, version })) {
-      // Results in `"MISSING_ENV_VAR".NAME` which is valid JS
+    const shouldStubEnv =
+      prefixes.includes("process.env.") &&
+      this.shouldStub({ target, version, prefix: "process.env." });
+
+    if (shouldStubEnv) {
       formatted["process.env"] = '"MISSING_ENV_VAR"';
     }
 
     return formatted;
   }
 
-  shouldStub({ target: targetInput, version }) {
+  shouldStub({ target: targetInput, version, prefix }) {
     if (!version.startsWith("5")) {
       return false;
     }
@@ -150,7 +130,7 @@ class Dotenv {
     return targets.every(
       (target) =>
         // If configured prefix is 'process.env'
-        this.config.prefix === "process.env." &&
+        prefix === "process.env." &&
         // If we're not configured to never stub
         this.config.ignoreStub !== true &&
         // And
