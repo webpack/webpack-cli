@@ -114,7 +114,7 @@ jobs:
         run: yarn test:coverage --ci --shard=${{ matrix.shard }}
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
 
   smoketests:
     name: Smoketests - ${{ matrix.os }} - Node v${{ matrix.node-version }}
