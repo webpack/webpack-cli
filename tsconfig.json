@@ -34,6 +34,9 @@
       "path": "packages/serve"
     },
     {
+      "path": "packages/create-webpack-app"
+    },
+    {
       "path": "packages/webpack-cli"
     }
   ]
