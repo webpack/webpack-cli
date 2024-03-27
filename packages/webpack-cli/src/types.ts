@@ -29,6 +29,7 @@ import { type stringifyStream } from "@discoveryjs/json-ext";
  */
 
 interface IWebpackCLI {
+  dotEnv: boolean;
   colors: WebpackCLIColors;
   logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;

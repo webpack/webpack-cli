@@ -102,6 +102,7 @@ Options:
   --watch-files-reset                                 Clear all items provided in 'watchFiles' configuration. Allows to configure list of globs/directories/files to watch for file changes.
   --no-web-socket-server                              Disallows to set web socket server and options.
   --web-socket-server-type <value>                    Allows to set web socket server and options (by default 'ws').
+  --dot-env                                           Allows env support to webpack.
 
 Global options:
   --color                                             Enable colors on console.
