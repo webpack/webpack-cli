@@ -2984,6 +2984,15 @@
     "@types/expect" "^1.20.4"
     "@types/node" "*"
 
+"@types/webpack@^5.28.5":
+  version "5.28.5"
+  resolved "https://registry.npmjs.org/@types/webpack/-/webpack-5.28.5.tgz"
+  integrity sha512-wR87cgvxj3p6D0Crt1r5avwqffqPXUkNlnQ1mjU93G7gCuFjufZR4I6j8cz5g1F1tTYpfOOFvly+cmIQwL9wvw==
+  dependencies:
+    "@types/node" "*"
+    tapable "^2.2.0"
+    webpack "^5"
+
 "@types/ws@^8.5.10":
   version "8.5.10"
   resolved "https://registry.npmjs.org/@types/ws/-/ws-8.5.10.tgz"
@@ -11784,7 +11793,7 @@ webpack-sources@^3.2.3:
   resolved "https://registry.npmjs.org/webpack-sources/-/webpack-sources-3.2.3.tgz"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
-webpack@^5.0.0, webpack@^5.1.0, webpack@^5.90.3, webpack@5.x.x:
+webpack@^5, webpack@^5.0.0, webpack@^5.1.0, webpack@^5.90.3, webpack@5.x.x:
   version "5.90.3"
   resolved "https://registry.npmjs.org/webpack/-/webpack-5.90.3.tgz"
   integrity sha512-h6uDYlWCctQRuXBs1oYpVe6sFcWedl0dpcVaTf/YF67J9bKvwJajFulMVSYKHrksMB3I/pIagRzDxwxkebuzKA==
