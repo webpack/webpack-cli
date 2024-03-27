@@ -2373,7 +2373,7 @@ class WebpackCLI implements IWebpackCLI {
       // Add dotenv plugin to the config
       if (this.dotEnv) {
         const Dotenv = require("./plugins/dotenv-webpack-plugin");
-        item.plugins.push(new Dotenv());
+        item.plugins.unshift(new Dotenv());
       }
     };
 
