@@ -33,36 +33,34 @@ const isMainThreadElectron = (target: string | undefined): boolean =>
   !!target && target.startsWith("electron") && target.endsWith("main");
 
 export class Dotenv {
-  private logger!: Logger;
-  private config: DotenvConfig;
-  private cache: any;
-  private inputFileSystem: any;
+  #logger!: Logger;
+  #config: DotenvConfig;
+  #inputFileSystem: any;
 
   constructor(config: DotenvConfig = {}) {
-    this.config = {
-      paths: ["./.env"],
+    this.#config = {
+      paths: ["./.env.local"],
       prefixes: ["process.env.", "import.meta.env."],
       ...config,
     };
-    this.cache = new Map();
   }
 
   public apply(compiler: Compiler): void {
-    this.inputFileSystem = compiler.inputFileSystem;
-    this.logger = compiler.getInfrastructureLogger("dotenv-webpack-plugin");
-    const variables = this.gatherVariables();
+    this.#inputFileSystem = compiler.inputFileSystem;
+    this.#logger = compiler.getInfrastructureLogger("dotenv-webpack-plugin");
+    const variables = this.#gatherVariables();
     const target = compiler.options.target;
-    const data = this.formatData({
+    const data = this.#formatData({
       variables,
       target: typeof target === "boolean" ? undefined : target,
     });
     new DefinePlugin(data).apply(compiler);
   }
-  private gatherVariables(): EnvVariables {
-    const { allowEmptyValues } = this.config;
-    const vars: EnvVariables = this.initializeVars();
+  #gatherVariables(): EnvVariables {
+    const { allowEmptyValues } = this.#config;
+    const vars: EnvVariables = this.#initializeVars();
 
-    const { env, blueprint } = this.getEnvs();
+    const { env, blueprint } = this.#getEnvs();
 
     Object.keys(blueprint).forEach((key) => {
       const value = Object.prototype.hasOwnProperty.call(vars, key) ? vars[key] : env[key];
@@ -77,19 +75,19 @@ export class Dotenv {
     return vars;
   }
 
-  private initializeVars(): EnvVariables {
-    return this.config.systemvars
+  #initializeVars(): EnvVariables {
+    return this.#config.systemvars
       ? Object.fromEntries(Object.entries(process.env).map(([key, value]) => [key, value ?? ""]))
       : {};
   }
 
-  private getEnvs(): { env: EnvVariables; blueprint: EnvVariables } {
-    const { paths } = this.config;
+  #getEnvs(): { env: EnvVariables; blueprint: EnvVariables } {
+    const { paths } = this.#config;
 
     const env: EnvVariables = {};
 
-    (paths || ["./.env"]).forEach((path) =>
-      Object.assign(env, dotenv.parse(this.loadFile(path || "./.env"))),
+    (paths || ["./.env.local"]).forEach((path) =>
+      Object.assign(env, dotenv.parse(this.#loadFile(path || "./.env.local"))),
     );
 
     const blueprint: EnvVariables = env;
@@ -97,14 +95,14 @@ export class Dotenv {
     return { env, blueprint };
   }
 
-  private formatData({
+  #formatData({
     variables = {},
     target,
   }: {
     variables: EnvVariables;
     target: string | string[] | undefined;
   }): Record<string, string> {
-    const { expand, prefixes } = this.config;
+    const { expand, prefixes } = this.#config;
 
     const preprocessedVariables: EnvVariables = Object.keys(variables).reduce(
       (obj: EnvVariables, key: string) => {
@@ -132,7 +130,7 @@ export class Dotenv {
     });
 
     const shouldStubEnv =
-      prefixes?.includes("process.env.") && this.shouldStub({ target, prefix: "process.env." });
+      prefixes?.includes("process.env.") && this.#shouldStub({ target, prefix: "process.env." });
     if (shouldStubEnv) {
       formatted["process.env"] = '"MISSING_ENV_VAR"';
     }
@@ -140,7 +138,7 @@ export class Dotenv {
     return formatted;
   }
 
-  private shouldStub({
+  #shouldStub({
     target: targetInput,
     prefix,
   }: {
@@ -152,27 +150,22 @@ export class Dotenv {
     return targets.every(
       (target) =>
         prefix === "process.env." &&
-        this.config.ignoreStub !== true &&
-        (this.config.ignoreStub === false ||
+        this.#config.ignoreStub !== true &&
+        (this.#config.ignoreStub === false ||
           (!target.includes("node") && !isMainThreadElectron(target))),
     );
   }
 
-  private loadFile(filePath: string): string {
-    if (this.cache.has(filePath)) {
-      return this.cache.get(filePath);
-    }
+  #loadFile(filePath: string): string {
     try {
-      const content = this.inputFileSystem.readFileSync(filePath, "utf8");
-      this.cache.set(filePath, content);
-      return content;
+      return this.#inputFileSystem.readFile(filePath, "utf8");
     } catch (err) {
       return "{}";
     }
   }
 
   public warn(msg: string): void {
-    this.logger.warn(msg);
+    this.#logger.warn(msg);
   }
 }
 
