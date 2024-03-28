@@ -66,10 +66,11 @@ export class Dotenv {
 
       if (!this.#cached) {
         const variables = this.#gatherVariables(compilation);
-        const target = compiler.options.target;
+        const target: string =
+          typeof compiler.options.target == "string" ? compiler.options.target : "";
         const data = this.#formatData({
           variables,
-          target: typeof target === "boolean" ? undefined : target,
+          target: target,
         });
         new DefinePlugin(data).apply(compiler);
         await cache
@@ -126,7 +127,7 @@ export class Dotenv {
     target,
   }: {
     variables: EnvVariables;
-    target: string | string[] | undefined;
+    target: string;
   }): Record<string, string> {
     const { expand, prefixes } = this.#config;
 

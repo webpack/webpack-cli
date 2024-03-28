@@ -43,7 +43,7 @@ describe("dotenv", () => {
   });
 
   it("should find and replace values from .env when --dot-env arg passed", async () => {
-    console.log(await run(testDirectory, ["--dot-env"]));
+    await run(testDirectory, ["--dot-env"]);
     const output = fs.readFileSync(outputFile, "utf-8");
     expect(output).toContain("12345");
   });
