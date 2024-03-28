@@ -1,1 +1,1 @@
-console.log("watch flag test");
+console.log('watch flag test');

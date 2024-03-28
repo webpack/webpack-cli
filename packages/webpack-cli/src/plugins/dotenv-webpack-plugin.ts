@@ -35,7 +35,7 @@ const isMainThreadElectron = (target: string | undefined): boolean =>
 export class Dotenv {
   private logger!: Logger;
   private config: DotenvConfig;
-  private cache: Record<string, string>;
+  private cache: any;
   private inputFileSystem: any;
 
   constructor(config: DotenvConfig = {}) {
@@ -44,7 +44,7 @@ export class Dotenv {
       prefixes: ["process.env.", "import.meta.env."],
       ...config,
     };
-    this.cache = {};
+    this.cache = new Map();
   }
 
   public apply(compiler: Compiler): void {
@@ -159,12 +159,12 @@ export class Dotenv {
   }
 
   private loadFile(filePath: string): string {
-    if (this.cache[filePath]) {
-      return this.cache[filePath];
+    if (this.cache.has(filePath)) {
+      return this.cache.get(filePath);
     }
     try {
       const content = this.inputFileSystem.readFileSync(filePath, "utf8");
-      this.cache[filePath] = content;
+      this.cache.set(filePath, content);
       return content;
     } catch (err) {
       return "{}";
