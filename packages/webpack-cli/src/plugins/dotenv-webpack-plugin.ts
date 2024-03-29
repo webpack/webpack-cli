@@ -21,8 +21,6 @@ interface DotenvConfig {
   defaults?: boolean | string;
 }
 
-type CodeValue = string;
-
 const interpolate = (env: string, vars: EnvVariables): string => {
   const matches = env.match(/\$([a-zA-Z0-9_]+)|\${([a-zA-Z0-9_]+)}/g) || [];
   matches.forEach((match) => {
@@ -41,8 +39,15 @@ export class Dotenv {
   #cached: boolean;
 
   constructor(config: DotenvConfig = {}) {
+    const nodeEnv = process.env.NODE_ENV || "development";
+
     this.#config = {
-      paths: ["./.env"],
+      paths: [
+        ".env",
+        ...(nodeEnv === "test" ? [] : [".env.local"]),
+        `.env.${nodeEnv}`,
+        `.env.${nodeEnv}.local`,
+      ],
       prefixes: ["process.env.", "import.meta.env."],
       ...config,
     };
@@ -54,15 +59,6 @@ export class Dotenv {
     this.#logger = compiler.getInfrastructureLogger("dotenv-webpack-plugin");
     compiler.hooks.thisCompilation.tap("dotenv-webpack-plugin", async (compilation) => {
       const cache = compilation.getCache("dotenv-webpack-plugin-compiler");
-      const nodeEnv = process.env.NODE_ENV || compilation.options.mode;
-      if (this.#config.paths) {
-        this.#config.paths = [
-          ...this.#config.paths,
-          ...(nodeEnv === "test" ? [] : [".env.local"]),
-          `.env.${nodeEnv}`,
-          `.env.${nodeEnv}.local`,
-        ];
-      }
 
       if (!this.#cached) {
         const variables = this.#gatherVariables(compilation);
@@ -87,7 +83,7 @@ export class Dotenv {
     const { allowEmptyValues } = this.#config;
     const vars: EnvVariables = this.#initializeVars();
 
-    const { env, blueprint } = this.#getEnvs();
+    const { env, blueprint } = this.#getEnvs(compilation);
 
     Object.keys(blueprint).forEach((key) => {
       const value = Object.prototype.hasOwnProperty.call(vars, key) ? vars[key] : env[key];
@@ -108,13 +104,13 @@ export class Dotenv {
       : {};
   }
 
-  #getEnvs(): { env: EnvVariables; blueprint: EnvVariables } {
+  #getEnvs(compilation: any): { env: EnvVariables; blueprint: EnvVariables } {
     const { paths } = this.#config;
 
     const env: EnvVariables = {};
 
     (paths || ["./.env"]).forEach((path) =>
-      Object.assign(env, dotenv.parse(this.#loadFile(path || "./.env"))),
+      Object.assign(env, dotenv.parse(this.#loadFile(path || "./.env", compilation))),
     );
 
     const blueprint: EnvVariables = env;
@@ -183,17 +179,17 @@ export class Dotenv {
     );
   }
 
-  #loadFile(filePath: string): string {
+  #loadFile(filePath: string, compilation: any): string {
+    compilation.fileDependencies.add(filePath);
     try {
       const content = this.#inputFileSystem.readFileSync(filePath, "utf8");
+      compilation.buildDependencies.add(filePath);
       return content;
-    } catch (err) {
+    } catch (err: any) {
+      compilation.missingDependencies.add(filePath);
+      this.#logger.warn(`Unable to upload ${filePath} file due:\n ${err.toString()}`);
       return "{}";
     }
-  }
-
-  public warn(msg: string): void {
-    this.#logger.warn(msg);
   }
 }
 

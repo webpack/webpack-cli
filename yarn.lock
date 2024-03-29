@@ -2697,14 +2697,6 @@
   resolved "https://registry.npmjs.org/@types/diff/-/diff-5.0.9.tgz"
   integrity sha512-RWVEhh/zGXpAVF/ZChwNnv7r4rvqzJ7lYNSmZSVTxjV0PBLf6Qu7RNg+SUtkpzxmiNkjCx0Xn2tPp7FIkshJwQ==
 
-"@types/dotenv-defaults@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.npmjs.org/@types/dotenv-defaults/-/dotenv-defaults-2.0.4.tgz"
-  integrity sha512-+KwZaAMQkt0uk5IH3F2zqjUsZqEi8ro0qEpi4dnYwpNfG3Mejf3PlCQooqMrICWkSg3gq9jgFCeAwFrbhDQmbQ==
-  dependencies:
-    "@types/node" "*"
-    dotenv "^8.2.0"
-
 "@types/ejs@*":
   version "3.1.5"
   resolved "https://registry.npmjs.org/@types/ejs/-/ejs-3.1.5.tgz"
@@ -2983,15 +2975,6 @@
   dependencies:
     "@types/expect" "^1.20.4"
     "@types/node" "*"
-
-"@types/webpack@^5.28.5":
-  version "5.28.5"
-  resolved "https://registry.npmjs.org/@types/webpack/-/webpack-5.28.5.tgz"
-  integrity sha512-wR87cgvxj3p6D0Crt1r5avwqffqPXUkNlnQ1mjU93G7gCuFjufZR4I6j8cz5g1F1tTYpfOOFvly+cmIQwL9wvw==
-  dependencies:
-    "@types/node" "*"
-    tapable "^2.2.0"
-    webpack "^5"
 
 "@types/ws@^8.5.10":
   version "8.5.10"
