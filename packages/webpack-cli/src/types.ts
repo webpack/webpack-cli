@@ -244,7 +244,6 @@ interface CLIPluginOptions {
   hot?: boolean | "only";
   progress?: boolean | "profile";
   prefetch?: string;
-  analyze?: boolean;
 }
 
 type BasicPrimitive = string | boolean | number;
