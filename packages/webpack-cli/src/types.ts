@@ -23,6 +23,7 @@ import { type Colorette } from "colorette";
 import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
 import { type prepare } from "rechoir";
 import { type stringifyStream } from "@discoveryjs/json-ext";
+import { IAutocompleteTree } from "./utils/autocomplete";
 
 /**
  * Webpack CLI
@@ -74,6 +75,7 @@ interface IWebpackCLI {
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
+  getAutocompleteTree(): IAutocompleteTree;
   executeAutoComplete(): Promise<void>;
   setupAutocompleteForShell(): Promise<void>;
 }
