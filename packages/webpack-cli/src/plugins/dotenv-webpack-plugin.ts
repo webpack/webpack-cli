@@ -41,11 +41,11 @@ const isMainThreadElectron = (target: string | undefined): boolean =>
 
 export class Dotenv {
   #logger!: Logger;
-  #config: DotenvConfig;
+  #options: DotenvConfig;
   #inputFileSystem!: InputFileSystem;
 
   constructor(config: DotenvConfig = {}) {
-    this.#config = {
+    this.#options = {
       paths: process.env.NODE_ENV
         ? [
             ".env",
@@ -64,8 +64,8 @@ export class Dotenv {
   public apply(compiler: Compiler): void {
     this.#inputFileSystem = compiler.inputFileSystem;
     this.#logger = compiler.getInfrastructureLogger("dotenv-webpack-plugin");
-    if (!this.#config.paths) {
-      this.#config.paths = [
+    if (!this.#options.paths) {
+      this.#options.paths = [
         ".env",
         ".env.local",
         `.env.${compiler.options.mode}`,
@@ -92,7 +92,7 @@ export class Dotenv {
     });
   }
   async #gatherVariables(compilation: any): Promise<EnvVariables> {
-    const { allowEmptyValues } = this.#config;
+    const { allowEmptyValues } = this.#options;
     const vars: EnvVariables = this.#initializeVars();
 
     const { env, blueprint } = await this.#getEnvs(compilation);
@@ -111,7 +111,7 @@ export class Dotenv {
   }
 
   #initializeVars(): EnvVariables {
-    return this.#config.systemvars
+    return this.#options.systemvars
       ? Object.fromEntries(Object.entries(process.env).map(([key, value]) => [key, value ?? ""]))
       : {};
   }
@@ -127,7 +127,7 @@ export class Dotenv {
   }
 
   async #getEnvs(compilation: any): Promise<{ env: EnvVariables; blueprint: EnvVariables }> {
-    const { paths } = this.#config;
+    const { paths } = this.#options;
 
     const env: EnvVariables = {};
 
@@ -151,7 +151,7 @@ export class Dotenv {
     variables: EnvVariables;
     target: string;
   }): Record<string, string> {
-    const { expand, prefixes } = this.#config;
+    const { expand, prefixes } = this.#options;
 
     const preprocessedVariables: EnvVariables = Object.keys(variables).reduce(
       (obj: EnvVariables, key: string) => {
@@ -199,8 +199,8 @@ export class Dotenv {
     return targets.every(
       (target) =>
         prefix === "process.env." &&
-        this.#config.ignoreStub !== true &&
-        (this.#config.ignoreStub === false ||
+        this.#options.ignoreStub !== true &&
+        (this.#options.ignoreStub === false ||
           (!target.includes("node") && !isMainThreadElectron(target))),
     );
   }
