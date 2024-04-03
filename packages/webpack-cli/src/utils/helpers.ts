@@ -1,4 +1,12 @@
-import { WebpackCLIExternalCommandInfo, WebpackCLIOptions } from "../types";
+import {
+  CommandAction,
+  WebpackCLIBuiltInOption,
+  WebpackCLICommand,
+  WebpackCLICommandOptions,
+  WebpackCLIExternalCommandInfo,
+  WebpackCLIOptions,
+} from "../types";
+import { IAutocompleteTree } from "./autocomplete";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = !!process.env.WEBPACK_PACKAGE;
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -118,4 +126,19 @@ export const getExternalBuiltInCommandsInfo = (): WebpackCLIExternalCommandInfo[
       pkg: "@webpack-cli/configtest",
     },
   ];
+};
+
+export const getAutocompleteTree = (): IAutocompleteTree => {
+  const knownCommands = getKnownCommands();
+
+  const getCommandName = (name: string) => name.split(" ")[0];
+  const autocompleteTree: IAutocompleteTree = {};
+  // knownCommands.forEach(command => {
+  //   allCommandNames.push(getCommandName(command.name))
+  // })
+  knownCommands.forEach((command) => {
+    autocompleteTree[getCommandName(command.name)] = {};
+  });
+
+  return autocompleteTree;
 };

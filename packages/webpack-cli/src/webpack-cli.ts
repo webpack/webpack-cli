@@ -59,10 +59,15 @@ import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
 
 import {
   IAutocompleteTree,
+  appNameOnAutocomplete,
   getReplyHandler,
   setupAutoCompleteForShell,
 } from "./utils/autocomplete";
-import { getExternalBuiltInCommandsInfo, getKnownCommands } from "./utils/helpers";
+import {
+  getAutocompleteTree,
+  getExternalBuiltInCommandsInfo,
+  getKnownCommands,
+} from "./utils/helpers";
 
 const fs = require("fs");
 const path = require("path");
@@ -1752,6 +1757,8 @@ class WebpackCLI implements IWebpackCLI {
       });
     });
 
+    this.executeAutoComplete();
+
     await this.program.parseAsync(args, parseOptions);
   }
 
@@ -2493,23 +2500,26 @@ class WebpackCLI implements IWebpackCLI {
       process.stdin.resume();
     }
   }
-  executeAutoComplete(): void {
+  async executeAutoComplete(): Promise<void> {
     function last(line: string): string {
       return line.substr(-1, 1);
     }
 
-    const autocompleteTree = {
-      build: [
-        {
-          long: "--config",
-        },
-        {
-          long: "--stats",
-        },
-      ],
-    } as IAutocompleteTree;
+    // const autocompleteTree = {
+    //   build: [
+    //     {
+    //       long: "--config",
+    //     },
+    //     {
+    //       long: "--stats",
+    //     },
+    //   ],
+    // } as IAutocompleteTree;
 
-    const autoCompleteObject = omelette("webpack-cli");
+    const autocompleteTree = getAutocompleteTree();
+
+    const autoCompleteObject = omelette(appNameOnAutocomplete);
+
     autoCompleteObject.on(
       "complete",
       function (
@@ -2519,7 +2529,7 @@ class WebpackCLI implements IWebpackCLI {
       ) {
         const line = data.line;
         const reply = data.reply;
-        const argsLine = line.substring("webpack-cli".length);
+        const argsLine = line.substring(appNameOnAutocomplete.length);
         const args = argsLine.match(/\S+/g) || [];
         const lineEndsWithWhitespaceChar = /\s{1}/.test(last(line));
 

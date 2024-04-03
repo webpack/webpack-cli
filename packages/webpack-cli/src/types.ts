@@ -74,7 +74,7 @@ interface IWebpackCLI {
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
-  executeAutoComplete(): void;
+  executeAutoComplete(): Promise<void>;
   setupAutocompleteForShell(): Promise<void>;
 }
 

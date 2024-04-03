@@ -3,10 +3,10 @@ import * as Fs from "fs";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const omelette = require("omelette");
 
-const appName = "webpack-cli";
+export const appNameOnAutocomplete = "webpack-cli";
 
 function getAutoCompleteObject() {
-  return omelette(appName);
+  return omelette(appNameOnAutocomplete);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,15 +43,15 @@ export function setupAutoCompleteForShell(path?: string, shell?: string): any {
 [ -f /etc/bash_completion ] && . /etc/bash_completion`;
 
       const template = `
-# begin bash_completion configuration for ${appName} completion
+# begin bash_completion configuration for ${appNameOnAutocomplete} completion
 ${sources}
-# end bash_completion configuration for ${appName} completion
+# end bash_completion configuration for ${appNameOnAutocomplete} completion
 `;
 
       Fs.appendFileSync(initFile as string, template);
     }
 
-    if (initFileContent.indexOf(`begin ${appName} completion`) === -1) {
+    if (initFileContent.indexOf(`begin ${appNameOnAutocomplete} completion`) === -1) {
       autoCompleteObject.setupShellInitFile(initFile);
     }
   } catch (exception) {
