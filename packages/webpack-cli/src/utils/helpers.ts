@@ -127,18 +127,3 @@ export const getExternalBuiltInCommandsInfo = (): WebpackCLIExternalCommandInfo[
     },
   ];
 };
-
-export const getAutocompleteTree = (): IAutocompleteTree => {
-  const knownCommands = getKnownCommands();
-
-  const getCommandName = (name: string) => name.split(" ")[0];
-  const autocompleteTree: IAutocompleteTree = {};
-  // knownCommands.forEach(command => {
-  //   allCommandNames.push(getCommandName(command.name))
-  // })
-  knownCommands.forEach((command) => {
-    autocompleteTree[getCommandName(command.name)] = {};
-  });
-
-  return autocompleteTree;
-};

@@ -63,11 +63,7 @@ import {
   getReplyHandler,
   setupAutoCompleteForShell,
 } from "./utils/autocomplete";
-import {
-  getAutocompleteTree,
-  getExternalBuiltInCommandsInfo,
-  getKnownCommands,
-} from "./utils/helpers";
+import { getExternalBuiltInCommandsInfo, getKnownCommands } from "./utils/helpers";
 
 const fs = require("fs");
 const path = require("path");
@@ -2500,6 +2496,22 @@ class WebpackCLI implements IWebpackCLI {
       process.stdin.resume();
     }
   }
+
+  getAutocompleteTree(): IAutocompleteTree {
+    const knownCommands = getKnownCommands();
+
+    const getCommandName = (name: string) => name.split(" ")[0];
+    const autocompleteTree: IAutocompleteTree = {};
+    // knownCommands.forEach(command => {
+    //   allCommandNames.push(getCommandName(command.name))
+    // })
+    knownCommands.forEach((command) => {
+      autocompleteTree[getCommandName(command.name)] = {};
+    });
+
+    return autocompleteTree;
+  }
+
   async executeAutoComplete(): Promise<void> {
     function last(line: string): string {
       return line.substr(-1, 1);
@@ -2516,7 +2528,7 @@ class WebpackCLI implements IWebpackCLI {
     //   ],
     // } as IAutocompleteTree;
 
-    const autocompleteTree = getAutocompleteTree();
+    const autocompleteTree = this.getAutocompleteTree();
 
     const autoCompleteObject = omelette(appNameOnAutocomplete);
 
