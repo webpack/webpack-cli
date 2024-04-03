@@ -19,6 +19,7 @@ interface DotenvConfig {
   allowEmptyValues?: boolean;
   expand?: boolean;
   ignoreStub?: boolean;
+  safe?: boolean;
 }
 
 const interpolate = (env: string, vars: EnvVariables): string => {
@@ -92,7 +93,7 @@ export class Dotenv {
     });
   }
   async #gatherVariables(compilation: any): Promise<EnvVariables> {
-    const { allowEmptyValues } = this.#options;
+    const { allowEmptyValues, safe } = this.#options;
     const vars: EnvVariables = this.#initializeVars();
 
     const { env, blueprint } = await this.#getEnvs(compilation);
@@ -100,10 +101,20 @@ export class Dotenv {
     Object.keys(blueprint).forEach((key) => {
       const value = Object.prototype.hasOwnProperty.call(vars, key) ? vars[key] : env[key];
 
-      if (typeof value === "undefined" || value === null || (!allowEmptyValues && value === "")) {
+      if (
+        (typeof value === "undefined" || value === null || (!allowEmptyValues && value === "")) &&
+        safe
+      ) {
         compilation.errors.push(new Error(`Missing environment variable: ${key}`));
       } else {
         vars[key] = value;
+      }
+      if (safe) {
+        Object.keys(env).forEach((key) => {
+          if (!Object.prototype.hasOwnProperty.call(vars, key)) {
+            vars[key] = env[key];
+          }
+        });
       }
     });
 
@@ -127,19 +138,23 @@ export class Dotenv {
   }
 
   async #getEnvs(compilation: any): Promise<{ env: EnvVariables; blueprint: EnvVariables }> {
-    const { paths } = this.#options;
+    const { paths, safe } = this.#options;
 
     const env: EnvVariables = {};
-
+    let blueprint: EnvVariables = {};
     if (paths) {
       await paths.forEach(async (path) =>
         Object.assign(env, this.#parse(await this.#loadFile(path, compilation))),
       );
+      blueprint = env;
+      if (safe) {
+        await paths.forEach(async (path) =>
+          Object.assign(env, this.#parse(await this.#loadFile(`${path}.example`, compilation))),
+        );
+      }
     } else {
       compilation.errors.push(new Error(`No paths in config.`));
     }
-
-    const blueprint: EnvVariables = env;
 
     return { env, blueprint };
   }
