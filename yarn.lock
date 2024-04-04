@@ -2697,6 +2697,14 @@
   resolved "https://registry.npmjs.org/@types/diff/-/diff-5.0.9.tgz"
   integrity sha512-RWVEhh/zGXpAVF/ZChwNnv7r4rvqzJ7lYNSmZSVTxjV0PBLf6Qu7RNg+SUtkpzxmiNkjCx0Xn2tPp7FIkshJwQ==
 
+"@types/dotenv-defaults@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/@types/dotenv-defaults/-/dotenv-defaults-2.0.4.tgz"
+  integrity sha512-+KwZaAMQkt0uk5IH3F2zqjUsZqEi8ro0qEpi4dnYwpNfG3Mejf3PlCQooqMrICWkSg3gq9jgFCeAwFrbhDQmbQ==
+  dependencies:
+    "@types/node" "*"
+    dotenv "^8.2.0"
+
 "@types/ejs@*":
   version "3.1.5"
   resolved "https://registry.npmjs.org/@types/ejs/-/ejs-3.1.5.tgz"
@@ -5108,10 +5116,27 @@ dot-prop@6.0.1:
   dependencies:
     is-obj "^2.0.0"
 
+dotenv-defaults@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.npmjs.org/dotenv-defaults/-/dotenv-defaults-5.0.2.tgz"
+  integrity sha512-y5z4NhblzwNk8XBIYVzjLcFkANK0rxbRDO6kGOfH9QrVYIGVEX52IqwSprKVsaLHM9pnNkCSxazZF/JPydDPvA==
+  dependencies:
+    dotenv "^14.0.0"
+
+dotenv@^14.0.0:
+  version "14.3.2"
+  resolved "https://registry.npmjs.org/dotenv/-/dotenv-14.3.2.tgz"
+  integrity sha512-vwEppIphpFdvaMCaHfCEv9IgwcxMljMw2TnAQBB4VWPvzXQLTb82jwmdOKzlEVUL3gNFT4l4TPKO+Bn+sqcrVQ==
+
 dotenv@^16.4.5:
   version "16.4.5"
   resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.4.5.tgz"
   integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
+
+dotenv@^8.2.0:
+  version "8.6.0"
+  resolved "https://registry.npmjs.org/dotenv/-/dotenv-8.6.0.tgz"
+  integrity sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==
 
 dotenv@~10.0.0:
   version "10.0.0"
@@ -11695,6 +11720,8 @@ webpack-cli@^5.1.4, webpack-cli@5.x.x, "webpack-cli@file:/home/bhaskar/Programs/
     colorette "^2.0.14"
     commander "^10.0.1"
     cross-spawn "^7.0.3"
+    dotenv "^16.4.5"
+    dotenv-defaults "^5.0.2"
     envinfo "^7.10.0"
     fastest-levenshtein "^1.0.12"
     import-local "^3.0.2"

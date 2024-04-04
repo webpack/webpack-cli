@@ -73,23 +73,28 @@ export class Dotenv {
         `.env.${compiler.options.mode}.local`,
       ];
     }
-    compiler.hooks.thisCompilation.tap("dotenv-webpack-plugin", async (compilation) => {
-      const cache = compilation.getCache("dotenv-webpack-plugin-compiler");
-      if (await cache.getPromise("dotenv-webpack-plugin-data", null)) {
-        new DefinePlugin(await cache.getPromise("dotenv-webpack-plugin-data", null)).apply(
-          compiler,
-        );
-      } else {
-        const variables = await this.#gatherVariables(compilation);
-        const target: string =
-          typeof compiler.options.target == "string" ? compiler.options.target : "";
-        const data = this.#formatData({
-          variables,
-          target: target,
-        });
-        new DefinePlugin(data).apply(compiler);
-        await cache.storePromise("dotenv-webpack-plugin-data", null, data);
-      }
+    compiler.hooks.thisCompilation.tap("dotenv-webpack-plugin", (compilation) => {
+      const setupAsyncOperations = async () => {
+        const cache = compilation.getCache("dotenv-webpack-plugin-compiler");
+        if (await cache.getPromise("dotenv-webpack-plugin-data", null)) {
+          new DefinePlugin(await cache.getPromise("dotenv-webpack-plugin-data", null)).apply(
+            compiler,
+          );
+        } else {
+          const variables = await this.#gatherVariables(compilation);
+          const target: string =
+            typeof compiler.options.target == "string" ? compiler.options.target : "";
+          const data = this.#formatData({
+            variables,
+            target: target,
+          });
+          new DefinePlugin(data).apply(compiler);
+          await cache.storePromise("dotenv-webpack-plugin-data", null, data);
+        }
+      };
+      setupAsyncOperations().catch((err) => {
+        this.#logger.error(`Error in dotenv-webpack-plugin: ${err}`);
+      });
     });
   }
   async #gatherVariables(compilation: any): Promise<EnvVariables> {
@@ -127,14 +132,16 @@ export class Dotenv {
       : {};
   }
 
-  #merge(apply = {}, defaults = {}) {
+  merge(apply = {}, defaults = {}) {
     Object.assign({}, defaults, apply);
   }
 
-  #parse(src: string, defaultSrc = "") {
+  parse(src: string, defaultSrc = "") {
     const parsedSrc = dotenv.parse(src);
     const parsedDefault = dotenv.parse(defaultSrc);
-    return this.#merge(parsedSrc, parsedDefault);
+    const parsed = {};
+    Object.assign(parsed, parsedDefault, parsedSrc);
+    return parsed;
   }
 
   async #getEnvs(compilation: any): Promise<{ env: EnvVariables; blueprint: EnvVariables }> {
@@ -143,19 +150,20 @@ export class Dotenv {
     const env: EnvVariables = {};
     let blueprint: EnvVariables = {};
     if (paths) {
-      await paths.forEach(async (path) =>
-        Object.assign(env, this.#parse(await this.#loadFile(path, compilation))),
-      );
+      for (const path of paths) {
+        const fileContent = await this.#loadFile(path, compilation);
+        Object.assign(env, this.parse(fileContent));
+      }
       blueprint = env;
       if (safe) {
-        await paths.forEach(async (path) =>
-          Object.assign(env, this.#parse(await this.#loadFile(`${path}.example`, compilation))),
-        );
+        for (const path of paths) {
+          const exampleContent = await this.#loadFile(`${path}.example`, compilation);
+          Object.assign(env, this.parse(exampleContent));
+        }
       }
     } else {
       compilation.errors.push(new Error(`No paths in config.`));
     }
-
     return { env, blueprint };
   }
 
@@ -222,7 +230,7 @@ export class Dotenv {
 
   async #loadFile(filePath: string, compilation: any): Promise<string> {
     compilation.fileDependencies.add(filePath);
-    const fileContent = await new Promise<string>((resolve, reject) => {
+    const fileContent = await new Promise<string>((resolve) => {
       this.#inputFileSystem.readFile(
         filePath,
         (err?: null | NodeJS.ErrnoException, result?: string | Buffer) => {
