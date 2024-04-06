@@ -87,12 +87,10 @@ class WebpackCLI implements IWebpackCLI {
   isColorSupportChanged: boolean | undefined;
   builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
   webpack!: typeof webpack;
-  analyze: boolean;
   program: WebpackCLICommand;
   constructor() {
     this.colors = this.createColors();
     this.logger = this.getLogger();
-    this.analyze = false;
     // Initialize program
     this.program = program;
     this.program.name("webpack");
@@ -973,6 +971,18 @@ class WebpackCLI implements IWebpackCLI {
         multiple: false,
         description: "Sets process.env.NODE_ENV to the specified value.",
         helpLevel: "minimum",
+      }, // Adding more plugins
+      {
+        name: "analyze",
+        configs: [
+          {
+            type: "enum",
+            values: [true],
+          },
+        ],
+        multiple: false,
+        description: "It invokes webpack-bundle-analyzer plugin to get bundle information.",
+        helpLevel: "minimum",
       },
       {
         name: "define-process-env-node-env",
@@ -1360,7 +1370,6 @@ class WebpackCLI implements IWebpackCLI {
       cli.isColorSupportChanged = color;
       cli.colors = cli.createColors(color);
     });
-    this.program.option("--analyze", "Analyze the webpack bundle.");
 
     this.program.option(
       "-v, --version",
@@ -1369,10 +1378,6 @@ class WebpackCLI implements IWebpackCLI {
 
     // webpack-cli has it's own logic for showing suggestions
     this.program.showSuggestionAfterError(false);
-
-    this.program.on("option:analyze", function () {
-      cli.analyze = true;
-    });
 
     const outputHelp = async (
       options: string[],
@@ -2151,6 +2156,22 @@ class WebpackCLI implements IWebpackCLI {
     config: WebpackCLIConfig,
     options: Partial<WebpackDevServerOptions>,
   ): Promise<WebpackCLIConfig> {
+    if (options.analyze) {
+      if (!this.checkPackageExists("webpack-bundle-analyzer")) {
+        await this.doInstall("webpack-bundle-analyzer", {
+          preMessage: () => {
+            this.logger.error(
+              `It looks like ${this.colors.yellow("webpack-bundle-analyzer")} is not installed.`,
+            );
+          },
+        });
+
+        this.logger.success(
+          `${this.colors.yellow("webpack-bundle-analyzer")} was installed successfully.`,
+        );
+      }
+    }
+
     if (typeof options.progress === "string" && options.progress !== "profile") {
       this.logger.error(
         `'${options.progress}' is an invalid value for the --progress option. Only 'profile' is allowed.`,
@@ -2324,16 +2345,12 @@ class WebpackCLI implements IWebpackCLI {
         item.plugins = [];
       }
 
-      if (this.analyze) {
-        const BundleAnalyzerPlugin = require("./plugins/bundle-analyzer-plugin");
-        item.plugins.unshift(new BundleAnalyzerPlugin());
-      }
-
       item.plugins.unshift(
         new CLIPlugin({
           configPath: config.path.get(item),
           helpfulOutput: !options.json,
           progress: options.progress,
+          analyze: options.analyze,
           isMultiCompiler: Array.isArray(config.options),
         }),
       );
