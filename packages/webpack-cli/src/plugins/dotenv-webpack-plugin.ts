@@ -1,17 +1,9 @@
 import dotenv from "dotenv";
-import { Compiler, DefinePlugin } from "webpack";
+import { Compiler, DefinePlugin, InputFileSystem, WebpackLogger } from "webpack";
 
 interface EnvVariables {
   [key: string]: string;
 }
-
-interface Logger {
-  info(message: string): void;
-  warn(message: string): void;
-  error(message: string): void;
-  log(message: string): void;
-}
-
 interface DotenvConfig {
   paths: string[];
   prefixes?: string[];
@@ -35,10 +27,10 @@ const isMainThreadElectron = (target: string | undefined): boolean =>
 
 export class Dotenv {
   #options: DotenvConfig;
-  #inputFileSystem!: any;
+  #inputFileSystem!: InputFileSystem;
   #compiler!: Compiler;
-  #logger!: Logger;
   #cache!: any;
+  #logger: WebpackLogger;
   constructor(
     config: DotenvConfig = {
       paths: process.env.NODE_ENV
@@ -202,7 +194,7 @@ export class Dotenv {
     );
   }
 
-  #loadFile(filePath: string, compilation: any): string {
+  #loadFile(filePath: string, compilation: any): Buffer | string {
     try {
       const fileContent = this.#inputFileSystem.readFileSync(filePath);
       compilation.buildDependencies.add(filePath);

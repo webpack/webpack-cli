@@ -11705,7 +11705,6 @@ webpack-cli@^5.1.4, webpack-cli@5.x.x, "webpack-cli@file:/home/bhaskar/Programs/
     commander "^10.0.1"
     cross-spawn "^7.0.3"
     dotenv "^16.4.5"
-    dotenv-defaults "^5.0.2"
     envinfo "^7.10.0"
     fastest-levenshtein "^1.0.12"
     import-local "^3.0.2"
