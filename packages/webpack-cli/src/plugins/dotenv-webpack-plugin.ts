@@ -42,7 +42,7 @@ const isMainThreadElectron = (target: string | undefined): boolean =>
 
 export class Dotenv {
   #options: DotenvConfig;
-  #inputFileSystem!: InputFileSystem;
+  #inputFileSystem!: any;
   #compiler!: Compiler;
   #logger!: Logger;
   #cache!: any;
@@ -70,35 +70,32 @@ export class Dotenv {
     this.#inputFileSystem = compiler.inputFileSystem;
     this.#logger = compiler.getInfrastructureLogger("dotenv-webpack-plugin");
     this.#compiler = compiler;
-    this.#logger.warn("log1");
+    this.#cache = false;
     compiler.hooks.thisCompilation.tap("dotenv-webpack-plugin", async (compilation) => {
       const cache = compilation.getCache("dotenv-webpack-plugin-compiler");
-      this.#cache = await cache.getPromise("dotenv-webpack-plugin-data", null);
       if (this.#cache) {
-        this.#logger.warn("log2");
         new DefinePlugin(this.#cache).apply(compiler);
+        this.#cache = await cache.getPromise("dotenv-webpack-plugin-data", null);
       } else {
-        const variables = await this.#gatherVariables(compilation);
+        const variables = this.#gatherVariables(compilation);
         const target: string =
           typeof compiler.options.target == "string" ? compiler.options.target : "";
         const data = this.#formatData({
           variables,
           target: target,
         });
-        this.#logger.warn("log3");
-        this.#logger.warn(JSON.stringify(data));
-        this.#logger.warn("log4");
         new DefinePlugin(data).apply(compiler);
         await cache.storePromise("dotenv-webpack-plugin-data", null, data);
+        this.#cache = await cache.getPromise("dotenv-webpack-plugin-data", null);
       }
     });
   }
 
-  async #gatherVariables(compilation: any): Promise<EnvVariables> {
+  #gatherVariables(compilation?: any): EnvVariables {
     const { allowEmptyValues, safe } = this.#options;
     const vars: EnvVariables = this.#initializeVars();
 
-    const { env, blueprint } = await this.#getEnvs(compilation);
+    const { env, blueprint } = this.#getEnvs(compilation);
 
     Object.keys(blueprint).forEach((key) => {
       const value = Object.prototype.hasOwnProperty.call(vars, key) ? vars[key] : env[key];
@@ -107,7 +104,7 @@ export class Dotenv {
         (typeof value === "undefined" || value === null || (!allowEmptyValues && value === "")) &&
         safe
       ) {
-        compilation.errors.push(new Error(`Missing environment variable: ${key}`));
+        compilation?.errors.push(new Error(`Missing environment variable: ${key}`));
       } else {
         vars[key] = value;
       }
@@ -129,21 +126,21 @@ export class Dotenv {
       : {};
   }
 
-  async #getEnvs(compilation: any): Promise<{ env: EnvVariables; blueprint: EnvVariables }> {
+  #getEnvs(compilation?: any): { env: EnvVariables; blueprint: EnvVariables } {
     const { paths, safe } = this.#options;
 
     const env: EnvVariables = {};
     let blueprint: EnvVariables = {};
 
     for (const path of paths) {
-      const fileContent = await this.#loadFile(path, compilation);
+      const fileContent = this.#loadFile(path, compilation);
       Object.assign(env, dotenv.parse(fileContent));
     }
     blueprint = env;
     if (safe) {
       for (const path of paths) {
         path.replace("[mode]", process.env.NODE_ENV || this.#compiler.options.mode || "");
-        const exampleContent = await this.#loadFile(`${path}.example`, compilation);
+        const exampleContent = this.#loadFile(`${path}.example`, compilation);
         blueprint = { ...blueprint, ...dotenv.parse(exampleContent) };
       }
     }
@@ -213,24 +210,16 @@ export class Dotenv {
     );
   }
 
-  async #loadFile(filePath: string, compilation: any): Promise<string> {
-    const fileContent = await new Promise<string>((resolve) => {
-      this.#inputFileSystem.readFile(
-        filePath,
-        (err?: null | NodeJS.ErrnoException, result?: string | Buffer) => {
-          if (err) {
-            compilation.missingDependencies.add(filePath);
-            this.#logger.log(`Unable to upload ${filePath} file due:\n ${err.toString()}`);
-            resolve("{}");
-          } else {
-            const content = result ? result.toString() : "{}";
-            compilation.buildDependencies.add(filePath);
-            resolve(content);
-          }
-        },
-      );
-    });
-    return fileContent;
+  #loadFile(filePath: string, compilation?: any): string {
+    try {
+      const fileContent = this.#inputFileSystem.readFileSync(filePath);
+      compilation?.buildDependencies.add(filePath);
+      return fileContent;
+    } catch (err: any) {
+      compilation?.missingDependencies.add(filePath);
+      this.#logger.log(`Unable to upload ${filePath} file due:\n ${err.toString()}`);
+      return "{}";
+    }
   }
 }
 
