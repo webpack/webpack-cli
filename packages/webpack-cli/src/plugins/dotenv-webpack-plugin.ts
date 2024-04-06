@@ -13,7 +13,7 @@ interface Logger {
 }
 
 interface DotenvConfig {
-  paths?: string[];
+  paths: string[];
   prefixes?: string[];
   systemvars?: boolean;
   allowEmptyValues?: boolean;
@@ -41,20 +41,24 @@ const isMainThreadElectron = (target: string | undefined): boolean =>
   !!target && target.startsWith("electron") && target.endsWith("main");
 
 export class Dotenv {
-  #logger!: Logger;
   #options: DotenvConfig;
   #inputFileSystem!: InputFileSystem;
-
-  constructor(config: DotenvConfig = {}) {
-    this.#options = {
+  #compiler!: Compiler;
+  #logger!: Logger;
+  #cache!: any;
+  constructor(
+    config: DotenvConfig = {
       paths: process.env.NODE_ENV
         ? [
             ".env",
             ...(process.env.NODE_ENV === "test" ? [] : [".env.local"]),
-            `.env.${process.env.NODE_ENV}`,
-            `.env.${process.env.NODE_ENV}.local`,
+            `.env.[mode]`,
+            `.env.[mode].local`,
           ]
         : [],
+    },
+  ) {
+    this.#options = {
       prefixes: ["process.env.", "import.meta.env."],
       allowEmptyValues: true,
       expand: true,
@@ -65,38 +69,31 @@ export class Dotenv {
   public apply(compiler: Compiler): void {
     this.#inputFileSystem = compiler.inputFileSystem;
     this.#logger = compiler.getInfrastructureLogger("dotenv-webpack-plugin");
-    if (!this.#options.paths) {
-      this.#options.paths = [
-        ".env",
-        ".env.local",
-        `.env.${compiler.options.mode}`,
-        `.env.${compiler.options.mode}.local`,
-      ];
-    }
-    compiler.hooks.thisCompilation.tap("dotenv-webpack-plugin", (compilation) => {
-      const setupAsyncOperations = async () => {
-        const cache = compilation.getCache("dotenv-webpack-plugin-compiler");
-        if (await cache.getPromise("dotenv-webpack-plugin-data", null)) {
-          new DefinePlugin(await cache.getPromise("dotenv-webpack-plugin-data", null)).apply(
-            compiler,
-          );
-        } else {
-          const variables = await this.#gatherVariables(compilation);
-          const target: string =
-            typeof compiler.options.target == "string" ? compiler.options.target : "";
-          const data = this.#formatData({
-            variables,
-            target: target,
-          });
-          new DefinePlugin(data).apply(compiler);
-          await cache.storePromise("dotenv-webpack-plugin-data", null, data);
-        }
-      };
-      setupAsyncOperations().catch((err) => {
-        this.#logger.error(`Error in dotenv-webpack-plugin: ${err}`);
-      });
+    this.#compiler = compiler;
+    this.#logger.warn("log1");
+    compiler.hooks.thisCompilation.tap("dotenv-webpack-plugin", async (compilation) => {
+      const cache = compilation.getCache("dotenv-webpack-plugin-compiler");
+      this.#cache = await cache.getPromise("dotenv-webpack-plugin-data", null);
+      if (this.#cache) {
+        this.#logger.warn("log2");
+        new DefinePlugin(this.#cache).apply(compiler);
+      } else {
+        const variables = await this.#gatherVariables(compilation);
+        const target: string =
+          typeof compiler.options.target == "string" ? compiler.options.target : "";
+        const data = this.#formatData({
+          variables,
+          target: target,
+        });
+        this.#logger.warn("log3");
+        this.#logger.warn(JSON.stringify(data));
+        this.#logger.warn("log4");
+        new DefinePlugin(data).apply(compiler);
+        await cache.storePromise("dotenv-webpack-plugin-data", null, data);
+      }
     });
   }
+
   async #gatherVariables(compilation: any): Promise<EnvVariables> {
     const { allowEmptyValues, safe } = this.#options;
     const vars: EnvVariables = this.#initializeVars();
@@ -132,37 +129,23 @@ export class Dotenv {
       : {};
   }
 
-  merge(apply = {}, defaults = {}) {
-    Object.assign({}, defaults, apply);
-  }
-
-  parse(src: string, defaultSrc = "") {
-    const parsedSrc = dotenv.parse(src);
-    const parsedDefault = dotenv.parse(defaultSrc);
-    const parsed = {};
-    Object.assign(parsed, parsedDefault, parsedSrc);
-    return parsed;
-  }
-
   async #getEnvs(compilation: any): Promise<{ env: EnvVariables; blueprint: EnvVariables }> {
     const { paths, safe } = this.#options;
 
     const env: EnvVariables = {};
     let blueprint: EnvVariables = {};
-    if (paths) {
+
+    for (const path of paths) {
+      const fileContent = await this.#loadFile(path, compilation);
+      Object.assign(env, dotenv.parse(fileContent));
+    }
+    blueprint = env;
+    if (safe) {
       for (const path of paths) {
-        const fileContent = await this.#loadFile(path, compilation);
-        Object.assign(env, this.parse(fileContent));
+        path.replace("[mode]", process.env.NODE_ENV || this.#compiler.options.mode || "");
+        const exampleContent = await this.#loadFile(`${path}.example`, compilation);
+        blueprint = { ...blueprint, ...dotenv.parse(exampleContent) };
       }
-      blueprint = env;
-      if (safe) {
-        for (const path of paths) {
-          const exampleContent = await this.#loadFile(`${path}.example`, compilation);
-          Object.assign(env, this.parse(exampleContent));
-        }
-      }
-    } else {
-      compilation.errors.push(new Error(`No paths in config.`));
     }
     return { env, blueprint };
   }
@@ -195,11 +178,13 @@ export class Dotenv {
     );
 
     const formatted: Record<string, string> = {};
-    prefixes?.forEach((prefix) => {
-      Object.entries(preprocessedVariables).forEach(([key, value]) => {
-        formatted[`${prefix}${key}`] = value;
+    if (prefixes) {
+      prefixes.forEach((prefix) => {
+        Object.entries(preprocessedVariables).forEach(([key, value]) => {
+          formatted[`${prefix}${key}`] = value;
+        });
       });
-    });
+    }
 
     const shouldStubEnv =
       prefixes?.includes("process.env.") && this.#shouldStub({ target, prefix: "process.env." });
@@ -229,7 +214,6 @@ export class Dotenv {
   }
 
   async #loadFile(filePath: string, compilation: any): Promise<string> {
-    compilation.fileDependencies.add(filePath);
     const fileContent = await new Promise<string>((resolve) => {
       this.#inputFileSystem.readFile(
         filePath,
