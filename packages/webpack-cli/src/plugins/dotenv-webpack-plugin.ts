@@ -30,13 +30,6 @@ const interpolate = (env: string, vars: EnvVariables): string => {
   return env;
 };
 
-declare interface InputFileSystem {
-  readFile: (
-    arg0: string,
-    arg1: (arg0?: null | NodeJS.ErrnoException, arg1?: string | Buffer) => void,
-  ) => void;
-}
-
 const isMainThreadElectron = (target: string | undefined): boolean =>
   !!target && target.startsWith("electron") && target.endsWith("main");
 
@@ -75,7 +68,6 @@ export class Dotenv {
       const cache = compilation.getCache("dotenv-webpack-plugin-compiler");
       if (this.#cache) {
         new DefinePlugin(this.#cache).apply(compiler);
-        this.#cache = await cache.getPromise("dotenv-webpack-plugin-data", null);
       } else {
         const variables = this.#gatherVariables(compilation);
         const target: string =
@@ -91,7 +83,7 @@ export class Dotenv {
     });
   }
 
-  #gatherVariables(compilation?: any): EnvVariables {
+  #gatherVariables(compilation: any): EnvVariables {
     const { allowEmptyValues, safe } = this.#options;
     const vars: EnvVariables = this.#initializeVars();
 
@@ -104,7 +96,7 @@ export class Dotenv {
         (typeof value === "undefined" || value === null || (!allowEmptyValues && value === "")) &&
         safe
       ) {
-        compilation?.errors.push(new Error(`Missing environment variable: ${key}`));
+        compilation.errors.push(new Error(`Missing environment variable: ${key}`));
       } else {
         vars[key] = value;
       }
@@ -126,7 +118,7 @@ export class Dotenv {
       : {};
   }
 
-  #getEnvs(compilation?: any): { env: EnvVariables; blueprint: EnvVariables } {
+  #getEnvs(compilation: any): { env: EnvVariables; blueprint: EnvVariables } {
     const { paths, safe } = this.#options;
 
     const env: EnvVariables = {};
@@ -210,13 +202,13 @@ export class Dotenv {
     );
   }
 
-  #loadFile(filePath: string, compilation?: any): string {
+  #loadFile(filePath: string, compilation: any): string {
     try {
       const fileContent = this.#inputFileSystem.readFileSync(filePath);
-      compilation?.buildDependencies.add(filePath);
+      compilation.buildDependencies.add(filePath);
       return fileContent;
     } catch (err: any) {
-      compilation?.missingDependencies.add(filePath);
+      compilation.missingDependencies.add(filePath);
       this.#logger.log(`Unable to upload ${filePath} file due:\n ${err.toString()}`);
       return "{}";
     }
