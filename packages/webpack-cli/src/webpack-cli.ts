@@ -91,6 +91,7 @@ class WebpackCLI implements IWebpackCLI {
   constructor() {
     this.colors = this.createColors();
     this.logger = this.getLogger();
+
     // Initialize program
     this.program = program;
     this.program.name("webpack");
@@ -971,18 +972,6 @@ class WebpackCLI implements IWebpackCLI {
         multiple: false,
         description: "Sets process.env.NODE_ENV to the specified value.",
         helpLevel: "minimum",
-      }, // Adding more plugins
-      {
-        name: "analyze",
-        configs: [
-          {
-            type: "enum",
-            values: [true],
-          },
-        ],
-        multiple: false,
-        description: "It invokes webpack-bundle-analyzer plugin to get bundle information.",
-        helpLevel: "minimum",
       },
       {
         name: "define-process-env-node-env",
@@ -995,6 +984,19 @@ class WebpackCLI implements IWebpackCLI {
         description:
           "Sets process.env.NODE_ENV to the specified value. (Currently an alias for `--node-env`).",
         helpLevel: "verbose",
+      },
+
+      {
+        name: "analyze",
+        configs: [
+          {
+            type: "enum",
+            values: [true],
+          },
+        ],
+        multiple: false,
+        description: "It invokes webpack-bundle-analyzer plugin to get bundle information.",
+        helpLevel: "minimum",
       },
       {
         name: "progress",
