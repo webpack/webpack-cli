@@ -2525,6 +2525,39 @@ class WebpackCLI implements IWebpackCLI {
       return;
     }
 
+    const isCacheEnabled = Boolean(
+      this.isMultipleCompiler(compiler)
+        ? compiler.compilers.some((compiler) => compiler.options.cache)
+        : compiler.options.cache,
+    );
+
+    let needForceShutdown = false;
+
+    if (isCacheEnabled) {
+      const signals = ["SIGINT", "SIGTERM"];
+
+      signals.forEach((signal) => {
+        const listener = () => {
+          // TODO" remove function check after webpack v4 support drop
+          if (needForceShutdown || typeof compiler.close !== "function") {
+            process.exit();
+          }
+
+          this.logger.info(
+            "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+          );
+
+          needForceShutdown = true;
+
+          compiler.close(() => {
+            process.exit();
+          });
+        };
+
+        process.on(signal, listener);
+      });
+    }
+
     const isWatch = (compiler: WebpackCompiler): boolean =>
       Boolean(
         this.isMultipleCompiler(compiler)
@@ -2534,7 +2567,15 @@ class WebpackCLI implements IWebpackCLI {
 
     if (isWatch(compiler) && this.needWatchStdin(compiler)) {
       process.stdin.on("end", () => {
-        process.exit(0);
+        // TODO: remove on dropping webpack 4 support
+        if (typeof compiler.close !== "function") {
+          process.exit(0);
+        }
+
+        compiler.close(() => {
+          process.exit(0);
+        });
+        needForceShutdown = true;
       });
       process.stdin.resume();
     }
