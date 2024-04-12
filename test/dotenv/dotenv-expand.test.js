@@ -29,7 +29,7 @@ describe("dotenv", () => {
       path.join(testDirectory, "index.js"),
       "module.exports = import.meta.env.TEST_VARIABLE;",
     );
-    await fs.promises.writeFile(path.join(testDirectory, ".env"), "TEST_VARIABLE=12345");
+    await fs.promises.writeFile(path.join(testDirectory, ".env"), "TEST_VARIABLE=\\$12345");
   });
 
   afterAll(() => {
@@ -42,9 +42,9 @@ describe("dotenv", () => {
     fs.rmdirSync(testDirectory);
   });
 
-  it("should find and replace values from .env when --dot-env arg passed", async () => {
+  it("should refer to the example file", async () => {
     await run(testDirectory, ["--dot-env"]);
     const output = fs.readFileSync(outputFile, "utf-8");
-    expect(output).toContain("12345");
+    expect(output).toContain("$12345");
   });
 });

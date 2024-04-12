@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { Compiler, DefinePlugin, InputFileSystem, WebpackLogger } from "webpack";
+import { Compiler, DefinePlugin } from "webpack";
 
 interface EnvVariables {
   [key: string]: string;
@@ -27,10 +27,10 @@ const isMainThreadElectron = (target: string | undefined): boolean =>
 
 export class Dotenv {
   #options: DotenvConfig;
-  #inputFileSystem!: InputFileSystem;
+  #inputFileSystem!: any;
   #compiler!: Compiler;
   #cache!: any;
-  #logger: WebpackLogger;
+  #logger: any;
   constructor(
     config: DotenvConfig = {
       paths: process.env.NODE_ENV
@@ -47,6 +47,7 @@ export class Dotenv {
       prefixes: ["process.env.", "import.meta.env."],
       allowEmptyValues: true,
       expand: true,
+      safe: true,
       ...config,
     };
   }
@@ -117,14 +118,22 @@ export class Dotenv {
     let blueprint: EnvVariables = {};
 
     for (const path of paths) {
-      const fileContent = this.#loadFile(path, compilation);
+      const fileContent = this.#loadFile(
+        path.replace("[mode]", `${process.env.NODE_ENV || this.#compiler.options.mode}`),
+        compilation,
+      );
       Object.assign(env, dotenv.parse(fileContent));
     }
     blueprint = env;
     if (safe) {
       for (const path of paths) {
-        path.replace("[mode]", process.env.NODE_ENV || this.#compiler.options.mode || "");
-        const exampleContent = this.#loadFile(`${path}.example`, compilation);
+        const exampleContent = this.#loadFile(
+          `${path.replace(
+            "[mode]",
+            `${process.env.NODE_ENV || this.#compiler.options.mode}`,
+          )}.example`,
+          compilation,
+        );
         blueprint = { ...blueprint, ...dotenv.parse(exampleContent) };
       }
     }
