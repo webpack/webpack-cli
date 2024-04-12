@@ -5,7 +5,7 @@ interface EnvVariables {
   [key: string]: string;
 }
 interface DotenvConfig {
-  paths: string[];
+  paths?: string[];
   prefixes?: string[];
   systemvars?: boolean;
   allowEmptyValues?: boolean;
@@ -31,8 +31,12 @@ export class Dotenv {
   #compiler!: Compiler;
   #cache!: any;
   #logger: any;
-  constructor(
-    config: DotenvConfig = {
+  constructor(config: DotenvConfig) {
+    this.#options = {
+      prefixes: ["process.env.", "import.meta.env."],
+      allowEmptyValues: true,
+      expand: true,
+      safe: true,
       paths: process.env.NODE_ENV
         ? [
             ".env",
@@ -41,13 +45,6 @@ export class Dotenv {
             `.env.[mode].local`,
           ]
         : [],
-    },
-  ) {
-    this.#options = {
-      prefixes: ["process.env.", "import.meta.env."],
-      allowEmptyValues: true,
-      expand: true,
-      safe: true,
       ...config,
     };
   }
@@ -117,7 +114,7 @@ export class Dotenv {
     const env: EnvVariables = {};
     let blueprint: EnvVariables = {};
 
-    for (const path of paths) {
+    for (const path of paths || []) {
       const fileContent = this.#loadFile(
         path.replace("[mode]", `${process.env.NODE_ENV || this.#compiler.options.mode}`),
         compilation,
@@ -126,7 +123,7 @@ export class Dotenv {
     }
     blueprint = env;
     if (safe) {
-      for (const path of paths) {
+      for (const path of paths || []) {
         const exampleContent = this.#loadFile(
           `${path.replace(
             "[mode]",
