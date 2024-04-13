@@ -72,6 +72,8 @@ const WEBPACK_DEV_SERVER_PACKAGE = WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM
   ? (process.env.WEBPACK_DEV_SERVER_PACKAGE as string)
   : "webpack-dev-server";
 
+const EXIT_SIGNALS = ["SIGINT", "SIGTERM"];
+
 interface Information {
   Binaries?: string[];
   Browsers?: string[];
@@ -2550,11 +2552,35 @@ class WebpackCLI implements IWebpackCLI {
           : compiler.options.watch,
       );
 
-    if (isWatch(compiler) && this.needWatchStdin(compiler)) {
-      process.stdin.on("end", () => {
-        process.exit(0);
+    if (isWatch(compiler)) {
+      let needForceShutdown = false;
+
+      EXIT_SIGNALS.forEach((signal) => {
+        const listener = () => {
+          if (needForceShutdown) {
+            process.exit(0);
+          }
+
+          this.logger.info(
+            "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+          );
+
+          needForceShutdown = true;
+
+          compiler.close(() => {
+            process.exit(0);
+          });
+        };
+
+        process.on(signal, listener);
       });
-      process.stdin.resume();
+
+      if (this.needWatchStdin(compiler)) {
+        process.stdin.on("end", () => {
+          process.exit(0);
+        });
+        process.stdin.resume();
+      }
     }
   }
 }
