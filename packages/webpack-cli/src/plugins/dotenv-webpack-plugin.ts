@@ -29,7 +29,6 @@ export class Dotenv {
   #options: DotenvConfig;
   #inputFileSystem!: any;
   #compiler!: Compiler;
-  #cache!: any;
   #logger: any;
   constructor(config: DotenvConfig) {
     this.#options = {
@@ -53,31 +52,23 @@ export class Dotenv {
     this.#inputFileSystem = compiler.inputFileSystem;
     this.#logger = compiler.getInfrastructureLogger("dotenv-webpack-plugin");
     this.#compiler = compiler;
-    this.#cache = false;
-    compiler.hooks.thisCompilation.tap("dotenv-webpack-plugin", async (compilation) => {
-      const cache = compilation.getCache("dotenv-webpack-plugin-compiler");
-      if (this.#cache) {
-        new DefinePlugin(this.#cache).apply(compiler);
-      } else {
-        const variables = this.#gatherVariables(compilation);
-        const target: string =
-          typeof compiler.options.target == "string" ? compiler.options.target : "";
-        const data = this.#formatData({
-          variables,
-          target: target,
-        });
-        new DefinePlugin(data).apply(compiler);
-        await cache.storePromise("dotenv-webpack-plugin-data", null, data);
-        this.#cache = await cache.getPromise("dotenv-webpack-plugin-data", null);
-      }
+    compiler.hooks.initialize.tap("dotenv-webpack-plugin", () => {
+      const variables = this.#gatherVariables();
+      const target: string =
+        typeof compiler.options.target == "string" ? compiler.options.target : "";
+      const data = this.#formatData({
+        variables,
+        target: target,
+      });
+      new DefinePlugin(data).apply(compiler);
     });
   }
 
-  #gatherVariables(compilation: any): EnvVariables {
+  #gatherVariables(): EnvVariables {
     const { allowEmptyValues, safe } = this.#options;
     const vars: EnvVariables = this.#initializeVars();
 
-    const { env, blueprint } = this.#getEnvs(compilation);
+    const { env, blueprint } = this.#getEnvs();
 
     Object.keys(blueprint).forEach((key) => {
       const value = Object.prototype.hasOwnProperty.call(vars, key) ? vars[key] : env[key];
@@ -86,7 +77,7 @@ export class Dotenv {
         (typeof value === "undefined" || value === null || (!allowEmptyValues && value === "")) &&
         safe
       ) {
-        compilation.errors.push(new Error(`Missing environment variable: ${key}`));
+        this.#logger.console.warn(`Missing environment variable: ${key}`);
       } else {
         vars[key] = value;
       }
@@ -108,7 +99,7 @@ export class Dotenv {
       : {};
   }
 
-  #getEnvs(compilation: any): { env: EnvVariables; blueprint: EnvVariables } {
+  #getEnvs(): { env: EnvVariables; blueprint: EnvVariables } {
     const { paths, safe } = this.#options;
 
     const env: EnvVariables = {};
@@ -117,7 +108,6 @@ export class Dotenv {
     for (const path of paths || []) {
       const fileContent = this.#loadFile(
         path.replace("[mode]", `${process.env.NODE_ENV || this.#compiler.options.mode}`),
-        compilation,
       );
       Object.assign(env, dotenv.parse(fileContent));
     }
@@ -129,7 +119,6 @@ export class Dotenv {
             "[mode]",
             `${process.env.NODE_ENV || this.#compiler.options.mode}`,
           )}.example`,
-          compilation,
         );
         blueprint = { ...blueprint, ...dotenv.parse(exampleContent) };
       }
@@ -200,13 +189,13 @@ export class Dotenv {
     );
   }
 
-  #loadFile(filePath: string, compilation: any): Buffer | string {
+  #loadFile(filePath: string): Buffer | string {
     try {
       const fileContent = this.#inputFileSystem.readFileSync(filePath);
-      compilation.buildDependencies.add(filePath);
+      // compilation.buildDependencies.add(filePath);
       return fileContent;
     } catch (err: any) {
-      compilation.missingDependencies.add(filePath);
+      // compilation.missingDependencies.add(filePath);
       this.#logger.log(`Unable to upload ${filePath} file due:\n ${err.toString()}`);
       return "{}";
     }
