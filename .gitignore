@@ -67,6 +67,3 @@ test/**/dist
 test/**/**/dist
 test/**/**/**/dist
 test/**/stats.json
-
-# private readme
-private_readme.md
