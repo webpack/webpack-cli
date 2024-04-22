@@ -16,13 +16,27 @@ export default class InitGenerator<
   public constructor(args: string | string[], opts: Z) {
     super(args, opts);
 
+    const [, , ...restArgs] = args;
+    this.#parseArgs(restArgs);
+
     this.dependencies = ["webpack", "webpack-cli"];
     this.supportedTemplates = Object.keys(handlers);
   }
 
+  #parseArgs(args: string[]): void {
+    const templateIndex = args.findIndex((arg) => arg === "--template");
+    if (
+      templateIndex !== -1 &&
+      templateIndex + 1 < args.length &&
+      args[templateIndex + 1] == "webpack"
+    ) {
+      this.template = args[templateIndex + 1];
+      // now if the template is webpack, then we follow the execution of webpack-defaults ?
+    }
+  }
+
   public async prompting(): Promise<void> {
     this.template = await getTemplate.call(this);
-
     await handlers[this.template as keyof typeof handlers].questions(this, Question);
 
     // Handle installation of prettier
