@@ -1,0 +1,18 @@
+{{#each plugins}}
+  const
+  {{this}}
+  = require('{{this}}');
+{{/each}}
+
+module.exports = { // ... existing base configuration (replace with your actual configuration)
+entry: './src/index.js', output: { path: path.resolve(__dirname, 'dist'), }, modules: { rules: [ //
+Add loaders here
+{{#each loaders}}
+  { test: /\.{{this}}$/, use: [ 'style-loader', 'css-loader', '{{this}}-loader', ], },
+{{/each}}
+], }, plugins: [ // Add plugins here
+{{#each plugins}}
+  new
+  {{this}}(),
+{{/each}}
+], };

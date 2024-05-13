@@ -1,0 +1,10 @@
+{{#projectName}}
+  /src /public /package.json /README.md /webpack.config.js /styles /styles.less
+{{/projectName}}
+
+{{#if selectedLess}}
+  // Add loader configuration for Less in webpack.config.js module.exports = { // ... existing
+  configuration from base.hbs (replace with actual configuration) module: { rules: [ // ... existing
+  rules from base.hbs { test: /\.less$/, use: [ 'style-loader', 'css-loader', 'less-loader', ], },
+  ], }, };
+{{/if}}
