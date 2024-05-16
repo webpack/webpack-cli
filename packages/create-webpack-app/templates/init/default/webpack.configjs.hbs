@@ -1,0 +1,75 @@
+// Generated using webpack-cli https://github.com/webpack/webpack-cli const path = require('path');
+{{#if (htmlWebpackPlugin)}}
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+{{/if}}
+{{#isEqualToString extractPlugin "No"}}
+  const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+{{/isEqualToString}}
+{{#if (workboxWebpackPlugin)}}
+  const WorkboxWebpackPlugin = require('workbox-webpack-plugin>)
+{{/if}}
+
+const isProduction = process.env.NODE_ENV === 'production';
+{{!-- {{#isEqualToString cssType 'none'}} --}}
+{{!--   {{#if ({{extractPlugin === "Yes"}})}} --}}
+{{!     const stylesHandler = MiniCssExtractPlugin.loader; }}
+{{!--   {{else ({{if extractPlugin  === "Only for Production"}})}} --}}
+{{!     const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'; }}
+{{!--   {{else}} --}}
+{{!     const stylesHandler = 'style-loader'; }}
+{{!--   {{/if}} --}}
+{{!-- {{/isEqualToString}} --}}
+
+const config = { entry: '{{entry}}', output: { path: path.resolve(__dirname, 'dist'), },{{#if
+  (devServer)
+}}
+  devServer: { open: true, host: 'localhost', },{{/if}}
+plugins: [{{#if (htmlWebpackPlugin)}}
+  new HtmlWebpackPlugin({ template: 'index.html', }),
+{{/if}}
+{{#isEqualToString extractPlugin "Yes"}}
+  new MiniCssExtractPlugin(),
+{{/isEqualToString}}
+// Add your plugins here // Learn more about plugins from
+https://webpack.js.org/configuration/plugins/ ], module: { rules: [{{#isEqualToString
+  langType "ES6"
+}}
+  { test: /\.(js|jsx)$/i, loader: 'babel-loader', },{{/isEqualToString}}
+{{#isEqualToString langType "Typescript"}}
+  { test: /\.(ts|tsx)$/i, loader: 'ts-loader', exclude: ['/node_modules/'], },{{/isEqualToString}}{{#if
+  isCSS
+}}
+  {{#unless isPostCSS}}
+    { test: /\.css$/i, use: [stylesHandler,'css-loader'], },{{/unless}}{{/if}}{{#isEqualToString
+  cssType "SASS"
+}}
+  { test: /\.s[ac]ss$/i, use: [stylesHandler, 'css-loader',
+  {{#if (isPostCSS)}}'postcss-loader', {{/if}}'sass-loader'], },{{/isEqualToString}}{{#isEqualToString
+  cssType "LESS"
+}}
+  { test: /\.less$/i, use: [stylesHandler, 'css-loader',
+  {{#if (isPostCSS)}}'postcss-loader', {{/if}}'less-loader'], },{{/isEqualToString}}{{#isEqualToString
+  cssType "Stylus"
+}}
+  { test: /\.styl$/i, use: [stylesHandler, 'css-loader',
+  {{#if (isPostCSS)}}'postcss-loader', {{/if}}'stylus-loader'], },{{/isEqualToString}}{{#if
+  (isPostCSS)
+}}
+  {{#if (isCSS)}}
+    { test: /\.css$/i, use: [stylesHandler, 'css-loader', 'postcss-loader'], },{{/if}}{{/if}}
+{ test: /\.(eot|svg|ttf|woff|woff2|png|jpg|g#if)$/i, type: 'asset', },
+{{#if (htmlWebpackPlugin)}}
+  { test: /\.html$/i, use: ['html-loader'], },{{/if}}
+
+// Add your rules for custom modules here // Learn more about loaders from
+https://webpack.js.org/loaders/ ], },
+{{#isEqualToString langType "Typescript"}}
+  resolve: { extensions: ['.tsx', '.ts', '.jsx', '.js', '...'], },{{/isEqualToString}}
+}; module.exports = () => { if (isProduction) { config.mode = 'production';
+{{#isEqualToString extractPlugin "Only for Production"}}
+  config.plugins.push(new MiniCssExtractPlugin());
+{{/isEqualToString}}
+{{#if (workboxWebpackPlugin)}}
+  config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+{{/if}}
+} else { config.mode = 'development'; } return config; };
