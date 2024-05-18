@@ -31,6 +31,18 @@ export default function (plop: NodePlopAPI) {
         },
       },
       {
+        type: "input",
+        name: "entryPoint",
+        message: "Enter the entry point of your application:",
+        default: "src/index.js",
+        validate(input, _) {
+          if (!input) {
+            return "Entry point cannot be empty";
+          }
+          return true;
+        },
+      },
+      {
         type: "list",
         name: "langType",
         message: "Which of the following JS solutions do you want to use?",
