@@ -40,11 +40,14 @@
     "!**/*__tests__"
   ],
   "dependencies": {
+    "ejs": "^3.1.10",
     "minimist": "^1.2.8",
     "node-plop": "^0.32.0",
     "plop": "^4.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/ejs": "^3.1.5"
+  },
   "peerDependencies": {},
   "peerDependenciesMeta": {}
 }
