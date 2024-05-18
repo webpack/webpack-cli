@@ -176,11 +176,4 @@ export default function (plop: NodePlopAPI) {
       },
     ],
   });
-  plop.setHelper(
-    "isEqualToString",
-    function (this: typeof Function, value: string, comparison: string, options: any) {
-      return value === comparison ? options.fn(this) : options.inverse(this);
-    },
-  );
 }
-// module.exports = plop.generator("basicProject").run;
