@@ -1,7 +1,6 @@
 import { NodePlopAPI } from "./types";
 import { resolve } from "path";
 import ejs from "ejs";
-/* eslint-disable no-unused-vars */
 
 export default function (plop: NodePlopAPI) {
   const dependencies = ["webpack", "webpack-cli"];

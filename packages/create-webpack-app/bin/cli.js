@@ -2,7 +2,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import minimist from "minimist";
 import { Plop, run } from "plop";
-/* cSpell:disable */
+// cSpell:ignore plopfile, plopfile.js
 const args = process.argv.slice(2);
 const argv = minimist(args);
 const __filename = fileURLToPath(import.meta.url);
