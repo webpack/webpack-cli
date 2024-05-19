@@ -14,7 +14,7 @@ export default function (plop: NodePlopAPI) {
         message: "Enter your project name:",
         default: "webpack-project",
         validate(input, _) {
-          if (!input) {
+          if (!input.trim()) {
             return "Project name cannot be empty";
           }
           return true;
@@ -22,24 +22,10 @@ export default function (plop: NodePlopAPI) {
       },
       {
         type: "input",
-        name: "configPath",
+        name: "projectPath",
         message: "Enter the project destination:",
         default: ".",
-        filter: (input, answers) => {
-          return resolve(input, answers.projectName);
-        },
-      },
-      {
-        type: "input",
-        name: "entryPoint",
-        message: "Enter the entry point of your application:",
-        default: "src/index.js",
-        validate(input, _) {
-          if (!input) {
-            return "Entry point cannot be empty";
-          }
-          return true;
-        },
+        filter: (input) => resolve(input),
       },
       {
         type: "list",
@@ -165,10 +151,13 @@ export default function (plop: NodePlopAPI) {
     actions: [
       {
         type: "addMany",
-        destination: "{{configPath}}",
+        destination: "{{projectPath}}/{{dashCase projectName}}",
         base: "../templates/init/default",
         templateFiles: "../templates/init/default/**/*",
-        transform: (content, data) => ejs.render(content, data),
+        transform: (content, data) => {
+          data.entryPoint = data.langType === "Typescript" ? "index.ts" : "index.js";
+          return ejs.render(content, data);
+        },
         stripExtensions: ["tpl"],
         force: true,
         verbose: true,
