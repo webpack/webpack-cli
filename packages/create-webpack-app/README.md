@@ -1,11 +1,41 @@
-# `create-webpack-app`
+<div>
+    <a href="https://github.com/webpack/webpack-cli">
+        <img width="200" height="200" src="https://webpack.js.org/assets/icon-square-big.svg">
+    </a>
+</div>
 
-> TODO: description
+# create-webpack-app CLI
 
-## Usage
+## About
 
-```js
-const createWebpackApp = require("create-webpack-app");
+- `create-webpack-app` is a cli tool that enables developers to quickly scaffold a new webpack project. It provides a flexible set of commands for developers to increase speed when setting up a custom webpack project. webpack CLI addresses these needs by providing a set of tools to improve the setup of custom webpack configuration.
+- It is also going to support several front end frameworks and libraries like React, Angular, Vue, Svelte, etc.
+- Webpack Loader and Plugin scaffolding is also supported.
 
-// TODO: DEMONSTRATE API
+## How to install
+
+```bash
+npm install --save-dev @webpack-cli/create-webpack-app
 ```
+
+or
+
+```bash
+yarn add @webpack-cli/create-webpack-app --dev
+```
+
+## Supported arguments and commands
+
+### Usage
+
+All interactions with create-webpack-app are of the form
+
+```bash
+npx create-webpack-app [command] [options]
+```
+
+### Help Usage
+
+### Available Commands
+
+### Available Options
