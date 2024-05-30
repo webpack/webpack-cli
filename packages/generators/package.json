@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/generators",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "Webpack-CLI generators",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,13 +25,15 @@
     "plugin-template"
   ],
   "dependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@yeoman/types": "^1.2.0",
+    "mem-fs": "^4.1.0",
+    "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
-    "yeoman-environment": "^3.9.1",
-    "yeoman-generator": "^5.7.0"
+    "yeoman-environment": "^4.4.0",
+    "yeoman-generator": "^7.2.0"
   },
   "peerDependencies": {
-    "webpack": "5.x.x",
-    "webpack-cli": "5.x.x"
   },
   "peerDependenciesMeta": {
     "prettier": {
@@ -39,7 +41,7 @@
     }
   },
   "devDependencies": {
-    "@types/yeoman-generator": "^5.2.8"
+    "@types/yeoman-generator": "^5.2.14"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }
