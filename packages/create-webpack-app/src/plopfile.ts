@@ -1,9 +1,55 @@
 import { NodePlopAPI } from "./types";
-import { resolve } from "path";
+import { resolve, join } from "path";
 import ejs from "ejs";
-
+import { spawn } from "child_process";
 export default function (plop: NodePlopAPI) {
   const dependencies = ["webpack", "webpack-cli"];
+  plop.setActionType("pkgInstall", (answers) => {
+    const options = {
+      cwd: `${answers.projectPath}/${answers.projectName}`,
+      encoding: "utf-8",
+    };
+    if (answers.devServer) {
+      dependencies.push("webpack-dev-server");
+    }
+    if (answers.htmlWebpackPlugin) {
+      dependencies.push("html-webpack-plugin", "html-loader");
+    }
+    if (answers.workboxWebpackPlugin) {
+      dependencies.push("workbox-webpack-plugin");
+    }
+    if (answers.isPostCSS) {
+      dependencies.push("postcss-loader", "autoprefixer");
+    }
+    console.log(`Installing packages: ${dependencies.join(", ")}`);
+    const returnMessage = `Project ${answers.projectName} has been successfully created at ${answers.projectPath}/${answers.projectName}`;
+    const packageManager = answers.packageManager;
+    const installCommandPrefix = packageManager === "yarn" ? "add" : "install";
+
+    const npmInstallPackages = spawn(
+      `${packageManager}`,
+      [`${installCommandPrefix}`, ...dependencies],
+      options,
+    );
+    npmInstallPackages.stdout.on("data", (data) => {
+      console.log(data.toString());
+    });
+    npmInstallPackages.stderr.on("data", (data) => {
+      console.error(data.toString());
+    });
+    npmInstallPackages.on("error", (err) => {
+      console.error(err);
+    });
+    npmInstallPackages.on("close", (code) => {
+      if (code !== 0) {
+        console.error(`child process exited with code ${code}`);
+        return;
+      } else {
+        console.log(returnMessage);
+      }
+    });
+    return "Package Installation Phase..."; // executes before the child process is completed
+  });
   // Define a base generator for the project structure
   plop.setGenerator("init", {
     description: "Create a basic Webpack project",
@@ -25,7 +71,9 @@ export default function (plop: NodePlopAPI) {
         name: "projectPath",
         message: "Enter the project destination:",
         default: ".",
-        filter: (input) => resolve(input),
+        filter: (input) => {
+          return resolve(join(process.cwd(), input));
+        },
       },
       {
         type: "list",
@@ -147,6 +195,19 @@ export default function (plop: NodePlopAPI) {
           return input;
         },
       },
+      {
+        type: "list",
+        name: "packageManager",
+        message: "Which package manager do you want to use?",
+        choices: ["npm", "yarn"],
+        default: "npm",
+        validate(input, _) {
+          if (!input.trim()) {
+            return "Package manager cannot be empty";
+          }
+          return true;
+        },
+      },
     ],
     actions: [
       {
@@ -161,6 +222,9 @@ export default function (plop: NodePlopAPI) {
         stripExtensions: ["tpl"],
         force: true,
         verbose: true,
+      },
+      {
+        type: "pkgInstall",
       },
     ],
   });
