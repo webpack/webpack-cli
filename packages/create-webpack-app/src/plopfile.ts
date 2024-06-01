@@ -146,7 +146,7 @@ export default function (plop: NodePlopAPI) {
         type: "confirm",
         name: "isCSS",
         message: (answers) =>
-          `Will you be using CSS styles along with ${answers.cssType}in your project?`,
+          `Will you be using CSS styles along with ${answers.cssType} in your project?`,
         when: (answers) => answers.cssType !== "CSS only",
         default: true,
       },
