@@ -98,36 +98,18 @@ export default function (plop: NodePlopAPI) {
         name: "devServer",
         message: "Would you like to use Webpack Dev server?",
         default: true,
-        filter: (input, _) => {
-          if (input) {
-            dependencies.push("webpack-dev-server");
-          }
-          return input;
-        },
       },
       {
         type: "confirm",
         name: "htmlWebpackPlugin",
         message: "Do you want to simplify the creation of HTML files for your bundle?",
         default: true,
-        filter: (input, _) => {
-          if (input) {
-            dependencies.push("html-webpack-plugin", "html-loader");
-          }
-          return input;
-        },
       },
       {
         type: "confirm",
         name: "workboxWebpackPlugin",
         message: "Do you want to add PWA support?",
         default: true,
-        filter: (input, _) => {
-          if (input) {
-            dependencies.push("workbox-webpack-plugin");
-          }
-          return input;
-        },
       },
       {
         type: "list",
@@ -173,12 +155,6 @@ export default function (plop: NodePlopAPI) {
         name: "isPostCSS",
         message: "Do you want to use PostCSS in your project?",
         when: (answers) => answers.isCSS,
-        filter: (input, _) => {
-          if (input) {
-            dependencies.push("postcss-loader", "autoprefixer");
-          }
-          return input;
-        },
         default: true,
       },
       {
