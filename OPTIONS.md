@@ -157,14 +157,21 @@ Options:
   --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-generator-asset-resource-output-path <value>                              Emit the asset in the specified folder relative to 'output.path'. This should only be needed when custom 'publicPath' is specified to match the folder structure there.
   --module-generator-asset-resource-public-path <value>                              The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
+  --module-generator-css-exports-convention <value>                                  Specifies the convention of exported names.
   --module-generator-css-exports-only                                                Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-exports-only                                             Negative 'module-generator-css-exports-only' option.
+  --module-generator-css-auto-exports-convention <value>                             Specifies the convention of exported names.
   --module-generator-css-auto-exports-only                                           Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-auto-exports-only                                        Negative 'module-generator-css-auto-exports-only' option.
+  --module-generator-css-auto-local-ident-name <value>                               Configure the generated local ident name.
+  --module-generator-css-global-exports-convention <value>                           Specifies the convention of exported names.
   --module-generator-css-global-exports-only                                         Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-global-exports-only                                      Negative 'module-generator-css-global-exports-only' option.
+  --module-generator-css-global-local-ident-name <value>                             Configure the generated local ident name.
+  --module-generator-css-module-exports-convention <value>                           Specifies the convention of exported names.
   --module-generator-css-module-exports-only                                         Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-module-exports-only                                      Negative 'module-generator-css-module-exports-only' option.
+  --module-generator-css-module-local-ident-name <value>                             Configure the generated local ident name.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
@@ -632,6 +639,8 @@ Options:
   --no-output-cross-origin-loading                                                   Negative 'output-cross-origin-loading' option.
   --output-css-chunk-filename <value>                                                Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-css-filename <value>                                                      Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --output-css-head-data-compression                                                 Compress the data in the head tag of CSS files.
+  --no-output-css-head-data-compression                                              Negative 'output-css-head-data-compression' option.
   --output-devtool-fallback-module-filename-template <value>                         Similar to `output.devtoolModuleFilenameTemplate`, but used in the case of duplicate module identifiers.
   --output-devtool-module-filename-template <value>                                  Filename template string of function for the sources array in a generated SourceMap.
   --output-devtool-namespace <value>                                                 Module namespace to use when interpolating filename template string for the sources array in a generated SourceMap. Defaults to `output.library` if not set. It's useful for avoiding runtime collisions in sourcemaps from multiple webpack projects built as libraries.
