@@ -11,6 +11,8 @@ export type {
   PlopGeneratorConfig,
   Actions,
 } from "node-plop";
+export interface Answers extends Record<string, any> {}
+
 import { ActionType as ActionTypeBase, CustomActionConfig } from "node-plop";
 // extended ACtionType to include custom action config as previously it was not recognizing
 export type ActionType = ActionTypeBase | CustomActionConfig<string>;
