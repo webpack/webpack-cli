@@ -53,164 +53,138 @@ export default function (plop: NodePlopAPI) {
   // Define a base generator for the project structure
   plop.setGenerator("init", {
     description: "Create a basic Webpack project",
-    prompts: async function (inquirer): Promise<Answers> {
-      const { skip } = await inquirer.prompt({
+    prompts: [
+      {
+        type: "input",
+        name: "projectName",
+        message: "Enter your project name:",
+        default: "webpack-project",
+        validate(input, _) {
+          if (!input.trim()) {
+            return "Project name cannot be empty";
+          }
+          return true;
+        },
+      },
+      {
+        type: "input",
+        name: "projectPath",
+        message: "Enter the project destination:",
+        default: ".",
+        filter: (input) => {
+          return resolve(join(process.cwd(), input));
+        },
+      },
+      {
+        type: "list",
+        name: "langType",
+        message: "Which of the following JS solutions do you want to use?",
+        choices: ["none", "ES6", "Typescript"],
+        default: "none",
+        filter: (input, _) => {
+          switch (input) {
+            case "ES6":
+              dependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
+              break;
+            case "Typescript":
+              dependencies.push("typescript", "ts-loader");
+              break;
+          }
+          return input;
+        },
+      },
+      {
         type: "confirm",
-        name: "skip",
-        message: "Do you want to skip prompts and proceed with default options ?",
-        default: false,
-      });
-      if (skip) {
-        console.log("Skipping prompts and proceeding with default options");
-        return {
-          projectName: "webpack-project",
-          projectPath: resolve(join(process.cwd(), ".")),
-          langType: "none",
-          devServer: true,
-          htmlWebpackPlugin: true,
-          workboxWebpackPlugin: true,
-          cssType: "CSS only",
-          isCSS: true,
-          isPostCSS: true,
-          extractPlugin: "No",
-          packageManager: "npm",
-        };
-      } else {
-        console.log("Please answer the following prompts to create your project");
-        return await inquirer.prompt([
-          {
-            type: "input",
-            name: "projectName",
-            message: "Enter your project name:",
-            default: "webpack-project",
-            validate(input, _) {
-              if (!input.trim()) {
-                return "Project name cannot be empty";
-              }
-              return true;
-            },
-          },
-          {
-            type: "input",
-            name: "projectPath",
-            message: "Enter the project destination:",
-            default: ".",
-            filter: (input) => {
-              return resolve(join(process.cwd(), input));
-            },
-          },
-          {
-            type: "list",
-            name: "langType",
-            message: "Which of the following JS solutions do you want to use?",
-            choices: ["none", "ES6", "Typescript"],
-            default: "none",
-            filter: (input, _) => {
-              switch (input) {
-                case "ES6":
-                  dependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
-                  break;
-                case "Typescript":
-                  dependencies.push("typescript", "ts-loader");
-                  break;
-              }
-              return input;
-            },
-          },
-          {
-            type: "confirm",
-            name: "devServer",
-            message: "Would you like to use Webpack Dev server?",
-            default: true,
-          },
-          {
-            type: "confirm",
-            name: "htmlWebpackPlugin",
-            message: "Do you want to simplify the creation of HTML files for your bundle?",
-            default: true,
-          },
-          {
-            type: "confirm",
-            name: "workboxWebpackPlugin",
-            message: "Do you want to add PWA support?",
-            default: true,
-          },
-          {
-            type: "list",
-            name: "cssType",
-            message: "Which of the following CSS solution do you want to use?",
-            choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-            default: "Css only",
-            filter: (input, answers) => {
-              if (input === "none") {
-                answers.isCSS = false;
-                answers.isPostCSS = false;
-                answers.extractPlugin = "No";
-              } else {
-                dependencies.push("style-loader", "css-loader");
-                switch (input) {
-                  case "CSS only":
-                    answers.isCSS = true;
-                    break;
-                  case "SASS":
-                    dependencies.push("sass-loader", "node-sass");
-                    break;
-                  case "LESS":
-                    dependencies.push("less-loader", "less");
-                    break;
-                  case "Stylus":
-                    dependencies.push("stylus-loader", "stylus");
-                    break;
-                }
-              }
-              return input;
-            },
-          },
-          {
-            type: "confirm",
-            name: "isCSS",
-            message: (answers) =>
-              `Will you be using CSS styles along with ${answers.cssType} in your project?`,
-            when: (answers) => answers.cssType !== "CSS only",
-            default: true,
-          },
-          {
-            type: "confirm",
-            name: "isPostCSS",
-            message: "Do you want to use PostCSS in your project?",
-            when: (answers) => answers.isCSS,
-            default: true,
-          },
-          {
-            type: "list",
-            name: "extractPlugin",
-            message: "Do you want to extract CSS into separate files?",
-            choices: ["No", "Only for Production", "Yes"],
-            when: (answers) => answers.isCSS,
-            default: "No",
-            filter: (input, _) => {
-              if (input !== "No") {
-                dependencies.push("mini-css-extract-plugin");
-              }
-              return input;
-            },
-          },
-          {
-            type: "list",
-            name: "packageManager",
-            message: "Which package manager do you want to use?",
-            choices: ["npm", "yarn"],
-            default: "npm",
-            validate(input, _) {
-              if (!input.trim()) {
-                return "Package manager cannot be empty";
-              }
-              return true;
-            },
-          },
-        ]);
-      }
-    },
+        name: "devServer",
+        message: "Would you like to use Webpack Dev server?",
+        default: true,
+      },
+      {
+        type: "confirm",
+        name: "htmlWebpackPlugin",
+        message: "Do you want to simplify the creation of HTML files for your bundle?",
+        default: true,
+      },
+      {
+        type: "confirm",
+        name: "workboxWebpackPlugin",
+        message: "Do you want to add PWA support?",
+        default: true,
+      },
+      {
+        type: "list",
+        name: "cssType",
+        message: "Which of the following CSS solution do you want to use?",
+        choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
+        default: "Css only",
+        filter: (input, answers) => {
+          if (input === "none") {
+            answers.isCSS = false;
+            answers.isPostCSS = false;
+            answers.extractPlugin = "No";
+          } else {
+            dependencies.push("style-loader", "css-loader");
+            switch (input) {
+              case "CSS only":
+                answers.isCSS = true;
+                break;
+              case "SASS":
+                dependencies.push("sass-loader", "node-sass");
+                break;
+              case "LESS":
+                dependencies.push("less-loader", "less");
+                break;
+              case "Stylus":
+                dependencies.push("stylus-loader", "stylus");
+                break;
+            }
+          }
+          return input;
+        },
+      },
+      {
+        type: "confirm",
+        name: "isCSS",
+        message: (answers) =>
+          `Will you be using CSS styles along with ${answers.cssType} in your project?`,
+        when: (answers) => answers.cssType !== "CSS only",
+        default: true,
+      },
+      {
+        type: "confirm",
+        name: "isPostCSS",
+        message: "Do you want to use PostCSS in your project?",
+        when: (answers) => answers.isCSS,
+        default: true,
+      },
+      {
+        type: "list",
+        name: "extractPlugin",
+        message: "Do you want to extract CSS into separate files?",
+        choices: ["No", "Only for Production", "Yes"],
+        when: (answers) => answers.isCSS,
+        default: "No",
+        filter: (input, _) => {
+          if (input !== "No") {
+            dependencies.push("mini-css-extract-plugin");
+          }
+          return input;
+        },
+      },
+      {
+        type: "list",
+        name: "packageManager",
+        message: "Which package manager do you want to use?",
+        choices: ["npm", "yarn"],
+        default: "npm",
+        validate(input, _) {
+          if (!input.trim()) {
+            return "Package manager cannot be empty";
+          }
+          return true;
+        },
+      },
+    ],
     actions: [
       {
         type: "addMany",
