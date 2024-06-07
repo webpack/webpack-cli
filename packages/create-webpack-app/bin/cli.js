@@ -1,19 +1,15 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import minimist from "minimist";
-import { Plop, run } from "plop";
-// cSpell:ignore plopfile, plopfile.js
-const args = process.argv.slice(2);
-const argv = minimist(args);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { Command } from "commander";
+const program = new Command();
 
-Plop.prepare(
-  {
-    cwd: argv.cwd,
-    configPath: path.resolve(__dirname, "../lib/plopfile.js"),
-    preload: argv.preload || [],
-    completion: argv.completion,
-  },
-  (env) => Plop.execute(env, run),
-);
+import pkg from "../package.json" with { type: "json" };
+
+program.version(pkg.version, "-v, --version");
+program.helpOption("-h, --help", "Display help for command");
+
+program
+  .option("-s, --skip", "Skip the prompt and use the default values")
+  .option("-f, --force", "Force the generator actions to override existing files");
+
+program.parse(process.argv);
+
+console.log(program.opts());

@@ -40,10 +40,9 @@
     "!**/*__tests__"
   ],
   "dependencies": {
+    "commander": "^12.1.0",
     "ejs": "^3.1.10",
-    "minimist": "^1.2.8",
-    "node-plop": "^0.32.0",
-    "plop": "^4.0.1"
+    "node-plop": "^0.32.0"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5"
