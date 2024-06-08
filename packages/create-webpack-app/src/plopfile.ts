@@ -21,8 +21,9 @@ export default function (plop: NodePlopAPI) {
     if (answers.isPostCSS) {
       dependencies.push("postcss-loader", "autoprefixer");
     }
-    console.log(`Installing packages: ${dependencies.join(", ")}`);
+    console.log(`Installing packages: ${dependencies.join("\n")}`);
     const returnMessage = `Project ${answers.projectName} has been successfully created at ${answers.projectPath}/${answers.projectName}`;
+
     const packageManager = answers.packageManager;
     const installCommandPrefix = packageManager === "yarn" ? "add" : "install";
 
@@ -36,9 +37,6 @@ export default function (plop: NodePlopAPI) {
     });
     npmInstallPackages.stderr.on("data", (data) => {
       console.error(data.toString());
-    });
-    npmInstallPackages.on("error", (err) => {
-      console.error(err);
     });
     npmInstallPackages.on("close", (code) => {
       if (code !== 0) {
