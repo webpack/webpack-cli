@@ -56,6 +56,15 @@ export default function (plop: NodePlopAPI) {
     prompts: [
       {
         type: "input",
+        name: "projectPath",
+        message: "Enter the project destination:",
+        default: ".",
+        filter: (input) => {
+          return resolve(join(process.cwd(), input));
+        },
+      },
+      {
+        type: "input",
         name: "projectName",
         message: "Enter your project name:",
         default: "webpack-project",
@@ -64,15 +73,6 @@ export default function (plop: NodePlopAPI) {
             return "Project name cannot be empty";
           }
           return true;
-        },
-      },
-      {
-        type: "input",
-        name: "projectPath",
-        message: "Enter the project destination:",
-        default: ".",
-        filter: (input) => {
-          return resolve(join(process.cwd(), input));
         },
       },
       {

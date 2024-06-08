@@ -7,8 +7,8 @@ const program = new Command();
 const plop = await nodePlop("./lib/plopfile.js");
 const defaultValues = {
   init: {
-    projectName: "webpack-project",
     projectPath: resolve(join(process.cwd(), ".")),
+    projectName: "webpack-project",
     langType: "none",
     devServer: true,
     htmlWebpackPlugin: true,
