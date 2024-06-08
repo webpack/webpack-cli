@@ -21,23 +21,32 @@ const defaultValues = {
   },
 };
 
-program.version("1.0.0", "-v, --version");
-program.helpOption("-h, --help", "Display help for command");
+program
+  .version("1.0.0", "-v, --version")
+  .usage("[command] [options]")
+  .helpOption("-h, --help", "Display help for command")
+  .description("A CLI tool to generate a Webpack project");
 
 program
-  .command("init")
+  .command("init", { isDefault: true })
+  .aliases(["i", "c", "create", "new"])
   .description("Initialize a new Webpack project")
-  .option("-s, --skip", "Skip the prompt and use the default values", false)
-  .option("-f, --force", "Force the generator actions to override existing files", false)
-  .action(function (opts) {
+  .argument("[projectPath]", "Path to create the project")
+  .argument("[projectName]", "Name of the project")
+  .option("-f, --force", "Skip the prompt and use the default values", false)
+  .action(function (projectName, projectPath, opts) {
     console.log("Initializing a new Webpack project");
-    const { skip, force } = opts;
+    const { force } = opts;
     const initGenerator = plop.getGenerator("init");
-    if (skip) {
+    const byPassValues = [];
+    if (projectName) byPassValues.push(projectName);
+    if (projectPath) byPassValues.push(projectPath);
+
+    if (force) {
       console.log("Skipping the prompt and using the default values");
       initGenerator.runActions(defaultValues.init);
     } else {
-      initGenerator.runPrompts([]).then((answers) => {
+      initGenerator.runPrompts(byPassValues).then((answers) => {
         initGenerator.runActions(answers);
       });
     }
