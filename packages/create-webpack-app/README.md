@@ -8,7 +8,7 @@
 
 ## About
 
-- `create-webpack-app` is a cli tool that enables developers to quickly scaffold a new webpack project. It provides a flexible set of commands for developers to increase speed when setting up a custom webpack project. webpack CLI addresses these needs by providing a set of tools to improve the setup of custom webpack configuration.
+- `create-webpack-app` is a cli tool that enables developers to scaffold a new webpack project quickly. It provides developers with a flexible set of commands to increase speed when setting up a custom webpack project. webpack CLI addresses these needs by providing tools to improve the setup of custom webpack configuration.
 - It is also going to support several front end frameworks and libraries like React, Angular, Vue, Svelte, etc.
 - Webpack Loader and Plugin scaffolding is also supported.
 
