@@ -12,30 +12,36 @@
 - It also supports several front-end frameworks and libraries like React, Angular, Vue, Svelte, etc.
 - Webpack Loader and Plugin scaffolding is also supported.
 
-## How to install
-
-```bash
-npm install --save-dev @webpack-cli/create-webpack-app
-```
-
-or
-
-```bash
-yarn add @webpack-cli/create-webpack-app --dev
-```
-
 ## Supported arguments and commands
 
 ### Usage
-
-All interactions with create-webpack-app are of the form
 
 ```bash
 npx create-webpack-app [command] [options]
 ```
 
-### Help Usage
+### CLI options
 
-### Available Commands
+**To generate default template**
 
-### Available Options
+```bash
+npx create-webpack-app
+```
+
+**To generate with default answers**
+
+```bash
+npx create-webpack-app -f, --force
+```
+
+**To scaffold in a specified path**
+
+```bash
+npx create-webpack-app [generation-path]
+```
+
+**To scaffold in a specified path with a custom project-name**
+
+```bash
+npx create-webpack-app [generation-path] [project-name]
+```
