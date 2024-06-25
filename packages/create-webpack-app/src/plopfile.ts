@@ -183,23 +183,75 @@ export default function (plop: NodePlopAPI) {
         },
       },
     ],
-    actions: [
-      {
-        type: "addMany",
-        destination: "{{projectPath}}/{{dashCase projectName}}",
-        base: "../templates/init/default",
-        templateFiles: "../templates/init/default/**/*",
-        transform: (content, data) => {
-          data.entryPoint = data.langType === "Typescript" ? "index.ts" : "index.js";
-          return ejs.render(content, data);
+    actions: function (answers: Answers) {
+      // setting some default values based on the answers
+      answers.entryPoint = answers.langType === "Typescript" ? "./src/index.ts" : "./src/index.js";
+      answers.jsConfig = null;
+      answers.jsConfig = answers.langType === "Typescript" ? "tsconfig.json" : "babel.config.json";
+      answers.cssConfig = answers.isPostCSS ? "postcss.config.js" : null;
+
+      // adding some dependencies based on the answers
+      if (answers.devServer) {
+        dependencies.push("webpack-dev-server");
+      }
+      if (answers.htmlWebpackPlugin) {
+        dependencies.push("html-webpack-plugin", "html-loader");
+      }
+      if (answers.workboxWebpackPlugin) {
+        dependencies.push("workbox-webpack-plugin");
+      }
+      if (answers.isPostCSS) {
+        dependencies.push("postcss-loader", "autoprefixer");
+      }
+
+      const actions: ActionType[] = [
+        {
+          type: "addMany",
+          destination: "{{projectPath}}/{{dashCase projectName}}",
+          base: "../templates/init/default",
+          templateFiles: "../templates/init/default/**/*",
+          transform: (content: string, data: Answers) => {
+            return ejs.render(content, data);
+          },
+          stripExtensions: ["tpl"],
+          force: true,
+          verbose: true,
         },
-        stripExtensions: ["tpl"],
-        force: true,
-        verbose: true,
-      },
-      {
+        {
+          type: "add",
+          path: "{{projectPath}}/{{dashCase projectName}}/{{entryPoint}}",
+          force: true,
+          transform: (data: Answers) => {
+            if (data.langType === "Typescript") {
+              return `console.log("Hello, this is the entrypoint for your TypeScript Project!");`;
+            } else if (data.langType === "ES6") {
+              return `console.log("Hello, this is the entrypoint for your ES6 Project!");`;
+            } else {
+              return `console.log("Hello, this is the entrypoint for your Project!");`;
+            }
+          },
+        },
+      ];
+      if (answers.jsConfig) {
+        actions.push({
+          type: "add",
+          templateFile: "../templates/init/customFiles/{{jsConfig}}",
+          path: "{{projectPath}}/{{dashCase projectName}}/{{jsConfig}}",
+          force: true,
+        });
+      }
+      if (answers.cssConfig) {
+        actions.push({
+          type: "add",
+          templateFile: "../templates/init/customFiles/{{cssConfig}}",
+          path: "{{projectPath}}/{{dashCase projectName}}/{{cssConfig}}",
+          force: true,
+        });
+      }
+      actions.push({
         type: "pkgInstall",
-      },
-    ],
+      });
+      return actions;
+    } as DynamicActionsFunction,
   });
 }
