@@ -55,7 +55,7 @@ export default function (plop: NodePlopAPI) {
         message: "Enter the project destination:",
         default: ".",
         filter: (input) => {
-          return resolve(join(process.cwd(), input));
+          return resolve(process.cwd(), input);
         },
       },
       {
@@ -63,7 +63,7 @@ export default function (plop: NodePlopAPI) {
         name: "projectName",
         message: "Enter your project name:",
         default: "webpack-project",
-        validate(input, _) {
+        validate(input) {
           if (!input.trim()) {
             return "Project name cannot be empty";
           }
@@ -76,7 +76,7 @@ export default function (plop: NodePlopAPI) {
         message: "Which of the following JS solutions do you want to use?",
         choices: ["none", "ES6", "Typescript"],
         default: "none",
-        filter: (input, _) => {
+        filter: (input) => {
           switch (input) {
             case "ES6":
               dependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
@@ -159,7 +159,7 @@ export default function (plop: NodePlopAPI) {
         choices: ["No", "Only for Production", "Yes"],
         when: (answers) => answers.isCSS,
         default: "No",
-        filter: (input, _) => {
+        filter: (input) => {
           if (input !== "No") {
             dependencies.push("mini-css-extract-plugin");
           }
@@ -171,8 +171,8 @@ export default function (plop: NodePlopAPI) {
         name: "packageManager",
         message: "Which package manager do you want to use?",
         choices: ["npm", "yarn"],
-        default: "npm",
-        validate(input, _) {
+        default: "yarn",
+        validate(input) {
           if (!input.trim()) {
             return "Package manager cannot be empty";
           }
