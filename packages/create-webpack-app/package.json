@@ -41,10 +41,12 @@
   ],
   "dependencies": {
     "commander": "^12.1.0",
+    "cross-spawn": "^7.0.3",
     "ejs": "^3.1.10",
     "node-plop": "^0.32.0"
   },
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
     "@types/ejs": "^3.1.5"
   }
 }

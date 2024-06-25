@@ -1,53 +1,50 @@
-import { NodePlopAPI, Answers } from "./types";
-import { resolve, join } from "path";
+import { NodePlopAPI, Answers, ActionType } from "./types";
+import { resolve } from "path";
 import ejs from "ejs";
-import { spawn } from "child_process";
+import { spawn } from "cross-spawn";
+import { DynamicActionsFunction } from "node-plop";
+
 export default function (plop: NodePlopAPI) {
-  const dependencies = ["webpack", "webpack-cli"];
+  // dependencies to be installed
+  const dependencies: Array<string> = ["webpack", "webpack-cli"];
+
+  // Define a custom action for installing packages
   plop.setActionType("pkgInstall", (answers) => {
     const options = {
       cwd: `${answers.projectPath}/${answers.projectName}`,
-      encoding: "utf-8",
+      encoding: "utf8",
     };
-    if (answers.devServer) {
-      dependencies.push("webpack-dev-server");
-    }
-    if (answers.htmlWebpackPlugin) {
-      dependencies.push("html-webpack-plugin", "html-loader");
-    }
-    if (answers.workboxWebpackPlugin) {
-      dependencies.push("workbox-webpack-plugin");
-    }
-    if (answers.isPostCSS) {
-      dependencies.push("postcss-loader", "autoprefixer");
-    }
-    console.log(`Installing packages: ${dependencies.join("\n")}`);
-    const returnMessage = `Project ${answers.projectName} has been successfully created at ${answers.projectPath}/${answers.projectName}`;
 
-    const packageManager = answers.packageManager;
-    const installCommandPrefix = packageManager === "yarn" ? "add" : "install";
+    // promise to complete subprocess of installing packages and return a message
+    const returnPromise: Promise<string> = new Promise((resolve, reject) => {
+      console.log(`Installing packages:\n\t${dependencies.join("\n\t")}`);
+      const returnMessage = `All the dependencies have been installed `;
+      const packageManager = answers.packageManager;
+      const installCommandPrefix = packageManager === "yarn" ? "add" : "install";
+      const installMode = packageManager === "yarn" ? "-D" : "--save-dev";
 
-    const npmInstallPackages = spawn(
-      `${packageManager}`,
-      [`${installCommandPrefix}`, ...dependencies],
-      options,
-    );
-    npmInstallPackages.stdout.on("data", (data) => {
-      console.log(data.toString());
+      const npmInstallPackages = spawn(
+        `${packageManager}`,
+        [`${installCommandPrefix}`, `${installMode}`, ...dependencies],
+        options,
+      );
+      npmInstallPackages.stdout?.on("data", (data) => {
+        console.log(data.toString());
+      });
+      npmInstallPackages.stderr?.on("data", (data) => {
+        console.error(data.toString());
+      });
+      npmInstallPackages.on("exit", (code) => {
+        if (code === 0) {
+          resolve(returnMessage);
+        } else {
+          reject(`Error occurred while installing packages`);
+        }
+      });
     });
-    npmInstallPackages.stderr.on("data", (data) => {
-      console.error(data.toString());
-    });
-    npmInstallPackages.on("close", (code) => {
-      if (code !== 0) {
-        console.error(`child process exited with code ${code}`);
-        return;
-      } else {
-        console.log(returnMessage);
-      }
-    });
-    return "Package Installation Phase..."; // executes before the child process is completed
+    return returnPromise;
   });
+
   // Define a base generator for the project structure
   plop.setGenerator("init", {
     description: "Create a basic Webpack project",
