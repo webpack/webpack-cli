@@ -68,16 +68,16 @@ program
           onFailure: onFailureHandler,
         });
       }
+      console.log("Project initialised with webpack!");
     } catch (error) {
-      console.log(`Error: ${error}`);
+      console.log(`${error}`);
     }
-    console.log("Project initialised with webpack!");
   });
 
 const onSuccessHandler = (change: PlopActionHooksChanges) => {
   console.log(`${change.path}`);
 };
 const onFailureHandler = (failure: PlopActionHooksFailures) => {
-  console.log(`Failure in performing action ${failure.type} \n Error is: ${failure.error}`);
+  throw new Error(failure.error);
 };
 program.parse();

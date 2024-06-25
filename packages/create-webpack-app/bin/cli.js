@@ -1,3 +1,4 @@
 #!/usr/bin/env node
 
-require("../lib/index.js");
+//eslint-disable-next-line
+import * as cli from "../lib/index.js";
