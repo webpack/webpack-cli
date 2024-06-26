@@ -87,13 +87,14 @@ class WebpackCLI implements IWebpackCLI {
   colors: WebpackCLIColors;
   logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;
+  dotEnv: boolean;
   builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
   webpack!: typeof webpack;
   program: WebpackCLICommand;
   constructor() {
     this.colors = this.createColors();
     this.logger = this.getLogger();
-
+    this.dotEnv = false;
     // Initialize program
     this.program = program;
     this.program.name("webpack");
@@ -1381,6 +1382,17 @@ class WebpackCLI implements IWebpackCLI {
       "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
     );
 
+    // webpack-cli add dot-env plugin
+
+    this.program.option(
+      "--dot-env",
+      "Integrates dotenv configuration into your webpack configuration.",
+    );
+
+    this.program.on("option:dot-env", function () {
+      cli.dotEnv = true;
+    });
+
     // webpack-cli has it's own logic for showing suggestions
     this.program.showSuggestionAfterError(false);
 
@@ -2359,6 +2371,12 @@ class WebpackCLI implements IWebpackCLI {
           isMultiCompiler: Array.isArray(config.options),
         }),
       );
+
+      // Add dotenv plugin to the config
+      if (this.dotEnv) {
+        const Dotenv = require("./plugins/dotenv-webpack-plugin");
+        item.plugins.unshift(new Dotenv());
+      }
     };
 
     if (Array.isArray(config.options)) {
