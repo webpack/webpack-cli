@@ -3,42 +3,50 @@ import { resolve } from "path";
 import ejs from "ejs";
 import { spawn } from "cross-spawn";
 import { DynamicActionsFunction } from "node-plop";
+import { ChildProcess, SpawnOptionsWithStdioTuple, StdioNull, StdioPipe } from "child_process";
 
 export default function (plop: NodePlopAPI) {
   // dependencies to be installed
   const dependencies: Array<string> = ["webpack", "webpack-cli"];
 
   // Define a custom action for installing packages
-  plop.setActionType("pkgInstall", (answers) => {
-    const options = {
-      cwd: `${answers.projectPath}/${answers.projectName}`,
-      encoding: "utf8",
+  plop.setActionType("pkgInstall", (answers, config) => {
+    const options: SpawnOptionsWithStdioTuple<
+      StdioNull,
+      StdioNull | StdioPipe,
+      StdioPipe | StdioNull
+    > = {
+      cwd: config.path,
+      stdio: [
+        "inherit", // Use parent's stdio configuration
+        process.stdout.isTTY ? "inherit" : "pipe", // Pipe child process' stdout to parent's stdout
+        process.stderr.isTTY ? "inherit" : "pipe", // Pipe child process' stderr to parent's stderr
+      ],
     };
 
     // promise to complete subprocess of installing packages and return a message
     const returnPromise: Promise<string> = new Promise((resolve, reject) => {
-      console.log(`Installing packages:\n\t${dependencies.join("\n\t")}`);
-      const returnMessage = `All the dependencies have been installed `;
+      const returnMessage = `Project Dependencies installed successfully`;
       const packageManager = answers.packageManager;
       const installCommandPrefix = packageManager === "yarn" ? "add" : "install";
       const installMode = packageManager === "yarn" ? "-D" : "--save-dev";
 
-      const npmInstallPackages = spawn(
+      const npmInstallPackages: ChildProcess = spawn(
         `${packageManager}`,
-        [`${installCommandPrefix}`, `${installMode}`, ...dependencies],
+        [`${installCommandPrefix}`, `${installMode}`, ...config.packages],
         options,
       );
       npmInstallPackages.stdout?.on("data", (data) => {
         console.log(data.toString());
       });
       npmInstallPackages.stderr?.on("data", (data) => {
-        console.error(data.toString());
+        console.warn(data.toString());
       });
       npmInstallPackages.on("exit", (code) => {
         if (code === 0) {
           resolve(returnMessage);
         } else {
-          reject(`Error occurred while installing packages`);
+          reject(`Error occurred while installing packages\n Exit code: ${code}`);
         }
       });
     });
