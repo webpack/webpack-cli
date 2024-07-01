@@ -39,7 +39,11 @@
     "lib",
     "!**/*__tests__"
   ],
+  "peerDependencies": {
+    "webpack-cli": "^5.x.x"
+  },
   "dependencies": {
+    "colorette": "^2.0.20",
     "commander": "^12.1.0",
     "cross-spawn": "^7.0.3",
     "ejs": "^3.1.10",
