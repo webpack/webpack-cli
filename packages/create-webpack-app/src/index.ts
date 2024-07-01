@@ -3,7 +3,9 @@ import { Command } from "commander";
 import { resolve, dirname } from "path";
 import nodePlop from "node-plop";
 import { fileURLToPath } from "url";
-import { PlopActionHooksChanges, PlopActionHooksFailures } from "./types";
+
+// eslint-disable-next-line node/no-missing-import
+import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -21,7 +23,7 @@ const defaultValues = {
     isCSS: true,
     isPostCSS: true,
     extractPlugin: "No",
-    packageManager: "yarn",
+    packageManager: "npm",
   },
 };
 
@@ -33,21 +35,23 @@ program
 
 program
   .command("init", { isDefault: true })
-  .aliases(["i", "c", "create", "new"])
+  .aliases(["i", "n", "c", "create", "new"])
   .description("Initialize a new Webpack project")
   .argument("[projectPath]", "Path to create the project")
   .argument("[projectName]", "Name of the project")
   .option("-f, --force", "Skip the prompt and use the default values", false)
   .action(async function (projectPath, projectName, opts) {
-    console.log("Initializing a new Webpack project");
     const { force } = opts;
     const initGenerator = plop.getGenerator("init");
-    const byPassValues = [];
+    const byPassValues: Array<string> = [];
+
     if (projectPath) byPassValues.push(projectPath);
     if (projectName) byPassValues.push(projectName);
     try {
       if (force) {
-        console.log("Skipping the prompt and using the default values");
+        logger.warn("Skipping the prompt and using the default values");
+
+        logger.info("Initializing a new Webpack project");
         await initGenerator.runActions(
           {
             ...defaultValues.init,
@@ -63,21 +67,18 @@ program
         );
       } else {
         const answers = await initGenerator.runPrompts(byPassValues);
+
+        logger.info("Initializing a new Webpack project");
         await initGenerator.runActions(answers, {
           onSuccess: onSuccessHandler,
           onFailure: onFailureHandler,
         });
       }
-      console.log("Project initialised with webpack!");
+      logger.success("Project has been initialised with webpack!");
     } catch (error) {
-      console.log(`${error}`);
+      logger.error(`Failed to initialize the project with webpack!\n ${error}`);
+      process.exit(2);
     }
   });
 
-const onSuccessHandler = (change: PlopActionHooksChanges) => {
-  console.log(`${change.path}`);
-};
-const onFailureHandler = (failure: PlopActionHooksFailures) => {
-  throw new Error(failure.error);
-};
 program.parse();
