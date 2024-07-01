@@ -157,7 +157,6 @@ export default function (plop: NodePlopAPI) {
         type: "confirm",
         name: "isPostCSS",
         message: "Do you want to use PostCSS in your project?",
-        when: (answers) => answers.isCSS,
         default: true,
       },
       {
@@ -165,7 +164,6 @@ export default function (plop: NodePlopAPI) {
         name: "extractPlugin",
         message: "Do you want to extract CSS into separate files?",
         choices: ["No", "Only for Production", "Yes"],
-        when: (answers) => answers.isCSS,
         default: "No",
         filter: (input) => {
           if (input !== "No") {
@@ -179,7 +177,7 @@ export default function (plop: NodePlopAPI) {
         name: "packageManager",
         message: "Which package manager do you want to use?",
         choices: ["npm", "yarn"],
-        default: "yarn",
+        default: "npm",
         validate(input) {
           if (!input.trim()) {
             return "Package manager cannot be empty";
@@ -255,6 +253,9 @@ export default function (plop: NodePlopAPI) {
       }
       actions.push({
         type: "pkgInstall",
+        path: plop.renderString("{{projectPath}}/{{dashCase projectName}}", answers),
+        // Custom function don't automatically render hbs template as path hence manual rendering
+        packages: dependencies,
       });
       return actions;
     } as DynamicActionsFunction,
