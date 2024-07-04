@@ -14,7 +14,6 @@ const plop = await nodePlop(resolve(__dirname, "./plopfile.js"));
 const defaultValues = {
   init: {
     projectPath: process.cwd(),
-    projectName: "webpack-project",
     langType: "none",
     devServer: true,
     htmlWebpackPlugin: true,
@@ -38,15 +37,13 @@ program
   .aliases(["i", "n", "c", "create", "new"])
   .description("Initialize a new Webpack project")
   .argument("[projectPath]", "Path to create the project")
-  .argument("[projectName]", "Name of the project")
   .option("-f, --force", "Skip the prompt and use the default values", false)
-  .action(async function (projectPath, projectName, opts) {
+  .action(async function (projectPath, opts) {
     const { force } = opts;
     const initGenerator = plop.getGenerator("init");
     const byPassValues: Array<string> = [];
 
     if (projectPath) byPassValues.push(projectPath);
-    if (projectName) byPassValues.push(projectName);
     try {
       if (force) {
         logger.warn("Skipping the prompt and using the default values");
@@ -55,7 +52,6 @@ program
         await initGenerator.runActions(
           {
             ...defaultValues.init,
-            projectName: byPassValues[1] ? byPassValues[1] : defaultValues.init.projectName,
             projectPath: byPassValues[0]
               ? resolve(process.cwd(), byPassValues[0])
               : defaultValues.init.projectPath,

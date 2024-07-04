@@ -67,18 +67,6 @@ export default function (plop: NodePlopAPI) {
         },
       },
       {
-        type: "input",
-        name: "projectName",
-        message: "Enter your project name:",
-        default: "webpack-project",
-        validate(input) {
-          if (!input.trim()) {
-            return "Project name cannot be empty";
-          }
-          return true;
-        },
-      },
-      {
         type: "list",
         name: "langType",
         message: "Which of the following JS solutions do you want to use?",
@@ -192,7 +180,6 @@ export default function (plop: NodePlopAPI) {
       answers.jsConfig = null;
       answers.jsConfig = answers.langType === "Typescript" ? "tsconfig.json" : "babel.config.json";
       answers.cssConfig = answers.isPostCSS ? "postcss.config.js" : null;
-
       // adding some dependencies based on the answers
       if (answers.devServer) {
         dependencies.push("webpack-dev-server");
@@ -210,7 +197,7 @@ export default function (plop: NodePlopAPI) {
       const actions: ActionType[] = [
         {
           type: "addMany",
-          destination: "{{projectPath}}/{{dashCase projectName}}",
+          destination: "{{projectPath}}/",
           base: "../templates/init/default",
           templateFiles: "../templates/init/default/**/*",
           transform: (content: string, data: Answers) => {
@@ -222,7 +209,7 @@ export default function (plop: NodePlopAPI) {
         },
         {
           type: "add",
-          path: "{{projectPath}}/{{dashCase projectName}}/{{entryPoint}}",
+          path: "{{projectPath}}/{{entryPoint}}",
           force: true,
           transform: (data: Answers) => {
             if (data.langType === "Typescript") {
@@ -239,7 +226,7 @@ export default function (plop: NodePlopAPI) {
         actions.push({
           type: "add",
           templateFile: "../templates/init/customFiles/{{jsConfig}}",
-          path: "{{projectPath}}/{{dashCase projectName}}/{{jsConfig}}",
+          path: "{{projectPath}}/{{jsConfig}}",
           force: true,
         });
       }
@@ -247,13 +234,13 @@ export default function (plop: NodePlopAPI) {
         actions.push({
           type: "add",
           templateFile: "../templates/init/customFiles/{{cssConfig}}",
-          path: "{{projectPath}}/{{dashCase projectName}}/{{cssConfig}}",
+          path: "{{projectPath}}/{{cssConfig}}",
           force: true,
         });
       }
       actions.push({
         type: "pkgInstall",
-        path: plop.renderString("{{projectPath}}/{{dashCase projectName}}", answers),
+        path: plop.renderString("{{projectPath}}/", answers),
         // Custom function don't automatically render hbs template as path hence manual rendering
         packages: dependencies,
       });

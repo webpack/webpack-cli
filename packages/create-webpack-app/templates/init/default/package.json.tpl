@@ -3,7 +3,7 @@
 
   "description": "My webpack project",
 
-  "name": "<%= projectName %>",
+  "name": "webpack-project",
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",

@@ -5,13 +5,10 @@ const { join, resolve } = require("path");
 const { isWindows, run, runPromptWithAnswers, uniqueDirectoryForTest } = require("./test.utils");
 const { profile, profileEnd, Console } = require("console");
 
-// cspell: ignore gmrchk
 jest.setTimeout(480000);
 
 const ENTER = "\x0D";
 const DOWN = "\x1B\x5B\x42";
-
-const defaultProjectName = "webpack-project";
 
 const defaultTemplateFiles = [
   "package.json",
@@ -57,14 +54,13 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(projectFolder, file)).toBeTruthy();
+      expect(existsSync(assetsPath, file)).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
 
   it("should generate project when generationPath is supplied", async () => {
@@ -73,14 +69,13 @@ describe("create-webpack-app cli", () => {
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     // expect(stderr).toContain("webpack.config.js");
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
   //
   it("should generate folders if non existing generation path is given", async () => {
@@ -90,34 +85,32 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
 
     expect(stdout).toContain("webpack.config.js");
-    const projectFolder = resolve(__dirname, assetsPath, defaultProjectName);
 
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(join(projectFolder, file))).toBeTruthy();
+      expect(existsSync(join(assetsPath, file))).toBeTruthy();
     });
 
     //Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
   // //
   it("should configure assets modules by default", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await run(assetsPath, ["init", "--force"]);
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
   //   //
   //   // //   it("should ask question when wrong template is supplied", async () => {
@@ -145,7 +138,7 @@ describe("create-webpack-app cli", () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
     );
 
@@ -159,24 +152,23 @@ describe("create-webpack-app cli", () => {
       "src/index.ts",
       "tsconfig.json",
     ];
-    const projectFolder = join(assetsPath, defaultProjectName);
 
     files.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
   // //
   it("should generate ES6 project correctly", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
     );
 
@@ -184,26 +176,25 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
     expect(stdout).toContain("babel.config.json");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     const files = [...defaultTemplateFiles, "babel.config.json"];
 
     files.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
   //
   it("should use sass in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [
         `${ENTER}`,
         `n${ENTER}`,
@@ -220,24 +211,23 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
   //
   it("should use sass with postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [
         `${ENTER}`,
         `n${ENTER}`,
@@ -254,26 +244,25 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     const files = [...defaultTemplateFiles, "postcss.config.js"];
 
     files.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
   //
   it("should use mini-css-extract-plugin when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [
         `${ENTER}`,
         `n${ENTER}`,
@@ -290,24 +279,23 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
   //
   it("should use sass and css with postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [
         `${ENTER}`,
         `n${ENTER}`,
@@ -324,26 +312,25 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     const files = [...defaultTemplateFiles, "postcss.config.js"];
 
     files.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
   //
   it("should use less in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [
         `${ENTER}`,
         `n${ENTER}`,
@@ -360,24 +347,23 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+  // //
   it("should use stylus in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [
         `${ENTER}`,
         `n${ENTER}`,
@@ -394,24 +380,23 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+  // //
   it("should configure WDS as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
     );
 
@@ -419,25 +404,23 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
-
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+  // //
   it("should use postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [
         `${ENTER}`,
         `n${ENTER}`,
@@ -453,26 +436,25 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     const files = [...defaultTemplateFiles, "postcss.config.js"];
 
     files.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-
+  //
   it("should configure html-webpack-plugin as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, ENTER, ENTER],
     );
 
@@ -480,24 +462,23 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-
+  //
   it("should configure workbox-webpack-plugin as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [ENTER, `n${ENTER}`, ENTER, ENTER, ENTER, ENTER],
     );
 
@@ -505,19 +486,18 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test file
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(projectFolder)).toMatchSnapshot();
+    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-
+  //
   it("should throw if the current path is not writable", async () => {
     if (isWindows) {
       return;
@@ -533,7 +513,7 @@ describe("create-webpack-app cli", () => {
     expect(stderr).toContain("Failed to initialize the project with webpack!");
     expect(exitCode).toBe(2);
   });
-
+  //
   it("should work with 'new' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await run(assetsPath, ["new", "--force"]);
@@ -541,16 +521,15 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-
+  //
   it("should work with 'create' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await run(assetsPath, ["create", "--force"]);
@@ -558,16 +537,15 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-
+  //
   it("should work with 'c' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await run(assetsPath, ["c", "--force"]);
@@ -575,16 +553,15 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-
+  //
   it("should work with 'n' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await run(assetsPath, ["n", "--force"]);
@@ -592,60 +569,58 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-  //   //
-  //   // //   it("recognizes '-t' as an alias for '--template'", async () => {
-  //   // //     const assetsPath = await uniqueDirectoryForTest();
-  //   // //     const { stdout, stderr } = await run(assetsPath, ["init", "-t", "default", "--force"]);
-  //   // //
-  //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
-  //   // //     expect(stderr).toContain("webpack.config.js");
-  //   // //
-  //   // //     // Test files
-  //   // //     defaultTemplateFiles.forEach((file) => {
-  //   // //       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-  //   // //     });
-  //   // //
-  //   // //     // Check if the generated package.json file content matches the snapshot
-  //   // //     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-  //   // //   });
-  //   // //
-  //   // //   it("recognizes '-f' as an alias for '--force'", async () => {
-  //   // //     const assetsPath = await uniqueDirectoryForTest();
-  //   // //     const { stdout, stderr } = await run(assetsPath, ["init", "-f"]);
-  //   // //
-  //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
-  //   // //     expect(stderr).toContain("webpack.config.js");
-  //   // //
-  //   // //     // Test files
-  //   // //     defaultTemplateFiles.forEach((file) => {
-  //   // //       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-  //   // //     });
-  //   // //
-  //   // //     // Check if the generated package.json file content matches the snapshot
-  //   // //     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-  //   // //   });
-  //   // //
+  // //   //
+  // //   // //   it("recognizes '-t' as an alias for '--template'", async () => {
+  // //   // //     const assetsPath = await uniqueDirectoryForTest();
+  // //   // //     const { stdout, stderr } = await run(assetsPath, ["init", "-t", "default", "--force"]);
+  // //   // //
+  // //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
+  // //   // //     expect(stderr).toContain("webpack.config.js");
+  // //   // //
+  // //   // //     // Test files
+  // //   // //     defaultTemplateFiles.forEach((file) => {
+  // //   // //       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+  // //   // //     });
+  // //   // //
+  // //   // //     // Check if the generated package.json file content matches the snapshot
+  // //   // //     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+  // //   // //   });
+  // //   // //
+  // //   // //   it("recognizes '-f' as an alias for '--force'", async () => {
+  // //   // //     const assetsPath = await uniqueDirectoryForTest();
+  // //   // //     const { stdout, stderr } = await run(assetsPath, ["init", "-f"]);
+  // //   // //
+  // //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
+  // //   // //     expect(stderr).toContain("webpack.config.js");
+  // //   // //
+  // //   // //     // Test files
+  // //   // //     defaultTemplateFiles.forEach((file) => {
+  // //   // //       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+  // //   // //     });
+  // //   // //
+  // //   // //     // Check if the generated package.json file content matches the snapshot
+  // //   // //     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+  // //   // //   });
+  // //   // //
   it("uses yarn as the package manager when opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
-      ["init", ".", defaultProjectName],
+      ["init", "."],
       [ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, `${DOWN}${ENTER}`],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
-    const projectFolder = join(assetsPath, defaultProjectName);
     // Test files
     const files = [
       ...defaultTemplateFiles.filter((file) => file !== "package-lock.json"),
@@ -653,52 +628,52 @@ describe("create-webpack-app cli", () => {
     ];
 
     files.forEach((file) => {
-      expect(existsSync(resolve(projectFolder, file))).toBeTruthy();
+      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(projectFolder)).toMatchSnapshot();
+    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-
-  //   // //   it("should generate react template with prompt answers", async () => {
-  //   // //     const assetsPath = await uniqueDirectoryForTest();
-  //   // //     const { stdout, stderr } = await runPromptWithAnswers(
-  //   // //       assetsPath,
-  //   // //       ["init"],
-  //   // //       [ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
-  //   // //     );
-  //   // //
-  //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
-  //   // //     expect(stderr).toContain("webpack.config.js");
-  //   // //
-  //   // //     // Test files
-  //   // //     reactTemplateFiles.forEach((file) => {
-  //   // //       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-  //   // //     });
-  //   // //
-  //   // //     // Check if the generated package.json file content matches the snapshot
-  //   // //     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-  //   // //
-  //   // //     // Check if the generated webpack configuration matches the snapshot
-  //   // //     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  //   // //   });
-  //   // //
-  //   // //   it("should generate react template with --force", async () => {
-  //   // //     const assetsPath = await uniqueDirectoryForTest();
-  //   // //     const { stdout, stderr } = await run(assetsPath, ["init", "--template=react", "--force"]);
-  //   // //
-  //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
-  //   // //     expect(stderr).toContain("webpack.config.js");
-  //   // //
-  //   // //     // Test files
-  //   // //     reactTemplateFiles.forEach((file) => {
-  //   // //       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-  //   // //     });
-  //   // //
-  //   // //     // Check if the generated package.json file content matches the snapshot
-  //   // //     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-  //   // //
-  //   // //     // Check if the generated webpack configuration matches the snapshot
-  //   // //     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  //   // //   });
+  //
+  // //   // //   it("should generate react template with prompt answers", async () => {
+  // //   // //     const assetsPath = await uniqueDirectoryForTest();
+  // //   // //     const { stdout, stderr } = await runPromptWithAnswers(
+  // //   // //       assetsPath,
+  // //   // //       ["init"],
+  // //   // //       [ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+  // //   // //     );
+  // //   // //
+  // //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
+  // //   // //     expect(stderr).toContain("webpack.config.js");
+  // //   // //
+  // //   // //     // Test files
+  // //   // //     reactTemplateFiles.forEach((file) => {
+  // //   // //       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+  // //   // //     });
+  // //   // //
+  // //   // //     // Check if the generated package.json file content matches the snapshot
+  // //   // //     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+  // //   // //
+  // //   // //     // Check if the generated webpack configuration matches the snapshot
+  // //   // //     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+  // //   // //   });
+  // //   // //
+  // //   // //   it("should generate react template with --force", async () => {
+  // //   // //     const assetsPath = await uniqueDirectoryForTest();
+  // //   // //     const { stdout, stderr } = await run(assetsPath, ["init", "--template=react", "--force"]);
+  // //   // //
+  // //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
+  // //   // //     expect(stderr).toContain("webpack.config.js");
+  // //   // //
+  // //   // //     // Test files
+  // //   // //     reactTemplateFiles.forEach((file) => {
+  // //   // //       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+  // //   // //     });
+  // //   // //
+  // //   // //     // Check if the generated package.json file content matches the snapshot
+  // //   // //     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+  // //   // //
+  // //   // //     // Check if the generated webpack configuration matches the snapshot
+  // //   // //     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+  // //   // //   });
 });
