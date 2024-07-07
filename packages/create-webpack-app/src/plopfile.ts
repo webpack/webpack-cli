@@ -107,7 +107,7 @@ export default function (plop: NodePlopAPI) {
         name: "cssType",
         message: "Which of the following CSS solution do you want to use?",
         choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "Css only",
+        default: "none",
         filter: (input, answers) => {
           if (input === "none") {
             answers.isCSS = false;
@@ -120,7 +120,7 @@ export default function (plop: NodePlopAPI) {
                 answers.isCSS = true;
                 break;
               case "SASS":
-                dependencies.push("sass-loader", "node-sass");
+                dependencies.push("sass-loader", "sass");
                 break;
               case "LESS":
                 dependencies.push("less-loader", "less");
@@ -145,7 +145,7 @@ export default function (plop: NodePlopAPI) {
         type: "confirm",
         name: "isPostCSS",
         message: "Do you want to use PostCSS in your project?",
-        default: true,
+        default: (answers: Answers) => answers.cssType == "CSS only",
       },
       {
         type: "list",
@@ -177,8 +177,12 @@ export default function (plop: NodePlopAPI) {
     actions: function (answers: Answers) {
       // setting some default values based on the answers
       answers.entryPoint = answers.langType === "Typescript" ? "./src/index.ts" : "./src/index.js";
-      answers.jsConfig = null;
-      answers.jsConfig = answers.langType === "Typescript" ? "tsconfig.json" : "babel.config.json";
+      answers.jsConfig =
+        answers.langType === "Typescript"
+          ? "tsconfig.json"
+          : answers.langType === "ES6"
+          ? "babel.config.json"
+          : null;
       answers.cssConfig = answers.isPostCSS ? "postcss.config.js" : null;
       // adding some dependencies based on the answers
       if (answers.devServer) {
@@ -191,7 +195,7 @@ export default function (plop: NodePlopAPI) {
         dependencies.push("workbox-webpack-plugin");
       }
       if (answers.isPostCSS) {
-        dependencies.push("postcss-loader", "autoprefixer");
+        dependencies.push("postcss-loader", "postcss", "autoprefixer");
       }
 
       const actions: ActionType[] = [
