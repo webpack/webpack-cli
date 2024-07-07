@@ -2,8 +2,7 @@ const os = require("os");
 const path = require("path");
 const { mkdirSync, existsSync, readFileSync } = require("fs");
 const { join, resolve } = require("path");
-const { isWindows, run, runPromptWithAnswers, uniqueDirectoryForTest } = require("./test.utils");
-const { profile, profileEnd, Console } = require("console");
+const { isWindows, run, runPromptWithAnswers, uniqueDirectoryForTest } = require("./test.utils.js");
 
 jest.setTimeout(480000);
 
@@ -41,10 +40,6 @@ const readFromPkgJSON = (path) => {
 
 // Helper to read from webpack.config.js in a given path
 const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.js"), "utf8");
-afterEach(() => {
-  jest.useRealTimers();
-  jest.clearAllTimers();
-});
 
 describe("create-webpack-app cli", () => {
   it("should generate default project when nothing is passed", async () => {
@@ -53,7 +48,6 @@ describe("create-webpack-app cli", () => {
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
-
     // Test files
     defaultTemplateFiles.forEach((file) => {
       expect(existsSync(assetsPath, file)).toBeTruthy();
@@ -65,7 +59,7 @@ describe("create-webpack-app cli", () => {
 
   it("should generate project when generationPath is supplied", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
+    const { stdout } = await run(__dirname, ["init", assetsPath, "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     // expect(stderr).toContain("webpack.config.js");
@@ -80,7 +74,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should generate folders if non existing generation path is given", async () => {
     const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
-    const { stdout, stderr } = await run(__dirname, ["init", assetsPath, "--force"]);
+    const { stdout } = await run(__dirname, ["init", assetsPath, "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
 
@@ -97,7 +91,7 @@ describe("create-webpack-app cli", () => {
   // //
   it("should configure assets modules by default", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await run(assetsPath, ["init", "--force"]);
+    const { stdout } = await run(assetsPath, ["init", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
@@ -115,7 +109,7 @@ describe("create-webpack-app cli", () => {
   //   //
   //   // //   it("should ask question when wrong template is supplied", async () => {
   //   // //     const assetsPath = await uniqueDirectoryForTest();
-  //   // //     const { stdout, stderr } = await runPromptWithAnswers(
+  //   // //     const { stdout } = await runPromptWithAnswers(
   //   // //       assetsPath,
   //   // //       ["init", "--force", "--template=apple"],
   //   // //       [`${ENTER}`],
@@ -136,7 +130,7 @@ describe("create-webpack-app cli", () => {
   //   // //
   it("should generate typescript project correctly", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
@@ -166,7 +160,7 @@ describe("create-webpack-app cli", () => {
   // //
   it("should generate ES6 project correctly", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
@@ -192,7 +186,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should use sass in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [
@@ -225,7 +219,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should use sass with postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [
@@ -260,7 +254,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should use mini-css-extract-plugin when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [
@@ -293,7 +287,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should use sass and css with postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [
@@ -328,7 +322,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should use less in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [
@@ -361,7 +355,7 @@ describe("create-webpack-app cli", () => {
   // //
   it("should use stylus in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [
@@ -394,7 +388,7 @@ describe("create-webpack-app cli", () => {
   // //
   it("should configure WDS as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
@@ -418,7 +412,7 @@ describe("create-webpack-app cli", () => {
   // //
   it("should use postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [
@@ -452,7 +446,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should configure html-webpack-plugin as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, ENTER, ENTER],
@@ -476,7 +470,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should configure workbox-webpack-plugin as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [ENTER, `n${ENTER}`, ENTER, ENTER, ENTER, ENTER],
@@ -507,7 +501,7 @@ describe("create-webpack-app cli", () => {
     const projectPath = join(assetsPath, "non-writable-path");
 
     mkdirSync(projectPath, 0o500);
-    const { exitCode, stderr, stdout } = await run(projectPath, ["init", "my-app", "--force"], {
+    const { exitCode, stderr } = await run(projectPath, ["init", "my-app", "--force"], {
       reject: false,
     });
     expect(stderr).toContain("Failed to initialize the project with webpack!");
@@ -516,7 +510,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should work with 'new' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await run(assetsPath, ["new", "--force"]);
+    const { stdout } = await run(assetsPath, ["new", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
@@ -532,7 +526,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should work with 'create' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await run(assetsPath, ["create", "--force"]);
+    const { stdout } = await run(assetsPath, ["create", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
@@ -548,7 +542,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should work with 'c' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await run(assetsPath, ["c", "--force"]);
+    const { stdout } = await run(assetsPath, ["c", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
@@ -564,7 +558,7 @@ describe("create-webpack-app cli", () => {
   //
   it("should work with 'n' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await run(assetsPath, ["n", "--force"]);
+    const { stdout } = await run(assetsPath, ["n", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
@@ -580,7 +574,7 @@ describe("create-webpack-app cli", () => {
   // //   //
   // //   // //   it("recognizes '-t' as an alias for '--template'", async () => {
   // //   // //     const assetsPath = await uniqueDirectoryForTest();
-  // //   // //     const { stdout, stderr } = await run(assetsPath, ["init", "-t", "default", "--force"]);
+  // //   // //     const { stdout } = await run(assetsPath, ["init", "-t", "default", "--force"]);
   // //   // //
   // //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
   // //   // //     expect(stderr).toContain("webpack.config.js");
@@ -596,7 +590,7 @@ describe("create-webpack-app cli", () => {
   // //   // //
   // //   // //   it("recognizes '-f' as an alias for '--force'", async () => {
   // //   // //     const assetsPath = await uniqueDirectoryForTest();
-  // //   // //     const { stdout, stderr } = await run(assetsPath, ["init", "-f"]);
+  // //   // //     const { stdout } = await run(assetsPath, ["init", "-f"]);
   // //   // //
   // //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
   // //   // //     expect(stderr).toContain("webpack.config.js");
@@ -612,7 +606,7 @@ describe("create-webpack-app cli", () => {
   // //   // //
   it("uses yarn as the package manager when opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
       [ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, `${DOWN}${ENTER}`],
@@ -637,7 +631,7 @@ describe("create-webpack-app cli", () => {
   //
   // //   // //   it("should generate react template with prompt answers", async () => {
   // //   // //     const assetsPath = await uniqueDirectoryForTest();
-  // //   // //     const { stdout, stderr } = await runPromptWithAnswers(
+  // //   // //     const { stdout } = await runPromptWithAnswers(
   // //   // //       assetsPath,
   // //   // //       ["init"],
   // //   // //       [ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
@@ -660,7 +654,7 @@ describe("create-webpack-app cli", () => {
   // //   // //
   // //   // //   it("should generate react template with --force", async () => {
   // //   // //     const assetsPath = await uniqueDirectoryForTest();
-  // //   // //     const { stdout, stderr } = await run(assetsPath, ["init", "--template=react", "--force"]);
+  // //   // //     const { stdout } = await run(assetsPath, ["init", "--template=react", "--force"]);
   // //   // //
   // //   // //     expect(stdout).toContain("Project has been initialised with webpack!");
   // //   // //     expect(stderr).toContain("webpack.config.js");
