@@ -24,7 +24,10 @@ const typeDisplay: Record<string, Color | string> = {
   skip: cyanBright("skip-- "),
 };
 function onSuccessHandler(change: PlopActionHooksChanges): void {
-  change.path.split("\n").forEach((line) => {
+  change.path.split("\n").forEach((line, idx) => {
+    if (change.type === "addMany" && idx === 0) {
+      return;
+    }
     const prefix = typeDisplay[change.type] || "";
     console.log(`\t${prefix} ${basename(line)}`);
   });
