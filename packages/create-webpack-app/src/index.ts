@@ -1,18 +1,21 @@
 // Cspell:ignore plopfile, plopfile.js
 import { Command } from "commander";
 import { resolve, dirname } from "path";
-import nodePlop from "node-plop";
+import inquirer from "inquirer";
+import nodePlop, { PlopGenerator } from "node-plop";
 import { fileURLToPath } from "url";
 
 // eslint-disable-next-line node/no-missing-import
 import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger.js";
+import { Answers } from "./types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const program = new Command();
 const plop = await nodePlop(resolve(__dirname, "./plopfile.js"));
-const defaultValues = {
-  init: {
+
+const defaultValues: Record<string, Answers> = {
+  default: {
     projectPath: process.cwd(),
     langType: "none",
     devServer: true,
@@ -24,6 +27,23 @@ const defaultValues = {
     extractPlugin: "No",
     packageManager: "npm",
   },
+  react: {
+    projectPath: process.cwd(),
+    langType: "ES6",
+    devServer: true,
+    htmlWebpackPlugin: true,
+    workboxWebpackPlugin: true,
+    cssType: "none",
+    isCSS: false,
+    isPostCSS: false,
+    extractPlugin: "No",
+    packageManager: "npm",
+  },
+};
+
+const generators: Record<string, PlopGenerator> = {
+  default: plop.getGenerator("default"),
+  react: plop.getGenerator("react"),
 };
 
 program
@@ -38,9 +58,25 @@ program
   .description("Initialize a new Webpack project")
   .argument("[projectPath]", "Path to create the project")
   .option("-f, --force", "Skip the prompt and use the default values", false)
+  .option("-t --template <template>", "Template to be used for scaffolding", "default")
   .action(async function (projectPath, opts) {
     const { force } = opts;
-    const initGenerator = plop.getGenerator("init");
+    let templateOption = opts.template as string;
+    let generator = generators[templateOption];
+
+    if (generator === undefined) {
+      logger.warn(`${templateOption} is not a valid template, please select one from below`);
+      const { template } = await inquirer.prompt([
+        {
+          type: "list",
+          name: "template",
+          message: "Choose a template",
+          choices: Object.keys(generators),
+        },
+      ]);
+      templateOption = template;
+      generator = generators[template];
+    }
     const byPassValues: Array<string> = [];
 
     if (projectPath) byPassValues.push(projectPath);
@@ -49,12 +85,12 @@ program
         logger.warn("Skipping the prompt and using the default values");
 
         logger.info("Initializing a new Webpack project");
-        await initGenerator.runActions(
+        await generator.runActions(
           {
-            ...defaultValues.init,
+            ...defaultValues[templateOption],
             projectPath: byPassValues[0]
               ? resolve(process.cwd(), byPassValues[0])
-              : defaultValues.init.projectPath,
+              : defaultValues[templateOption].projectPath,
           },
           {
             onSuccess: onSuccessHandler,
@@ -62,10 +98,10 @@ program
           },
         );
       } else {
-        const answers = await initGenerator.runPrompts(byPassValues);
+        const answers = await generator.runPrompts(byPassValues);
 
         logger.info("Initializing a new Webpack project");
-        await initGenerator.runActions(answers, {
+        await generator.runActions(answers, {
           onSuccess: onSuccessHandler,
           onFailure: onFailureHandler,
         });
