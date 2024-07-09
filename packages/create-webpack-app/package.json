@@ -47,6 +47,7 @@
     "commander": "^12.1.0",
     "cross-spawn": "^7.0.3",
     "ejs": "^3.1.10",
+    "inquirer": "9.3",
     "node-plop": "^0.32.0"
   },
   "devDependencies": {
