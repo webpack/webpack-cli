@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "exclude": ["src/utils/__tests__"],
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src",
+    "module": "esnext"
+  },
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../webpack-cli"
+    }
+  ]
+}

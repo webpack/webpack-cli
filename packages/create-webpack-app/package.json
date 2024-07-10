@@ -1,0 +1,56 @@
+{
+  "name": "create-webpack-app",
+  "version": "1.0.0",
+  "description": "CLI for scaffolding webpack projects using default config, framework templates, loader or plugins templates",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack-cli/create-webpack-app.git"
+  },
+  "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/create-webpack-app",
+  "bugs": "https://github.com/webpack/webpack-cli/issues",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/webpack"
+  },
+  "bin": {
+    "create-webpack-app": "./bin/cli.js"
+  },
+  "type": "module",
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "tsc --build",
+    "watch": "tsc --watch"
+  },
+  "engines": {
+    "node": ">=18.12.0"
+  },
+  "keywords": [
+    "webpack",
+    "cli",
+    "scaffolding",
+    "module",
+    "bundler",
+    "web",
+    "frameworks"
+  ],
+  "files": [
+    "bin",
+    "lib",
+    "!**/*__tests__"
+  ],
+  "peerDependencies": {
+    "webpack-cli": "^5.x.x"
+  },
+  "dependencies": {
+    "colorette": "^2.0.20",
+    "commander": "^12.1.0",
+    "cross-spawn": "^7.0.3",
+    "ejs": "^3.1.10",
+    "node-plop": "^0.32.0"
+  },
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
+    "@types/ejs": "^3.1.5"
+  }
+}
