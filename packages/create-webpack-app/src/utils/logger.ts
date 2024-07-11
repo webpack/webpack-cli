@@ -1,7 +1,7 @@
 import { WebpackCLILogger } from "webpack-cli";
 import { green, yellow, Color, red, cyan, cyanBright, blue, blueBright } from "colorette";
 import { PlopActionHooksChanges, PlopActionHooksFailures } from "../types";
-import { basename } from "path";
+import { relative } from "path";
 
 const prefix: string = blueBright("create-webpack");
 const getLogger = (): WebpackCLILogger => {
@@ -29,7 +29,7 @@ function onSuccessHandler(change: PlopActionHooksChanges): void {
       return;
     }
     const prefix = typeDisplay[change.type] || "";
-    console.log(`\t${prefix} ${basename(line)}`);
+    console.log(`\t${prefix} ${relative(process.cwd(), line)}`);
   });
 }
 function onFailureHandler(failure: PlopActionHooksFailures): void {
