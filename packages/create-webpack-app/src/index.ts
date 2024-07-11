@@ -1,7 +1,7 @@
 // Cspell:ignore plopfile, plopfile.js
 import { Command } from "commander";
 import { resolve, dirname } from "path";
-import inquirer from "inquirer";
+import { select } from "@inquirer/prompts";
 import nodePlop, { PlopGenerator } from "node-plop";
 import { fileURLToPath } from "url";
 
@@ -66,14 +66,10 @@ program
 
     if (generator === undefined) {
       logger.warn(`${templateOption} is not a valid template, please select one from below`);
-      const { template } = await inquirer.prompt([
-        {
-          type: "list",
-          name: "template",
-          message: "Choose a template",
-          choices: Object.keys(generators),
-        },
-      ]);
+      const template = await select<string>({
+        message: "Choose a template",
+        choices: Object.keys(generators).map((key) => ({ name: key, value: key.toLowerCase() })),
+      });
       templateOption = template;
       generator = generators[template];
     }
