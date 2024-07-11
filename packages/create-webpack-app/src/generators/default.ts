@@ -1,6 +1,6 @@
 // Cspell:ignore plopfile, plopfile.js
 import { NodePlopAPI, Answers, ActionType } from "../types";
-import { dirname, resolve } from "path";
+import { dirname, join, resolve } from "path";
 import ejs from "ejs";
 import { DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
@@ -36,17 +36,6 @@ export default async function (plop: NodePlopAPI) {
         message: "Which of the following JS solutions do you want to use?",
         choices: ["none", "ES6", "Typescript"],
         default: "none",
-        filter: (input) => {
-          switch (input) {
-            case "ES6":
-              dependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
-              break;
-            case "Typescript":
-              dependencies.push("typescript", "ts-loader");
-              break;
-          }
-          return input;
-        },
       },
       {
         type: "confirm",
@@ -77,22 +66,8 @@ export default async function (plop: NodePlopAPI) {
             answers.isCSS = false;
             answers.isPostCSS = false;
             answers.extractPlugin = "No";
-          } else {
-            dependencies.push("style-loader", "css-loader");
-            switch (input) {
-              case "CSS only":
-                answers.isCSS = true;
-                break;
-              case "SASS":
-                dependencies.push("sass-loader", "sass");
-                break;
-              case "LESS":
-                dependencies.push("less-loader", "less");
-                break;
-              case "Stylus":
-                dependencies.push("stylus-loader", "stylus");
-                break;
-            }
+          } else if (input === "CSS only") {
+            answers.isCSS = true;
           }
           return input;
         },
@@ -117,12 +92,6 @@ export default async function (plop: NodePlopAPI) {
         message: "Do you want to extract CSS into separate files?",
         choices: ["No", "Only for Production", "Yes"],
         default: "No",
-        filter: (input) => {
-          if (input !== "No") {
-            dependencies.push("mini-css-extract-plugin");
-          }
-          return input;
-        },
       },
       {
         type: "list",
@@ -139,70 +108,81 @@ export default async function (plop: NodePlopAPI) {
       },
     ],
     actions: function (answers: Answers) {
-      // setting some default values based on the answers
-      answers.entryPoint = answers.langType === "Typescript" ? "./src/index.ts" : "./src/index.js";
-      answers.jsConfig =
-        answers.langType === "Typescript"
-          ? "tsconfig.json"
-          : answers.langType === "ES6"
-          ? "babel.config.json"
-          : null;
-      answers.cssConfig = answers.isPostCSS ? "postcss.config.js" : null;
-      // adding some dependencies based on the answers
+      const actions: ActionType[] = [];
+
+      switch (answers.langType) {
+        case "ES6":
+          dependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
+          break;
+        case "Typescript":
+          dependencies.push("typescript", "ts-loader");
+          break;
+      }
+
       if (answers.devServer) {
         dependencies.push("webpack-dev-server");
       }
+
       if (answers.htmlWebpackPlugin) {
         dependencies.push("html-webpack-plugin", "html-loader");
       }
+
       if (answers.workboxWebpackPlugin) {
         dependencies.push("workbox-webpack-plugin");
       }
+
       if (answers.isPostCSS) {
         dependencies.push("postcss-loader", "postcss", "autoprefixer");
       }
 
-      const actions: ActionType[] = [
-        {
-          type: "addMany",
-          destination: "{{projectPath}}/",
-          base: "../templates/init/default",
-          templateFiles: "../templates/init/default/**/*",
-          transform: (content: string, data: Answers) => {
-            return ejs.render(content, data);
-          },
-          stripExtensions: ["tpl"],
-          force: true,
-          verbose: true,
-        },
-        {
-          type: "add",
-          path: "{{projectPath}}/{{entryPoint}}",
-          force: true,
-          transform: (data: Answers) => {
-            if (data.langType === "Typescript") {
-              return `console.log("Hello, this is the entrypoint for your TypeScript Project!");`;
-            } else if (data.langType === "ES6") {
-              return `console.log("Hello, this is the entrypoint for your ES6 Project!");`;
-            } else {
-              return `console.log("Hello, this is the entrypoint for your Project!");`;
-            }
-          },
-        },
-      ];
-      if (answers.jsConfig) {
-        actions.push({
-          type: "add",
-          templateFile: "../templates/init/customFiles/{{jsConfig}}",
-          path: "{{projectPath}}/{{jsConfig}}",
-          force: true,
-        });
+      if (answers.extractPlugin !== "No") {
+        dependencies.push("mini-css-extract-plugin");
       }
-      if (answers.cssConfig) {
+
+      if (answers.cssType !== "none") {
+        dependencies.push("style-loader", "css-loader");
+        switch (answers.cssType) {
+          case "SASS":
+            dependencies.push("sass-loader", "sass");
+            break;
+          case "LESS":
+            dependencies.push("less-loader", "less");
+            break;
+          case "Stylus":
+            dependencies.push("stylus-loader", "stylus");
+            break;
+        }
+      }
+      if (answers.extractPlugin !== "No") {
+        dependencies.push("mini-css-extract-plugin");
+      }
+
+      const files = ["./index.html", "webpack.config.js", "package.json", "README.md"];
+
+      switch (answers.langType) {
+        case "Typescript":
+          answers.entryPoint = "./src/index.ts";
+          files.push("tsconfig.json", answers.entryPoint as string);
+          break;
+        case "ES6":
+          answers.entryPoint = "./src/index.js";
+          files.push("babel.config.json", answers.entryPoint as string);
+          break;
+        default:
+          answers.entryPoint = "./src/index.js";
+          files.push(answers.entryPoint as string);
+          break;
+      }
+      if (answers.isPostCSS) {
+        files.push("postcss.config.js");
+      }
+
+      for (const file of files) {
         actions.push({
           type: "add",
-          templateFile: "../templates/init/customFiles/{{cssConfig}}",
-          path: "{{projectPath}}/{{cssConfig}}",
+          path: join(answers.projectPath, file),
+          templateFile: join(plop.getPlopfilePath(), "../templates/init/default", `${file}.tpl`),
+          transform: (content: string) => ejs.render(content, answers),
           force: true,
         });
       }
@@ -213,6 +193,80 @@ export default async function (plop: NodePlopAPI) {
         packages: dependencies,
       });
       return actions;
+
+      // answers.entryPoint = answers.langType === "Typescript" ? "./src/index.ts" : "./src/index.js";
+      //     answers.jsConfig =
+      //       answers.langType === "Typescript"
+      //         ? "tsconfig.json"
+      //         : answers.langType === "ES6"
+      //           ? "babel.config.json"
+      //           : null;
+      //     answers.cssConfig = answers.isPostCSS ? "postcss.config.js" : null;
+      //     // adding some dependencies based on the answers
+      //     if (answers.devServer) {
+      //       dependencies.push("webpack-dev-server");
+      //     }
+      //     if (answers.htmlWebpackPlugin) {
+      //       dependencies.push("html-webpack-plugin", "html-loader");
+      //     }
+      //     if (answers.workboxWebpackPlugin) {
+      //       dependencies.push("workbox-webpack-plugin");
+      //     }
+      //     if (answers.isPostCSS) {
+      //       dependencies.push("postcss-loader", "postcss", "autoprefixer");
+      //     }
+      //
+      //     const actions: ActionType[] = [
+      //       {
+      //         type: "addMany",
+      //         destination: "{{projectPath}}/",
+      //         base: "../templates/init/default",
+      //         templateFiles: "../templates/init/default/**/*",
+      //         transform: (content: string, data: Answers) => {
+      //           return ejs.render(content, data);
+      //         },
+      //         stripExtensions: ["tpl"],
+      //         force: true,
+      //         verbose: true,
+      //       },
+      //       {
+      //         type: "add",
+      //         path: "{{projectPath}}/{{entryPoint}}",
+      //         force: true,
+      //         transform: (data: Answers) => {
+      //           if (data.langType === "Typescript") {
+      //             return `console.log("Hello, this is the entrypoint for your TypeScript Project!");`;
+      //           } else if (data.langType === "ES6") {
+      //             return `console.log("Hello, this is the entrypoint for your ES6 Project!");`;
+      //           } else {
+      //             return `console.log("Hello, this is the entrypoint for your Project!");`;
+      //           }
+      //         },
+      //       },
+      //     ];
+      //     if (answers.jsConfig) {
+      //       actions.push({
+      //         type: "add",
+      //         templateFile: "../templates/init/customFiles/{{jsConfig}}",
+      //         path: "{{projectPath}}/{{jsConfig}}",
+      //         force: true,
+      //       });
+      //     }
+      //     if (answers.cssConfig) {
+      //       actions.push({
+      //         type: "add",
+      //         templateFile: "../templates/init/customFiles/{{cssConfig}}",
+      //         path: "{{projectPath}}/{{cssConfig}}",
+      //         force: true,
+      //       });
+      //     }
+      //     actions.push({
+      //       type: "pkgInstall",
+      //       path: plop.renderString("{{projectPath}}/", answers),
+      //       // Custom function don't automatically render hbs template as path hence manual rendering
+      //       packages: dependencies,
+      //     });
+      //     return actions;
     } as DynamicActionsFunction,
   });
 }
