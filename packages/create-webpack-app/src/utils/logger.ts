@@ -6,11 +6,11 @@ import { relative } from "path";
 const prefix: string = blueBright("create-webpack");
 const getLogger = (): WebpackCLILogger => {
   return {
-    error: (val) => console.error(`[${prefix}] ${red(val)}`),
-    warn: (val) => console.warn(`[${prefix}] ${yellow(val)}`),
-    info: (val) => console.info(`[${prefix}] ${cyan(val)}`),
-    success: (val) => console.log(`[${prefix}] ${green(val)}`),
-    log: (val) => console.log(`[${prefix}] ${val}`),
+    error: (val) => console.error(`[${prefix}] ⛔${red(val)}`),
+    warn: (val) => console.warn(`[${prefix}] ⚠️${yellow(val)}`),
+    info: (val) => console.info(`[${prefix}] ℹ️ ${cyan(val)}`),
+    success: (val) => console.log(`[${prefix}] ✅ ${green(val)}`),
+    log: (val) => console.log(`[${prefix}] 📃${val}`),
     raw: (val) => console.log(val),
   };
 };
