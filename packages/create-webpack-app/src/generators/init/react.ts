@@ -1,5 +1,5 @@
 // Cspell:ignore plopfile, plopfile.js
-import { NodePlopAPI, Answers, ActionType } from "../types";
+import { NodePlopAPI, Answers, ActionType } from "../../types";
 import { dirname, resolve, join } from "path";
 import ejs from "ejs";
 import { DynamicActionsFunction } from "node-plop";
@@ -18,14 +18,14 @@ export default async function (plop: NodePlopAPI) {
     "html-webpack-plugin",
   ];
 
-  await plop.load("../utils/pkgInstallAction.js", {}, true);
+  await plop.load("../../utils/pkgInstallAction.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
-  plop.setPlopfilePath(resolve(__dirname, "../plopfile.js"));
+  plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
   // Define a custom action for installing packages
 
   // Define a base generator for the project structure
-  plop.setGenerator("react", {
+  plop.setGenerator("init-react", {
     description: "Create a basic React-Webpack project",
     prompts: [
       {
