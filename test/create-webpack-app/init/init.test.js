@@ -2,7 +2,8 @@ const os = require("os");
 const path = require("path");
 const { mkdirSync, existsSync, readFileSync } = require("fs");
 const { join, resolve } = require("path");
-const { isWindows, run, runPromptWithAnswers, uniqueDirectoryForTest } = require("./test.utils.js");
+const { createPathDependentUtils, uniqueDirectoryForTest, isWindows } = require("../test.utils.js");
+const { run, runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");
 
 jest.setTimeout(480000);
 
