@@ -46,6 +46,13 @@ const initGenerators: Record<string, PlopGenerator> = {
   default: plop.getGenerator("init-default"),
   react: plop.getGenerator("init-react"),
 };
+const loaderGenerators: Record<string, PlopGenerator> = {
+  default: plop.getGenerator("loader-default"),
+};
+
+const pluginGenerators: Record<string, PlopGenerator> = {
+  default: plop.getGenerator("plugin-default"),
+};
 
 program
   .version("1.0.0", "-v, --version")
@@ -109,6 +116,82 @@ program
       logger.success("Project has been initialised with webpack!");
     } catch (error) {
       logger.error(`Failed to initialize the project with webpack!\n ${error}`);
+      process.exit(2);
+    }
+  });
+program
+  .command("loader")
+  .aliases(["l", "ld"])
+  .description("Initialize a new loader template.")
+  .argument("[projectPath]", "Path to create the project")
+  .option("-t --template <template>", "Template to be used for scaffolding", "default")
+  .action(async function (projectPath, opts) {
+    let templateOption = opts.template as string;
+    let generator = loaderGenerators[templateOption];
+
+    if (generator === undefined) {
+      logger.warn(`${templateOption} is not a valid template, please select one from below`);
+      const template = await select<string>({
+        message: "Select a valid template from below",
+        choices: Object.keys(loaderGenerators).map((key) => ({
+          name: key,
+          value: key.toLowerCase(),
+        })),
+      });
+      templateOption = template;
+      generator = loaderGenerators[template];
+    }
+    const byPassValues: Array<string> = [];
+
+    if (projectPath) byPassValues.push(projectPath);
+    try {
+      const answers = await generator.runPrompts(byPassValues);
+
+      await generator.runActions(answers, {
+        onSuccess: onSuccessHandler,
+        onFailure: onFailureHandler,
+      });
+      logger.success("Loader template has been successfully scaffolded.");
+    } catch (error) {
+      logger.error(`Failed to initialize the loader template!\n ${error}`);
+      process.exit(2);
+    }
+  });
+program
+  .command("plugin")
+  .aliases(["p", "pl"])
+  .description("Initialize a new plugin template.")
+  .argument("[projectPath]", "Path to create the project")
+  .option("-t --template <template>", "Template to be used for scaffolding", "default")
+  .action(async function (projectPath, opts) {
+    let templateOption = opts.template as string;
+    let generator = pluginGenerators[templateOption];
+
+    if (generator === undefined) {
+      logger.warn(`${templateOption} is not a valid template, please select one from below`);
+      const template = await select<string>({
+        message: "Select a valid template from below",
+        choices: Object.keys(pluginGenerators).map((key) => ({
+          name: key,
+          value: key.toLowerCase(),
+        })),
+      });
+      templateOption = template;
+      generator = pluginGenerators[template];
+    }
+    const byPassValues: Array<string> = [];
+
+    if (projectPath) byPassValues.push(projectPath);
+    try {
+      const answers = await generator.runPrompts(byPassValues);
+
+      await generator.runActions(answers, {
+        onSuccess: onSuccessHandler,
+        onFailure: onFailureHandler,
+      });
+      logger.success("Plugin template has been successfully scaffolded.");
+    } catch (error) {
+      logger.error(`Failed to initialize the plugin template!\n ${error}`);
       process.exit(2);
     }
   });
