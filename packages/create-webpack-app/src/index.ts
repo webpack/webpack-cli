@@ -12,9 +12,10 @@ import { Answers } from "./types";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const program = new Command();
+
 const plop = await nodePlop(resolve(__dirname, "./plopfile.js"));
 
-const defaultValues: Record<string, Answers> = {
+const initValues: Record<string, Answers> = {
   default: {
     projectPath: process.cwd(),
     langType: "none",
@@ -41,9 +42,9 @@ const defaultValues: Record<string, Answers> = {
   },
 };
 
-const generators: Record<string, PlopGenerator> = {
-  default: plop.getGenerator("default"),
-  react: plop.getGenerator("react"),
+const initGenerators: Record<string, PlopGenerator> = {
+  default: plop.getGenerator("init-default"),
+  react: plop.getGenerator("init-react"),
 };
 
 program
@@ -62,16 +63,19 @@ program
   .action(async function (projectPath, opts) {
     const { force } = opts;
     let templateOption = opts.template as string;
-    let generator = generators[templateOption];
+    let generator = initGenerators[templateOption];
 
     if (generator === undefined) {
       logger.warn(`${templateOption} is not a valid template, please select one from below`);
       const template = await select<string>({
-        message: "Choose a template",
-        choices: Object.keys(generators).map((key) => ({ name: key, value: key.toLowerCase() })),
+        message: "Select a valid template from below",
+        choices: Object.keys(initGenerators).map((key) => ({
+          name: key,
+          value: key.toLowerCase(),
+        })),
       });
       templateOption = template;
-      generator = generators[template];
+      generator = initGenerators[templateOption];
     }
     const byPassValues: Array<string> = [];
 
@@ -83,10 +87,10 @@ program
         logger.info("Initializing a new Webpack project");
         await generator.runActions(
           {
-            ...defaultValues[templateOption],
+            ...initValues[templateOption],
             projectPath: byPassValues[0]
               ? resolve(process.cwd(), byPassValues[0])
-              : defaultValues[templateOption].projectPath,
+              : initValues[templateOption].projectPath,
           },
           {
             onSuccess: onSuccessHandler,
