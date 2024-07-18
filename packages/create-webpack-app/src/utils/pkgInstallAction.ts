@@ -28,12 +28,15 @@ export default async function (plop: NodePlopAPI) {
     const returnPromise: Promise<string> = new Promise((resolve, reject) => {
       const returnMessage = `Project Dependencies installed successfully`;
       const packageManager = answers.packageManager;
-      const installCommandPrefix = packageManager === "yarn" ? "add" : "install";
-      const installMode = packageManager === "yarn" ? "-D" : "--save-dev";
-
+      const packages = config.packages.length == 1 ? [config.packages[0]] : config.packages;
+      const installOptions: Record<string, Array<string>> = {
+        npm: ["install", "--save-dev"],
+        yarn: ["add", "-D"],
+        pnpm: ["install", "--save-dev"],
+      };
       const npmInstallPackages: ChildProcess = spawn(
         `${packageManager}`,
-        [`${installCommandPrefix}`, `${installMode}`, ...config.packages],
+        [...installOptions[packageManager], ...packages],
         options,
       );
       npmInstallPackages.stdout?.on("data", (data) => {
