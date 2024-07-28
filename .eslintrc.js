@@ -42,5 +42,11 @@ module.exports = {
         "node/no-unsupported-features/es-syntax": "off",
       },
     },
+    {
+      files: ["**/packages/create-webpack-app/**/*.js"],
+      parserOptions: {
+        sourceType: "module",
+      },
+    },
   ],
 };
