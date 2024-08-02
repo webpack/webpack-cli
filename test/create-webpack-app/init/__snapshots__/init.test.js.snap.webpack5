@@ -522,6 +522,7 @@ exports[`create-webpack-app cli should generate react template with --force 1`] 
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": {
@@ -624,6 +625,7 @@ exports[`create-webpack-app cli should generate react template with prompt answe
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
   },
   "name": "my-webpack-project",
   "scripts": {
@@ -778,6 +780,466 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
+        
+    } else {
+        config.mode = 'development';
+    }
+    return config;
+};
+"
+`;
+
+exports[`create-webpack-app cli should generate vue template with --force 1`] = `
+{
+  "description": "My webpack project",
+  "devDependencies": {
+    "@babel/core": "x.x.x",
+    "@babel/preset-env": "x.x.x",
+    "@vue/compiler-sfc": "x.x.x",
+    "babel-loader": "x.x.x",
+    "html-webpack-plugin": "x.x.x",
+    "vue": "x.x.x",
+    "vue-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`create-webpack-app cli should generate vue template with --force 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+const path = require('path');
+const { VueLoaderPlugin } = require('vue-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+
+const config = {
+    entry: './src/main.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
+    plugins: [
+        new VueLoaderPlugin(),
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+        }),
+
+        // Add your plugins here
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\.vue$/,
+                loader: 'vue-loader'
+            },
+            {
+                test: /\\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env"],
+                    },
+                },
+            },
+            {
+                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
+            },
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "./src/"),
+            'vue': '@vue/runtime-dom'
+        },
+    },
+};
+
+module.exports = () => {
+    if (isProduction) {
+        config.mode = 'production';
+        
+        
+        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+        
+    } else {
+        config.mode = 'development';
+    }
+    return config;
+};
+"
+`;
+
+exports[`create-webpack-app cli should generate vue template with prompt answers 1`] = `
+{
+  "description": "My webpack project",
+  "devDependencies": {
+    "@babel/core": "x.x.x",
+    "@babel/preset-env": "x.x.x",
+    "@vue/compiler-sfc": "x.x.x",
+    "autoprefixer": "x.x.x",
+    "babel-loader": "x.x.x",
+    "css-loader": "x.x.x",
+    "html-webpack-plugin": "x.x.x",
+    "postcss": "x.x.x",
+    "postcss-loader": "x.x.x",
+    "style-loader": "x.x.x",
+    "vue": "x.x.x",
+    "vue-loader": "x.x.x",
+    "vue-style-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`create-webpack-app cli should generate vue template with prompt answers 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+const path = require('path');
+const { VueLoaderPlugin } = require('vue-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+
+const stylesHandler = 'vue-style-loader';
+
+
+
+const config = {
+    entry: './src/main.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
+    plugins: [
+        new VueLoaderPlugin(),
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+        }),
+
+        // Add your plugins here
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\.vue$/,
+                loader: 'vue-loader'
+            },
+            {
+                test: /\\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env"],
+                    },
+                },
+            },
+            {
+                test: /\\.css$/i,
+                use: [stylesHandler, 'css-loader', 'postcss-loader'],
+            },
+            {
+                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
+            },
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "./src/"),
+            'vue': '@vue/runtime-dom'
+        },
+    },
+};
+
+module.exports = () => {
+    if (isProduction) {
+        config.mode = 'production';
+        
+        
+        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+        
+    } else {
+        config.mode = 'development';
+    }
+    return config;
+};
+"
+`;
+
+exports[`create-webpack-app cli should generate vue template with router support 1`] = `
+{
+  "description": "My webpack project",
+  "devDependencies": {
+    "@babel/core": "x.x.x",
+    "@babel/preset-env": "x.x.x",
+    "@vue/compiler-sfc": "x.x.x",
+    "autoprefixer": "x.x.x",
+    "babel-loader": "x.x.x",
+    "css-loader": "x.x.x",
+    "html-webpack-plugin": "x.x.x",
+    "postcss": "x.x.x",
+    "postcss-loader": "x.x.x",
+    "style-loader": "x.x.x",
+    "vue": "x.x.x",
+    "vue-loader": "x.x.x",
+    "vue-router": "x.x.x",
+    "vue-style-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`create-webpack-app cli should generate vue template with router support 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+const path = require('path');
+const { VueLoaderPlugin } = require('vue-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+
+const stylesHandler = 'vue-style-loader';
+
+
+
+const config = {
+    entry: './src/main.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
+    plugins: [
+        new VueLoaderPlugin(),
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+        }),
+
+        // Add your plugins here
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\.vue$/,
+                loader: 'vue-loader'
+            },
+            {
+                test: /\\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env"],
+                    },
+                },
+            },
+            {
+                test: /\\.css$/i,
+                use: [stylesHandler, 'css-loader', 'postcss-loader'],
+            },
+            {
+                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
+            },
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "./src/"),
+            'vue': '@vue/runtime-dom'
+        },
+    },
+};
+
+module.exports = () => {
+    if (isProduction) {
+        config.mode = 'production';
+        
+        
+        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+        
+    } else {
+        config.mode = 'development';
+    }
+    return config;
+};
+"
+`;
+
+exports[`create-webpack-app cli should generate vue template with store support 1`] = `
+{
+  "description": "My webpack project",
+  "devDependencies": {
+    "@babel/core": "x.x.x",
+    "@babel/preset-env": "x.x.x",
+    "@vue/compiler-sfc": "x.x.x",
+    "autoprefixer": "x.x.x",
+    "babel-loader": "x.x.x",
+    "css-loader": "x.x.x",
+    "html-webpack-plugin": "x.x.x",
+    "postcss": "x.x.x",
+    "postcss-loader": "x.x.x",
+    "style-loader": "x.x.x",
+    "vue": "x.x.x",
+    "vue-loader": "x.x.x",
+    "vue-style-loader": "x.x.x",
+    "vuex": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`create-webpack-app cli should generate vue template with store support 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+const path = require('path');
+const { VueLoaderPlugin } = require('vue-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+
+const stylesHandler = 'vue-style-loader';
+
+
+
+const config = {
+    entry: './src/main.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
+    plugins: [
+        new VueLoaderPlugin(),
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+        }),
+
+        // Add your plugins here
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\.vue$/,
+                loader: 'vue-loader'
+            },
+            {
+                test: /\\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env"],
+                    },
+                },
+            },
+            {
+                test: /\\.css$/i,
+                use: [stylesHandler, 'css-loader', 'postcss-loader'],
+            },
+            {
+                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
+            },
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "./src/"),
+            'vue': '@vue/runtime-dom'
+        },
+    },
+};
+
+module.exports = () => {
+    if (isProduction) {
+        config.mode = 'production';
+        
+        
+        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
         config.mode = 'development';
