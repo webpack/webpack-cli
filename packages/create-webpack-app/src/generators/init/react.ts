@@ -147,7 +147,9 @@ export default async function (plop: NodePlopAPI) {
       if (answers.extractPlugin !== "No") {
         dependencies.push("mini-css-extract-plugin");
       }
-
+      if (answers.workboxWebpackPlugin) {
+        dependencies.push("workbox-webpack-plugin");
+      }
       const files = [
         "./index.html",
         "./src/assets/webpack.png",
