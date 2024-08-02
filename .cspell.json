@@ -101,7 +101,8 @@
     "Yuuji",
     "Zangetsu",
     "Zenitsu",
-    "quickstart"
+    "quickstart",
+    "vuex"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [
