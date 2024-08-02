@@ -1,4 +1,4 @@
-// Cspell:ignore plopfile, plopfile.js
+// Cspell:ignore plopfile, plopfile.js, vuex
 import { Command } from "commander";
 import { resolve, dirname } from "path";
 import { select } from "@inquirer/prompts";
@@ -35,11 +35,18 @@ const initValues: Record<string, Answers> = {
     ...baseAnswers,
     langType: "ES6",
   },
+  vue: {
+    ...baseAnswers,
+    langType: "ES6",
+    useVueRouter: false,
+    useVuex: false,
+  },
 };
 
 const initGenerators: Record<string, PlopGenerator> = {
   default: plop.getGenerator("init-default"),
   react: plop.getGenerator("init-react"),
+  vue: plop.getGenerator("init-vue"),
 };
 const loaderGenerators: Record<string, PlopGenerator> = {
   default: plop.getGenerator("loader-default"),
