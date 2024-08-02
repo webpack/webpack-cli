@@ -15,30 +15,25 @@ const program = new Command();
 
 const plop = await nodePlop(resolve(__dirname, "./plopfile.js"));
 
+const baseAnswers: Answers = {
+  projectPath: process.cwd(),
+  langType: "none",
+  devServer: true,
+  htmlWebpackPlugin: true,
+  workboxWebpackPlugin: true,
+  cssType: "none",
+  isCSS: false,
+  isPostCSS: false,
+  extractPlugin: "No",
+  packageManager: "npm",
+};
 const initValues: Record<string, Answers> = {
   default: {
-    projectPath: process.cwd(),
-    langType: "none",
-    devServer: true,
-    htmlWebpackPlugin: true,
-    workboxWebpackPlugin: true,
-    cssType: "none",
-    isCSS: false,
-    isPostCSS: false,
-    extractPlugin: "No",
-    packageManager: "npm",
+    ...baseAnswers,
   },
   react: {
-    projectPath: process.cwd(),
+    ...baseAnswers,
     langType: "ES6",
-    devServer: true,
-    htmlWebpackPlugin: true,
-    workboxWebpackPlugin: true,
-    cssType: "none",
-    isCSS: false,
-    isPostCSS: false,
-    extractPlugin: "No",
-    packageManager: "npm",
   },
 };
 
