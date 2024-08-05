@@ -124,7 +124,7 @@ export default async function (plop: NodePlopAPI) {
           dependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
           break;
         case "Typescript":
-          dependencies.push("typescript", "ts-loader", "@vue/eslint-config-typescript");
+          dependencies.push("typescript", "ts-loader");
           break;
       }
 
