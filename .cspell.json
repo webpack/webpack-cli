@@ -102,7 +102,7 @@
     "Zangetsu",
     "Zenitsu",
     "quickstart",
-    "vuex"
+    "pinia"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [

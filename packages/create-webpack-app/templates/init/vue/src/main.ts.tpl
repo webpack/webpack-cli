@@ -1,7 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 <% if (useVueRouter) { %>import router from './router'<% } %>
-<% if (useVuex) { %>import store from './store'<% } %>
+<% if (useVueStore) { %>
+  import { createPinia } from 'pinia'
+  const store = createPinia()
+<% } %>
 <%  if (cssType == 'CSS only') { %>
 import "./styles/global.css";<% } if (cssType == 'SASS') { %>
 import "./styles/global.scss";<% } if (cssType == 'LESS') { %>
@@ -11,7 +14,7 @@ import "./styles/global.styl";<% } %>
 
 const app = createApp(App)
 <% if (useVueRouter) { %>app.use(router)<% } %>
-<% if (useVuex) { %>app.use(store)<% } %>
+<% if (useVueStore) { %>app.use(store)<% } %>
 app.mount('#app')
 
 <% if (workboxWebpackPlugin) { %>

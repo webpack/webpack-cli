@@ -12,8 +12,7 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "vue-router",
-      "vuex"
+      "vue-router"
     ],
     "paths": {
       "@/*": [

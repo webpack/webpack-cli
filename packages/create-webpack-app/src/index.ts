@@ -1,4 +1,4 @@
-// Cspell:ignore plopfile, plopfile.js, vuex
+// Cspell:ignore plopfile, plopfile.js
 import { Command } from "commander";
 import { resolve, dirname } from "path";
 import { select } from "@inquirer/prompts";
@@ -39,7 +39,7 @@ const initValues: Record<string, Answers> = {
     ...baseAnswers,
     langType: "ES6",
     useVueRouter: false,
-    useVuex: false,
+    useVueStore: false,
   },
 };
 

@@ -1,4 +1,4 @@
-// Cspell:ignore plopfile, plopfile.js, vuex
+// Cspell:ignore plopfile, plopfile.js
 import { NodePlopAPI, Answers, ActionType } from "../../types";
 import { dirname, resolve, join } from "path";
 import ejs from "ejs";
@@ -51,8 +51,8 @@ export default async function (plop: NodePlopAPI) {
       },
       {
         type: "confirm",
-        name: "useVuex",
-        message: "Do you want to use Vuex for state management?",
+        name: "useVueStore",
+        message: "Do you want to use Pinia for state management?",
         default: false,
       },
       {
@@ -132,8 +132,8 @@ export default async function (plop: NodePlopAPI) {
         dependencies.push("vue-router@4");
       }
 
-      if (answers.useVuex) {
-        dependencies.push("vuex@next");
+      if (answers.useVueStore) {
+        dependencies.push("pinia");
       }
 
       if (answers.isPostCSS) {
@@ -201,7 +201,7 @@ export default async function (plop: NodePlopAPI) {
         }
       }
 
-      if (answers.useVuex) {
+      if (answers.useVueStore) {
         if (answers.langType === "Typescript") {
           files.push("./src/store/index.ts");
         } else {
