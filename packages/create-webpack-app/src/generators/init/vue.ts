@@ -18,6 +18,10 @@ export default async function (plop: NodePlopAPI) {
     "@vue/compiler-sfc",
   ];
 
+  plop.setHelper("rawExpression", function (context: string): string {
+    return `{{${context}}}`;
+  });
+
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
