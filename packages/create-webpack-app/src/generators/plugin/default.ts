@@ -1,4 +1,3 @@
-// Cspell:ignore plopfile, plopfile.js
 import { NodePlopAPI, Answers, ActionType } from "../../types";
 import { dirname, join, resolve } from "path";
 import ejs from "ejs";

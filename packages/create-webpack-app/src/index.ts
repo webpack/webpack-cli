@@ -1,4 +1,3 @@
-// Cspell:ignore plopfile, plopfile.js
 import { Command } from "commander";
 import { resolve, dirname } from "path";
 import { select } from "@inquirer/prompts";
