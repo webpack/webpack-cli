@@ -1,4 +1,3 @@
-// Cspell:ignore plopfile, plopfile.js
 import { NodePlopAPI, Answers, ActionType } from "../../types";
 import { dirname, join, resolve } from "path";
 import ejs from "ejs";
@@ -97,7 +96,7 @@ export default async function (plop: NodePlopAPI) {
         type: "list",
         name: "packageManager",
         message: "Which package manager do you want to use?",
-        choices: ["npm", "yarn"],
+        choices: ["npm", "yarn", "pnpm"],
         default: "npm",
         validate(input) {
           if (!input.trim()) {
