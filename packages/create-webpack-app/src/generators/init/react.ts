@@ -25,7 +25,7 @@ export default async function (plop: NodePlopAPI) {
 
   // Define a base generator for the project structure
   plop.setGenerator("init-react", {
-    description: "Create a basic React-Webpack project",
+    description: "Create a basic React-webpack project",
     prompts: [
       {
         type: "input",
@@ -42,6 +42,18 @@ export default async function (plop: NodePlopAPI) {
         message: "Which of the following JS solutions do you want to use?",
         choices: ["ES6", "Typescript"],
         default: "ES6",
+      },
+      {
+        type: "confirm",
+        name: "useReactRouter",
+        message: "Do you want to use React Router in your project?",
+        default: true,
+      },
+      {
+        type: "confirm",
+        name: "useReactState",
+        message: "Do you want to use React State in your project?",
+        default: true,
       },
       {
         type: "confirm",
@@ -149,6 +161,11 @@ export default async function (plop: NodePlopAPI) {
       if (answers.workboxWebpackPlugin) {
         dependencies.push("workbox-webpack-plugin");
       }
+
+      if (answers.useReactRouter) {
+        dependencies.push("react-router-dom", "@types/react-router-dom");
+      }
+
       const files = [
         "./index.html",
         "./src/assets/webpack.png",
@@ -160,12 +177,28 @@ export default async function (plop: NodePlopAPI) {
       switch (answers.langType) {
         case "Typescript":
           answers.entry = "./src/index.tsx";
-          files.push("tsconfig.json", "index.d.ts", "./src/App.tsx", answers.entry as string);
+          files.push(
+            "tsconfig.json",
+            "index.d.ts",
+            "./src/App.tsx",
+            "./src/components/HelloWorld.tsx",
+            "./src/components/Home.tsx",
+            answers.entry as string,
+          );
           break;
         case "ES6":
-          answers.entry = "./src/index.js";
-          files.push("./src/App.js", answers.entry as string);
+          answers.entry = "./src/index.jsx";
+          files.push(
+            "./src/App.jsx",
+            "./src/components/HelloWorld.jsx",
+            "./src/components/Home.jsx",
+            answers.entry as string,
+          );
           break;
+      }
+
+      if (answers.cssType !== "none" && answers.isCSS) {
+        files.push("./src/components/Home.css");
       }
 
       switch (answers.cssType) {
@@ -181,6 +214,17 @@ export default async function (plop: NodePlopAPI) {
         case "Stylus":
           files.push("./src/styles/global.styl");
           break;
+      }
+
+      if (answers.useReactRouter) {
+        switch (answers.langType) {
+          case "Typescript":
+            files.push("./src/router/index.tsx");
+            break;
+          case "ES6":
+            files.push("./src/router/index.jsx");
+            break;
+        }
       }
 
       for (const file of files) {
