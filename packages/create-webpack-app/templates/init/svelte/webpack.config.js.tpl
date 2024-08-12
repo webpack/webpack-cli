@@ -75,11 +75,11 @@ const config = {
             },<% } %><%  if (cssType == 'LESS') { %>
             {
                 test: /\.less$/i,
-                use: [<% if (isPostCSS) { %>stylesHandler, 'css-loader', 'postcss-loader', <% } %>'less-loader'],
+                use: [stylesHandler, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'less-loader'],
             },<% } %><%  if (cssType == 'Stylus') { %>
             {
                 test: /\.styl$/i,
-                use: [<% if (isPostCSS) { %>stylesHandler, 'css-loader', 'postcss-loader', <% } %>'stylus-loader'],
+                use: [stylesHandler, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'stylus-loader'],
             },<% } %><%  if (isPostCSS && isCSS) { %>
             {
                 test: /\.css$/i,
