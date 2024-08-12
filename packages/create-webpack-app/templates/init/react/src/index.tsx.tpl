@@ -7,6 +7,6 @@ import "./styles/global.scss";<% } if (cssType == 'LESS') { %>
 import "./styles/global.less";<% } if (cssType == 'Stylus') { %>
 import "./styles/global.styl";<% } %>
 
-const container = document.getElementById('root');
+const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 root.render(<App />);

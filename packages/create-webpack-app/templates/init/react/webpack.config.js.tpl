@@ -38,7 +38,7 @@ const config = {
     module: {
         rules: [<% if (langType == "ES6") { %>
             {
-                test: /\.?js$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
@@ -84,8 +84,8 @@ const config = {
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src/"),
-        },<% if (langType == "Typescript") {%>
-        extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],<% } %>
+        },
+        extensions: ['.jsx', '.js'<% if (langType === 'Typescript') { %>, '.tsx', '.ts'<% } %>],
     },
 };
 
