@@ -98,7 +98,7 @@ jobs:
           version: 7
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile --ignore-engines
+        run: yarn --frozen-lockfile --ignore-engines --ignore-scripts
 
       - name: Install webpack-dev-server ${{ matrix.dev-server-version }}
         if: matrix.dev-server-version == '4'
