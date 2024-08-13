@@ -45,9 +45,6 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile
 
-      - name: Bootstrap
-        run: yarn lerna bootstrap
-
       - name: Build
         run: yarn build
 
@@ -101,11 +98,11 @@ jobs:
           version: 7
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile --ignore-engines
+        run: yarn --frozen-lockfile --ignore-engines --ignore-scripts
 
       - name: Install webpack-dev-server ${{ matrix.dev-server-version }}
         if: matrix.dev-server-version == '4'
-        run: yarn add -W -D webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines
+        run: yarn add -W -D webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines --ignore-scripts
 
       - name: Prepare environment for tests
         run: yarn build:ci

@@ -2,7 +2,7 @@ const {
   Confirm,
   List,
   Input,
-  // eslint-disable-next-line node/no-missing-require
+  // eslint-disable-next-line n/no-missing-require
 } = require("../../../packages/generators/src/utils/scaffold-utils");
 
 describe("utils", () => {

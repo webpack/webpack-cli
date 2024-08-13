@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import type {
   IWebpackCLI,
   WebpackCLICommandOption,
@@ -52,12 +51,12 @@ import {
   type StatsOptions,
   type WebpackOptionsNormalized,
 } from "webpack";
-import { type stringifyStream } from "@discoveryjs/json-ext";
+import { type stringifyChunked } from "@discoveryjs/json-ext";
 import { type Help, type ParseOptions } from "commander";
 
 import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
-
 const fs = require("fs");
+const { Readable } = require("stream");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const util = require("util");
@@ -190,7 +189,7 @@ class WebpackCLI implements IWebpackCLI {
         sync(packageManager, ["--version"]);
 
         return packageManager;
-      } catch (err) {
+      } catch (_err) {
         return false;
       }
     };
@@ -233,7 +232,7 @@ class WebpackCLI implements IWebpackCLI {
       if (sync("npm", ["--version"])) {
         return "npm";
       }
-    } catch (e) {
+    } catch (_err) {
       // Nothing
     }
 
@@ -243,7 +242,7 @@ class WebpackCLI implements IWebpackCLI {
       if (sync("yarn", ["--version"])) {
         return "yarn";
       }
-    } catch (e) {
+    } catch (_err) {
       // Nothing
     }
 
@@ -253,7 +252,7 @@ class WebpackCLI implements IWebpackCLI {
       if (sync("pnpm", ["--version"])) {
         return "pnpm";
       }
-    } catch (e) {
+    } catch (_err) {
       this.logger.error("No package manager found.");
 
       process.exit(2);
@@ -1228,7 +1227,6 @@ class WebpackCLI implements IWebpackCLI {
         );
       } else if (isCommand(commandName, helpCommandOptions)) {
         // Stub for the `help` command
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         this.makeCommand(helpCommandOptions, [], () => {});
       } else if (isCommand(commandName, versionCommandOptions)) {
         // Stub for the `version` command
@@ -1276,7 +1274,7 @@ class WebpackCLI implements IWebpackCLI {
 
         try {
           loadedCommand = await this.tryRequireThenImport<Instantiable<() => void>>(pkg, false);
-        } catch (error) {
+        } catch (_err) {
           // Ignore, command is not installed
 
           return;
@@ -1562,7 +1560,9 @@ class WebpackCLI implements IWebpackCLI {
 
           const buildCommand = findCommandByName(getCommandName(buildCommandOptions.name));
 
-          buildCommand && this.logger.raw(buildCommand.helpInformation());
+          if (buildCommand) {
+            this.logger.raw(buildCommand.helpInformation());
+          }
         } else {
           const name = options[0];
 
@@ -1632,8 +1632,8 @@ class WebpackCLI implements IWebpackCLI {
         const value = option.required
           ? "<" + nameOutput + ">"
           : option.optional
-          ? "[" + nameOutput + "]"
-          : "";
+            ? "[" + nameOutput + "]"
+            : "";
 
         this.logger.raw(
           `${bold("Usage")}: webpack${isCommandSpecified ? ` ${commandName}` : ""} ${option.long}${
@@ -1660,13 +1660,16 @@ class WebpackCLI implements IWebpackCLI {
         const flag = this.getBuiltInOptions().find((flag) => option.long === `--${flag.name}`);
 
         if (flag && flag.configs) {
-          const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
-            if (currentValue.values) {
-              return accumulator.concat(currentValue.values);
-            } else {
-              return accumulator;
-            }
-          }, <FlagConfig["values"]>[]);
+          const possibleValues = flag.configs.reduce(
+            (accumulator, currentValue) => {
+              if (currentValue.values) {
+                return accumulator.concat(currentValue.values);
+              } else {
+                return accumulator;
+              }
+            },
+            <FlagConfig["values"]>[],
+          );
 
           if (possibleValues.length > 0) {
             this.logger.raw(
@@ -2184,9 +2187,10 @@ class WebpackCLI implements IWebpackCLI {
       process.exit(2);
     }
 
-    const CLIPlugin = await this.tryRequireThenImport<
-      Instantiable<CLIPluginClass, [CLIPluginOptions]>
-    >("./plugins/cli-plugin");
+    const CLIPlugin =
+      await this.tryRequireThenImport<Instantiable<CLIPluginClass, [CLIPluginOptions]>>(
+        "./plugins/cli-plugin",
+      );
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
       const originalWatchValue = item.watch;
@@ -2438,12 +2442,12 @@ class WebpackCLI implements IWebpackCLI {
   async runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void> {
     // eslint-disable-next-line prefer-const
     let compiler: Compiler | MultiCompiler;
-    let createJsonStringifyStream: typeof stringifyStream;
+    let createStringifyChunked: typeof stringifyChunked;
 
     if (options.json) {
       const jsonExt = await this.tryRequireThenImport<JsonExt>("@discoveryjs/json-ext");
 
-      createJsonStringifyStream = jsonExt.stringifyStream;
+      createStringifyChunked = jsonExt.stringifyChunked;
     }
 
     const callback = (error: Error | undefined, stats: WebpackCLIStats | undefined): void => {
@@ -2467,23 +2471,23 @@ class WebpackCLI implements IWebpackCLI {
             ),
           }
         : compiler.options
-        ? compiler.options.stats
-        : undefined;
+          ? compiler.options.stats
+          : undefined;
 
-      if (options.json && createJsonStringifyStream) {
+      if (options.json && createStringifyChunked) {
         const handleWriteError = (error: WebpackError) => {
           this.logger.error(error);
           process.exit(2);
         };
 
         if (options.json === true) {
-          createJsonStringifyStream(stats.toJson(statsOptions as StatsOptions))
+          Readable.from(createStringifyChunked(stats.toJson(statsOptions as StatsOptions)))
             .on("error", handleWriteError)
             .pipe(process.stdout)
             .on("error", handleWriteError)
             .on("close", () => process.stdout.write("\n"));
         } else {
-          createJsonStringifyStream(stats.toJson(statsOptions as StatsOptions))
+          Readable.from(createStringifyChunked(stats.toJson(statsOptions as StatsOptions)))
             .on("error", handleWriteError)
             .pipe(fs.createWriteStream(options.json))
             .on("error", handleWriteError)

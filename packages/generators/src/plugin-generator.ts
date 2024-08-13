@@ -1,7 +1,7 @@
 import path from "path";
 import addonGenerator from "./addon-generator";
 import { toKebabCase, toUpperCamelCase } from "./utils/helpers";
-import type { PluginGeneratorOptions } from "./types";
+import type { PluginGeneratorOptions } from "./types/index";
 import type Generator from "yeoman-generator";
 
 export const PluginGenerator = addonGenerator<PluginGeneratorOptions>(

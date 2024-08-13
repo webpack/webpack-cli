@@ -3,10 +3,9 @@ import path from "path";
 import Generator from "yeoman-generator";
 
 import { CustomGenerator } from "./custom-generator";
-import type { CustomGeneratorOptions, BaseCustomGeneratorOptions } from "./types";
+import type { CustomGeneratorOptions, BaseCustomGeneratorOptions } from "./types/index";
 import { getInstaller, getTemplate } from "./utils/helpers";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 Object.assign(Generator.prototype, require("yeoman-generator/lib/actions/install"));
 
 // Helper to get the template-directory content
@@ -90,7 +89,6 @@ const addonGenerator = <
 
       this.fs.extendJSON(
         this.destinationPath("package.json"),
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         require(packageJsonTemplatePath)(name),
       );
 

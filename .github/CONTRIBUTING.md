@@ -69,10 +69,9 @@ In case you are suggesting a new feature, we will match your idea with our curre
   yarn install
   ```
 
-- Bootstrap all the submodules before building for the first time
+- Build all the submodules before building for the first time
 
   ```bash
-  yarn lerna bootstrap
   yarn build
   ```
 

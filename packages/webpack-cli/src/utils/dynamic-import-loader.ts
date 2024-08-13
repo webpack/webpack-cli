@@ -5,7 +5,7 @@ function dynamicImportLoader<T>(): DynamicImport<T> | null {
 
   try {
     importESM = new Function("id", "return import(id);");
-  } catch (e) {
+  } catch (_err) {
     importESM = null;
   }
 

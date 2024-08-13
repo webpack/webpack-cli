@@ -1,5 +1,4 @@
 const path = require("path");
-// eslint-disable-next-line node/no-unpublished-require
 const CLI = require("../../../packages/webpack-cli/lib/webpack-cli");
 
 const utilsDirectory = {
@@ -11,10 +10,9 @@ jest.mock(path.join(utilsDirectory.generators, "scaffold-utils"), () => ({
   List: jest.fn(),
 }));
 
-const { getInstaller, getTemplate, toKebabCase, toUpperCamelCase } = require(path.join(
-  utilsDirectory.generators,
-  "helpers",
-));
+const { getInstaller, getTemplate, toKebabCase, toUpperCamelCase } = require(
+  path.join(utilsDirectory.generators, "helpers"),
+);
 const { List } = require(path.join(utilsDirectory.generators, "scaffold-utils"));
 
 describe("helpers", () => {
