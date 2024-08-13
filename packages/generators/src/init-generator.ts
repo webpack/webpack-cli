@@ -64,13 +64,13 @@ export default class InitGenerator<
     handlers[this.template as keyof typeof handlers].generate(this);
   }
 
-  public end(): void {
+  public async end(): Promise<void> {
     // Prettify configuration file if possible
     try {
       // eslint-disable-next-line n/no-extraneous-require
       const prettier = require("prettier");
       const source = readFileSync(this.configurationPath as string, { encoding: "utf8" });
-      const formattedSource = prettier.format(source, { parser: "babel" });
+      const formattedSource = await prettier.format(source, { parser: "babel" });
 
       writeFileSync(this.configurationPath as string, formattedSource);
     } catch (_err) {
