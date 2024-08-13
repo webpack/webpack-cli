@@ -71,7 +71,7 @@
     "del-cli": "^5.0.0",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-n": "^17.10.2",
     "execa": "^5.0.0",
     "get-port": "^5.1.1",
     "husky": "^9.1.4",

@@ -2,7 +2,6 @@ const { run } = require("../../../utils/test-utils");
 const { existsSync, unlinkSync } = require("fs");
 const { resolve } = require("path");
 
-// eslint-disable-next-line node/no-unpublished-require
 const execa = require("execa");
 const { sync: spawnSync } = execa;
 

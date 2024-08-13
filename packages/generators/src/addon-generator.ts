@@ -3,7 +3,7 @@ import path from "path";
 import Generator from "yeoman-generator";
 
 import { CustomGenerator } from "./custom-generator";
-import type { CustomGeneratorOptions, BaseCustomGeneratorOptions } from "./types";
+import type { CustomGeneratorOptions, BaseCustomGeneratorOptions } from "./types/index";
 import { getInstaller, getTemplate } from "./utils/helpers";
 
 Object.assign(Generator.prototype, require("yeoman-generator/lib/actions/install"));

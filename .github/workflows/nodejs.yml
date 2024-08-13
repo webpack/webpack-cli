@@ -102,7 +102,7 @@ jobs:
 
       - name: Install webpack-dev-server ${{ matrix.dev-server-version }}
         if: matrix.dev-server-version == '4'
-        run: yarn add -W -D webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines
+        run: yarn add -W -D webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines --ignore-scripts
 
       - name: Prepare environment for tests
         run: yarn build:ci

@@ -5,7 +5,7 @@ import { getInstaller, getTemplate } from "./utils/helpers";
 import * as Question from "./utils/scaffold-utils";
 import handlers from "./handlers";
 
-import { type InitGeneratorOptions, type CustomGeneratorOptions } from "./types";
+import { type InitGeneratorOptions, type CustomGeneratorOptions } from "./types/index";
 
 export default class InitGenerator<
   T extends InitGeneratorOptions = InitGeneratorOptions,
@@ -27,7 +27,7 @@ export default class InitGenerator<
 
     // Handle installation of prettier
     try {
-      // eslint-disable-next-line node/no-extraneous-require
+      // eslint-disable-next-line n/no-extraneous-require
       require.resolve("prettier");
     } catch (_err) {
       const { installPrettier } = await Question.Confirm(
@@ -67,7 +67,7 @@ export default class InitGenerator<
   public end(): void {
     // Prettify configuration file if possible
     try {
-      // eslint-disable-next-line node/no-extraneous-require
+      // eslint-disable-next-line n/no-extraneous-require
       const prettier = require("prettier");
       const source = readFileSync(this.configurationPath as string, { encoding: "utf8" });
       const formattedSource = prettier.format(source, { parser: "babel" });

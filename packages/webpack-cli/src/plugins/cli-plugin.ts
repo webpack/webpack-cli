@@ -10,7 +10,7 @@ export class CLIPlugin {
   }
 
   async setupBundleAnalyzerPlugin(compiler: Compiler) {
-    // eslint-disable-next-line node/no-extraneous-require
+    // eslint-disable-next-line n/no-extraneous-require
     const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
     const bundleAnalyzerPlugin = Boolean(
       compiler.options.plugins.find((plugin) => plugin instanceof BundleAnalyzerPlugin),

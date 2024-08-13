@@ -16,7 +16,7 @@ import type webpack from "webpack";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore extraneous import is intended
-// eslint-disable-next-line node/no-extraneous-import
+// eslint-disable-next-line n/no-extraneous-import
 import type { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
 
 import { type Colorette } from "colorette";
