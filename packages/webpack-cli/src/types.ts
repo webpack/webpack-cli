@@ -22,7 +22,7 @@ import type { ClientConfiguration, Configuration as DevServerConfig } from "webp
 import { type Colorette } from "colorette";
 import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
 import { type prepare } from "rechoir";
-import { type stringifyStream } from "@discoveryjs/json-ext";
+import { type stringifyChunked } from "@discoveryjs/json-ext";
 
 /**
  * Webpack CLI
@@ -289,7 +289,7 @@ interface Rechoir {
 }
 
 interface JsonExt {
-  stringifyStream: typeof stringifyStream;
+  stringifyChunked: typeof stringifyChunked;
 }
 
 interface RechoirError extends Error {

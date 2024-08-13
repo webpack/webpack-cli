@@ -52,12 +52,12 @@ import {
   type StatsOptions,
   type WebpackOptionsNormalized,
 } from "webpack";
-import { type stringifyStream } from "@discoveryjs/json-ext";
+import { type stringifyChunked } from "@discoveryjs/json-ext";
 import { type Help, type ParseOptions } from "commander";
 
 import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
-
 const fs = require("fs");
+const { Readable } = require("stream");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const util = require("util");
@@ -2438,12 +2438,12 @@ class WebpackCLI implements IWebpackCLI {
   async runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void> {
     // eslint-disable-next-line prefer-const
     let compiler: Compiler | MultiCompiler;
-    let createJsonStringifyStream: typeof stringifyStream;
+    let createStringifyChunked: typeof stringifyChunked;
 
     if (options.json) {
       const jsonExt = await this.tryRequireThenImport<JsonExt>("@discoveryjs/json-ext");
 
-      createJsonStringifyStream = jsonExt.stringifyStream;
+      createStringifyChunked = jsonExt.stringifyChunked;
     }
 
     const callback = (error: Error | undefined, stats: WebpackCLIStats | undefined): void => {
@@ -2470,20 +2470,20 @@ class WebpackCLI implements IWebpackCLI {
         ? compiler.options.stats
         : undefined;
 
-      if (options.json && createJsonStringifyStream) {
+      if (options.json && createStringifyChunked) {
         const handleWriteError = (error: WebpackError) => {
           this.logger.error(error);
           process.exit(2);
         };
 
         if (options.json === true) {
-          createJsonStringifyStream(stats.toJson(statsOptions as StatsOptions))
+          Readable.from(createStringifyChunked(stats.toJson(statsOptions as StatsOptions)))
             .on("error", handleWriteError)
             .pipe(process.stdout)
             .on("error", handleWriteError)
             .on("close", () => process.stdout.write("\n"));
         } else {
-          createJsonStringifyStream(stats.toJson(statsOptions as StatsOptions))
+          Readable.from(createStringifyChunked(stats.toJson(statsOptions as StatsOptions)))
             .on("error", handleWriteError)
             .pipe(fs.createWriteStream(options.json))
             .on("error", handleWriteError)
