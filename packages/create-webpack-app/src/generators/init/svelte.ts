@@ -24,7 +24,7 @@ export default async function (plop: NodePlopAPI) {
 
   // Define a base generator for the Svelte project structure
   plop.setGenerator("init-svelte", {
-    description: "Create a basic Svelte-Webpack project",
+    description: "Create a basic Svelte-webpack project",
     prompts: [
       {
         type: "input",
