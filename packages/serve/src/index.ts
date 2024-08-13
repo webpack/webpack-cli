@@ -9,7 +9,6 @@ type Problem = NonNullable<ReturnType<(typeof cli)["processArguments"]>>[0];
 class ServeCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
     const loadDevServerOptions = () => {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const options: Record<string, any> = cli.webpack.cli.getArguments(devServer.schema);
@@ -56,7 +55,7 @@ class ServeCommand {
 
         try {
           devServerFlags = loadDevServerOptions();
-        } catch (error) {
+        } catch (_err) {
           // Nothing, to prevent future updates
         }
 
@@ -124,11 +123,10 @@ class ServeCommand {
           process.stdin.resume();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const DevServer = require(WEBPACK_DEV_SERVER_PACKAGE);
 
         try {
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           require(`${WEBPACK_DEV_SERVER_PACKAGE}/package.json`).version;
         } catch (err) {
           cli.logger.error(

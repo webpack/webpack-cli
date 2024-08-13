@@ -176,12 +176,10 @@ export async function questions(
  * @param self Generator values
  */
 export function generate(self: CustomGenerator): void {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const destPkgJson = require(resolveFile("package.json.js"))(self.answers.devServer);
   const sourcePkgJsonPath = self.destinationPath("package.json");
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const sourcePkgJson = require(sourcePkgJsonPath);
 
     // Make sure that we do not override set metadata

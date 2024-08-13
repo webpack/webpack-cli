@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import type {
   IWebpackCLI,
   WebpackCLICommandOption,
@@ -190,7 +189,7 @@ class WebpackCLI implements IWebpackCLI {
         sync(packageManager, ["--version"]);
 
         return packageManager;
-      } catch (err) {
+      } catch (_err) {
         return false;
       }
     };
@@ -233,7 +232,7 @@ class WebpackCLI implements IWebpackCLI {
       if (sync("npm", ["--version"])) {
         return "npm";
       }
-    } catch (e) {
+    } catch (_err) {
       // Nothing
     }
 
@@ -243,7 +242,7 @@ class WebpackCLI implements IWebpackCLI {
       if (sync("yarn", ["--version"])) {
         return "yarn";
       }
-    } catch (e) {
+    } catch (_err) {
       // Nothing
     }
 
@@ -253,7 +252,7 @@ class WebpackCLI implements IWebpackCLI {
       if (sync("pnpm", ["--version"])) {
         return "pnpm";
       }
-    } catch (e) {
+    } catch (_err) {
       this.logger.error("No package manager found.");
 
       process.exit(2);
@@ -1228,7 +1227,6 @@ class WebpackCLI implements IWebpackCLI {
         );
       } else if (isCommand(commandName, helpCommandOptions)) {
         // Stub for the `help` command
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         this.makeCommand(helpCommandOptions, [], () => {});
       } else if (isCommand(commandName, versionCommandOptions)) {
         // Stub for the `version` command
@@ -1276,7 +1274,7 @@ class WebpackCLI implements IWebpackCLI {
 
         try {
           loadedCommand = await this.tryRequireThenImport<Instantiable<() => void>>(pkg, false);
-        } catch (error) {
+        } catch (_err) {
           // Ignore, command is not installed
 
           return;
@@ -1562,7 +1560,9 @@ class WebpackCLI implements IWebpackCLI {
 
           const buildCommand = findCommandByName(getCommandName(buildCommandOptions.name));
 
-          buildCommand && this.logger.raw(buildCommand.helpInformation());
+          if (buildCommand) {
+            this.logger.raw(buildCommand.helpInformation());
+          }
         } else {
           const name = options[0];
 
@@ -1632,8 +1632,8 @@ class WebpackCLI implements IWebpackCLI {
         const value = option.required
           ? "<" + nameOutput + ">"
           : option.optional
-          ? "[" + nameOutput + "]"
-          : "";
+            ? "[" + nameOutput + "]"
+            : "";
 
         this.logger.raw(
           `${bold("Usage")}: webpack${isCommandSpecified ? ` ${commandName}` : ""} ${option.long}${
@@ -1660,13 +1660,16 @@ class WebpackCLI implements IWebpackCLI {
         const flag = this.getBuiltInOptions().find((flag) => option.long === `--${flag.name}`);
 
         if (flag && flag.configs) {
-          const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
-            if (currentValue.values) {
-              return accumulator.concat(currentValue.values);
-            } else {
-              return accumulator;
-            }
-          }, <FlagConfig["values"]>[]);
+          const possibleValues = flag.configs.reduce(
+            (accumulator, currentValue) => {
+              if (currentValue.values) {
+                return accumulator.concat(currentValue.values);
+              } else {
+                return accumulator;
+              }
+            },
+            <FlagConfig["values"]>[],
+          );
 
           if (possibleValues.length > 0) {
             this.logger.raw(
@@ -2184,9 +2187,10 @@ class WebpackCLI implements IWebpackCLI {
       process.exit(2);
     }
 
-    const CLIPlugin = await this.tryRequireThenImport<
-      Instantiable<CLIPluginClass, [CLIPluginOptions]>
-    >("./plugins/cli-plugin");
+    const CLIPlugin =
+      await this.tryRequireThenImport<Instantiable<CLIPluginClass, [CLIPluginOptions]>>(
+        "./plugins/cli-plugin",
+      );
 
     const internalBuildConfig = (item: WebpackConfiguration) => {
       const originalWatchValue = item.watch;
@@ -2467,8 +2471,8 @@ class WebpackCLI implements IWebpackCLI {
             ),
           }
         : compiler.options
-        ? compiler.options.stats
-        : undefined;
+          ? compiler.options.stats
+          : undefined;
 
       if (options.json && createStringifyChunked) {
         const handleWriteError = (error: WebpackError) => {

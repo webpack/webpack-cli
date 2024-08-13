@@ -29,7 +29,7 @@ export default class InitGenerator<
     try {
       // eslint-disable-next-line node/no-extraneous-require
       require.resolve("prettier");
-    } catch (err) {
+    } catch (_err) {
       const { installPrettier } = await Question.Confirm(
         this,
         "installPrettier",
@@ -67,13 +67,13 @@ export default class InitGenerator<
   public end(): void {
     // Prettify configuration file if possible
     try {
-      // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line node/no-extraneous-require
       const prettier = require("prettier");
       const source = readFileSync(this.configurationPath as string, { encoding: "utf8" });
       const formattedSource = prettier.format(source, { parser: "babel" });
 
       writeFileSync(this.configurationPath as string, formattedSource);
-    } catch (err) {
+    } catch (_err) {
       this.cli.logger.log(
         `${this.cli.colors.yellow(
           `⚠ Generated configuration may not be properly formatted as prettier is not installed.`,
