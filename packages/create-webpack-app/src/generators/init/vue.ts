@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export default async function (plop: NodePlopAPI) {
   // dependencies to be installed
-  const devDependencies: Array<string> = [
+  const dependencies: Array<string> = [
     "webpack",
     "webpack-cli",
     "vue@3",
@@ -28,7 +28,7 @@ export default async function (plop: NodePlopAPI) {
 
   // Define a base generator for the Vue 3 project structure
   plop.setGenerator("init-vue", {
-    description: "Create a basic Vue-webpack project",
+    description: "Create a basic Vue 3-Webpack project",
     prompts: [
       {
         type: "input",
@@ -124,27 +124,27 @@ export default async function (plop: NodePlopAPI) {
 
       switch (answers.langType) {
         case "ES6":
-          devDependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
+          dependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
           break;
         case "Typescript":
-          devDependencies.push("typescript", "ts-loader");
+          dependencies.push("typescript", "ts-loader");
           break;
       }
 
       if (answers.useVueRouter) {
-        devDependencies.push("vue-router@4");
+        dependencies.push("vue-router@4");
       }
 
       if (answers.useVueStore) {
-        devDependencies.push("pinia");
+        dependencies.push("pinia");
       }
 
       if (answers.isPostCSS) {
-        devDependencies.push("postcss-loader", "postcss", "autoprefixer");
+        dependencies.push("postcss-loader", "postcss", "autoprefixer");
       }
 
       if (answers.workboxWebpackPlugin) {
-        devDependencies.push("workbox-webpack-plugin");
+        dependencies.push("workbox-webpack-plugin");
       }
 
       if (answers.cssType === "none") {
@@ -152,25 +152,25 @@ export default async function (plop: NodePlopAPI) {
         answers.isPostCSS = false;
         answers.extractPlugin = "No";
       } else {
-        devDependencies.push("vue-style-loader", "style-loader", "css-loader");
+        dependencies.push("vue-style-loader", "style-loader", "css-loader");
         switch (answers.cssType) {
           case "CSS only":
             answers.isCSS = true;
             break;
           case "SASS":
-            devDependencies.push("sass-loader", "sass");
+            dependencies.push("sass-loader", "sass");
             break;
           case "LESS":
-            devDependencies.push("less-loader", "less");
+            dependencies.push("less-loader", "less");
             break;
           case "Stylus":
-            devDependencies.push("stylus-loader", "stylus");
+            dependencies.push("stylus-loader", "stylus");
             break;
         }
       }
 
       if (answers.extractPlugin !== "No") {
-        devDependencies.push("mini-css-extract-plugin");
+        dependencies.push("mini-css-extract-plugin");
       }
 
       const files = [
@@ -240,7 +240,7 @@ export default async function (plop: NodePlopAPI) {
       actions.push({
         type: "pkgInstall",
         path: plop.renderString("{{projectPath}}/", answers),
-        packages: devDependencies,
+        packages: dependencies,
       });
 
       return actions;
