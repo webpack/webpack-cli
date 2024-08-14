@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default async function (plop: NodePlopAPI) {
   // dependencies to be installed
-  const dependencies: Array<string> = [
+  const devDependencies: Array<string> = [
     "webpack",
     "webpack-cli",
     "react@18",
@@ -120,7 +120,7 @@ export default async function (plop: NodePlopAPI) {
       answers.devServer = true;
       switch (answers.langType) {
         case "ES6":
-          dependencies.push(
+          devDependencies.push(
             "babel-loader",
             "@babel/core",
             "@babel/preset-env",
@@ -128,42 +128,42 @@ export default async function (plop: NodePlopAPI) {
           );
           break;
         case "Typescript":
-          dependencies.push("typescript", "ts-loader", "@types/react", "@types/react-dom");
+          devDependencies.push("typescript", "ts-loader", "@types/react", "@types/react-dom");
           break;
       }
       if (answers.isPostCSS) {
-        dependencies.push("postcss-loader", "postcss", "autoprefixer");
+        devDependencies.push("postcss-loader", "postcss", "autoprefixer");
       }
       if (answers.cssType === "none") {
         answers.isCSS = false;
         answers.isPostCSS = false;
         answers.extractPlugin = "No";
       } else {
-        dependencies.push("style-loader", "css-loader");
+        devDependencies.push("style-loader", "css-loader");
         switch (answers.cssType) {
           case "CSS only":
             answers.isCSS = true;
             break;
           case "SASS":
-            dependencies.push("sass-loader", "sass");
+            devDependencies.push("sass-loader", "sass");
             break;
           case "LESS":
-            dependencies.push("less-loader", "less");
+            devDependencies.push("less-loader", "less");
             break;
           case "Stylus":
-            dependencies.push("stylus-loader", "stylus");
+            devDependencies.push("stylus-loader", "stylus");
             break;
         }
       }
       if (answers.extractPlugin !== "No") {
-        dependencies.push("mini-css-extract-plugin");
+        devDependencies.push("mini-css-extract-plugin");
       }
       if (answers.workboxWebpackPlugin) {
-        dependencies.push("workbox-webpack-plugin");
+        devDependencies.push("workbox-webpack-plugin");
       }
 
       if (answers.useReactRouter) {
-        dependencies.push("react-router-dom", "@types/react-router-dom");
+        devDependencies.push("react-router-dom", "@types/react-router-dom");
       }
 
       const files = [
@@ -240,7 +240,7 @@ export default async function (plop: NodePlopAPI) {
         type: "pkgInstall",
         path: plop.renderString("{{projectPath}}/", answers),
         // Custom function don't automatically render hbs template as path hence manual rendering
-        packages: dependencies,
+        packages: devDependencies,
       });
       return actions;
     } as DynamicActionsFunction,
