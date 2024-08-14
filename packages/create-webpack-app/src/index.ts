@@ -44,7 +44,7 @@ const initValues: Record<string, Answers> = {
     ...baseAnswers,
     langType: "ES6",
     useSvelteRouter: false,
-    useSvelteStore: false,
+    useSvelteStore: true,
   },
 };
 

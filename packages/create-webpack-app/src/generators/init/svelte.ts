@@ -46,7 +46,7 @@ export default async function (plop: NodePlopAPI) {
         type: "confirm",
         name: "useSvelteStore",
         message: "Do you want to use Svelte store for state management?",
-        default: false,
+        default: true,
       },
       {
         type: "confirm",
