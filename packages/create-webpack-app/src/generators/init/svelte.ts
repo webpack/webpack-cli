@@ -44,12 +44,6 @@ export default async function (plop: NodePlopAPI) {
       },
       {
         type: "confirm",
-        name: "useSvelteStore",
-        message: "Do you want to use Svelte store for state management?",
-        default: true,
-      },
-      {
-        type: "confirm",
         name: "workboxWebpackPlugin",
         message: "Do you want to add PWA support?",
         default: true,
@@ -176,12 +170,10 @@ export default async function (plop: NodePlopAPI) {
           break;
       }
 
-      if (answers.useSvelteStore) {
-        if (answers.langType === "Typescript") {
-          files.push("./src/store/index.ts");
-        } else {
-          files.push("./src/store/index.js");
-        }
+      if (answers.langType === "Typescript") {
+        files.push("./src/store/index.ts");
+      } else {
+        files.push("./src/store/index.js");
       }
 
       switch (answers.cssType) {
