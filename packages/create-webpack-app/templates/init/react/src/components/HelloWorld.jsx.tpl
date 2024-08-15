@@ -8,7 +8,7 @@ const HelloWorld = ({ msg })  => {
         {msg}
       </h1>
       <p>
-        This is a Webpack + React project.
+        This is a webpack + React project.
       </p>
     </div>
   );
