@@ -24,7 +24,7 @@ export default async function (plop: NodePlopAPI) {
 
   // Define a base generator for the Svelte project structure
   plop.setGenerator("init-svelte", {
-    description: "Create a basic Svelte-Webpack project",
+    description: "Create a basic Svelte-webpack project",
     prompts: [
       {
         type: "input",
@@ -41,12 +41,6 @@ export default async function (plop: NodePlopAPI) {
         message: "Which of the following JS solutions do you want to use?",
         choices: ["ES6", "Typescript"],
         default: "ES6",
-      },
-      {
-        type: "confirm",
-        name: "useSvelteStore",
-        message: "Do you want to use Svelte store for state management?",
-        default: false,
       },
       {
         type: "confirm",
@@ -176,12 +170,10 @@ export default async function (plop: NodePlopAPI) {
           break;
       }
 
-      if (answers.useSvelteStore) {
-        if (answers.langType === "Typescript") {
-          files.push("./src/store/index.ts");
-        } else {
-          files.push("./src/store/index.js");
-        }
+      if (answers.langType === "Typescript") {
+        files.push("./src/store/index.ts");
+      } else {
+        files.push("./src/store/index.js");
       }
 
       switch (answers.cssType) {

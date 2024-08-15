@@ -1,25 +1,21 @@
 <script<% if (langType === 'Typescript') { %> lang="ts"<% } %>>
   import HelloWorld from './components/HelloWorld.svelte';
   import webpackLogo from './assets/webpack.png';
-  <% if (useSvelteStore) { %>
   import { useMainStore } from './store';
   const { count, increment, decrement } = useMainStore();
-  <% } %>
 </script>
 
 <main>
   <div id="app">
     <img alt="Webpack logo" src={webpackLogo}>
     <HelloWorld msg="Hello World"/>
-    <% if (useSvelteStore) { %>
     <p>Count: {$count}</p>
     <button class="btn-primary" on:click={decrement}>Decrement</button>
     <button class="btn-secondary" on:click={increment}>Increment</button>
-    <% } %>
   </div>
 </main>
 
-<% if (isCSS && useSvelteStore) { %>
+<% if (isCSS) { %>
 <style>
   :root {
     --color-primary: #1C78C0;

@@ -1,4 +1,4 @@
-import { writable, derived, Writable } from 'svelte/store';
+import { writable, derived, type Writable } from 'svelte/store';
 
 type nameType = string | null;
 

@@ -22,7 +22,9 @@ const defaultTemplateFiles = [
 const reactTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/index.jsx"), "index.html"];
 
 const vueTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html"];
-const svelteTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html"];
+
+const svelteTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html", "src/store/index.js"];
+
 
 // helper function to resolve the path from the test directory to actual assets
 // Helper to read from package.json in a given path
@@ -792,7 +794,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=svelte"],
-      [ENTER, ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -818,30 +820,6 @@ describe("create-webpack-app cli", () => {
 
     // Test files
     svelteTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  });
-  it("should generate svelte template with store support", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await runPromptWithAnswers(
-      assetsPath,
-      ["init", ".", "--template=svelte"],
-      [ENTER, `y${ENTER}`, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
-    );
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    const files = [...svelteTemplateFiles, "src/store/index.js"];
-
-    // Test files
-    files.forEach((file) => {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     });
 
