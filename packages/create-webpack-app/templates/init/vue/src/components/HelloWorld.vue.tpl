@@ -19,7 +19,7 @@ const props = defineProps({
 <template>
   <div class="container">
     <h1 class="heading">
-     {{rawExpression 'msg'}}
+     {{ msg }}
     </h1>
     <p>
       This is a Webpack + Vue 3 project.
