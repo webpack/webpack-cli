@@ -1,6 +1,5 @@
 import { NodePlopAPI, Answers, ActionType } from "../../types";
 import { dirname, join, resolve } from "path";
-import ejs from "ejs";
 import { DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
 // eslint-disable-next-line node/no-missing-import
@@ -13,6 +12,7 @@ export default async function (plop: NodePlopAPI) {
   const devDependencies: Array<string> = ["webpack-defaults"];
 
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
+  await plop.load("../../utils/fileActions.js", {}, true);
 
   // custom helper function
   plop.setHelper("makeLoaderName", (name: string) => {
@@ -85,15 +85,15 @@ export default async function (plop: NodePlopAPI) {
       ];
 
       for (const file of files) {
-        actions.push({
-          type: "add",
+        const initialConfig: ActionType = {
+          type: "fileActions",
           path: join(answers.projectPath, file),
           templateFile: join(plop.getPlopfilePath(), "../templates/loader/default", `${file}.tpl`),
-          transform: (content: string) => ejs.render(content, answers),
-          verbose: true,
-          force: true,
-        });
+          data: answers,
+        };
+        actions.push(initialConfig);
       }
+
       actions.push({
         type: "pkgInstall",
         path: answers.projectPath,

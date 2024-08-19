@@ -1,6 +1,5 @@
 import { NodePlopAPI, Answers, ActionType } from "../../types";
 import { dirname, resolve, join } from "path";
-import ejs from "ejs";
 import { DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
 
@@ -20,8 +19,8 @@ export default async function (plop: NodePlopAPI) {
   plop.setHelper("rawExpression", function (context: string): string {
     return `{{${context}}}`;
   });
-
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
+  await plop.load("../../utils/fileActions.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
   plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
@@ -228,13 +227,13 @@ export default async function (plop: NodePlopAPI) {
       }
 
       for (const file of files) {
-        actions.push({
-          type: "add",
+        const initialConfig: ActionType = {
+          type: "fileActions",
           path: join(answers.projectPath, file),
           templateFile: join(plop.getPlopfilePath(), "../templates/init/vue", `${file}.tpl`),
-          transform: (content: string) => ejs.render(content, answers),
-          force: true,
-        });
+          data: answers,
+        };
+        actions.push(initialConfig);
       }
 
       actions.push({
