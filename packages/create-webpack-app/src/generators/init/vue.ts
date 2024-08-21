@@ -54,7 +54,7 @@ export default async function (plop: NodePlopAPI) {
       {
         type: "confirm",
         name: "useVueStore",
-        message: "Do you want to use Pinia for state management?",
+        message: "Do you want to use Pinia for store functionality?",
         default: false,
       },
       {
