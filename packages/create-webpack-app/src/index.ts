@@ -36,6 +36,7 @@ const initValues: Record<string, Answers> = {
   },
   vue: {
     ...baseAnswers,
+    cssType: "CSS only",
     langType: "ES6",
     useVueRouter: false,
     useVueStore: false,
