@@ -26,7 +26,6 @@ export default async function (plop: NodePlopAPI) {
   plop.setDefaultInclude({ generators: true, actionTypes: true });
   plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
 
-  // Define a base generator for the Vue 3 project structure
   plop.setGenerator("init-vue", {
     description: "Create a basic Vue 3-Webpack project",
     prompts: [
