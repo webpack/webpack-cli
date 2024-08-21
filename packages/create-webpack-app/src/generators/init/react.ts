@@ -1,6 +1,6 @@
-import { NodePlopAPI, Answers, ActionType } from "../../types";
+import { Answers, ActionType } from "../../types";
 import { dirname, resolve, join } from "path";
-import { DynamicActionsFunction } from "node-plop";
+import { NodePlopAPI, DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

@@ -1,6 +1,6 @@
-import { NodePlopAPI, Answers, ActionType } from "../../types";
+import { Answers, ActionType } from "../../types";
 import { dirname, join, resolve } from "path";
-import { DynamicActionsFunction } from "node-plop";
+import { NodePlopAPI, DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
 // eslint-disable-next-line node/no-missing-import
 import { logger } from "../../utils/logger.js";

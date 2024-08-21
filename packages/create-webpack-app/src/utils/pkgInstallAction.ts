@@ -1,4 +1,4 @@
-import { NodePlopAPI } from "../types";
+import { NodePlopAPI } from "node-plop";
 import { dirname, resolve } from "path";
 import { spawn } from "cross-spawn";
 import { ChildProcess, SpawnOptionsWithStdioTuple, StdioNull, StdioPipe } from "child_process";
