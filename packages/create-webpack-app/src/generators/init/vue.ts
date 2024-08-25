@@ -5,27 +5,29 @@ import { DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 export default async function (plop: NodePlopAPI) {
   // dependencies to be installed
   const devDependencies: Array<string> = [
     "webpack",
     "webpack-cli",
-    "react@18",
-    "react-dom@18",
+    "vue@3",
     "webpack-dev-server",
     "html-webpack-plugin",
+    "vue-loader@next",
+    "@vue/compiler-sfc",
   ];
+
+  plop.setHelper("rawExpression", function (context: string): string {
+    return `{{${context}}}`;
+  });
 
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
   plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
-  // Define a custom action for installing packages
 
-  // Define a base generator for the project structure
-  plop.setGenerator("init-react", {
-    description: "Create a basic React-webpack project",
+  plop.setGenerator("init-vue", {
+    description: "Create a basic Vue-webpack project",
     prompts: [
       {
         type: "input",
@@ -45,15 +47,15 @@ export default async function (plop: NodePlopAPI) {
       },
       {
         type: "confirm",
-        name: "useReactRouter",
-        message: "Do you want to use React Router in your project?",
-        default: true,
+        name: "useVueRouter",
+        message: "Do you want to use Vue Router?",
+        default: false,
       },
       {
         type: "confirm",
-        name: "useReactState",
-        message: "Do you want to use React State in your project?",
-        default: true,
+        name: "useVueStore",
+        message: "Do you want to use Pinia for store functionality?",
+        default: false,
       },
       {
         type: "confirm",
@@ -66,7 +68,7 @@ export default async function (plop: NodePlopAPI) {
         name: "cssType",
         message: "Which of the following CSS solution do you want to use?",
         choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "none",
+        default: "CSS only",
         filter: (input, answers) => {
           if (input === "none") {
             answers.isCSS = false;
@@ -118,28 +120,38 @@ export default async function (plop: NodePlopAPI) {
       const actions: ActionType[] = [];
       answers.htmlWebpackPlugin = true;
       answers.devServer = true;
+
       switch (answers.langType) {
         case "ES6":
-          devDependencies.push(
-            "babel-loader",
-            "@babel/core",
-            "@babel/preset-env",
-            "@babel/preset-react",
-          );
+          devDependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
           break;
         case "Typescript":
-          devDependencies.push("typescript", "ts-loader", "@types/react", "@types/react-dom");
+          devDependencies.push("typescript", "ts-loader");
           break;
       }
+
+      if (answers.useVueRouter) {
+        devDependencies.push("vue-router@4");
+      }
+
+      if (answers.useVueStore) {
+        devDependencies.push("pinia");
+      }
+
       if (answers.isPostCSS) {
         devDependencies.push("postcss-loader", "postcss", "autoprefixer");
       }
+
+      if (answers.workboxWebpackPlugin) {
+        devDependencies.push("workbox-webpack-plugin");
+      }
+
       if (answers.cssType === "none") {
         answers.isCSS = false;
         answers.isPostCSS = false;
         answers.extractPlugin = "No";
       } else {
-        devDependencies.push("style-loader", "css-loader");
+        devDependencies.push("vue-style-loader", "style-loader", "css-loader");
         switch (answers.cssType) {
           case "CSS only":
             answers.isCSS = true;
@@ -155,15 +167,9 @@ export default async function (plop: NodePlopAPI) {
             break;
         }
       }
+
       if (answers.extractPlugin !== "No") {
         devDependencies.push("mini-css-extract-plugin");
-      }
-      if (answers.workboxWebpackPlugin) {
-        devDependencies.push("workbox-webpack-plugin");
-      }
-
-      if (answers.useReactRouter) {
-        devDependencies.push("react-router-dom", "@types/react-router-dom");
       }
 
       const files = [
@@ -176,29 +182,33 @@ export default async function (plop: NodePlopAPI) {
 
       switch (answers.langType) {
         case "Typescript":
-          answers.entry = "./src/index.tsx";
+          answers.entry = "./src/main.ts";
           files.push(
             "tsconfig.json",
-            "index.d.ts",
-            "./src/App.tsx",
-            "./src/components/HelloWorld.tsx",
-            "./src/components/Home.tsx",
+            "./src/App.vue",
+            "./src/components/HelloWorld.vue",
             answers.entry as string,
           );
           break;
         case "ES6":
-          answers.entry = "./src/index.jsx";
-          files.push(
-            "./src/App.jsx",
-            "./src/components/HelloWorld.jsx",
-            "./src/components/Home.jsx",
-            answers.entry as string,
-          );
+          answers.entry = "./src/main.js";
+          files.push("./src/App.vue", "./src/components/HelloWorld.vue", answers.entry as string);
           break;
       }
+      if (answers.useVueRouter) {
+        if (answers.langType === "Typescript") {
+          files.push("./src/router/index.ts");
+        } else {
+          files.push("./src/router/index.js");
+        }
+      }
 
-      if (answers.cssType !== "none" && answers.isCSS) {
-        files.push("./src/components/Home.css");
+      if (answers.useVueStore) {
+        if (answers.langType === "Typescript") {
+          files.push("./src/store/index.ts");
+        } else {
+          files.push("./src/store/index.js");
+        }
       }
 
       switch (answers.cssType) {
@@ -216,32 +226,22 @@ export default async function (plop: NodePlopAPI) {
           break;
       }
 
-      if (answers.useReactRouter) {
-        switch (answers.langType) {
-          case "Typescript":
-            files.push("./src/router/index.tsx");
-            break;
-          case "ES6":
-            files.push("./src/router/index.jsx");
-            break;
-        }
-      }
-
       for (const file of files) {
         actions.push({
           type: "add",
           path: join(answers.projectPath, file),
-          templateFile: join(plop.getPlopfilePath(), "../templates/init/react", `${file}.tpl`),
+          templateFile: join(plop.getPlopfilePath(), "../templates/init/vue", `${file}.tpl`),
           transform: (content: string) => ejs.render(content, answers),
           force: true,
         });
       }
+
       actions.push({
         type: "pkgInstall",
         path: plop.renderString("{{projectPath}}/", answers),
-        // Custom function don't automatically render hbs template as path hence manual rendering
         packages: devDependencies,
       });
+
       return actions;
     } as DynamicActionsFunction,
   });

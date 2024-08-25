@@ -1,4 +1,3 @@
-// Cspell:ignore plopfile, plopfile.js
 import { Command } from "commander";
 import { resolve, dirname } from "path";
 import { select } from "@inquirer/prompts";
@@ -15,36 +14,47 @@ const program = new Command();
 
 const plop = await nodePlop(resolve(__dirname, "./plopfile.js"));
 
+const baseAnswers: Answers = {
+  projectPath: process.cwd(),
+  langType: "none",
+  devServer: true,
+  htmlWebpackPlugin: true,
+  workboxWebpackPlugin: true,
+  cssType: "none",
+  isCSS: false,
+  isPostCSS: false,
+  extractPlugin: "No",
+  packageManager: "npm",
+};
 const initValues: Record<string, Answers> = {
   default: {
-    projectPath: process.cwd(),
-    langType: "none",
-    devServer: true,
-    htmlWebpackPlugin: true,
-    workboxWebpackPlugin: true,
-    cssType: "none",
-    isCSS: false,
-    isPostCSS: false,
-    extractPlugin: "No",
-    packageManager: "npm",
+    ...baseAnswers,
   },
   react: {
-    projectPath: process.cwd(),
+    ...baseAnswers,
     langType: "ES6",
-    devServer: true,
-    htmlWebpackPlugin: true,
-    workboxWebpackPlugin: true,
-    cssType: "none",
-    isCSS: false,
-    isPostCSS: false,
-    extractPlugin: "No",
-    packageManager: "npm",
+    useReactRouter: false,
+    useReactState: true,
+  },
+  vue: {
+    ...baseAnswers,
+    cssType: "CSS only",
+    langType: "ES6",
+    useVueRouter: false,
+    useVueStore: false,
+  },
+  svelte: {
+    ...baseAnswers,
+    langType: "ES6",
+    useSvelteRouter: false,
   },
 };
 
 const initGenerators: Record<string, PlopGenerator> = {
   default: plop.getGenerator("init-default"),
   react: plop.getGenerator("init-react"),
+  vue: plop.getGenerator("init-vue"),
+  svelte: plop.getGenerator("init-svelte"),
 };
 const loaderGenerators: Record<string, PlopGenerator> = {
   default: plop.getGenerator("loader-default"),

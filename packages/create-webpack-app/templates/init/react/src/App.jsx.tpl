@@ -5,13 +5,13 @@ import AppRouter from "./router";
 import Home from "./components/Home";
 <%}%>
 
-const App: React.FC = () => {
+const App = () => {
   return (
       <%if (useReactRouter) { %>
       <AppRouter />
       <%} else {%>
       <Home />
-      <%}%>
+      <% } %>
   );
 }
 

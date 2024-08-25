@@ -1,18 +1,19 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');<% if (htmlWebpackPlugin) { %>
+const path = require('path');
+const { VueLoaderPlugin } = require('vue-loader');<% if (htmlWebpackPlugin) { %>
 const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (extractPlugin !== 'No') { %>
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %><% if (workboxWebpackPlugin) { %>
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');<% } %>
 
 const isProduction = process.env.NODE_ENV === 'production';
-<% if (cssType !== 'none') { %>
+<% if (cssType !== "none") { %>
 <% if (extractPlugin === "Yes") { %>
 const stylesHandler = MiniCssExtractPlugin.loader;
 <% } else if (extractPlugin === "Only for Production") { %>
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader';
 <% } else { %>
-const stylesHandler = 'style-loader';
+const stylesHandler = 'vue-style-loader';
 <% } %>
 <% } %>
 
@@ -25,7 +26,8 @@ const config = {
         open: true,
         host: 'localhost',
     },<% } %>
-    plugins: [<% if (htmlWebpackPlugin) { %>
+    plugins: [
+        new VueLoaderPlugin(),<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
             template: 'index.html',
         }),
@@ -36,20 +38,28 @@ const config = {
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
-        rules: [<% if (langType == "ES6") { %>
+        rules: [
             {
-                test: /\.(js|jsx)$/,
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            },<% if (langType == "ES6") { %>
+            {
+                test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ["@babel/preset-env", "@babel/preset-react"],
+                        presets: ["@babel/preset-env"],
                     },
                 },
             },<% } %><% if (langType == "Typescript") { %>
             {
                 test: /\.(ts|tsx)$/i,
                 loader: 'ts-loader',
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                    transpileOnly: true,
+                },
                 exclude: ['/node_modules/'],
             },<% } %><%  if (isCSS && !isPostCSS) { %>
             {
@@ -76,7 +86,6 @@ const config = {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -84,8 +93,9 @@ const config = {
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src/"),
-        },
-        extensions: ['.jsx', '.js'<% if (langType === 'Typescript') { %>, '.tsx', '.ts'<% } %>],
+            'vue': '@vue/runtime-dom'
+        },<% if (langType == "Typescript") {%>
+        extensions: ['.tsx', '.ts', '.js', '.vue', '.json'],<% } %>
     },
 };
 

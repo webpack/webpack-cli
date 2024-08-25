@@ -1,4 +1,3 @@
-// Cspell:ignore plopfile, plopfile.js
 import { NodePlopAPI } from "../types";
 import { dirname, resolve } from "path";
 import { spawn } from "cross-spawn";

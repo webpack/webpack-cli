@@ -4,8 +4,8 @@ const path = require('path');<% if (htmlWebpackPlugin) { %>
 const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (extractPlugin !== 'No') { %>
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %><% if (workboxWebpackPlugin) { %>
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');<% } %>
-
 const isProduction = process.env.NODE_ENV === 'production';
+
 <% if (cssType !== 'none') { %>
 <% if (extractPlugin === "Yes") { %>
 const stylesHandler = MiniCssExtractPlugin.loader;
@@ -27,7 +27,7 @@ const config = {
     },<% } %>
     plugins: [<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: './index.html',
         }),
 <% } %><% if (extractPlugin === "Yes") { %>
         new MiniCssExtractPlugin(),
@@ -36,21 +36,34 @@ const config = {
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
-        rules: [<% if (langType == "ES6") { %>
+        rules: [
             {
-                test: /\.(js|jsx)$/,
+                test: /\.svelte$/,
+                use: {
+                    loader: 'svelte-loader',
+                    options: {
+                        emitCss: true,
+                        hotReload: true
+                    }
+                }
+            },<% if (langType == "ES6") { %>
+            {
+                test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ["@babel/preset-env", "@babel/preset-react"],
+                        presets: ["@babel/preset-env"],
                     },
                 },
             },<% } %><% if (langType == "Typescript") { %>
             {
-                test: /\.(ts|tsx)$/i,
+                test: /\.ts$/,
                 loader: 'ts-loader',
-                exclude: ['/node_modules/'],
+                exclude: /node_modules/,
+                options: {
+                    appendTsSuffixTo: [/\.svelte$/],
+                },
             },<% } %><%  if (isCSS && !isPostCSS) { %>
             {
                 test: /\.css$/i,
@@ -76,7 +89,6 @@ const config = {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -85,7 +97,9 @@ const config = {
         alias: {
             "@": path.resolve(__dirname, "./src/"),
         },
-        extensions: ['.jsx', '.js'<% if (langType === 'Typescript') { %>, '.tsx', '.ts'<% } %>],
+        extensions: ['.mjs', '.js', '.svelte'<% if (langType == "Typescript") {%>, '.ts'<% } %>],
+        mainFields: ['svelte', 'browser', 'module', 'main'],
+        conditionNames: ['svelte', 'module', 'browser', 'main', 'default']
     },
 };
 
