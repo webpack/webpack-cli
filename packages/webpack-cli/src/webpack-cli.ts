@@ -1080,6 +1080,7 @@ class WebpackCLI implements IWebpackCLI {
           return {
             ...meta,
             name,
+            description: meta.description as string,
             group: "core",
             helpLevel: minimumHelpFlags.includes(name) ? "minimum" : "verbose",
           };
