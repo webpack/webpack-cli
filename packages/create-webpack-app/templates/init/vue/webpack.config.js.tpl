@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %><% if (wo
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');<% } %>
 
 const isProduction = process.env.NODE_ENV === 'production';
-<% if (isCSS) { %>
+<% if (cssType !== "none") { %>
 <% if (extractPlugin === "Yes") { %>
 const stylesHandler = MiniCssExtractPlugin.loader;
 <% } else if (extractPlugin === "Only for Production") { %>

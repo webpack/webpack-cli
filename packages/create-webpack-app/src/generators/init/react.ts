@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default async function (plop: NodePlopAPI) {
   // dependencies to be installed
-  const dependencies: Array<string> = [
+  const devDependencies: Array<string> = [
     "webpack",
     "webpack-cli",
     "react@18",
@@ -25,7 +25,7 @@ export default async function (plop: NodePlopAPI) {
 
   // Define a base generator for the project structure
   plop.setGenerator("init-react", {
-    description: "Create a basic React-Webpack project",
+    description: "Create a basic React-webpack project",
     prompts: [
       {
         type: "input",
@@ -42,6 +42,18 @@ export default async function (plop: NodePlopAPI) {
         message: "Which of the following JS solutions do you want to use?",
         choices: ["ES6", "Typescript"],
         default: "ES6",
+      },
+      {
+        type: "confirm",
+        name: "useReactRouter",
+        message: "Do you want to use React Router in your project?",
+        default: true,
+      },
+      {
+        type: "confirm",
+        name: "useReactState",
+        message: "Do you want to use React State in your project?",
+        default: true,
       },
       {
         type: "confirm",
@@ -108,7 +120,7 @@ export default async function (plop: NodePlopAPI) {
       answers.devServer = true;
       switch (answers.langType) {
         case "ES6":
-          dependencies.push(
+          devDependencies.push(
             "babel-loader",
             "@babel/core",
             "@babel/preset-env",
@@ -116,39 +128,44 @@ export default async function (plop: NodePlopAPI) {
           );
           break;
         case "Typescript":
-          dependencies.push("typescript", "ts-loader", "@types/react", "@types/react-dom");
+          devDependencies.push("typescript", "ts-loader", "@types/react", "@types/react-dom");
           break;
       }
       if (answers.isPostCSS) {
-        dependencies.push("postcss-loader", "postcss", "autoprefixer");
+        devDependencies.push("postcss-loader", "postcss", "autoprefixer");
       }
       if (answers.cssType === "none") {
         answers.isCSS = false;
         answers.isPostCSS = false;
         answers.extractPlugin = "No";
       } else {
-        dependencies.push("style-loader", "css-loader");
+        devDependencies.push("style-loader", "css-loader");
         switch (answers.cssType) {
           case "CSS only":
             answers.isCSS = true;
             break;
           case "SASS":
-            dependencies.push("sass-loader", "sass");
+            devDependencies.push("sass-loader", "sass");
             break;
           case "LESS":
-            dependencies.push("less-loader", "less");
+            devDependencies.push("less-loader", "less");
             break;
           case "Stylus":
-            dependencies.push("stylus-loader", "stylus");
+            devDependencies.push("stylus-loader", "stylus");
             break;
         }
       }
       if (answers.extractPlugin !== "No") {
-        dependencies.push("mini-css-extract-plugin");
+        devDependencies.push("mini-css-extract-plugin");
       }
       if (answers.workboxWebpackPlugin) {
-        dependencies.push("workbox-webpack-plugin");
+        devDependencies.push("workbox-webpack-plugin");
       }
+
+      if (answers.useReactRouter) {
+        devDependencies.push("react-router-dom", "@types/react-router-dom");
+      }
+
       const files = [
         "./index.html",
         "./src/assets/webpack.png",
@@ -160,12 +177,28 @@ export default async function (plop: NodePlopAPI) {
       switch (answers.langType) {
         case "Typescript":
           answers.entry = "./src/index.tsx";
-          files.push("tsconfig.json", "index.d.ts", "./src/App.tsx", answers.entry as string);
+          files.push(
+            "tsconfig.json",
+            "index.d.ts",
+            "./src/App.tsx",
+            "./src/components/HelloWorld.tsx",
+            "./src/components/Home.tsx",
+            answers.entry as string,
+          );
           break;
         case "ES6":
-          answers.entry = "./src/index.js";
-          files.push("./src/App.js", answers.entry as string);
+          answers.entry = "./src/index.jsx";
+          files.push(
+            "./src/App.jsx",
+            "./src/components/HelloWorld.jsx",
+            "./src/components/Home.jsx",
+            answers.entry as string,
+          );
           break;
+      }
+
+      if (answers.cssType !== "none" && answers.isCSS) {
+        files.push("./src/components/Home.css");
       }
 
       switch (answers.cssType) {
@@ -183,6 +216,17 @@ export default async function (plop: NodePlopAPI) {
           break;
       }
 
+      if (answers.useReactRouter) {
+        switch (answers.langType) {
+          case "Typescript":
+            files.push("./src/router/index.tsx");
+            break;
+          case "ES6":
+            files.push("./src/router/index.jsx");
+            break;
+        }
+      }
+
       for (const file of files) {
         actions.push({
           type: "add",
@@ -196,7 +240,7 @@ export default async function (plop: NodePlopAPI) {
         type: "pkgInstall",
         path: plop.renderString("{{projectPath}}/", answers),
         // Custom function don't automatically render hbs template as path hence manual rendering
-        packages: dependencies,
+        packages: devDependencies,
       });
       return actions;
     } as DynamicActionsFunction,

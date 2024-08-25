@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default async function (plop: NodePlopAPI) {
   // dependencies to be installed
-  const dependencies: Array<string> = ["webpack-defaults"];
+  const devDependencies: Array<string> = ["webpack-defaults"];
 
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
 
@@ -19,7 +19,7 @@ export default async function (plop: NodePlopAPI) {
 
   // Define a base generator for the project structure
   plop.setGenerator("plugin-default", {
-    description: "Create a basic Webpack plugin.",
+    description: "Create a basic webpack plugin.",
     prompts: [
       {
         type: "input",
@@ -87,7 +87,7 @@ export default async function (plop: NodePlopAPI) {
       actions.push({
         type: "pkgInstall",
         path: answers.projectPath,
-        packages: dependencies,
+        packages: devDependencies,
       });
       return actions;
     } as DynamicActionsFunction,

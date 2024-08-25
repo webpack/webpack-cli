@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %><% if (wo
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');<% } %>
 
 const isProduction = process.env.NODE_ENV === 'production';
-<% if (isCSS) { %>
+<% if (cssType !== 'none') { %>
 <% if (extractPlugin === "Yes") { %>
 const stylesHandler = MiniCssExtractPlugin.loader;
 <% } else if (extractPlugin === "Only for Production") { %>
@@ -38,7 +38,7 @@ const config = {
     module: {
         rules: [<% if (langType == "ES6") { %>
             {
-                test: /\.?js$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
@@ -62,11 +62,11 @@ const config = {
             },<% } %><%  if (cssType == 'LESS') { %>
             {
                 test: /\.less$/i,
-                use: [<% if (isPostCSS) { %>stylesHandler, 'css-loader', 'postcss-loader', <% } %>'less-loader'],
+                use: [stylesHandler, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'less-loader'],
             },<% } %><%  if (cssType == 'Stylus') { %>
             {
                 test: /\.styl$/i,
-                use: [<% if (isPostCSS) { %>stylesHandler, 'css-loader', 'postcss-loader', <% } %>'stylus-loader'],
+                use: [stylesHandler, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'stylus-loader'],
             },<% } %><%  if (isPostCSS && isCSS) { %>
             {
                 test: /\.css$/i,
@@ -84,8 +84,8 @@ const config = {
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src/"),
-        },<% if (langType == "Typescript") {%>
-        extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],<% } %>
+        },
+        extensions: ['.jsx', '.js'<% if (langType === 'Typescript') { %>, '.tsx', '.ts'<% } %>],
     },
 };
 

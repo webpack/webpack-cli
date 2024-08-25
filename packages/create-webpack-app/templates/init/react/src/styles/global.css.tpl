@@ -8,6 +8,7 @@ body {
 
 .heading {
     font-weight: 300;
+    bg-color: #f0f0f0;
 }
 
 .container {
@@ -15,4 +16,12 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+#app {
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
