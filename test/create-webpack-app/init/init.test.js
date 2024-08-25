@@ -23,8 +23,11 @@ const reactTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/index.j
 
 const vueTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html"];
 
-const svelteTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html", "src/store/index.js"];
-
+const svelteTemplateFiles = [
+  ...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"),
+  "index.html",
+  "src/store/index.js",
+];
 
 // helper function to resolve the path from the test directory to actual assets
 // Helper to read from package.json in a given path
