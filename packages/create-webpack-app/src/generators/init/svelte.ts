@@ -5,29 +5,26 @@ import { DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
 export default async function (plop: NodePlopAPI) {
   // dependencies to be installed
   const devDependencies: Array<string> = [
     "webpack",
     "webpack-cli",
-    "vue@3",
+    "svelte",
+    "svelte-loader",
     "webpack-dev-server",
     "html-webpack-plugin",
-    "vue-loader@next",
-    "@vue/compiler-sfc",
   ];
-
-  plop.setHelper("rawExpression", function (context: string): string {
-    return `{{${context}}}`;
-  });
 
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
   plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
 
-  plop.setGenerator("init-vue", {
-    description: "Create a basic Vue-webpack project",
+  // Define a base generator for the Svelte project structure
+  plop.setGenerator("init-svelte", {
+    description: "Create a basic Svelte-webpack project",
     prompts: [
       {
         type: "input",
@@ -47,18 +44,6 @@ export default async function (plop: NodePlopAPI) {
       },
       {
         type: "confirm",
-        name: "useVueRouter",
-        message: "Do you want to use Vue Router?",
-        default: false,
-      },
-      {
-        type: "confirm",
-        name: "useVueStore",
-        message: "Do you want to use Pinia for store functionality?",
-        default: false,
-      },
-      {
-        type: "confirm",
         name: "workboxWebpackPlugin",
         message: "Do you want to add PWA support?",
         default: true,
@@ -68,7 +53,7 @@ export default async function (plop: NodePlopAPI) {
         name: "cssType",
         message: "Which of the following CSS solution do you want to use?",
         choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "CSS only",
+        default: "none",
         filter: (input, answers) => {
           if (input === "none") {
             answers.isCSS = false;
@@ -126,16 +111,8 @@ export default async function (plop: NodePlopAPI) {
           devDependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
           break;
         case "Typescript":
-          devDependencies.push("typescript", "ts-loader");
+          devDependencies.push("typescript", "ts-loader", "@tsconfig/svelte");
           break;
-      }
-
-      if (answers.useVueRouter) {
-        devDependencies.push("vue-router@4");
-      }
-
-      if (answers.useVueStore) {
-        devDependencies.push("pinia");
       }
 
       if (answers.isPostCSS) {
@@ -151,7 +128,7 @@ export default async function (plop: NodePlopAPI) {
         answers.isPostCSS = false;
         answers.extractPlugin = "No";
       } else {
-        devDependencies.push("vue-style-loader", "style-loader", "css-loader");
+        devDependencies.push("style-loader", "css-loader");
         switch (answers.cssType) {
           case "CSS only":
             answers.isCSS = true;
@@ -178,37 +155,25 @@ export default async function (plop: NodePlopAPI) {
         "webpack.config.js",
         "package.json",
         "README.md",
+        "./src/components/HelloWorld.svelte",
+        "./src/App.svelte",
       ];
 
       switch (answers.langType) {
         case "Typescript":
           answers.entry = "./src/main.ts";
-          files.push(
-            "tsconfig.json",
-            "./src/App.vue",
-            "./src/components/HelloWorld.vue",
-            answers.entry as string,
-          );
+          files.push("tsconfig.json", "./src/index.d.ts", answers.entry as string);
           break;
         case "ES6":
           answers.entry = "./src/main.js";
-          files.push("./src/App.vue", "./src/components/HelloWorld.vue", answers.entry as string);
+          files.push(answers.entry as string);
           break;
       }
-      if (answers.useVueRouter) {
-        if (answers.langType === "Typescript") {
-          files.push("./src/router/index.ts");
-        } else {
-          files.push("./src/router/index.js");
-        }
-      }
 
-      if (answers.useVueStore) {
-        if (answers.langType === "Typescript") {
-          files.push("./src/store/index.ts");
-        } else {
-          files.push("./src/store/index.js");
-        }
+      if (answers.langType === "Typescript") {
+        files.push("./src/store/index.ts");
+      } else {
+        files.push("./src/store/index.js");
       }
 
       switch (answers.cssType) {
@@ -230,7 +195,7 @@ export default async function (plop: NodePlopAPI) {
         actions.push({
           type: "add",
           path: join(answers.projectPath, file),
-          templateFile: join(plop.getPlopfilePath(), "../templates/init/vue", `${file}.tpl`),
+          templateFile: join(plop.getPlopfilePath(), "../templates/init/svelte", `${file}.tpl`),
           transform: (content: string) => ejs.render(content, answers),
           force: true,
         });

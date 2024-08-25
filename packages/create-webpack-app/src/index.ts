@@ -33,6 +33,8 @@ const initValues: Record<string, Answers> = {
   react: {
     ...baseAnswers,
     langType: "ES6",
+    useReactRouter: false,
+    useReactState: true,
   },
   vue: {
     ...baseAnswers,
@@ -41,12 +43,18 @@ const initValues: Record<string, Answers> = {
     useVueRouter: false,
     useVueStore: false,
   },
+  svelte: {
+    ...baseAnswers,
+    langType: "ES6",
+    useSvelteRouter: false,
+  },
 };
 
 const initGenerators: Record<string, PlopGenerator> = {
   default: plop.getGenerator("init-default"),
   react: plop.getGenerator("init-react"),
   vue: plop.getGenerator("init-vue"),
+  svelte: plop.getGenerator("init-svelte"),
 };
 const loaderGenerators: Record<string, PlopGenerator> = {
   default: plop.getGenerator("loader-default"),

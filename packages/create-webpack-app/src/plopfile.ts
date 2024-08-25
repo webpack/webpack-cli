@@ -5,6 +5,7 @@ export default async function (plop: NodePlopAPI) {
   await plop.load("./generators/init/default.js", {}, true);
   await plop.load("./generators/init/react.js", {}, true);
   await plop.load("./generators/init/vue.js", {}, true);
+  await plop.load("./generators/init/svelte.js", {}, true);
 
   //loader generators
   await plop.load("./generators/loader/default.js", {}, true);

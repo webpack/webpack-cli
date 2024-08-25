@@ -1,19 +1,18 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const { VueLoaderPlugin } = require('vue-loader');<% if (htmlWebpackPlugin) { %>
+const path = require('path');<% if (htmlWebpackPlugin) { %>
 const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (extractPlugin !== 'No') { %>
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %><% if (workboxWebpackPlugin) { %>
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');<% } %>
-
 const isProduction = process.env.NODE_ENV === 'production';
-<% if (cssType !== "none") { %>
+
+<% if (cssType !== 'none') { %>
 <% if (extractPlugin === "Yes") { %>
 const stylesHandler = MiniCssExtractPlugin.loader;
 <% } else if (extractPlugin === "Only for Production") { %>
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 <% } else { %>
-const stylesHandler = 'vue-style-loader';
+const stylesHandler = 'style-loader';
 <% } %>
 <% } %>
 
@@ -26,10 +25,9 @@ const config = {
         open: true,
         host: 'localhost',
     },<% } %>
-    plugins: [
-        new VueLoaderPlugin(),<% if (htmlWebpackPlugin) { %>
+    plugins: [<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: './index.html',
         }),
 <% } %><% if (extractPlugin === "Yes") { %>
         new MiniCssExtractPlugin(),
@@ -40,8 +38,14 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.vue$/,
-                loader: 'vue-loader'
+                test: /\.svelte$/,
+                use: {
+                    loader: 'svelte-loader',
+                    options: {
+                        emitCss: true,
+                        hotReload: true
+                    }
+                }
             },<% if (langType == "ES6") { %>
             {
                 test: /\.js$/,
@@ -54,13 +58,12 @@ const config = {
                 },
             },<% } %><% if (langType == "Typescript") { %>
             {
-                test: /\.(ts|tsx)$/i,
+                test: /\.ts$/,
                 loader: 'ts-loader',
+                exclude: /node_modules/,
                 options: {
-                    appendTsSuffixTo: [/\.vue$/],
-                    transpileOnly: true,
+                    appendTsSuffixTo: [/\.svelte$/],
                 },
-                exclude: ['/node_modules/'],
             },<% } %><%  if (isCSS && !isPostCSS) { %>
             {
                 test: /\.css$/i,
@@ -93,9 +96,10 @@ const config = {
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src/"),
-            'vue': '@vue/runtime-dom'
-        },<% if (langType == "Typescript") {%>
-        extensions: ['.tsx', '.ts', '.js', '.vue', '.json'],<% } %>
+        },
+        extensions: ['.mjs', '.js', '.svelte'<% if (langType == "Typescript") {%>, '.ts'<% } %>],
+        mainFields: ['svelte', 'browser', 'module', 'main'],
+        conditionNames: ['svelte', 'module', 'browser', 'main', 'default']
     },
 };
 
