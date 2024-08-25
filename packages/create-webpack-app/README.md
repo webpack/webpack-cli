@@ -34,8 +34,15 @@ npx create-webpack-app
 npx create-webpack-app -f, --force
 ```
 
-**To scaffold in a specified path**
+**To generate in a specified path**
 
 ```bash
 npx create-webpack-app [generation-path]
+```
+
+**To generate a project according to a template**
+
+```bash
+npx create-webpack-app --template <template-name>
+
 ```
