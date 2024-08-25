@@ -205,7 +205,7 @@ type FileSystemCacheOptions = WebpackConfiguration & {
   cache: FileCacheOptions & { defaultConfig: string[] };
 };
 
-type ProcessedArguments = Record<string, BasicPrimitive | RegExp | (BasicPrimitive | RegExp)[]>;
+type ProcessedArguments = Record<string, (BasicPrimitive | RegExp)[]>;
 
 type CommandAction = Parameters<WebpackCLICommand["action"]>[0];
 
