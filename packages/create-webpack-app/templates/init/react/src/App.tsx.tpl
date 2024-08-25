@@ -1,13 +1,18 @@
 import React from "react";
-import webpackLogo from "./assets/webpack.png";
+<%if (useReactRouter) { %>
+import AppRouter from "./router";
+<%} else {%>
+import Home from "./components/Home";
+<%}%>
 
-function App() {
-    return (
-        <div className="container">
-            <h1 className="heading">Welcome to your Typescript React App!</h1>
-            <img src={webpackLogo} alt="webpack logo" />
-        </div>
-    );
+const App: React.FC = () => {
+  return (
+      <%if (useReactRouter) { %>
+      <AppRouter />
+      <%} else {%>
+      <Home />
+      <%}%>
+  );
 }
 
 export default App;
