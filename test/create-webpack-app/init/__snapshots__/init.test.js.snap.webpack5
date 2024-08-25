@@ -1144,9 +1144,12 @@ exports[`create-webpack-app cli should generate vue template with --force 1`] = 
     "@babel/preset-env": "x.x.x",
     "@vue/compiler-sfc": "x.x.x",
     "babel-loader": "x.x.x",
+    "css-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
+    "style-loader": "x.x.x",
     "vue": "x.x.x",
     "vue-loader": "x.x.x",
+    "vue-style-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
     "webpack-dev-server": "x.x.x",
@@ -1173,6 +1176,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
+
+
+const stylesHandler = 'vue-style-loader';
+
 
 
 const config = {
@@ -1208,6 +1215,10 @@ const config = {
                         presets: ["@babel/preset-env"],
                     },
                 },
+            },
+            {
+                test: /\\.css$/i,
+                use: [stylesHandler,'css-loader'],
             },
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,

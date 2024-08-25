@@ -709,7 +709,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=vue"],
-      [ENTER, ENTER, ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, ENTER, ENTER, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -750,7 +750,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=vue"],
-      [ENTER, `y${ENTER}`, ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, ENTER, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -773,7 +773,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=vue"],
-      [ENTER, ENTER, `y${ENTER}`, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, ENTER, `y${ENTER}`, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
