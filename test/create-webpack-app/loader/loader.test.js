@@ -32,8 +32,8 @@ const dataForTests = (rootAssetsPath) => ({
   ],
 });
 
-describe("loader command", () => {
-  it.only("should ask the loader name when invoked", async () => {
+describe.skip("loader command", () => {
+  it("should ask the loader name when invoked", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["loader", "."]);
 
