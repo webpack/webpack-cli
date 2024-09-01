@@ -45,7 +45,7 @@ const initValues: Record<string, Answers> = {
   svelte: {
     ...baseAnswers,
     langType: "ES6",
-    useSvelteRouter: false,
+    cssType: "CSS only",
   },
 };
 
