@@ -1,22 +1,31 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue'
-import App from '../App.vue'
+import Home from '../components/Home.vue';
+import Layout from '../components/Layout.vue';
+import About from '../components/About.vue';
+
 const routes = [
   {
     path: '/',
-    name: 'App',
-    component: App
-  },
-  {
-    path: '/hello-world',
-    name: 'HelloWorld',
-    component: HelloWorld
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: Home
+      },
+      {
+        path: 'about',
+        name: 'About',
+        component: About,
+        props: { msg: 'Vue' }
+      }
+    ]
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
-})
+});
 
-export default router
+export default router;
