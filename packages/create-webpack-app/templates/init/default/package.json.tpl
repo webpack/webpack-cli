@@ -7,7 +7,6 @@
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
     <% if (devServer) { %>
       "serve": "webpack serve",
     <% } %>
