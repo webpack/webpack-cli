@@ -19,24 +19,12 @@ const defaultTemplateFiles = [
   "README.md",
 ];
 
-const reactTemplateFiles = [
-  ...defaultTemplateFiles.slice(0, 3),
-  "src/index.jsx",
-  ...defaultTemplateFiles.slice(4),
-];
+const reactTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/index.jsx"), "index.html"];
 
-const vueTemplateFiles = [
-  ...defaultTemplateFiles.slice(0, 3),
-  "src/main.js",
-  ...defaultTemplateFiles.slice(4),
-];
+const vueTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html"];
 
-const svelteTemplateFiles = [
-  ...defaultTemplateFiles.slice(0, 3),
-  "src/main.js",
-  ...defaultTemplateFiles.slice(4),
-  "src/store/index.js",
-];
+const svelteTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html", "src/store/index.js"];
+
 
 // helper function to resolve the path from the test directory to actual assets
 // Helper to read from package.json in a given path
@@ -718,7 +706,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=vue"],
-      [ENTER, ENTER, ENTER, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, ENTER, ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -759,7 +747,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=vue"],
-      [ENTER, `y${ENTER}`, ENTER, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -782,7 +770,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=vue"],
-      [ENTER, ENTER, `y${ENTER}`, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, ENTER, `y${ENTER}`, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
