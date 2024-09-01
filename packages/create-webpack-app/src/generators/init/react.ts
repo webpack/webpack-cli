@@ -15,6 +15,8 @@ export default async function (plop: NodePlopAPI) {
     "react-dom@18",
     "webpack-dev-server",
     "html-webpack-plugin",
+    "react-router-dom",
+    "@types/react-router-dom",
   ];
 
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
@@ -45,12 +47,6 @@ export default async function (plop: NodePlopAPI) {
       },
       {
         type: "confirm",
-        name: "useReactRouter",
-        message: "Do you want to use React Router in your project?",
-        default: true,
-      },
-      {
-        type: "confirm",
         name: "useReactState",
         message: "Do you want to use React State in your project?",
         default: true,
@@ -66,7 +62,7 @@ export default async function (plop: NodePlopAPI) {
         name: "cssType",
         message: "Which of the following CSS solution do you want to use?",
         choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "none",
+        default: "CSS only",
         filter: (input, answers) => {
           if (input === "none") {
             answers.isCSS = false;
@@ -162,10 +158,6 @@ export default async function (plop: NodePlopAPI) {
         devDependencies.push("workbox-webpack-plugin");
       }
 
-      if (answers.useReactRouter) {
-        devDependencies.push("react-router-dom", "@types/react-router-dom");
-      }
-
       const files = [
         "./index.html",
         "./src/assets/webpack.png",
@@ -181,8 +173,10 @@ export default async function (plop: NodePlopAPI) {
             "tsconfig.json",
             "index.d.ts",
             "./src/App.tsx",
-            "./src/components/HelloWorld.tsx",
+            "./src/components/About.tsx",
             "./src/components/Home.tsx",
+            "./src/components/Navbar.tsx",
+            "./src/router/index.tsx",
             answers.entry as string,
           );
           break;
@@ -190,15 +184,13 @@ export default async function (plop: NodePlopAPI) {
           answers.entry = "./src/index.jsx";
           files.push(
             "./src/App.jsx",
-            "./src/components/HelloWorld.jsx",
+            "./src/components/About.jsx",
             "./src/components/Home.jsx",
+            "./src/components/Navbar.jsx",
+            "./src/router/index.jsx",
             answers.entry as string,
           );
           break;
-      }
-
-      if (answers.cssType !== "none" && answers.isCSS) {
-        files.push("./src/components/Home.css");
       }
 
       switch (answers.cssType) {
@@ -214,17 +206,6 @@ export default async function (plop: NodePlopAPI) {
         case "Stylus":
           files.push("./src/styles/global.styl");
           break;
-      }
-
-      if (answers.useReactRouter) {
-        switch (answers.langType) {
-          case "Typescript":
-            files.push("./src/router/index.tsx");
-            break;
-          case "ES6":
-            files.push("./src/router/index.jsx");
-            break;
-        }
       }
 
       for (const file of files) {

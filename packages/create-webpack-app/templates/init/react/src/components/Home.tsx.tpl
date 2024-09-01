@@ -1,9 +1,5 @@
 import React<% if (useReactState) { %>,  { useState } <% } %> from "react";
 import webpackLogo from "../assets/webpack.png";
-import HelloWorld from "./HelloWorld";
-<% if (cssType !== 'none' && isCSS) { %>
-import "./Home.css";
-<% } %>
 
 const App:React.FC = () => {
 <% if (useReactState) { %>
@@ -16,7 +12,8 @@ const App:React.FC = () => {
     <main>
       <div id="app">
         <img alt="Webpack logo" src={webpackLogo} />
-          <HelloWorld msg="Hello World" />
+        <h1 className="heading">This is the <span>Home</span> page!</h1>
+        <p> Click the buttons below to increment and decrement the count.</p>
     <% if (useReactState) { %>
           <p>Count: {count}</p>
           <button className="btn-primary" onClick={decrement}>Decrement</button>
