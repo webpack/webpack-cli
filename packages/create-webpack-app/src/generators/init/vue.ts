@@ -51,7 +51,7 @@ export default async function (plop: NodePlopAPI) {
       {
         type: "confirm",
         name: "useVueStore",
-        message: "Do you want to use Pinia for state management?",
+        message: "Do you want to use Pinia for store functionality?",
         default: false,
       },
       {
@@ -65,7 +65,7 @@ export default async function (plop: NodePlopAPI) {
         name: "cssType",
         message: "Which of the following CSS solution do you want to use?",
         choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "none",
+        default: "CSS only",
         filter: (input, answers) => {
           if (input === "none") {
             answers.isCSS = false;
