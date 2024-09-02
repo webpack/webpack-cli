@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-<% if (useVueRouter) { %>import router from './router'<% } %>
+import router from './router'
 <% if (useVueStore) { %>
   import { createPinia } from 'pinia'
   const store = createPinia()
@@ -13,14 +13,20 @@ import "./styles/global.styl";<% } %>
 
 
 const app = createApp(App)
-<% if (useVueRouter) { %>app.use(router)<% } %>
+app.use(router)
 <% if (useVueStore) { %>app.use(store)<% } %>
-app.mount('#app')
+app.mount('#root')
 
 <% if (workboxWebpackPlugin) { %>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js');
+    navigator.serviceWorker.register('service-worker.js')
+    .then((registration) => {
+      console.log('Service Worker registered: ', registration);
+    })
+    .catch((registrationError) => {
+      console.error('Service Worker registration failed: ', registrationError);
+    });
   });
 }
 <% } %>

@@ -23,8 +23,11 @@ const reactTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/index.j
 
 const vueTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html"];
 
-const svelteTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html", "src/store/index.js"];
-
+const svelteTemplateFiles = [
+  ...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"),
+  "index.html",
+  "src/store/index.js",
+];
 
 // helper function to resolve the path from the test directory to actual assets
 // Helper to read from package.json in a given path
@@ -635,12 +638,12 @@ describe("create-webpack-app cli", () => {
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
   //
-  it("should generate react template with prompt answers", async () => {
+  it("should generate react template with state and routing support with prompt answers", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=react"],
-      [ENTER, `n${ENTER}`, `y${ENTER}`, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -677,53 +680,6 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate react template with router support", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await runPromptWithAnswers(
-      assetsPath,
-      ["init", ".", "--template=react"],
-      [ENTER, `y${ENTER}`, ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
-    );
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    const files = [...reactTemplateFiles, "src/router/index.jsx"];
-    // Test files
-    files.forEach((file) => {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  });
-
-  it("should generate vue template with prompt answers", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await runPromptWithAnswers(
-      assetsPath,
-      ["init", ".", "--template=vue"],
-      [ENTER, ENTER, ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
-    );
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    // Test files
-    vueTemplateFiles.forEach((file) => {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  });
-
   it("should generate vue template with --force", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["init", "--template=vue", "--force"]);
@@ -742,35 +698,13 @@ describe("create-webpack-app cli", () => {
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  it("should generate vue template with router support", async () => {
+
+  it("should generate vue template with store and router support on prompt answers", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=vue"],
-      [ENTER, `y${ENTER}`, ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
-    );
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    const files = [...vueTemplateFiles, "src/router/index.js"];
-    // Test files
-    files.forEach((file) => {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  });
-  it("should generate vue template with store support", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await runPromptWithAnswers(
-      assetsPath,
-      ["init", ".", "--template=vue"],
-      [ENTER, ENTER, `y${ENTER}`, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -794,7 +728,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=svelte"],
-      [ENTER, `y${ENTER}`, `${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");

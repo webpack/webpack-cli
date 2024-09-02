@@ -33,19 +33,18 @@ const initValues: Record<string, Answers> = {
   react: {
     ...baseAnswers,
     langType: "ES6",
-    useReactRouter: false,
     useReactState: true,
+    cssType: "CSS only",
   },
   vue: {
     ...baseAnswers,
     langType: "ES6",
-    useVueRouter: false,
-    useVueStore: false,
+    useVueStore: true,
   },
   svelte: {
     ...baseAnswers,
     langType: "ES6",
-    useSvelteRouter: false,
+    cssType: "CSS only",
   },
 };
 

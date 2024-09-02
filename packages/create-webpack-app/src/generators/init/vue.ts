@@ -14,6 +14,7 @@ export default async function (plop: NodePlopAPI) {
     "html-webpack-plugin",
     "vue-loader@next",
     "@vue/compiler-sfc",
+    "vue-router@4",
   ];
 
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
@@ -41,12 +42,6 @@ export default async function (plop: NodePlopAPI) {
         message: "Which of the following JS solutions do you want to use?",
         choices: ["ES6", "Typescript"],
         default: "ES6",
-      },
-      {
-        type: "confirm",
-        name: "useVueRouter",
-        message: "Do you want to use Vue Router?",
-        default: false,
       },
       {
         type: "confirm",
@@ -127,10 +122,6 @@ export default async function (plop: NodePlopAPI) {
           break;
       }
 
-      if (answers.useVueRouter) {
-        devDependencies.push("vue-router@4");
-      }
-
       if (answers.useVueStore) {
         devDependencies.push("pinia");
       }
@@ -175,29 +166,28 @@ export default async function (plop: NodePlopAPI) {
         "webpack.config.js",
         "package.json",
         "README.md",
+        "./src/App.vue",
+        "./src/components/Home.vue",
+        "./src/components/About.vue",
+        "./src/components/Layout.vue",
+        "./src/components/Navbar.vue",
       ];
 
       switch (answers.langType) {
         case "Typescript":
           answers.entry = "./src/main.ts";
-          files.push(
-            "tsconfig.json",
-            "./src/App.vue",
-            "./src/components/HelloWorld.vue",
-            answers.entry as string,
-          );
+          files.push("tsconfig.json", answers.entry as string);
           break;
         case "ES6":
           answers.entry = "./src/main.js";
-          files.push("./src/App.vue", "./src/components/HelloWorld.vue", answers.entry as string);
+          files.push(answers.entry as string);
           break;
       }
-      if (answers.useVueRouter) {
-        if (answers.langType === "Typescript") {
-          files.push("./src/router/index.ts");
-        } else {
-          files.push("./src/router/index.js");
-        }
+
+      if (answers.langType === "Typescript") {
+        files.push("./src/router/index.ts");
+      } else {
+        files.push("./src/router/index.js");
       }
 
       if (answers.useVueStore) {
