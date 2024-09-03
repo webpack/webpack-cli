@@ -123,7 +123,7 @@ describe("basic serve usage", () => {
       normalStdKillOptions,
     );
     expect(stdout).toBeFalsy();
-    expect(stderr).toBeFalsy();
+    expect(stderr).toContain("No dev server configurations to run");
   });
 
   it('should work with the "--stats" option', async () => {
