@@ -3,7 +3,6 @@
 const path = require("path");
 const getPort = require("get-port");
 const { runWatch, normalizeStderr } = require("../../utils/test-utils");
-const internalIp = require("internal-ip");
 
 const testPath = path.resolve(__dirname);
 
@@ -19,9 +18,6 @@ describe("serve variable", () => {
       stdoutKillStr: /webpack \d+\.\d+\.\d/,
       stderrKillStr: /Content not from webpack is served from/,
     });
-
-    console.log(internalIp.v4.sync());
-    console.log(stderr);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot();
     expect(stdout).toContain("main.js");
