@@ -25,6 +25,14 @@ exports[`basic serve usage should log warning on using '-w' alias with serve: st
 <i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
 `;
 
+exports[`basic serve usage should not start dev server when supplied false #1: stderr 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:<port>/, http://[::1]:<port>/
+<i> [webpack-dev-server] On Your Network (IPv4): http://x.x.x.x:<port>/
+<i> [webpack-dev-server] On Your Network (IPv6): http://[x:x:x:x:x:x:x:x]:<port>/
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
 exports[`basic serve usage should respect the "publicPath" option from configuration (from the "devServer" options): stderr 1`] = `
 "<i> [webpack-dev-server] Project is running at:
 <i> [webpack-dev-server] Loopback: http://localhost:<port>/, http://[::1]:<port>/
