@@ -19,22 +19,13 @@ const defaultTemplateFiles = [
   "README.md",
 ];
 
-const reactTemplateFiles = [
-  ...defaultTemplateFiles.slice(0, 3),
-  "src/index.jsx",
-  ...defaultTemplateFiles.slice(4),
-];
+const reactTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/index.jsx"), "index.html"];
 
-const vueTemplateFiles = [
-  ...defaultTemplateFiles.slice(0, 3),
-  "src/main.js",
-  ...defaultTemplateFiles.slice(4),
-];
+const vueTemplateFiles = [...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"), "index.html"];
 
 const svelteTemplateFiles = [
-  ...defaultTemplateFiles.slice(0, 3),
-  "src/main.js",
-  ...defaultTemplateFiles.slice(4),
+  ...defaultTemplateFiles.toSpliced(3, 1, "src/main.js"),
+  "index.html",
   "src/store/index.js",
 ];
 

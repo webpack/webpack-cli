@@ -1,7 +1,6 @@
-import { NodePlopAPI, Answers, ActionType } from "../../types";
-import { dirname, resolve, join } from "path";
-import ejs from "ejs";
-import { DynamicActionsFunction } from "node-plop";
+import { Answers, ActionType } from "../../types";
+import { dirname, join, resolve } from "path";
+import { NodePlopAPI, DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -18,15 +17,13 @@ export default async function (plop: NodePlopAPI) {
     "vue-router@4",
   ];
 
-  plop.setHelper("rawExpression", function (context: string): string {
-    return `{{${context}}}`;
-  });
-
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
+  await plop.load("../../utils/fileActions.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
   plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
 
+  // Define a base generator for the Vue 3 project structure
   plop.setGenerator("init-vue", {
     description: "Create a basic Vue-webpack project",
     prompts: [
@@ -49,7 +46,7 @@ export default async function (plop: NodePlopAPI) {
       {
         type: "confirm",
         name: "useVueStore",
-        message: "Do you want to use Pinia for store functionality?",
+        message: "Do you want to use Pinia for state management?",
         default: false,
       },
       {
@@ -63,7 +60,7 @@ export default async function (plop: NodePlopAPI) {
         name: "cssType",
         message: "Which of the following CSS solution do you want to use?",
         choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "CSS only",
+        default: "none",
         filter: (input, answers) => {
           if (input === "none") {
             answers.isCSS = false;
@@ -217,13 +214,13 @@ export default async function (plop: NodePlopAPI) {
       }
 
       for (const file of files) {
-        actions.push({
-          type: "add",
+        const initialConfig: ActionType = {
+          type: "fileActions",
           path: join(answers.projectPath, file),
           templateFile: join(plop.getPlopfilePath(), "../templates/init/vue", `${file}.tpl`),
-          transform: (content: string) => ejs.render(content, answers),
-          force: true,
-        });
+          data: answers,
+        };
+        actions.push(initialConfig);
       }
 
       actions.push({

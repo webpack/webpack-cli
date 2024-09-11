@@ -1,7 +1,6 @@
-import { NodePlopAPI, Answers, ActionType } from "../../types";
-import { dirname, resolve, join } from "path";
-import ejs from "ejs";
-import { DynamicActionsFunction } from "node-plop";
+import { Answers, ActionType } from "../../types";
+import { dirname, join, resolve } from "path";
+import { NodePlopAPI, DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -18,6 +17,7 @@ export default async function (plop: NodePlopAPI) {
   ];
 
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
+  await plop.load("../../utils/fileActions.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
   plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
@@ -192,13 +192,13 @@ export default async function (plop: NodePlopAPI) {
       }
 
       for (const file of files) {
-        actions.push({
-          type: "add",
+        const initialConfig: ActionType = {
+          type: "fileActions",
           path: join(answers.projectPath, file),
           templateFile: join(plop.getPlopfilePath(), "../templates/init/svelte", `${file}.tpl`),
-          transform: (content: string) => ejs.render(content, answers),
-          force: true,
-        });
+          data: answers,
+        };
+        actions.push(initialConfig);
       }
 
       actions.push({

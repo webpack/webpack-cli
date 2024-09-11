@@ -1,5 +1,5 @@
 import { WebpackCLILogger } from "webpack-cli";
-import { green, yellow, Color, red, cyan, cyanBright, blue, blueBright } from "colorette";
+import { green, yellow, Color, red, cyan, blue, blueBright, greenBright } from "colorette";
 import { PlopActionHooksChanges, PlopActionHooksFailures } from "../types";
 import { relative } from "path";
 
@@ -20,16 +20,17 @@ const typeDisplay: Record<string, Color | string> = {
   add: green("create "),
   addMany: green("create "),
   modify: `${blue("modify")}${green("+")}${red("- ")}`,
+  overwrite: red("overwrite "),
   append: green("append_+ "),
-  skip: cyanBright("skip-- "),
+  skip: yellow("skip "),
+  identical: greenBright("identical "),
+  create: green("create "),
 };
 function onSuccessHandler(change: PlopActionHooksChanges): void {
-  change.path.split("\n").forEach((line, idx) => {
-    if (change.type === "addMany" && idx === 0) {
-      return;
-    }
-    const prefix = typeDisplay[change.type] || "";
-    console.log(`\t${prefix} ${relative(process.cwd(), line)}`);
+  change.path.split("\n").forEach((line) => {
+    const operationType = line.split(":")[0] || "";
+    const renderPath = line.split(":")[1] || "";
+    console.log(`\t${typeDisplay[operationType]} ${relative(process.cwd(), renderPath)}`);
   });
 }
 function onFailureHandler(failure: PlopActionHooksFailures): void {

@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 
 // eslint-disable-next-line node/no-missing-import
 import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger.js";
-import { Answers } from "./types";
+import { Answers, InitOptions, LoaderOptions, PluginOptions } from "./types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -38,7 +38,6 @@ const initValues: Record<string, Answers> = {
   },
   vue: {
     ...baseAnswers,
-    cssType: "CSS only",
     langType: "ES6",
     useVueStore: true,
   },
@@ -76,7 +75,7 @@ program
   .argument("[projectPath]", "Path to create the project")
   .option("-f, --force", "Skip the prompt and use the default values", false)
   .option("-t --template <template>", "Template to be used for scaffolding", "default")
-  .action(async function (projectPath, opts) {
+  .action(async function (projectPath, opts: InitOptions) {
     const { force } = opts;
     let templateOption = opts.template as string;
     let generator = initGenerators[templateOption];
@@ -134,7 +133,7 @@ program
   .description("Initialize a new loader template.")
   .argument("[projectPath]", "Path to create the project")
   .option("-t --template <template>", "Template to be used for scaffolding", "default")
-  .action(async function (projectPath, opts) {
+  .action(async function (projectPath, opts: LoaderOptions) {
     let templateOption = opts.template as string;
     let generator = loaderGenerators[templateOption];
 
@@ -172,7 +171,7 @@ program
   .description("Initialize a new plugin template.")
   .argument("[projectPath]", "Path to create the project")
   .option("-t --template <template>", "Template to be used for scaffolding", "default")
-  .action(async function (projectPath, opts) {
+  .action(async function (projectPath, opts: PluginOptions) {
     let templateOption = opts.template as string;
     let generator = pluginGenerators[templateOption];
 
