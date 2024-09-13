@@ -62,7 +62,7 @@ export default async function (plop: NodePlopAPI) {
       },
     ],
     actions: function (answers: Answers) {
-      const actions: ActionType[] = ["Starting actions..."];
+      const actions: ActionType[] = [];
       answers.projectPath = join(answers.projectPath, answers.name);
 
       logger.error(`

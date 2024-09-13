@@ -188,8 +188,7 @@ export default async function (plop: NodePlopAPI) {
 
       actions.push({
         type: "pkgInstall",
-        path: plop.renderString("{{projectPath}}/", answers),
-        // Custom function don't automatically render hbs template as path hence manual rendering
+        path: answers.projectPath,
         packages: devDependencies,
       });
       return actions;

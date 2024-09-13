@@ -40,6 +40,7 @@ const initValues: Record<string, Answers> = {
     ...baseAnswers,
     langType: "ES6",
     useVueStore: true,
+    cssType: "CSS only",
   },
   svelte: {
     ...baseAnswers,

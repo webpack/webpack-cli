@@ -203,7 +203,7 @@ export default async function (plop: NodePlopAPI) {
 
       actions.push({
         type: "pkgInstall",
-        path: plop.renderString("{{projectPath}}/", answers),
+        path: answers.projectPath,
         packages: devDependencies,
       });
 
