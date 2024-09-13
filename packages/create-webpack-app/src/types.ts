@@ -19,3 +19,8 @@ export type ActionType = ActionTypeBase | CustomActionConfig<string>;
 export type InitOptions = { template: string; force?: boolean };
 export type LoaderOptions = { template: string };
 export type PluginOptions = { template: string };
+
+export type FileRecord = {
+  filePath: string;
+  fileType: string;
+};

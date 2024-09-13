@@ -2,8 +2,9 @@
   <div id="app">
     <img alt="Webpack logo" src="../assets/webpack.png">
     <h1 class="heading">This is the <span>Home</span> page!</h1>
+    <p> Click the buttons below to increment and decrement the count.</p>
     <% if (useVueStore) { %>
-    <p>Count: {{rawExpression  'mainStore.count' }}</p>
+    <p>Count: {{ mainStore.count }}</p>
     <button class="btn-primary" @click="mainStore.decrement">Decrement</button>
     <button class="btn-secondary" @click="mainStore.increment">Increment</button>
     <% } %>

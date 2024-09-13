@@ -1,4 +1,4 @@
-import { Answers, ActionType } from "../../types";
+import { Answers, ActionType, FileRecord } from "../../types";
 import { dirname, join, resolve } from "path";
 import { NodePlopAPI, DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
@@ -10,7 +10,7 @@ export default async function (plop: NodePlopAPI) {
   const devDependencies: Array<string> = ["webpack", "webpack-cli"];
 
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
-  await plop.load("../../utils/fileActions.js", {}, true);
+  await plop.load("../../utils/fileGenerator.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
   plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
@@ -156,34 +156,50 @@ export default async function (plop: NodePlopAPI) {
         devDependencies.push("mini-css-extract-plugin");
       }
 
-      const files = ["./index.html", "webpack.config.js", "package.json", "README.md"];
+      const files: Array<FileRecord> = [
+        { filePath: "./index.html", fileType: "text" },
+        { filePath: "webpack.config.js", fileType: "text" },
+        { filePath: "package.json", fileType: "text" },
+        { filePath: "README.md", fileType: "text" },
+      ];
 
       switch (answers.langType) {
         case "Typescript":
           answers.entryPoint = "./src/index.ts";
-          files.push("tsconfig.json", answers.entryPoint as string);
+          files.push(
+            { filePath: "tsconfig.json", fileType: "text" },
+            { filePath: answers.entryPoint as string, fileType: "text" },
+          );
           break;
         case "ES6":
           answers.entryPoint = "./src/index.js";
-          files.push("babel.config.json", answers.entryPoint as string);
+          files.push(
+            { filePath: "babel.config.json", fileType: "text" },
+            { filePath: answers.entryPoint as string, fileType: "text" },
+          );
           break;
         default:
           answers.entryPoint = "./src/index.js";
-          files.push(answers.entryPoint as string);
+          files.push({ filePath: answers.entryPoint as string, fileType: "text" });
           break;
       }
+
       if (answers.isPostCSS) {
-        files.push("postcss.config.js");
+        files.push({ filePath: "postcss.config.js", fileType: "text" });
       }
 
       for (const file of files) {
-        const initialConfig: ActionType = {
-          type: "fileActions",
-          path: join(answers.projectPath, file),
-          templateFile: join(plop.getPlopfilePath(), "../templates/init/default", `${file}.tpl`),
+        actions.push({
+          type: "fileGenerator",
+          path: join(answers.projectPath, file.filePath),
+          templateFile: join(
+            plop.getPlopfilePath(),
+            "../templates/init/default",
+            `${file.filePath}.tpl`,
+          ),
+          fileType: file.fileType,
           data: answers,
-        };
-        actions.push(initialConfig);
+        });
       }
 
       actions.push({
@@ -191,6 +207,7 @@ export default async function (plop: NodePlopAPI) {
         path: answers.projectPath,
         packages: devDependencies,
       });
+
       return actions;
     } as DynamicActionsFunction,
   });

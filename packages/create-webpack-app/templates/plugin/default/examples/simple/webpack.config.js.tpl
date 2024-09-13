@@ -1,5 +1,5 @@
 const path = require('path');
-const {{pascalCase name}} = require('../../src/index.js');
+const <%= pluginIdentifier %> = require('../../src/index.js');
 
 module.exports = {
   entry: './src/index.js',
@@ -8,6 +8,6 @@ module.exports = {
     filename: '[name].chunk.js',
   },
   plugins: [
-    new {{pascalCase  name}}()
+    new <%= pluginIdentifier %>()
   ]
 };

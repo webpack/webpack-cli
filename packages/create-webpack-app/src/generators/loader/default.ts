@@ -1,4 +1,4 @@
-import { Answers, ActionType } from "../../types";
+import { Answers, ActionType, FileRecord } from "../../types";
 import { dirname, join, resolve } from "path";
 import { NodePlopAPI, DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
@@ -12,7 +12,7 @@ export default async function (plop: NodePlopAPI) {
   const devDependencies: Array<string> = ["webpack-defaults"];
 
   await plop.load("../../utils/pkgInstallAction.js", {}, true);
-  await plop.load("../../utils/fileActions.js", {}, true);
+  await plop.load("../../utils/fileGenerator.js", {}, true);
 
   // custom helper function
   plop.setHelper("makeLoaderName", (name: string) => {
@@ -70,28 +70,32 @@ export default async function (plop: NodePlopAPI) {
 				I will create this folder for you.
                 `);
 
-      const files: Array<string> = [
-        "./package.json",
-        "./examples/simple/src/index.js",
-        "./examples/simple/src/lazy-module.js",
-        "./examples/simple/src/static-esm-module.js",
-        "./examples/simple/webpack.config.js",
-        "./src/cjs.js",
-        "./test/fixtures/simple-file.js",
-        "./test/functional.test.js",
-        "./test/test-utils.js",
-        "./test/unit.test.js",
-        "./src/index.js",
+      const files: Array<FileRecord> = [
+        { filePath: "./package.json", fileType: "text" },
+        { filePath: "./examples/simple/src/index.js", fileType: "text" },
+        { filePath: "./examples/simple/src/lazy-module.js", fileType: "text" },
+        { filePath: "./examples/simple/src/static-esm-module.js", fileType: "text" },
+        { filePath: "./examples/simple/webpack.config.js", fileType: "text" },
+        { filePath: "./src/cjs.js", fileType: "text" },
+        { filePath: "./test/fixtures/simple-file.js", fileType: "text" },
+        { filePath: "./test/functional.test.js", fileType: "text" },
+        { filePath: "./test/test-utils.js", fileType: "text" },
+        { filePath: "./test/unit.test.js", fileType: "text" },
+        { filePath: "./src/index.js", fileType: "text" },
       ];
 
       for (const file of files) {
-        const initialConfig: ActionType = {
-          type: "fileActions",
-          path: join(answers.projectPath, file),
-          templateFile: join(plop.getPlopfilePath(), "../templates/loader/default", `${file}.tpl`),
+        actions.push({
+          type: "fileGenerator",
+          path: join(answers.projectPath, file.filePath),
+          templateFile: join(
+            plop.getPlopfilePath(),
+            "../templates/loader/default",
+            `${file.filePath}.tpl`,
+          ),
+          fileType: file.fileType,
           data: answers,
-        };
-        actions.push(initialConfig);
+        });
       }
 
       actions.push({

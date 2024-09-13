@@ -6,7 +6,7 @@
         This is the <span>About</span> page!
       </h1>
       <p>
-        This is a webpack + {{ rawExpression 'msg' }} project.
+        This is a webpack + {{ msg }} project.
       </p>
     </div>
   </main>
