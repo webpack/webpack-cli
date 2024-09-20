@@ -39,9 +39,6 @@
     "lib",
     "!**/*__tests__"
   ],
-  "resolutions": {
-    "inquirer": "9.3.5"
-  },
   "peerDependencies": {
     "webpack-cli": "^5.x.x"
   },
