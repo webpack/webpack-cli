@@ -97,9 +97,7 @@ program
     projectPath = projectPath
       ? resolve(process.cwd(), projectPath)
       : initValues[templateOption].projectPath;
-    // const byPassValues: Array<string> = [];
-    //
-    // if (projectPath) byPassValues.push(projectPath);
+
     try {
       if (force) {
         logger.warn("Skipping the prompt and using the default values");
@@ -152,13 +150,11 @@ program
       templateOption = template;
       generator = loaderGenerators[template];
     }
+
     projectPath = projectPath
       ? resolve(process.cwd(), projectPath)
       : initValues[templateOption].projectPath;
 
-    // const byPassValues: Array<string> = [];
-    //
-    // if (projectPath) byPassValues.push(projectPath);
     try {
       const answers = { projectPath, ...(await generator.runPrompts()) };
 
@@ -194,13 +190,11 @@ program
       templateOption = template;
       generator = pluginGenerators[template];
     }
+
     projectPath = projectPath
       ? resolve(process.cwd(), projectPath)
       : initValues[templateOption].projectPath;
 
-    // const byPassValues: Array<string> = [];
-    //
-    // if (projectPath) byPassValues.push(projectPath);
     try {
       const answers = { projectPath, ...(await generator.runPrompts()) };
 
