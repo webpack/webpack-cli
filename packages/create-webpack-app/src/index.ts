@@ -93,9 +93,13 @@ program
       templateOption = template;
       generator = initGenerators[templateOption];
     }
-    const byPassValues: Array<string> = [];
 
-    if (projectPath) byPassValues.push(projectPath);
+    projectPath = projectPath
+      ? resolve(process.cwd(), projectPath)
+      : initValues[templateOption].projectPath;
+    // const byPassValues: Array<string> = [];
+    //
+    // if (projectPath) byPassValues.push(projectPath);
     try {
       if (force) {
         logger.warn("Skipping the prompt and using the default values");
@@ -104,9 +108,7 @@ program
         await generator.runActions(
           {
             ...initValues[templateOption],
-            projectPath: byPassValues[0]
-              ? resolve(process.cwd(), byPassValues[0])
-              : initValues[templateOption].projectPath,
+            projectPath,
           },
           {
             onSuccess: onSuccessHandler,
@@ -114,7 +116,7 @@ program
           },
         );
       } else {
-        const answers = await generator.runPrompts(byPassValues);
+        const answers = { projectPath, ...(await generator.runPrompts()) };
 
         logger.info("Initializing a new Webpack project");
         await generator.runActions(answers, {
@@ -150,11 +152,15 @@ program
       templateOption = template;
       generator = loaderGenerators[template];
     }
-    const byPassValues: Array<string> = [];
+    projectPath = projectPath
+      ? resolve(process.cwd(), projectPath)
+      : initValues[templateOption].projectPath;
 
-    if (projectPath) byPassValues.push(projectPath);
+    // const byPassValues: Array<string> = [];
+    //
+    // if (projectPath) byPassValues.push(projectPath);
     try {
-      const answers = await generator.runPrompts(byPassValues);
+      const answers = { projectPath, ...(await generator.runPrompts()) };
 
       await generator.runActions(answers, {
         onSuccess: onSuccessHandler,
@@ -188,11 +194,15 @@ program
       templateOption = template;
       generator = pluginGenerators[template];
     }
-    const byPassValues: Array<string> = [];
+    projectPath = projectPath
+      ? resolve(process.cwd(), projectPath)
+      : initValues[templateOption].projectPath;
 
-    if (projectPath) byPassValues.push(projectPath);
+    // const byPassValues: Array<string> = [];
+    //
+    // if (projectPath) byPassValues.push(projectPath);
     try {
-      const answers = await generator.runPrompts(byPassValues);
+      const answers = { projectPath, ...(await generator.runPrompts()) };
 
       await generator.runActions(answers, {
         onSuccess: onSuccessHandler,

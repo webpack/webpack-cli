@@ -30,15 +30,6 @@ export default async function (plop: NodePlopAPI) {
     description: "Create a basic React-webpack project",
     prompts: [
       {
-        type: "input",
-        name: "projectPath",
-        message: "Enter the project destination:",
-        default: ".",
-        filter: (input) => {
-          return resolve(process.cwd(), input);
-        },
-      },
-      {
         type: "list",
         name: "langType",
         message: "Which of the following JS solutions do you want to use?",

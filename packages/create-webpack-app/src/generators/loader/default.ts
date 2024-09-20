@@ -33,15 +33,6 @@ export default async function (plop: NodePlopAPI) {
     prompts: [
       {
         type: "input",
-        name: "projectPath",
-        message: "Enter the project destination:",
-        default: ".",
-        filter: (input) => {
-          return resolve(process.cwd(), input);
-        },
-      },
-      {
-        type: "input",
         name: "name",
         message: "Loader name?",
         default: "my-loader",
