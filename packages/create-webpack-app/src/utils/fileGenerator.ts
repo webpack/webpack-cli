@@ -254,15 +254,15 @@ export default async function (plop: NodePlopAPI) {
 
         await fs.mkdir(path.dirname(config.path), { recursive: true });
         await fs.writeFile(config.path, result.content);
-        returnString = `${result.status}:${config.path}`;
+        returnString = `${result.status}|${config.path}`;
         break;
 
       case "skip":
-        returnString = `${result.status}:${config.path}`;
+        returnString = `${result.status}|${config.path}`;
         break;
 
       case "identical":
-        returnString = `${result.status}:${config.path}`;
+        returnString = `${result.status}|${config.path}`;
         break;
     }
     return returnString;

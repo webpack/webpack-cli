@@ -1,7 +1,7 @@
 import { WebpackCLILogger } from "webpack-cli";
 import { green, yellow, Color, red, cyan, blue, blueBright, greenBright } from "colorette";
 import { PlopActionHooksChanges, PlopActionHooksFailures } from "../types";
-import { relative } from "path";
+import { relative, normalize } from "path";
 
 const prefix: string = blueBright("create-webpack");
 const getLogger = (): WebpackCLILogger => {
@@ -28,9 +28,10 @@ const typeDisplay: Record<string, Color | string> = {
 };
 function onSuccessHandler(change: PlopActionHooksChanges): void {
   change.path.split("\n").forEach((line) => {
-    const operationType = line.split(":")[0] || "";
-    const renderPath = line.split(":")[1] || "";
-    console.log(`\t${typeDisplay[operationType]} ${relative(process.cwd(), renderPath)}`);
+    const [operationType = "", renderPath = ""] = line.split("|") as [string, string];
+    console.log(
+      `\t${typeDisplay[operationType]} ${normalize(relative(process.cwd(), renderPath))}`,
+    );
   });
 }
 function onFailureHandler(failure: PlopActionHooksFailures): void {
