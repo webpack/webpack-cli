@@ -2,7 +2,12 @@ const os = require("os");
 const path = require("path");
 const { mkdirSync, existsSync, readFileSync } = require("fs");
 const { join, resolve } = require("path");
-const { createPathDependentUtils, uniqueDirectoryForTest, isWindows } = require("../test.utils.js");
+const {
+  createPathDependentUtils,
+  uniqueDirectoryForTest,
+  isWindows,
+  nodeVersion,
+} = require("../test.utils.js");
 const { run, runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");
 
 jest.setTimeout(480000);
@@ -59,7 +64,7 @@ const readFromPkgJSON = (path) => {
 // Helper to read from webpack.config.js in a given path
 const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.js"), "utf8");
 
-describe("create-webpack-app cli", () => {
+(nodeVersion >= 18 ? describe : describe.skip)("create-webpack-app cli", () => {
   it("should generate default project when nothing is passed", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["init", "--force"]);

@@ -1,7 +1,7 @@
 const { existsSync, mkdirSync } = require("fs");
 const { join, resolve } = require("path");
 const { uniqueDirectoryForTest, normalizeStdout, normalizeStderr } = require("../test.utils");
-const { createPathDependentUtils } = require("../test.utils");
+const { createPathDependentUtils, nodeVersion } = require("../test.utils");
 const webpackCliUtils = createPathDependentUtils("webpack-cli");
 const createWebpackAppUtils = createPathDependentUtils("create-webpack-app");
 const { runPromptWithAnswers } = createWebpackAppUtils;
@@ -27,7 +27,7 @@ const dataForTests = (rootAssetsPath) => ({
   ],
 });
 
-describe("plugin command", () => {
+(nodeVersion >= 18 ? describe : describe.skip)("plugin command", () => {
   it("should ask the plugin name when invoked", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["plugin", "."]);

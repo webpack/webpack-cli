@@ -11,6 +11,8 @@ const concat = require("concat-stream");
 const { Writable } = require("readable-stream");
 
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
+const nodeVersion = parseInt(process.version.split(".")[0].replace("v", ""));
+
 function createPathDependentUtils(cli) {
   const CLI_PATH = path.resolve(__dirname, `../../packages/${cli}/bin/cli.js`);
 
@@ -220,5 +222,6 @@ function createPathDependentUtils(cli) {
 
 module.exports = {
   createPathDependentUtils,
+  nodeVersion,
   ...testUtilsPkg,
 };
