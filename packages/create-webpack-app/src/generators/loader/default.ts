@@ -2,8 +2,7 @@ import { Answers, ActionType, FileRecord } from "../../types";
 import { dirname, join, resolve } from "path";
 import { NodePlopAPI, DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
-// eslint-disable-next-line node/no-missing-import
-import { logger } from "../../utils/logger.js";
+import { logger } from "../../utils/logger";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

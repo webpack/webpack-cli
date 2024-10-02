@@ -4,8 +4,7 @@ import { expand } from "@inquirer/prompts";
 import { spawn, sync } from "cross-spawn";
 import * as path from "path";
 import { fileURLToPath } from "url";
-// eslint-disable-next-line node/no-missing-import
-import { logger } from "./logger.js";
+import { logger } from "./logger";
 import { NodePlopAPI } from "node-plop";
 import { Answers } from "../types";
 

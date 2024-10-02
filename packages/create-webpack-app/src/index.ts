@@ -4,8 +4,7 @@ import { select } from "@inquirer/prompts";
 import nodePlop, { PlopGenerator } from "node-plop";
 import { fileURLToPath } from "url";
 
-// eslint-disable-next-line node/no-missing-import
-import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger.js";
+import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger";
 import { Answers, InitOptions, LoaderOptions, PluginOptions } from "./types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
