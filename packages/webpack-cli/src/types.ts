@@ -16,13 +16,13 @@ import type webpack from "webpack";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore extraneous import is intended
-// eslint-disable-next-line node/no-extraneous-import
+// eslint-disable-next-line n/no-extraneous-import
 import type { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
 
 import { type Colorette } from "colorette";
 import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
 import { type prepare } from "rechoir";
-import { type stringifyStream } from "@discoveryjs/json-ext";
+import { type stringifyChunked } from "@discoveryjs/json-ext";
 
 /**
  * Webpack CLI
@@ -205,7 +205,7 @@ type FileSystemCacheOptions = WebpackConfiguration & {
   cache: FileCacheOptions & { defaultConfig: string[] };
 };
 
-type ProcessedArguments = Record<string, BasicPrimitive | RegExp | (BasicPrimitive | RegExp)[]>;
+type ProcessedArguments = Record<string, (BasicPrimitive | RegExp)[]>;
 
 type CommandAction = Parameters<WebpackCLICommand["action"]>[0];
 
@@ -289,7 +289,7 @@ interface Rechoir {
 }
 
 interface JsonExt {
-  stringifyStream: typeof stringifyStream;
+  stringifyChunked: typeof stringifyChunked;
 }
 
 interface RechoirError extends Error {

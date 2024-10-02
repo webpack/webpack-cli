@@ -2,7 +2,7 @@ import path from "path";
 import addonGenerator from "./addon-generator";
 import { toKebabCase } from "./utils/helpers";
 
-import type { LoaderGeneratorOptions } from "./types";
+import type { LoaderGeneratorOptions } from "./types/index";
 import type Generator from "yeoman-generator";
 
 /**

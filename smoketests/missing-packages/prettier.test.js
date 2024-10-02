@@ -1,7 +1,6 @@
 "use strict";
 
 const { runTestStdout, runTestStdoutWithInput } = require("../helpers");
-// eslint-disable-next-line node/no-unpublished-require
 const rimraf = require("rimraf");
 const os = require("os");
 const { resolve } = require("path");

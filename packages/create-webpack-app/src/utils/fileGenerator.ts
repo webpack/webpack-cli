@@ -48,7 +48,7 @@ function checkIfCodeInstalled(): boolean {
   try {
     const result = sync("code", ["--version"], { stdio: "ignore" });
     return result.status === 0;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

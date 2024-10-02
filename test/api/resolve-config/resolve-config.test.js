@@ -1,5 +1,4 @@
 const { resolve } = require("path");
-// eslint-disable-next-line node/no-unpublished-require
 const WebpackCLI = require("../../../packages/webpack-cli/lib/webpack-cli");
 const config1 = require("./webpack.config1.cjs");
 const config2 = require("./webpack.config2.cjs");

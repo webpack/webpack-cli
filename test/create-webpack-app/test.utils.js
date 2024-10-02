@@ -3,14 +3,10 @@
 const testUtilsPkg = require("../utils/test-utils.js");
 const { processKill } = testUtilsPkg;
 const path = require("path");
-// eslint-disable-next-line node/no-unpublished-require
 const execa = require("execa");
 const { node: execaNode } = execa;
-// eslint-disable-next-line node/no-unpublished-require
 const stripAnsi = require("strip-ansi");
-// eslint-disable-next-line node/no-unpublished-require
 const concat = require("concat-stream");
-// eslint-disable-next-line node/no-unpublished-require
 const { Writable } = require("readable-stream");
 
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;

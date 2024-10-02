@@ -1,7 +1,7 @@
 import Generator from "yeoman-generator";
 import { type IWebpackCLI } from "webpack-cli";
 import path from "path";
-import { BaseCustomGeneratorOptions, CustomGeneratorOptions } from "./types";
+import { BaseCustomGeneratorOptions, CustomGeneratorOptions } from "./types/index";
 
 export class CustomGenerator<
   T extends BaseCustomGeneratorOptions = BaseCustomGeneratorOptions,

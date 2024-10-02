@@ -3,7 +3,7 @@ import loaderGenerator from "./loader-generator";
 import pluginGenerator from "./plugin-generator";
 import addonGenerator from "./addon-generator";
 import initGenerator from "./init-generator";
-import type { InitOptions, LoaderOptions, PluginOptions } from "./types";
+import type { InitOptions, LoaderOptions, PluginOptions } from "./types/index";
 import type { IWebpackCLI } from "webpack-cli";
 
 class GeneratorsCommand {
