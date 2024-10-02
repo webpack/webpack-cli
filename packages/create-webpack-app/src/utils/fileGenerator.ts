@@ -4,7 +4,7 @@ import { expand } from "@inquirer/prompts";
 import { spawn, sync } from "cross-spawn";
 import * as path from "path";
 import { fileURLToPath } from "url";
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 import { NodePlopAPI } from "node-plop";
 import { Answers } from "../types";
 

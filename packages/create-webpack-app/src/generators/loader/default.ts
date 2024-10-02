@@ -2,7 +2,7 @@ import { Answers, ActionType, FileRecord } from "../../types";
 import { dirname, join, resolve } from "path";
 import { NodePlopAPI, DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
-import { logger } from "../../utils/logger";
+import { logger } from "../../utils/logger.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

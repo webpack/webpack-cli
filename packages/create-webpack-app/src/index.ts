@@ -4,7 +4,7 @@ import { select } from "@inquirer/prompts";
 import nodePlop, { PlopGenerator } from "node-plop";
 import { fileURLToPath } from "url";
 
-import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger";
+import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger.js";
 import { Answers, InitOptions, LoaderOptions, PluginOptions } from "./types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
