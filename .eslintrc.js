@@ -57,5 +57,11 @@ module.exports = {
         "@typescript-eslint/no-require-imports": "off",
       },
     },
+    {
+      files: ["**/packages/create-webpack-app/**/*.js"],
+      parserOptions: {
+        sourceType: "module",
+      },
+    },
   ],
 };
