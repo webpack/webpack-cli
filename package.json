@@ -12,7 +12,7 @@
     "url": "https://opencollective.com/webpack"
   },
   "engines": {
-    "node": ">=14.15.0"
+    "node": ">=18.12.0"
   },
   "keywords": [
     "webpack",

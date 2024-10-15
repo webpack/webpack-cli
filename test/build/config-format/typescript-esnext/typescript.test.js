@@ -5,13 +5,9 @@ const { resolve } = require("path");
 
 describe("webpack cli", () => {
   it("should support typescript esnext file", async () => {
-    const majorNodeVersion = process.version.slice(1, 3);
     const env = { ...process.env };
 
-    if (majorNodeVersion >= 18) {
-      // Node.js 20+ change logic, so we need to force esm config loading for test purposes
-      env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG = true;
-    }
+    env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG = true;
 
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
       nodeOptions: ["--experimental-loader=ts-node/esm"],
