@@ -1,6 +1,6 @@
 {
   "type": "module",
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=18.12.0"
   }
 }
