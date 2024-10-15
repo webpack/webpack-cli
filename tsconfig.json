@@ -35,6 +35,9 @@
     },
     {
       "path": "packages/webpack-cli"
+    },
+    {
+      "path": "packages/create-webpack-app"
     }
   ]
 }
