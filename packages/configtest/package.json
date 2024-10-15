@@ -6,7 +6,7 @@
   "types": "lib/index.d.ts",
   "license": "MIT",
   "engines": {
-    "node": ">=14.15.0"
+    "node": ">=18.18.0"
   },
   "publishConfig": {
     "access": "public"

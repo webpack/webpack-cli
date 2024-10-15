@@ -23,7 +23,7 @@
     "watch": "tsc --watch"
   },
   "engines": {
-    "node": ">=18.12.0"
+    "node": ">=18.18.0"
   },
   "keywords": [
     "webpack",
