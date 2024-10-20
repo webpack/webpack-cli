@@ -987,7 +987,6 @@ class WebpackCLI implements IWebpackCLI {
         helpLevel: "verbose",
       },
 
-      // Adding more plugins
       {
         name: "analyze",
         configs: [
