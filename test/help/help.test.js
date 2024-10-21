@@ -75,20 +75,8 @@ describe("help", () => {
 
   const commands = [
     {
-      name: "init",
-      alias: ["create", "new", "c", "n"],
-    },
-    {
       name: "info",
       alias: "i",
-    },
-    {
-      name: "loader",
-      alias: "l",
-    },
-    {
-      name: "plugin",
-      alias: "p",
     },
     {
       name: "configtest",
