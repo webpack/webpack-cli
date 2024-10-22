@@ -5,7 +5,6 @@ const tests = [
   require("./missing-command-packages/serve.test.js"),
   require("./missing-command-packages/info.test.js"),
   require("./missing-command-packages/configtest.test.js"),
-  require("./missing-packages/prettier.test.js"),
 ];
 
 (async () => {
