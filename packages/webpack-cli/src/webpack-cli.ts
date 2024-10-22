@@ -1138,21 +1138,6 @@ class WebpackCLI implements IWebpackCLI {
         pkg: "@webpack-cli/info",
       },
       {
-        name: "init",
-        alias: ["create", "new", "c", "n"],
-        pkg: "@webpack-cli/generators",
-      },
-      {
-        name: "loader",
-        alias: "l",
-        pkg: "@webpack-cli/generators",
-      },
-      {
-        name: "plugin",
-        alias: "p",
-        pkg: "@webpack-cli/generators",
-      },
-      {
         name: "configtest [config-path]",
         alias: "t",
         pkg: "@webpack-cli/configtest",

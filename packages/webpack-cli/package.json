@@ -55,9 +55,6 @@
     "webpack": "5.x.x"
   },
   "peerDependenciesMeta": {
-    "@webpack-cli/generators": {
-      "optional": true
-    },
     "webpack-bundle-analyzer": {
       "optional": true
     },
