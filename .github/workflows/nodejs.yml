@@ -4,15 +4,10 @@ on:
   push:
     branches:
       - master
-      - next
   pull_request:
     branches:
       - master
       - next
-  workflow_dispatch:
-    inputs:
-      tags:
-        description: "Test description"
 
 permissions:
   contents: read
