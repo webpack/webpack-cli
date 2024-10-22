@@ -4,11 +4,6 @@ module.exports = {
   extends: ["eslint:recommended", "plugin:n/recommended", "prettier"],
   parserOptions: { ecmaVersion: 2018, sourceType: "script" },
   plugins: ["n"],
-  settings: {
-    n: {
-      allowModules: ["@webpack-cli/generators"],
-    },
-  },
   env: {
     node: true,
     es6: true,
