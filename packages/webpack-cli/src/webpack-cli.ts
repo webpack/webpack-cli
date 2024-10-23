@@ -634,7 +634,7 @@ class WebpackCLI implements IWebpackCLI {
   makeOption(command: WebpackCLICommand, option: WebpackCLIBuiltInOption) {
     let mainOption: WebpackCLIMainOption;
     let negativeOption;
-    const flagsWithAlias = ["devtool", "output-path", "target", "watch"];
+    const flagsWithAlias = ["devtool", "output-path", "target", "watch", "extends"];
 
     if (flagsWithAlias.includes(option.name)) {
       option.alias = option.name[0];
@@ -1044,20 +1044,6 @@ class WebpackCLI implements IWebpackCLI {
         description: "Stop webpack-cli process with non-zero exit code on warnings from webpack.",
         helpLevel: "minimum",
       },
-      // TODO remove this in the next major release, because not all webpack versions have this flag in CLI options
-      {
-        name: "extends",
-        alias: "e",
-        configs: [
-          {
-            type: "string",
-          },
-        ],
-        multiple: true,
-        description:
-          "Path to the configuration to be extended (only works when using webpack-cli).",
-        helpLevel: "minimum",
-      },
     ];
 
     // Options from webpack core to be included in the minimum help output
@@ -1071,6 +1057,7 @@ class WebpackCLI implements IWebpackCLI {
       "target",
       "name",
       "output-path",
+      "extends",
     ];
 
     // Extract all the flags being exported from core.
