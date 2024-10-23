@@ -633,7 +633,7 @@ class WebpackCLI implements IWebpackCLI {
   makeOption(command: WebpackCLICommand, option: WebpackCLIBuiltInOption) {
     let mainOption: WebpackCLIMainOption;
     let negativeOption;
-    const flagsWithAlias = ["devtool", "output-path", "target", "watch"];
+    const flagsWithAlias = ["devtool", "output-path", "target", "watch", "extends"];
 
     if (flagsWithAlias.includes(option.name)) {
       option.alias = option.name[0];
