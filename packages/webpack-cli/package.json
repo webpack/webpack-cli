@@ -52,7 +52,7 @@
     "@types/envinfo": "^7.8.1"
   },
   "peerDependencies": {
-    "webpack": "5.x.x"
+    "webpack": "^5.82.0"
   },
   "peerDependenciesMeta": {
     "webpack-bundle-analyzer": {
