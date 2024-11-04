@@ -3,13 +3,13 @@
 exports[`CLI API custom help output should display help information 1`] = `
 [
   [
-    "[1mUsage[22m: webpack --color [value]",
+    "Usage: webpack --mode <value>",
   ],
   [
-    "[1mDescription:[22m any color",
+    "Description: Enable production optimizations or development hints.",
   ],
   [
-    "[1mDefault value:[22m "blue"",
+    "Possible values: "development | production | none"",
   ],
   [
     "",
@@ -19,13 +19,13 @@ exports[`CLI API custom help output should display help information 1`] = `
 ",
   ],
   [
-    "[1mWebpack documentation:[22m https://webpack.js.org/.",
+    "Webpack documentation: https://webpack.js.org/.",
   ],
   [
-    "[1mCLI documentation:[22m https://webpack.js.org/api/cli/.",
+    "CLI documentation: https://webpack.js.org/api/cli/.",
   ],
   [
-    "[1mMade with ♥ by the webpack team[22m.",
+    "Made with ♥ by the webpack team.",
   ],
 ]
 `;

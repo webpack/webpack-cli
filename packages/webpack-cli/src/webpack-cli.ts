@@ -1669,7 +1669,8 @@ class WebpackCLI implements IWebpackCLI {
       process.exit(0);
     };
     this.program.helpOption(false);
-    this.program.addHelpCommand(false);
+    // Suppress the default help command
+    this.program.helpCommand(false);
     this.program.option("-h, --help [verbose]", "Display help for commands and options.");
 
     let isInternalActionCalled = false;

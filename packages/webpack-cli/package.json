@@ -39,7 +39,7 @@
     "@webpack-cli/info": "^2.0.2",
     "@webpack-cli/serve": "^2.0.5",
     "colorette": "^2.0.14",
-    "commander": "^10.0.1",
+    "commander": "^12.1.0",
     "cross-spawn": "^7.0.3",
     "envinfo": "^7.14.0",
     "fastest-levenshtein": "^1.0.12",
