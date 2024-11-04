@@ -1645,9 +1645,14 @@ class WebpackCLI implements IWebpackCLI {
           );
 
           if (possibleValues.length > 0) {
-            this.logger.raw(
-              `${bold("Possible values:")} ${JSON.stringify(possibleValues.join(" | "))}`,
-            );
+            // Convert the possible values to a union type string
+            // ['mode', 'development', 'production'] => "'mode' | 'development' | 'production'"
+            // [false, 'eval'] => "false | 'eval'"
+            const possibleValuesUnionTypeString = possibleValues
+              .map((value) => (typeof value === "string" ? `'${value}'` : value))
+              .join(" | ");
+
+            this.logger.raw(`${bold("Possible values:")} ${possibleValuesUnionTypeString}`);
           }
         }
 
