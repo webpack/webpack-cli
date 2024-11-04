@@ -9,7 +9,7 @@ exports[`CLI API custom help output should display help information 1`] = `
     "Description: Enable production optimizations or development hints.",
   ],
   [
-    "Possible values: "development | production | none"",
+    "Possible values: 'development' | 'production' | 'none'",
   ],
   [
     "",
