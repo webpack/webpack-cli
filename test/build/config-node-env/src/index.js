@@ -1,0 +1,1 @@
+console.log('--config-node-env test');
