@@ -2,12 +2,9 @@
 
 const { run } = require("../../utils/test-utils");
 
-describe("--define-process-env-node-env flag", () => {
+describe("--config-node-env flag", () => {
   it('should set "process.env.NODE_ENV" to "development"', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--define-process-env-node-env",
-      "development",
-    ]);
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--config-node-env", "development"]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -15,10 +12,7 @@ describe("--define-process-env-node-env flag", () => {
   });
 
   it('should set "process.env.NODE_ENV" to "production"', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--define-process-env-node-env",
-      "production",
-    ]);
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--config-node-env", "production"]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -26,10 +20,7 @@ describe("--define-process-env-node-env flag", () => {
   });
 
   it('should set "process.env.NODE_ENV" to "none"', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--define-process-env-node-env",
-      "none",
-    ]);
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--config-node-env", "none"]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -38,7 +29,7 @@ describe("--define-process-env-node-env flag", () => {
 
   it('should set "process.env.NODE_ENV" and the "mode" option to "development"', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--define-process-env-node-env",
+      "--config-node-env",
       "development",
       "--config",
       "./auto-mode.config.js",
@@ -51,7 +42,7 @@ describe("--define-process-env-node-env flag", () => {
 
   it('should set "process.env.NODE_ENV" and the "mode" option to "production"', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--define-process-env-node-env",
+      "--config-node-env",
       "production",
       "--config",
       "./auto-mode.config.js",
@@ -64,7 +55,7 @@ describe("--define-process-env-node-env flag", () => {
 
   it('should set "process.env.NODE_ENV" and the "mode" option to "none"', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--define-process-env-node-env",
+      "--config-node-env",
       "none",
       "--config",
       "./auto-mode.config.js",
