@@ -309,21 +309,6 @@ const normalizeStderr = (stderr) => {
     normalizedStderr = normalizedStderr.join("\n");
   }
 
-  // TODO remove me after drop old Node.js versions and update deps
-  // Suppress warnings for Node.js version >= v22
-  // [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
-  if (process.version.startsWith("v22")) {
-    normalizedStderr = normalizedStderr
-      .split("\n")
-      .filter((line) => {
-        return (
-          !line.includes("DeprecationWarning: The `punycode` module is deprecated.") &&
-          !line.includes("Use `node --trace-deprecation ...`")
-        );
-      })
-      .join("\n");
-  }
-
   // the warning below is causing CI failure on some jobs
   if (/Gracefully shutting down/.test(stderr)) {
     normalizedStderr = normalizedStderr.replace(
