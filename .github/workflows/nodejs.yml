@@ -45,9 +45,6 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile
 
-      - name: Bootstrap
-        run: yarn lerna bootstrap
-
       - name: Build
         run: yarn build
 
@@ -66,7 +63,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18.x, 20.x, 21.x]
+        node-version: [18.x, 20.x, 22.x]
         shard: ["1/4", "2/4", "3/4", "4/4"]
         webpack-version: [latest]
         dev-server-version: [latest]
@@ -101,11 +98,11 @@ jobs:
           version: 7
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile --ignore-engines
+        run: yarn --frozen-lockfile --ignore-engines --ignore-scripts
 
       - name: Install webpack-dev-server ${{ matrix.dev-server-version }}
         if: matrix.dev-server-version == '4'
-        run: yarn add -W -D webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines
+        run: yarn add -W -D webpack-dev-server@${{ matrix.dev-server-version }} --ignore-engines --ignore-scripts
 
       - name: Prepare environment for tests
         run: yarn build:ci
@@ -114,7 +111,7 @@ jobs:
         run: yarn test:coverage --ci --shard=${{ matrix.shard }}
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
 
   smoketests:
     name: Smoketests - ${{ matrix.os }} - Node v${{ matrix.node-version }}

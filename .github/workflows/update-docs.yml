@@ -39,9 +39,6 @@ jobs:
       - name: Install latest webpack and webpack-dev-server version
         run: yarn add -W webpack-dev-server@latest webpack@latest
 
-      - name: Bootstrap
-        run: yarn lerna bootstrap
-
       - name: Build
         run: yarn build
 

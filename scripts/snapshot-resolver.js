@@ -1,7 +1,6 @@
 const path = require("path");
 
 const webpack = require("webpack");
-//eslint-disable-next-line node/no-unpublished-require
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
 const [webpackVersion] = webpack.version;
 

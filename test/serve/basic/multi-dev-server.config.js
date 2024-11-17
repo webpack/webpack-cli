@@ -1,4 +1,3 @@
-// eslint-disable-next-line node/no-unpublished-require
 const getPort = require("get-port");
 
 const WebpackCLITestPlugin = require("../../utils/webpack-cli-test-plugin");

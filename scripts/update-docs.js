@@ -1,8 +1,6 @@
-//eslint-disable-next-line node/no-unpublished-require
 const { sync } = require("execa");
 const { resolve } = require("path");
 const { writeFileSync } = require("fs");
-//eslint-disable-next-line node/no-unpublished-require
 const { version } = require("webpack-dev-server/package.json");
 
 const majorDevServerVersion = version.split(".")[0];

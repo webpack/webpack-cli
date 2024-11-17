@@ -1,9 +1,6 @@
 "use strict";
 
-// eslint-disable-next-line node/no-unpublished-require
 const CLI = require("../../packages/webpack-cli/lib/webpack-cli");
-
-// eslint-disable-next-line node/no-unpublished-require
 const stripAnsi = require("strip-ansi");
 
 const readlineQuestionMock = jest.fn();

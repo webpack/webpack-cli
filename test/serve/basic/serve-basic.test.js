@@ -1,7 +1,6 @@
 "use strict";
 
 const path = require("path");
-// eslint-disable-next-line node/no-unpublished-require
 const getPort = require("get-port");
 const { runWatch, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
 
@@ -124,7 +123,21 @@ describe("basic serve usage", () => {
       normalStdKillOptions,
     );
     expect(stdout).toBeFalsy();
-    expect(stderr).toBeFalsy();
+    expect(stderr).toContain("No dev server configurations to run");
+  });
+
+  it("should not start dev server when supplied false #1", async () => {
+    const { stderr, stdout } = await runWatch(
+      __dirname,
+      ["serve", "--config", "dev-server-false.multi.config.js"],
+      normalStdKillOptions,
+    );
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain("app:");
+    expect(stdout).toContain("worker:");
+    expect(stdout).toContain("HotModuleReplacementPlugin");
+    expect(stdout).toContain("compiled successfully");
   });
 
   it('should work with the "--stats" option', async () => {
@@ -481,13 +494,14 @@ describe("basic serve usage", () => {
   });
 
   it("should throw error when same ports in multicompiler", async () => {
-    const { stderr, stdout } = await runWatch(__dirname, [
+    const { stderr } = await runWatch(__dirname, [
       "serve",
       "--config",
       "same-ports-dev-server.config.js",
     ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+    // Due to racing logic, first dev server can be started and compiled, but then the second always fails
+    // expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 });

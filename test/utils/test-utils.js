@@ -1,5 +1,3 @@
-/* eslint-disable node/no-unpublished-require */
-
 "use strict";
 
 const os = require("os");
@@ -7,7 +5,6 @@ const stripAnsi = require("strip-ansi");
 const path = require("path");
 const fs = require("fs");
 const execa = require("execa");
-const internalIp = require("internal-ip");
 const { exec } = require("child_process");
 const { node: execaNode } = execa;
 const { Writable } = require("readable-stream");
@@ -274,6 +271,9 @@ const normalizeStdout = (stdout) => {
   return normalizedStdout;
 };
 
+const IPV4 = /(25[0-5]|2[0-4][0-9]|1?[0-9][0-9]{1,2})(\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}/g;
+const IPV6 = /([0-9a-f]){1,4}(:([0-9a-f]){1,4}){7}/gi;
+
 const normalizeStderr = (stderr) => {
   if (typeof stderr !== "string") {
     return stderr;
@@ -286,18 +286,8 @@ const normalizeStderr = (stderr) => {
   let normalizedStderr = stripAnsi(stderr);
   normalizedStderr = normalizeCwd(normalizedStderr);
 
-  const networkIPv4 = internalIp.v4.sync();
-
-  if (networkIPv4) {
-    normalizedStderr = normalizedStderr.replace(new RegExp(networkIPv4, "g"), "<network-ip-v4>");
-  }
-
-  const networkIPv6 = internalIp.v6.sync();
-
-  if (networkIPv6) {
-    normalizedStderr = normalizedStderr.replace(new RegExp(networkIPv6, "g"), "<network-ip-v6>");
-  }
-
+  normalizedStderr = normalizedStderr.replace(IPV4, "x.x.x.x");
+  normalizedStderr = normalizedStderr.replace(IPV6, "[x:x:x:x:x:x:x:x]");
   normalizedStderr = normalizedStderr.replace(/:[0-9]+\//g, ":<port>/");
 
   if (!/On Your Network \(IPv6\)/.test(stderr)) {
@@ -312,7 +302,7 @@ const normalizeStderr = (stderr) => {
       normalizedStderr.splice(
         ipv4MessageIndex + 1,
         0,
-        "<i> [webpack-dev-server] On Your Network (IPv6): http://[<network-ip-v6>]:<port>/",
+        "<i> [webpack-dev-server] On Your Network (IPv6): http://[x:x:x:x:x:x:x:x]:<port>/",
       );
     }
 
@@ -320,9 +310,9 @@ const normalizeStderr = (stderr) => {
   }
 
   // TODO remove me after drop old Node.js versions and update deps
-  // Suppress warnings for Node.js version >= v21
+  // Suppress warnings for Node.js version >= v22
   // [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
-  if (process.version.startsWith("v21")) {
+  if (process.version.startsWith("v22")) {
     normalizedStderr = normalizedStderr
       .split("\n")
       .filter((line) => {

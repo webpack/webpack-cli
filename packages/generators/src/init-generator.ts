@@ -5,7 +5,7 @@ import { getInstaller, getTemplate } from "./utils/helpers";
 import * as Question from "./utils/scaffold-utils";
 import handlers from "./handlers";
 
-import { type InitGeneratorOptions, type CustomGeneratorOptions } from "./types";
+import { type InitGeneratorOptions, type CustomGeneratorOptions } from "./types/index";
 
 export default class InitGenerator<
   T extends InitGeneratorOptions = InitGeneratorOptions,
@@ -27,9 +27,9 @@ export default class InitGenerator<
 
     // Handle installation of prettier
     try {
-      // eslint-disable-next-line node/no-extraneous-require
+      // eslint-disable-next-line n/no-extraneous-require
       require.resolve("prettier");
-    } catch (err) {
+    } catch (_err) {
       const { installPrettier } = await Question.Confirm(
         this,
         "installPrettier",
@@ -64,16 +64,16 @@ export default class InitGenerator<
     handlers[this.template as keyof typeof handlers].generate(this);
   }
 
-  public end(): void {
+  public async end(): Promise<void> {
     // Prettify configuration file if possible
     try {
-      // eslint-disable-next-line node/no-extraneous-require, @typescript-eslint/no-var-requires
+      // eslint-disable-next-line n/no-extraneous-require
       const prettier = require("prettier");
       const source = readFileSync(this.configurationPath as string, { encoding: "utf8" });
-      const formattedSource = prettier.format(source, { parser: "babel" });
+      const formattedSource = await prettier.format(source, { parser: "babel" });
 
       writeFileSync(this.configurationPath as string, formattedSource);
-    } catch (err) {
+    } catch (_err) {
       this.cli.logger.log(
         `${this.cli.colors.yellow(
           `⚠ Generated configuration may not be properly formatted as prettier is not installed.`,

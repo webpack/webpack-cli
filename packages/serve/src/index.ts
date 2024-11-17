@@ -9,7 +9,6 @@ type Problem = NonNullable<ReturnType<(typeof cli)["processArguments"]>>[0];
 class ServeCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
     const loadDevServerOptions = () => {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const options: Record<string, any> = cli.webpack.cli.getArguments(devServer.schema);
@@ -56,7 +55,7 @@ class ServeCommand {
 
         try {
           devServerFlags = loadDevServerOptions();
-        } catch (error) {
+        } catch (_err) {
           // Nothing, to prevent future updates
         }
 
@@ -67,6 +66,7 @@ class ServeCommand {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const processors: Array<(opts: Record<string, any>) => void> = [];
+
         for (const optionName in options) {
           const kebabedOption = cli.toKebabCase(optionName);
           const isBuiltInOption = builtInOptions.find(
@@ -90,6 +90,7 @@ class ServeCommand {
             devServerCLIOptions[optionName] = options[optionName];
           }
         }
+
         for (const processor of processors) {
           processor(devServerCLIOptions);
         }
@@ -104,11 +105,13 @@ class ServeCommand {
         };
 
         webpackCLIOptions.isWatchingLikeCommand = true;
+
         const compiler = await cli.createCompiler(webpackCLIOptions);
 
         if (!compiler) {
           return;
         }
+
         const servers: (typeof DevServer)[] = [];
 
         if (cli.needWatchStdin(compiler)) {
@@ -124,11 +127,10 @@ class ServeCommand {
           process.stdin.resume();
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const DevServer = require(WEBPACK_DEV_SERVER_PACKAGE);
 
         try {
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           require(`${WEBPACK_DEV_SERVER_PACKAGE}/package.json`).version;
         } catch (err) {
           cli.logger.error(
@@ -146,6 +148,12 @@ class ServeCommand {
         const usedPorts: number[] = [];
 
         for (const compilerForDevServer of compilersForDevServer) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          if (compilerForDevServer.options.devServer === false) {
+            continue;
+          }
+
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const args = devServerFlags.reduce((accumulator: Record<string, any>, flag: any) => {
             accumulator[flag.name] = flag;
@@ -205,6 +213,7 @@ class ServeCommand {
           }
 
           const devServerOptions: WebpackDevServerOptions = result as WebpackDevServerOptions;
+
           if (devServerOptions.port) {
             const portNumber = Number(devServerOptions.port);
 
@@ -232,6 +241,11 @@ class ServeCommand {
 
             process.exit(2);
           }
+        }
+
+        if (servers.length === 0) {
+          cli.logger.error("No dev server configurations to run");
+          process.exit(2);
         }
       },
     );

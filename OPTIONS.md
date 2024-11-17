@@ -141,6 +141,8 @@ Options:
   --module-expr-context-reg-exp [value]                                              Sets the default regular expression for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRegExp'.
   --no-module-expr-context-reg-exp                                                   Negative 'module-expr-context-reg-exp' option.
   --module-expr-context-request <value>                                              Set the default request for full dynamic dependencies. Deprecated: This option has moved to 'module.parser.javascript.exprContextRequest'.
+  --module-generator-asset-binary                                                    Whether or not this asset module should be considered binary. This can be set to 'false' to treat this asset module as text.
+  --no-module-generator-asset-binary                                                 Negative 'module-generator-asset-binary' option.
   --module-generator-asset-data-url-encoding <value>                                 Asset encoding (defaults to base64).
   --no-module-generator-asset-data-url-encoding                                      Negative 'module-generator-asset-data-url-encoding' option.
   --module-generator-asset-data-url-mimetype <value>                                 Asset mimetype (getting from file extension by default).
@@ -149,22 +151,40 @@ Options:
   --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-generator-asset-output-path <value>                                       Emit the asset in the specified folder relative to 'output.path'. This should only be needed when custom 'publicPath' is specified to match the folder structure there.
   --module-generator-asset-public-path <value>                                       The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
+  --module-generator-asset-inline-binary                                             Whether or not this asset module should be considered binary. This can be set to 'false' to treat this asset module as text.
+  --no-module-generator-asset-inline-binary                                          Negative 'module-generator-asset-inline-binary' option.
   --module-generator-asset-inline-data-url-encoding <value>                          Asset encoding (defaults to base64).
   --no-module-generator-asset-inline-data-url-encoding                               Negative 'module-generator-asset-inline-data-url-encoding' option.
   --module-generator-asset-inline-data-url-mimetype <value>                          Asset mimetype (getting from file extension by default).
+  --module-generator-asset-resource-binary                                           Whether or not this asset module should be considered binary. This can be set to 'false' to treat this asset module as text.
+  --no-module-generator-asset-resource-binary                                        Negative 'module-generator-asset-resource-binary' option.
   --module-generator-asset-resource-emit                                             Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
   --no-module-generator-asset-resource-emit                                          Negative 'module-generator-asset-resource-emit' option.
   --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --module-generator-asset-resource-output-path <value>                              Emit the asset in the specified folder relative to 'output.path'. This should only be needed when custom 'publicPath' is specified to match the folder structure there.
   --module-generator-asset-resource-public-path <value>                              The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
+  --module-generator-css-es-module                                                   Configure the generated JS modules that use the ES modules syntax.
+  --no-module-generator-css-es-module                                                Negative 'module-generator-css-es-module' option.
   --module-generator-css-exports-only                                                Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-exports-only                                             Negative 'module-generator-css-exports-only' option.
+  --module-generator-css-auto-es-module                                              Configure the generated JS modules that use the ES modules syntax.
+  --no-module-generator-css-auto-es-module                                           Negative 'module-generator-css-auto-es-module' option.
+  --module-generator-css-auto-exports-convention <value>                             Specifies the convention of exported names.
   --module-generator-css-auto-exports-only                                           Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-auto-exports-only                                        Negative 'module-generator-css-auto-exports-only' option.
+  --module-generator-css-auto-local-ident-name <value>                               Configure the generated local ident name.
+  --module-generator-css-global-es-module                                            Configure the generated JS modules that use the ES modules syntax.
+  --no-module-generator-css-global-es-module                                         Negative 'module-generator-css-global-es-module' option.
+  --module-generator-css-global-exports-convention <value>                           Specifies the convention of exported names.
   --module-generator-css-global-exports-only                                         Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-global-exports-only                                      Negative 'module-generator-css-global-exports-only' option.
+  --module-generator-css-global-local-ident-name <value>                             Configure the generated local ident name.
+  --module-generator-css-module-es-module                                            Configure the generated JS modules that use the ES modules syntax.
+  --no-module-generator-css-module-es-module                                         Negative 'module-generator-css-module-es-module' option.
+  --module-generator-css-module-exports-convention <value>                           Specifies the convention of exported names.
   --module-generator-css-module-exports-only                                         Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-module-exports-only                                      Negative 'module-generator-css-module-exports-only' option.
+  --module-generator-css-module-local-ident-name <value>                             Configure the generated local ident name.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
@@ -218,6 +238,7 @@ Options:
   --no-module-parser-javascript-node-filename                                        Negative 'module-parser-javascript-node-filename' option.
   --module-parser-javascript-node-global [value]                                     Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-node-global                                          Negative 'module-parser-javascript-node-global' option.
+  --module-parser-javascript-override-strict <value>                                 Override the module to strict or non-strict. This may affect the behavior of the module (some behaviors differ between strict and non-strict), so please configure this option carefully.
   --module-parser-javascript-reexport-exports-presence <value>                       Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
   --no-module-parser-javascript-reexport-exports-presence                            Negative 'module-parser-javascript-reexport-exports-presence' option.
   --module-parser-javascript-require-context                                         Enable/disable parsing of require.context syntax.
@@ -293,6 +314,7 @@ Options:
   --no-module-parser-javascript-auto-node-filename                                   Negative 'module-parser-javascript-auto-node-filename' option.
   --module-parser-javascript-auto-node-global [value]                                Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-auto-node-global                                     Negative 'module-parser-javascript-auto-node-global' option.
+  --module-parser-javascript-auto-override-strict <value>                            Override the module to strict or non-strict. This may affect the behavior of the module (some behaviors differ between strict and non-strict), so please configure this option carefully.
   --module-parser-javascript-auto-reexport-exports-presence <value>                  Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
   --no-module-parser-javascript-auto-reexport-exports-presence                       Negative 'module-parser-javascript-auto-reexport-exports-presence' option.
   --module-parser-javascript-auto-require-context                                    Enable/disable parsing of require.context syntax.
@@ -368,6 +390,7 @@ Options:
   --no-module-parser-javascript-dynamic-node-filename                                Negative 'module-parser-javascript-dynamic-node-filename' option.
   --module-parser-javascript-dynamic-node-global [value]                             Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-dynamic-node-global                                  Negative 'module-parser-javascript-dynamic-node-global' option.
+  --module-parser-javascript-dynamic-override-strict <value>                         Override the module to strict or non-strict. This may affect the behavior of the module (some behaviors differ between strict and non-strict), so please configure this option carefully.
   --module-parser-javascript-dynamic-reexport-exports-presence <value>               Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
   --no-module-parser-javascript-dynamic-reexport-exports-presence                    Negative 'module-parser-javascript-dynamic-reexport-exports-presence' option.
   --module-parser-javascript-dynamic-require-context                                 Enable/disable parsing of require.context syntax.
@@ -443,6 +466,7 @@ Options:
   --no-module-parser-javascript-esm-node-filename                                    Negative 'module-parser-javascript-esm-node-filename' option.
   --module-parser-javascript-esm-node-global [value]                                 Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-esm-node-global                                      Negative 'module-parser-javascript-esm-node-global' option.
+  --module-parser-javascript-esm-override-strict <value>                             Override the module to strict or non-strict. This may affect the behavior of the module (some behaviors differ between strict and non-strict), so please configure this option carefully.
   --module-parser-javascript-esm-reexport-exports-presence <value>                   Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
   --no-module-parser-javascript-esm-reexport-exports-presence                        Negative 'module-parser-javascript-esm-reexport-exports-presence' option.
   --module-parser-javascript-esm-require-context                                     Enable/disable parsing of require.context syntax.
@@ -632,6 +656,8 @@ Options:
   --no-output-cross-origin-loading                                                   Negative 'output-cross-origin-loading' option.
   --output-css-chunk-filename <value>                                                Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-css-filename <value>                                                      Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --output-css-head-data-compression                                                 Compress the data in the head tag of CSS files.
+  --no-output-css-head-data-compression                                              Negative 'output-css-head-data-compression' option.
   --output-devtool-fallback-module-filename-template <value>                         Similar to `output.devtoolModuleFilenameTemplate`, but used in the case of duplicate module identifiers.
   --output-devtool-module-filename-template <value>                                  Filename template string of function for the sources array in a generated SourceMap.
   --output-devtool-namespace <value>                                                 Module namespace to use when interpolating filename template string for the sources array in a generated SourceMap. Defaults to `output.library` if not set. It's useful for avoiding runtime collisions in sourcemaps from multiple webpack projects built as libraries.
@@ -651,6 +677,8 @@ Options:
   --no-output-environment-const                                                      Negative 'output-environment-const' option.
   --output-environment-destructuring                                                 The environment supports destructuring ('{ a, b } = obj').
   --no-output-environment-destructuring                                              Negative 'output-environment-destructuring' option.
+  --output-environment-document                                                      The environment supports 'document'.
+  --no-output-environment-document                                                   Negative 'output-environment-document' option.
   --output-environment-dynamic-import                                                The environment supports an async import() function to import EcmaScript modules.
   --no-output-environment-dynamic-import                                             Negative 'output-environment-dynamic-import' option.
   --output-environment-dynamic-import-in-worker                                      The environment supports an async import() is available when creating a worker.
@@ -661,6 +689,8 @@ Options:
   --no-output-environment-global-this                                                Negative 'output-environment-global-this' option.
   --output-environment-module                                                        The environment supports EcmaScript Module syntax to import EcmaScript modules (import ... from '...').
   --no-output-environment-module                                                     Negative 'output-environment-module' option.
+  --output-environment-node-prefix-for-core-modules                                  The environment supports `node:` prefix for Node.js core modules.
+  --no-output-environment-node-prefix-for-core-modules                               Negative 'output-environment-node-prefix-for-core-modules' option.
   --output-environment-optional-chaining                                             The environment supports optional chaining ('obj?.a' or 'obj?.()').
   --no-output-environment-optional-chaining                                          Negative 'output-environment-optional-chaining' option.
   --output-environment-template-literal                                              The environment supports template literals.

@@ -1,5 +1,3 @@
-/* eslint-disable node/no-unpublished-require */
-
 const fs = require("fs");
 const path = require("path");
 const execa = require("execa");
