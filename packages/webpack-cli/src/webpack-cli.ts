@@ -1180,8 +1180,8 @@ class WebpackCLI implements IWebpackCLI {
         );
       } else if (isCommand(commandName, getKnownCommand("help"))) {
         // Stub for the `help` command
-        this.makeCommand(helpCommandOptions, [], () => {});
-      } else if (isCommand(commandName, versionCommandOptions)) {
+        this.makeCommand(getKnownCommand("help"), [], () => {});
+      } else if (isCommand(commandName, getKnownCommand("version"))) {
         // Stub for the `version` command
         this.makeCommand(
           getKnownCommand("version"),
@@ -2565,7 +2565,7 @@ class WebpackCLI implements IWebpackCLI {
     autoCompleteObject.on(
       "complete",
       function (
-        fragment: string,
+        // fragment: string, **keep this as it is**
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data: { before: string; fragment: number; line: string; reply: (answer: any) => void },
       ) {

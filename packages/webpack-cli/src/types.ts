@@ -23,7 +23,7 @@ import { type Colorette } from "colorette";
 import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
 import { type prepare } from "rechoir";
 
-import { type stringifyStream } from "@discoveryjs/json-ext";
+// import { type stringifyStream } from "@discoveryjs/json-ext";
 import { IAutocompleteTree } from "./utils/autocomplete";
 
 import { type stringifyChunked } from "@discoveryjs/json-ext";
