@@ -351,6 +351,7 @@ class WebpackCLI implements IWebpackCLI {
             require("./utils/dynamic-import-loader")();
           if (
             ((error as ImportLoaderError).code === "ERR_REQUIRE_ESM" ||
+              (error as ImportLoaderError).code === "ERR_REQUIRE_ASYNC_MODULE" ||
               process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
             pathToFileURL &&
             dynamicImportLoader

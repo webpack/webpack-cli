@@ -10,4 +10,5 @@ test/**/index.js
 test/build/config/error-commonjs/syntax-error.js
 test/build/config/error-mjs/syntax-error.mjs
 test/build/config/error-array/webpack.config.js
+test/build/config-format/esm-require-await/webpack.config.js
 test/configtest/with-config-path/syntax-error.config.js
