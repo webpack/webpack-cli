@@ -22,6 +22,10 @@ import type { ClientConfiguration, Configuration as DevServerConfig } from "webp
 import { type Colorette } from "colorette";
 import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
 import { type prepare } from "rechoir";
+
+// import { type stringifyStream } from "@discoveryjs/json-ext";
+import { IAutocompleteTree } from "./utils/autocomplete";
+
 import { type stringifyChunked } from "@discoveryjs/json-ext";
 
 /**
@@ -74,6 +78,9 @@ interface IWebpackCLI {
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
+  getAutocompleteTree(): IAutocompleteTree;
+  executeAutoComplete(): Promise<void>;
+  setupAutocompleteForShell(): Promise<void>;
 }
 
 interface WebpackCLIColors extends Colorette {
