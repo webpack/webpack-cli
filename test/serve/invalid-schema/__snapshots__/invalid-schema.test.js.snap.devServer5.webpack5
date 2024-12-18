@@ -28,3 +28,10 @@ exports[`invalid schema should log webpack-dev-server error and exit process on 
 `;
 
 exports[`invalid schema should log webpack-dev-server error and exit process on invalid config: stdout 1`] = `""`;
+
+exports[`invalid schema should log webpack-dev-server error and exit process on invalid flag: stderr 1`] = `
+"[webpack-cli] Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
+ - options.port should be >= 0 and <= 65535."
+`;
+
+exports[`invalid schema should log webpack-dev-server error and exit process on invalid flag: stdout 1`] = `""`;
