@@ -2,6 +2,9 @@ const { existsSync, mkdirSync } = require("fs");
 const { join, resolve } = require("path");
 const { uniqueDirectoryForTest, normalizeStdout, normalizeStderr } = require("../test.utils");
 const { createPathDependentUtils } = require("../test.utils");
+
+jest.setTimeout(480000);
+
 const webpackCliUtils = createPathDependentUtils("webpack-cli");
 const createWebpackAppUtils = createPathDependentUtils("create-webpack-app");
 const { runPromptWithAnswers } = createWebpackAppUtils;

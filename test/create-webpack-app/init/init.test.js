@@ -3,9 +3,10 @@ const path = require("path");
 const { mkdirSync, existsSync, readFileSync } = require("fs");
 const { join, resolve } = require("path");
 const { createPathDependentUtils, uniqueDirectoryForTest, isWindows } = require("../test.utils.js");
-const { run, runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");
 
 jest.setTimeout(480000);
+
+const { run, runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");
 
 const ENTER = "\x0D";
 const DOWN = "\x1B\x5B\x42";
