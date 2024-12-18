@@ -4,7 +4,13 @@ describe("CLI API", () => {
   let cli;
 
   beforeEach(() => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
+
     cli = new CLI();
+  });
+
+  afterAll(() => {
+    console.error.mockRestore();
   });
 
   describe("makeCommand", () => {

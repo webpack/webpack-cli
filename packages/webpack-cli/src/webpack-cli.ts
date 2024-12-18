@@ -55,7 +55,7 @@ import { type stringifyChunked } from "@discoveryjs/json-ext";
 import { type Help, type ParseOptions } from "commander";
 
 import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
-import * as console from "node:console";
+
 const fs = require("fs");
 const { Readable } = require("stream");
 const path = require("path");
@@ -1933,19 +1933,23 @@ class WebpackCLI implements IWebpackCLI {
         ),
       );
 
-      config.options = [];
-
-      loadedConfigs.forEach((loadedConfig) => {
-        if (Array.isArray(loadedConfig.options)) {
-          for (const item of loadedConfig.options) {
-            (config.options as WebpackConfiguration[]).push(item);
-            config.path.set(options, [loadedConfig.path]);
+      if (loadedConfigs.length === 1) {
+        config.options = loadedConfigs[0].options;
+        config.path.set(loadedConfigs[0].options, [loadedConfigs[0].path]);
+      } else {
+        config.options = [];
+        loadedConfigs.forEach((loadedConfig) => {
+          if (Array.isArray(loadedConfig.options)) {
+            for (const item of loadedConfig.options) {
+              (config.options as WebpackConfiguration[]).push(item);
+              config.path.set(options, [loadedConfig.path]);
+            }
+          } else {
+            (config.options as WebpackConfiguration[]).push(loadedConfig.options);
+            config.path.set(loadedConfig.options, [loadedConfig.path]);
           }
-        } else {
-          (config.options as WebpackConfiguration[]).push(loadedConfig.options);
-          config.path.set(loadedConfig.options, [loadedConfig.path]);
-        }
-      });
+        });
+      }
     } else {
       // Prioritize popular extensions first to avoid unnecessary fs calls
       const extensions = new Set([
