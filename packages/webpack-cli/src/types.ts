@@ -1,9 +1,9 @@
 import type {
   EntryOptions,
   Stats,
+  MultiStats,
   Configuration,
   WebpackError,
-  StatsOptions,
   WebpackOptionsNormalized,
   Compiler,
   MultiCompiler,
@@ -70,7 +70,7 @@ interface IWebpackCLI {
   isValidationError(error: Error): error is WebpackError;
   createCompiler(
     options: Partial<WebpackDevServerOptions>,
-    callback?: Callback<[Error | undefined, WebpackCLIStats | undefined]>,
+    callback?: Callback<[Error | undefined, Stats | MultiStats | undefined]>,
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
@@ -102,10 +102,6 @@ interface WebpackCLICommand extends Command {
   pkg: string | undefined;
   forHelp: boolean | undefined;
   _args: WebpackCLICommandOption[];
-}
-
-interface WebpackCLIStats extends Stats {
-  presetToOptions?: (item: string | boolean) => StatsOptions;
 }
 
 type WebpackCLIMainOption = Pick<
@@ -141,7 +137,7 @@ interface WebpackCLIBuiltInFlag {
   negative?: boolean;
   multiple?: boolean;
   valueName?: string;
-  description: string;
+  description?: string;
   describe?: string;
   negatedDescription?: string;
   defaultValue?: string;
@@ -189,8 +185,10 @@ type Callback<T extends unknown[]> = (...args: T) => void;
  * Webpack
  */
 type WebpackConfiguration = Configuration;
-type ConfigOptions = PotentialPromise<WebpackConfiguration | CallableOption>;
-type CallableOption = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
+type LoadableWebpackConfiguration = PotentialPromise<
+  WebpackConfiguration | CallableWebpackConfiguration
+>;
+type CallableWebpackConfiguration = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
 type WebpackCompiler = Compiler | MultiCompiler;
 
 type FlagType = boolean | "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset";
@@ -225,12 +223,6 @@ interface WebpackRunOptions extends WebpackOptionsNormalized {
 type PackageManager = "pnpm" | "yarn" | "npm";
 interface PackageInstallOptions {
   preMessage?: () => void;
-}
-interface BasicPackageJsonContent {
-  name: string;
-  version: string;
-  description: string;
-  license: string;
 }
 
 /**
@@ -309,7 +301,6 @@ export {
   WebpackCLIBuiltInOption,
   WebpackCLIBuiltInFlag,
   WebpackCLIColors,
-  WebpackCLIStats,
   WebpackCLIConfig,
   WebpackCLIExternalCommandInfo,
   WebpackCLIOptions,
@@ -324,14 +315,13 @@ export {
   Argv,
   Argument,
   BasicPrimitive,
-  BasicPackageJsonContent,
-  CallableOption,
+  CallableWebpackConfiguration,
   Callback,
   CLIPluginOptions,
   CommandAction,
   CommanderOption,
   CommandOptions,
-  ConfigOptions,
+  LoadableWebpackConfiguration,
   DynamicImport,
   FileSystemCacheOptions,
   FlagConfig,
