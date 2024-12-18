@@ -2,12 +2,7 @@ const os = require("os");
 const path = require("path");
 const { mkdirSync, existsSync, readFileSync } = require("fs");
 const { join, resolve } = require("path");
-const {
-  createPathDependentUtils,
-  uniqueDirectoryForTest,
-  isWindows,
-  nodeVersion,
-} = require("../test.utils.js");
+const { createPathDependentUtils, uniqueDirectoryForTest, isWindows } = require("../test.utils.js");
 const { run, runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");
 
 jest.setTimeout(480000);
@@ -64,7 +59,7 @@ const readFromPkgJSON = (path) => {
 // Helper to read from webpack.config.js in a given path
 const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.js"), "utf8");
 
-(nodeVersion >= 18 ? describe : describe.skip)("create-webpack-app cli", () => {
+describe("create-webpack-app cli", () => {
   it("should generate default project when nothing is passed", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["init", "--force"]);
@@ -94,7 +89,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should generate folders if non existing generation path is given", async () => {
     const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
     const { stdout } = await run(__dirname, ["init", assetsPath, "--force"]);
@@ -111,7 +106,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     //Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-  // //
+
   it("should configure assets modules by default", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["init", "--force"]);
@@ -129,7 +124,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should ask question when wrong template is supplied", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
@@ -150,7 +145,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should generate typescript project correctly", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -180,7 +175,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  // //
+
   it("should generate ES6 project correctly", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -206,7 +201,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should use sass in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -239,7 +234,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should use sass with postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -274,7 +269,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should use mini-css-extract-plugin when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -307,7 +302,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should use sass and css with postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -342,7 +337,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should use less in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -375,7 +370,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  // //
+
   it("should use stylus in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -408,7 +403,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  // //
+
   it("should configure WDS as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -432,7 +427,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  // //
+
   it("should use postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -466,7 +461,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should configure html-webpack-plugin as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -490,7 +485,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should configure workbox-webpack-plugin as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -514,7 +509,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should throw if the current path is not writable", async () => {
     if (isWindows) {
       return;
@@ -530,7 +525,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     expect(stderr).toContain("Failed to initialize the project with webpack!");
     expect(exitCode).toBe(2);
   });
-  //
+
   it("should work with 'new' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["new", "--force"]);
@@ -546,7 +541,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should work with 'create' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["create", "--force"]);
@@ -562,7 +557,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should work with 'c' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["c", "--force"]);
@@ -578,7 +573,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should work with 'n' alias", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["n", "--force"]);
@@ -626,7 +621,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("uses yarn as the package manager when opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -651,7 +646,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should generate react template with state and routing support with prompt answers", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -674,7 +669,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
-  //
+
   it("should generate react template with --force", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["init", "--template=react", "--force"]);
@@ -737,6 +732,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
+
   it("should generate svelte template with prompt answers", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -759,6 +755,7 @@ const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
+
   it("should generate svelte template with --force", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await run(assetsPath, ["init", "--template=svelte", "--force"]);

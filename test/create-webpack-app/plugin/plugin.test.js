@@ -1,7 +1,7 @@
 const { existsSync, mkdirSync } = require("fs");
 const { join, resolve } = require("path");
 const { uniqueDirectoryForTest, normalizeStdout, normalizeStderr } = require("../test.utils");
-const { createPathDependentUtils, nodeVersion } = require("../test.utils");
+const { createPathDependentUtils } = require("../test.utils");
 const webpackCliUtils = createPathDependentUtils("webpack-cli");
 const createWebpackAppUtils = createPathDependentUtils("create-webpack-app");
 const { runPromptWithAnswers } = createWebpackAppUtils;
@@ -27,7 +27,7 @@ const dataForTests = (rootAssetsPath) => ({
   ],
 });
 
-(nodeVersion >= 18 ? describe : describe.skip)("plugin command", () => {
+describe("plugin command", () => {
   it("should ask the plugin name when invoked", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["plugin", "."]);
@@ -57,7 +57,7 @@ const dataForTests = (rootAssetsPath) => ({
       expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated plugin works successfully
+    // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(defaultPluginPath, [
       "--config",
       "./examples/simple/webpack.config.js",
@@ -89,7 +89,7 @@ const dataForTests = (rootAssetsPath) => ({
       expect(existsSync(join(pluginPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated plugin works successfully
+    // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(pluginPath, [
       "--config",
       "./examples/simple/webpack.config.js",
@@ -121,7 +121,7 @@ const dataForTests = (rootAssetsPath) => ({
       expect(existsSync(join(customPluginPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated plugin works successfully
+    // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(customPluginPath, [
       "--config",
       "./examples/simple/webpack.config.js",
@@ -159,7 +159,7 @@ const dataForTests = (rootAssetsPath) => ({
       expect(existsSync(join(customPluginPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated plugin works successfully
+    // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(customPluginPath, [
       "--config",
       "./examples/simple/webpack.config.js",
@@ -198,7 +198,7 @@ const dataForTests = (rootAssetsPath) => ({
       expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated plugin works successfully
+    // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(defaultPluginPath, [
       "--config",
       "./examples/simple/webpack.config.js",
@@ -235,7 +235,7 @@ const dataForTests = (rootAssetsPath) => ({
       expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated plugin works successfully
+    // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(defaultPluginPath, [
       "--config",
       "./examples/simple/webpack.config.js",

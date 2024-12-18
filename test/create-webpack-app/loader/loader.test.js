@@ -32,7 +32,7 @@ const dataForTests = (rootAssetsPath) => ({
   ],
 });
 
-describe.skip("loader command", () => {
+describe("loader command", () => {
   it("should ask the loader name when invoked", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["loader", "."]);
@@ -41,6 +41,7 @@ describe.skip("loader command", () => {
     expect(normalizeStderr(stderr)).toBeFalsy();
     expect(normalizeStdout(stdout)).toContain(firstPrompt);
   });
+
   it("should scaffold loader with default name if no loader name provided", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { defaultLoaderPath, defaultTemplateFiles } = dataForTests(assetsPath);
@@ -58,10 +59,10 @@ describe.skip("loader command", () => {
 
     // All test files are scaffolded
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(defaultLoaderPath, file)).toBeTruthy();
+      expect(existsSync(resolve(defaultLoaderPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated loader works successfully
+    // Check if the generated loader works successfully
     const path = resolve(defaultLoaderPath, "./examples/simple/");
 
     ({ stdout } = await run(path, []));
@@ -90,10 +91,10 @@ describe.skip("loader command", () => {
 
     // All test files are scaffolded
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(loaderPath, file)).toBeTruthy();
+      expect(existsSync(resolve(loaderPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated loader works successfully
+    // Check if the generated loader works successfully
     const path = resolve(loaderPath, "./examples/simple/");
 
     ({ stdout } = await run(path, []));
@@ -122,10 +123,10 @@ describe.skip("loader command", () => {
 
     // All test files are scaffolded
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(customLoaderPath, file)).toBeTruthy();
+      expect(existsSync(resolve(customLoaderPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated loader works successfully
+    // Check if the generated loader works successfully
     const path = resolve(customLoaderPath, "./examples/simple/");
 
     ({ stdout } = await run(path, []));
@@ -155,10 +156,10 @@ describe.skip("loader command", () => {
 
     // All test files are scaffolded
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(customLoaderPath, file)).toBeTruthy();
+      expect(existsSync(resolve(customLoaderPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated loader works successfully
+    // Check if the generated loader works successfully
     const path = resolve(customLoaderPath, "./examples/simple/");
 
     ({ stdout } = await run(path, []));
@@ -198,10 +199,10 @@ describe.skip("loader command", () => {
 
     // All test files are scaffolded
     defaultTemplateFiles.forEach((file) => {
-      expect(existsSync(defaultLoaderPath, file)).toBeTruthy();
+      expect(existsSync(resolve(defaultLoaderPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated loader works successfully
+    // Check if the generated loader works successfully
     const path = resolve(assetsPath, "./my-loader/examples/simple/");
 
     ({ stdout } = await run(path, []));
@@ -235,10 +236,10 @@ describe.skip("loader command", () => {
     ];
 
     files.forEach((file) => {
-      expect(existsSync(defaultLoaderPath, file)).toBeTruthy();
+      expect(existsSync(resolve(defaultLoaderPath, file))).toBeTruthy();
     });
 
-    // Check if the the generated loader works successfully
+    // Check if the generated loader works successfully
     const path = resolve(assetsPath, "./my-loader/examples/simple/");
 
     ({ stdout } = await run(path, []));
