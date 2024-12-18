@@ -22,8 +22,7 @@ describe("invalid schema", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  // TODO need fix on webpack-dev-server side
-  it.skip("should log webpack-dev-server error and exit process on invalid flag", async () => {
+  it("should log webpack-dev-server error and exit process on invalid flag", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["serve", "--port", "-1"]);
 
     expect(exitCode).toEqual(2);
