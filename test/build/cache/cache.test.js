@@ -31,11 +31,17 @@ describe("cache", () => {
 
   it("should work in multi compiler mode", async () => {
     fs.rmSync(
-      path.join(__dirname, "../../../node_modules/.cache/webpack/cache-test-first-development"),
+      path.join(
+        __dirname,
+        "../../../node_modules/.cache/webpack/cache-test-first-development__compiler1__",
+      ),
       { recursive: true, force: true },
     );
     fs.rmSync(
-      path.join(__dirname, "../../../node_modules/.cache/webpack/cache-test-second-development"),
+      path.join(
+        __dirname,
+        "../../../node_modules/.cache/webpack/cache-test-second-development__compiler2__",
+      ),
       { recursive: true, force: true },
     );
 
@@ -59,7 +65,10 @@ describe("cache", () => {
 
   it("should work in multi compiler mode with the `--config-name` argument", async () => {
     fs.rmSync(
-      path.join(__dirname, "../../../node_modules/.cache/webpack/cache-test-third-development"),
+      path.join(
+        __dirname,
+        "../../../node_modules/.cache/webpack/cache-test-third-development__compiler1__",
+      ),
       { recursive: true, force: true },
     );
 

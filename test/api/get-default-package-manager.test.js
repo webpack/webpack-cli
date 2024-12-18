@@ -101,6 +101,7 @@ describe("getPackageManager", () => {
   });
 
   it("should throw error if no package manager is found", () => {
+    cwdSpy.mockReturnValue(noLockPath);
     syncMock.mockImplementation(() => {
       throw new Error();
     });
