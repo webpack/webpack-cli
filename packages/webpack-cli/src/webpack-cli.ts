@@ -1947,9 +1947,8 @@ class WebpackCLI implements IWebpackCLI {
         }
       });
     } else {
-      // TODO ".mts" is not supported by `interpret`, need to add it
       // Prioritize popular extensions first to avoid unnecessary fs calls
-      const extensions = [
+      const extensions = new Set([
         ".js",
         ".mjs",
         ".cjs",
@@ -1957,11 +1956,11 @@ class WebpackCLI implements IWebpackCLI {
         ".cts",
         ".mts",
         ...Object.keys(interpret.extensions),
-      ];
+      ]);
       // Order defines the priority, in decreasing order
       const defaultConfigFiles = new Set(
         ["webpack.config", ".webpack/webpack.config", ".webpack/webpackfile"].flatMap((filename) =>
-          extensions.map((ext) => path.resolve(filename + ext)),
+          [...extensions].map((ext) => path.resolve(filename + ext)),
         ),
       );
 
