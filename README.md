@@ -60,10 +60,7 @@ Thus, webpack CLI provides different commands for many common tasks.
 - [`build|bundle|b [entries...] [options]`](https://webpack.js.org/api/cli/#build) - Run webpack (default command, can be omitted).
 - [`configtest|t [config-path]`](https://webpack.js.org/api/cli/#configtest) - Validate a webpack configuration.
 - [`help|h [command] [option]`](https://webpack.js.org/api/cli/#help) - Display help for commands and options.
-- [`init|create|new|c|n [generation-path] [options]`](https://webpack.js.org/api/cli/#init) - Create a new webpack project.
 - [`info|i [options]`](https://webpack.js.org/api/cli/#info) - Returns information related to the local environment.
-- [`plugin|p [output-path] [options]`](https://webpack.js.org/api/cli/#plugin) - Initiate new plugin project.
-- [`loader|l [output-path] [options]`](https://webpack.js.org/api/cli/#loader) - Initiate new loader project.
 - [`serve|server|s [entries...] [options]`](https://webpack.js.org/api/cli/#serve) - Use webpack with a development server that provides live reloading.
 - [`version|v [commands...]`](https://webpack.js.org/api/cli/#version) - Output the version number of `webpack`, `webpack-cli`, `webpack-dev-server`, and commands.
 - [`watch|w [entries...] [options]`](https://webpack.js.org/api/cli/#watch) - Run webpack and watch for files changes.
@@ -74,14 +71,10 @@ If you have followed the [Getting Started](https://webpack.js.org/guides/getting
 
 Otherwise, you would need to install webpack CLI and the packages you want to use.
 
-If you want to create a fresh webpack project, the `init` command will guide you through setting up a project. Run the command as stated below.
+If you want to create a fresh webpack project run the command as stated below:
 
 ```sh
-npm i webpack-cli @webpack-cli/init
-```
-
-```sh
-npx webpack-cli init
+npx create-webpack-app init
 ```
 
 You will then be prompted for some questions about which features you want to use, such as `scss`, `typescript`, `PWA` support or other features.
