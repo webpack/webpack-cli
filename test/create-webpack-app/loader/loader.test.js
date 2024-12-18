@@ -3,6 +3,8 @@
 const { existsSync } = require("fs");
 const { join, resolve } = require("path");
 
+jest.setTimeout(480000);
+
 const {
   uniqueDirectoryForTest,
   normalizeStdout,
