@@ -1936,33 +1936,16 @@ class WebpackCLI implements IWebpackCLI {
       config.options = [];
 
       loadedConfigs.forEach((loadedConfig) => {
-        // TODO we should run webpack multiple times when the `--config` options have multiple values with `--merge`, need to solve for the next major release
-        if ((config.options as LoadableWebpackConfiguration[]).length === 0) {
-          config.options = loadedConfig.options as WebpackConfiguration;
-        } else {
-          if (!Array.isArray(config.options)) {
-            config.options = [config.options];
-          }
-
-          if (Array.isArray(loadedConfig.options)) {
-            for (const item of loadedConfig.options) {
-              config.options.push(item);
-            }
-          } else {
-            config.options.push(loadedConfig.options as WebpackConfiguration);
-          }
-        }
-
         if (Array.isArray(loadedConfig.options)) {
-          for (const options of loadedConfig.options) {
+          for (const item of loadedConfig.options) {
+            (config.options as WebpackConfiguration[]).push(item);
             config.path.set(options, [loadedConfig.path]);
           }
         } else {
+          (config.options as WebpackConfiguration[]).push(loadedConfig.options);
           config.path.set(loadedConfig.options, [loadedConfig.path]);
         }
       });
-
-      config.options = config.options.length === 1 ? config.options[0] : config.options;
     } else {
       // TODO ".mts" is not supported by `interpret`, need to add it
       // Prioritize popular extensions first to avoid unnecessary fs calls
