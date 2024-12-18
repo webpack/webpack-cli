@@ -83,7 +83,6 @@
     "nyc": "^17.1.0",
     "prettier": "^3.3.3",
     "readable-stream": "^4.5.2",
-    "rimraf": "^3.0.2",
     "sass": "^1.54.9",
     "sass-loader": "^16.0.2",
     "strip-ansi": "^6.0.1",
