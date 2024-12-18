@@ -120,9 +120,6 @@ describe("--config-name flag", () => {
       false,
     );
 
-    console.log(stdout);
-    console.log(stderr);
-
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
     expect(stdout).toContain("first");
