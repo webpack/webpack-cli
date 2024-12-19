@@ -84,7 +84,7 @@ export default async function (plop: NodePlopAPI) {
         name: "extractPlugin",
         message: "Do you want to extract CSS into separate files?",
         choices: ["No", "Only for Production", "Yes"],
-        default: "No",
+        default: "Only for Production",
       },
       {
         type: "list",
