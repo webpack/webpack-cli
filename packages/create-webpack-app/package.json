@@ -37,6 +37,7 @@
   "files": [
     "bin",
     "lib",
+    "templates",
     "!**/*__tests__"
   ],
   "dependencies": {
