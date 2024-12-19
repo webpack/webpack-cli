@@ -24,3 +24,15 @@ export type FileRecord = {
   filePath: string;
   fileType: string;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type LogHandler = (value: any) => void;
+
+export interface Logger {
+  error: LogHandler;
+  warn: LogHandler;
+  info: LogHandler;
+  success: LogHandler;
+  log: LogHandler;
+  raw: LogHandler;
+}

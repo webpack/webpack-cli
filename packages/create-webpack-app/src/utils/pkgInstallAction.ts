@@ -1,12 +1,17 @@
-import { NodePlopAPI } from "node-plop";
+import { type NodePlopAPI } from "node-plop";
 import { dirname, resolve } from "path";
 import { spawn } from "cross-spawn";
-import { ChildProcess, SpawnOptionsWithStdioTuple, StdioNull, StdioPipe } from "child_process";
+import {
+  type ChildProcess,
+  type SpawnOptionsWithStdioTuple,
+  type StdioNull,
+  type StdioPipe,
+} from "child_process";
 import { fileURLToPath } from "url";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 export default async function (plop: NodePlopAPI) {
+  const __dirname = dirname(fileURLToPath(import.meta.url));
+
   plop.setPlopfilePath(resolve(__dirname, "../plopfile.js"));
   plop.setDefaultInclude({ actions: true });
   plop.setActionType("pkgInstall", (answers, config) => {

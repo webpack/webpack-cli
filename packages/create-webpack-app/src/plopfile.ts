@@ -1,4 +1,4 @@
-import { NodePlopAPI } from "node-plop";
+import { type NodePlopAPI } from "node-plop";
 
 export default async function (plop: NodePlopAPI) {
   //init generators

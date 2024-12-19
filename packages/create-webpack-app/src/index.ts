@@ -1,11 +1,11 @@
 import { Command } from "commander";
 import { resolve, dirname } from "path";
 import { select } from "@inquirer/prompts";
-import nodePlop, { PlopGenerator } from "node-plop";
+import nodePlop, { type PlopGenerator } from "node-plop";
 import { fileURLToPath } from "url";
 
 import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger.js";
-import { Answers, InitOptions, LoaderOptions, PluginOptions } from "./types";
+import { type Answers, type InitOptions, type LoaderOptions, type PluginOptions } from "./types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -63,7 +63,6 @@ const pluginGenerators: Record<string, PlopGenerator> = {
 };
 
 program
-  .version("1.0.0", "-v, --version")
   .usage("[command] [options]")
   .helpOption("-h, --help", "Display help for command")
   .description("A CLI tool to generate a Webpack project");
@@ -127,6 +126,7 @@ program
       process.exit(2);
     }
   });
+
 program
   .command("loader")
   .aliases(["l", "ld"])
@@ -167,6 +167,7 @@ program
       process.exit(2);
     }
   });
+
 program
   .command("plugin")
   .aliases(["p", "pl"])
