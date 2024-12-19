@@ -992,7 +992,6 @@ class WebpackCLI implements IWebpackCLI {
         helpLevel: "minimum",
       },
 
-      // Adding more plugins
       {
         name: "analyze",
         configs: [
