@@ -14,7 +14,7 @@ export default async function (plop: NodePlopAPI) {
 
   plop.setPlopfilePath(resolve(__dirname, "../plopfile.js"));
   plop.setDefaultInclude({ actions: true });
-  plop.setActionType("pkgInstall", (answers, config) => {
+  plop.setActionType("install-dependencies", (answers, config) => {
     const options: SpawnOptionsWithStdioTuple<
       StdioNull,
       StdioNull | StdioPipe,

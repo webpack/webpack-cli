@@ -9,8 +9,8 @@ export default async function (plop: NodePlopAPI) {
   // dependencies to be installed
   const devDependencies: Array<string> = ["webpack", "webpack-cli"];
 
-  await plop.load("../../utils/pkgInstallAction.js", {}, true);
-  await plop.load("../../utils/fileGenerator.js", {}, true);
+  await plop.load("../../utils/install-dependencies.js", {}, true);
+  await plop.load("../../utils/generate-files.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
   plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
@@ -181,7 +181,7 @@ export default async function (plop: NodePlopAPI) {
 
       for (const file of files) {
         actions.push({
-          type: "fileGenerator",
+          type: "generate-files",
           path: join(answers.projectPath, file.filePath),
           templateFile: join(
             plop.getPlopfilePath(),
@@ -194,7 +194,7 @@ export default async function (plop: NodePlopAPI) {
       }
 
       actions.push({
-        type: "pkgInstall",
+        type: "install-dependencies",
         path: answers.projectPath,
         packages: devDependencies,
       });
