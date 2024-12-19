@@ -1,6 +1,6 @@
 {
   "name": "create-new-webpack-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI for scaffolding webpack projects using default config, framework templates, loader or plugins templates",
   "license": "MIT",
   "repository": {
