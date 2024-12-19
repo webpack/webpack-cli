@@ -5,14 +5,20 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [6.0.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.4...webpack-cli@6.0.0) (2024-12-19)
 
+### BREAKING CHANGES
+
+- the minimum required Node.js version is `18.12.0`
+- removed `init`, `loader` and `plugin` commands in favor [`create-webpack-app`](https://github.com/webpack/webpack-cli/tree/master/packages/create-webpack-app)
+- dropped support for `webpack-dev-server@v4`
+- minimum supported webpack version is `5.82.0`
+
 ### Bug Fixes
 
-- allow require `webpack.config.js` in ESM format ([#4346](https://github.com/webpack/webpack-cli/issues/4346)) ([5106684](https://github.com/webpack/webpack-cli/commit/51066846326bcae5f9793d3496325213342d3dd2))
+- allow to require `webpack.config.js` in ESM format ([#4346](https://github.com/webpack/webpack-cli/issues/4346)) ([5106684](https://github.com/webpack/webpack-cli/commit/51066846326bcae5f9793d3496325213342d3dd2))
 - correct the minimum help output ([#4057](https://github.com/webpack/webpack-cli/issues/4057)) ([c727c4f](https://github.com/webpack/webpack-cli/commit/c727c4f3c790797cf46a6c0bc83ba77803d3eb05))
 - gracefully shutting down ([#4145](https://github.com/webpack/webpack-cli/issues/4145)) ([90720e2](https://github.com/webpack/webpack-cli/commit/90720e26ba3b0d115ed066fb8ec3db074751163e))
 - improve help output for possible values ([#4316](https://github.com/webpack/webpack-cli/issues/4316)) ([4cd5aef](https://github.com/webpack/webpack-cli/commit/4cd5aef3b93e3d73b5175c36cf9e8f9ae4455cb2))
 - no serve when dev-server is false ([#2947](https://github.com/webpack/webpack-cli/issues/2947)) ([a93e860](https://github.com/webpack/webpack-cli/commit/a93e8603a4c2639916152a013afed04c0e8f3a35))
-- single element config array in `webpack.config.js` now works in multi-compile mode ([a7874f7](https://github.com/webpack/webpack-cli/commit/a7874f746f19d944c1652255d439911af570f4c1))
 
 ### Features
 

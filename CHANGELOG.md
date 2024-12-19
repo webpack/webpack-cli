@@ -1,3 +1,24 @@
+# [6.0.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.4...webpack-cli@6.0.0) (2024-12-19)
+
+### BREAKING CHANGES
+
+- the minimum required Node.js version is `18.12.0`
+- removed `init`, `loader` and `plugin` commands in favor [`create-webpack-app`](https://github.com/webpack/webpack-cli/tree/master/packages/create-webpack-app)
+- dropped support for `webpack-dev-server@v4`
+- minimum supported webpack version is `5.82.0`
+
+### Bug Fixes
+
+- allow to require `webpack.config.js` in ESM format ([#4346](https://github.com/webpack/webpack-cli/issues/4346)) ([5106684](https://github.com/webpack/webpack-cli/commit/51066846326bcae5f9793d3496325213342d3dd2))
+- correct the minimum help output ([#4057](https://github.com/webpack/webpack-cli/issues/4057)) ([c727c4f](https://github.com/webpack/webpack-cli/commit/c727c4f3c790797cf46a6c0bc83ba77803d3eb05))
+- gracefully shutting down ([#4145](https://github.com/webpack/webpack-cli/issues/4145)) ([90720e2](https://github.com/webpack/webpack-cli/commit/90720e26ba3b0d115ed066fb8ec3db074751163e))
+- improve help output for possible values ([#4316](https://github.com/webpack/webpack-cli/issues/4316)) ([4cd5aef](https://github.com/webpack/webpack-cli/commit/4cd5aef3b93e3d73b5175c36cf9e8f9ae4455cb2))
+- no serve when dev-server is false ([#2947](https://github.com/webpack/webpack-cli/issues/2947)) ([a93e860](https://github.com/webpack/webpack-cli/commit/a93e8603a4c2639916152a013afed04c0e8f3a35))
+
+### Features
+
+- output pnpm version with `info`/`version` command ([#3906](https://github.com/webpack/webpack-cli/issues/3906)) ([38f3c6f](https://github.com/webpack/webpack-cli/commit/38f3c6f2b99f098d2f4afd60f005e8ff5cd44435))
+
 ## [5.1.4](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.3...webpack-cli@5.1.4) (2023-06-07)
 
 ### Bug Fixes
