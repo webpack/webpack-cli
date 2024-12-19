@@ -29,7 +29,7 @@ const typeDisplay: Record<string, Color | string> = {
 
 function onSuccessHandler(change: PlopActionHooksChanges): void {
   switch (change.type) {
-    case "fileGenerator": {
+    case "generate-files": {
       change.path.split("\n").forEach((line) => {
         const [operationType = "", renderPath = ""] = line.split("|");
         console.log(
@@ -38,7 +38,7 @@ function onSuccessHandler(change: PlopActionHooksChanges): void {
       });
       break;
     }
-    case "pkgInstall": {
+    case "install-dependencies": {
       logger.success(change.path);
       break;
     }

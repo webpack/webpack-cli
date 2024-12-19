@@ -240,7 +240,7 @@ export default async function (plop: NodePlopAPI) {
   plop.setPlopfilePath(path.resolve(__dirname, "../plopfile.js"));
   plop.setDefaultInclude({ actions: true });
 
-  plop.setActionType("fileGenerator", async (answers, config) => {
+  plop.setActionType("generate-files", async (answers, config) => {
     const isTemplate = config.fileType === "text";
     const result = await checkAndPrepareContent(
       { ...config, data: answers } as AddConfig,
