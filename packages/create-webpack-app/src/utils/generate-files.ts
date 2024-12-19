@@ -1,6 +1,6 @@
 import * as fs from "fs/promises";
 import * as ejs from "ejs";
-import { expand } from "@inquirer/prompts";
+import expand from "@inquirer/expand";
 import { spawn, sync } from "cross-spawn";
 import * as path from "path";
 import { fileURLToPath } from "url";
