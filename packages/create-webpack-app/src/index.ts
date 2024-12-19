@@ -1,6 +1,6 @@
 import { Command } from "commander";
 import { resolve, dirname } from "path";
-import { select } from "@inquirer/prompts";
+import select from "@inquirer/select";
 import nodePlop, { type PlopGenerator } from "node-plop";
 import { fileURLToPath } from "url";
 
