@@ -130,16 +130,16 @@ function createPathDependentUtils(cli) {
   };
   /*
    * runPromptWithAnswers
-   * @param {string} location location of current working directory
+   * @param {string} location of current working directory
    * @param {string[]} args CLI args to pass in
-   * @param {string[]} answers answers to be passed to stdout for inquirer question
+   * @param {string[]} answers to be passed to stdout for inquirer question
    */
   const runPromptWithAnswers = (location, args, answers) => {
     const process = runAndGetProcess(location, args);
 
     process.stdin.setDefaultEncoding("utf-8");
 
-    const delay = 2000;
+    const delay = 1000;
     let outputTimeout;
     let currentAnswer = 0;
 
@@ -162,12 +162,12 @@ function createPathDependentUtils(cli) {
         write(chunk, encoding, callback) {
           const output = chunk.toString("utf8");
 
-          if (output) {
+          if (output.length > 0) {
             if (outputTimeout) {
               clearTimeout(outputTimeout);
             }
 
-            // we must receive new stdout, then have 2 seconds
+            // we must receive new stdout, then have 1 second
             // without any stdout before writing the next answer
             outputTimeout = setTimeout(() => {
               writeAnswer(output);
