@@ -1,10 +1,9 @@
-import { WebpackCLILogger } from "webpack-cli";
 import { green, yellow, Color, red, cyan, blue, blueBright, greenBright } from "colorette";
-import { PlopActionHooksChanges, PlopActionHooksFailures } from "../types";
+import { type Logger, type PlopActionHooksChanges, type PlopActionHooksFailures } from "../types";
 import { relative, normalize } from "path";
 
 const prefix: string = blueBright("create-webpack");
-const getLogger = (): WebpackCLILogger => {
+const getLogger = (): Logger => {
   return {
     error: (val) => console.error(`[${prefix}] ⛔${red(val)}`),
     warn: (val) => console.warn(`[${prefix}] ⚠️${yellow(val)}`),
@@ -15,6 +14,7 @@ const getLogger = (): WebpackCLILogger => {
   };
 };
 const logger = getLogger();
+
 const typeDisplay: Record<string, Color | string> = {
   function: yellow("-> "),
   add: green("create "),
@@ -26,6 +26,7 @@ const typeDisplay: Record<string, Color | string> = {
   identical: greenBright("identical "),
   create: green("create "),
 };
+
 function onSuccessHandler(change: PlopActionHooksChanges): void {
   change.path.split("\n").forEach((line) => {
     const [operationType = "", renderPath = ""] = line.split("|") as [string, string];
@@ -34,6 +35,7 @@ function onSuccessHandler(change: PlopActionHooksChanges): void {
     );
   });
 }
+
 function onFailureHandler(failure: PlopActionHooksFailures): void {
   throw new Error(failure.error);
 }

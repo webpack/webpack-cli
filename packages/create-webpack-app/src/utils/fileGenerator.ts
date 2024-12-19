@@ -5,8 +5,8 @@ import { spawn, sync } from "cross-spawn";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import { logger } from "./logger.js";
-import { NodePlopAPI } from "node-plop";
-import { Answers } from "../types";
+import { type NodePlopAPI } from "node-plop";
+import { type Answers } from "../types";
 
 export interface AddConfig {
   type: string; // Type of action
@@ -32,7 +32,6 @@ export interface GlobalConfig {
   overwriteAll: boolean;
 }
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const globalConfig: GlobalConfig = { overwriteAll: false };
 
 async function doesFileExists(filePath: string): Promise<boolean> {
@@ -236,6 +235,8 @@ async function checkAndPrepareContent(config: AddConfig, isTemplate: boolean): P
   }
 }
 export default async function (plop: NodePlopAPI) {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
   plop.setPlopfilePath(path.resolve(__dirname, "../plopfile.js"));
   plop.setDefaultInclude({ actions: true });
 

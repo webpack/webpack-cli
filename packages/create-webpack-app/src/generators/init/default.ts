@@ -1,11 +1,11 @@
-import { Answers, ActionType, FileRecord } from "../../types";
+import { type Answers, type ActionType, type FileRecord } from "../../types";
+import { type NodePlopAPI, type DynamicActionsFunction } from "node-plop";
 import { dirname, join, resolve } from "path";
-import { NodePlopAPI, DynamicActionsFunction } from "node-plop";
 import { fileURLToPath } from "url";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 export default async function (plop: NodePlopAPI) {
+  const __dirname = dirname(fileURLToPath(import.meta.url));
+
   // dependencies to be installed
   const devDependencies: Array<string> = ["webpack", "webpack-cli"];
 
