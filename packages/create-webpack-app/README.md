@@ -17,7 +17,7 @@
 ### Usage
 
 ```bash
-npx @webpack-cli/create-webpack-app [command] [options]
+npx create-new-webpack-app [command] [options]
 ```
 
 ### Commands
@@ -31,31 +31,31 @@ npx @webpack-cli/create-webpack-app [command] [options]
 **To generate default template**
 
 ```bash
-npx @webpack-cli/create-webpack-app
+npx create-new-webpack-app
 ```
 
 **To generate with default answers**
 
 ```bash
-npx @webpack-cli/create-webpack-app -f
+npx create-new-webpack-app -f
 ```
 
 or
 
 ```bash
-npx @webpack-cli/create-webpack-app --force
+npx create-new-webpack-app --force
 ```
 
 **To generate in a specified path**
 
 ```bash
-npx @webpack-cli/create-webpack-app [generation-path]
+npx create-new-webpack-app [generation-path]
 ```
 
 **To generate a project according to a template**
 
 ```bash
-npx @webpack-cli/create-webpack-app --template <template-name>
+npx create-new-webpack-app --template <template-name>
 ```
 
 Available templates:
