@@ -28,12 +28,21 @@ const typeDisplay: Record<string, Color | string> = {
 };
 
 function onSuccessHandler(change: PlopActionHooksChanges): void {
-  change.path.split("\n").forEach((line) => {
-    const [operationType = "", renderPath = ""] = line.split("|") as [string, string];
-    console.log(
-      `\t${typeDisplay[operationType]} ${normalize(relative(process.cwd(), renderPath))}`,
-    );
-  });
+  switch (change.type) {
+    case "fileGenerator": {
+      change.path.split("\n").forEach((line) => {
+        const [operationType = "", renderPath = ""] = line.split("|");
+        console.log(
+          `\t${typeDisplay[operationType]} ${normalize(relative(process.cwd(), renderPath))}`,
+        );
+      });
+      break;
+    }
+    case "pkgInstall": {
+      logger.success(change.path);
+      break;
+    }
+  }
 }
 
 function onFailureHandler(failure: PlopActionHooksFailures): void {
