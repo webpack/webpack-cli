@@ -14,9 +14,6 @@ describe("webpack cli", () => {
       env,
     });
 
-    console.log(stderr);
-    console.log(stdout);
-
     expect(stderr).not.toBeFalsy(); // Deprecation warning logs on stderr
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
