@@ -14,7 +14,7 @@ export default async function (plop: NodePlopAPI) {
 
   plop.setPlopfilePath(resolve(__dirname, "../plopfile.js"));
   plop.setDefaultInclude({ actions: true });
-  plop.setActionType("pkgInstall", (answers, config) => {
+  plop.setActionType("install-dependencies", (answers, config) => {
     const options: SpawnOptionsWithStdioTuple<
       StdioNull,
       StdioNull | StdioPipe,
@@ -30,7 +30,7 @@ export default async function (plop: NodePlopAPI) {
 
     // promise to complete subprocess of installing packages and return a message
     const returnPromise: Promise<string> = new Promise((resolve, reject) => {
-      const returnMessage = `Project Dependencies installed successfully`;
+      const returnMessage = `Project dependencies installed successfully!`;
       const packageManager = answers.packageManager;
       const packages = config.packages.length == 1 ? [config.packages[0]] : config.packages;
       const installOptions: Record<string, Array<string>> = {

@@ -9,8 +9,8 @@ export default async function (plop: NodePlopAPI) {
   // dependencies to be installed
   const devDependencies: Array<string> = ["webpack", "webpack-cli"];
 
-  await plop.load("../../utils/pkgInstallAction.js", {}, true);
-  await plop.load("../../utils/fileGenerator.js", {}, true);
+  await plop.load("../../utils/install-dependencies.js", {}, true);
+  await plop.load("../../utils/generate-files.js", {}, true);
 
   plop.setDefaultInclude({ generators: true, actionTypes: true });
   plop.setPlopfilePath(resolve(__dirname, "../../plopfile.js"));
@@ -50,7 +50,7 @@ export default async function (plop: NodePlopAPI) {
         name: "cssType",
         message: "Which of the following CSS solution do you want to use?",
         choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "none",
+        default: "CSS only",
         filter: (input, answers) => {
           if (input === "none") {
             answers.isCSS = false;
@@ -81,7 +81,7 @@ export default async function (plop: NodePlopAPI) {
         name: "extractPlugin",
         message: "Do you want to extract CSS into separate files?",
         choices: ["No", "Only for Production", "Yes"],
-        default: "No",
+        default: "Only for Production",
       },
       {
         type: "list",
@@ -181,7 +181,7 @@ export default async function (plop: NodePlopAPI) {
 
       for (const file of files) {
         actions.push({
-          type: "fileGenerator",
+          type: "generate-files",
           path: join(answers.projectPath, file.filePath),
           templateFile: join(
             plop.getPlopfilePath(),
@@ -194,7 +194,7 @@ export default async function (plop: NodePlopAPI) {
       }
 
       actions.push({
-        type: "pkgInstall",
+        type: "install-dependencies",
         path: answers.projectPath,
         packages: devDependencies,
       });

@@ -1,6 +1,6 @@
 import * as fs from "fs/promises";
 import * as ejs from "ejs";
-import { expand } from "@inquirer/prompts";
+import expand from "@inquirer/expand";
 import { spawn, sync } from "cross-spawn";
 import * as path from "path";
 import { fileURLToPath } from "url";
@@ -240,7 +240,7 @@ export default async function (plop: NodePlopAPI) {
   plop.setPlopfilePath(path.resolve(__dirname, "../plopfile.js"));
   plop.setDefaultInclude({ actions: true });
 
-  plop.setActionType("fileGenerator", async (answers, config) => {
+  plop.setActionType("generate-files", async (answers, config) => {
     const isTemplate = config.fileType === "text";
     const result = await checkAndPrepareContent(
       { ...config, data: answers } as AddConfig,
