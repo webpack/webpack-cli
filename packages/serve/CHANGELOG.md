@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@2.0.5...@webpack-cli/serve@3.0.0) (2024-12-19)
+
+### Bug Fixes
+
+- no serve when dev-server is false ([#2947](https://github.com/webpack/webpack-cli/issues/2947)) ([a93e860](https://github.com/webpack/webpack-cli/commit/a93e8603a4c2639916152a013afed04c0e8f3a35))
+
 ## [2.0.5](https://github.com/webpack/webpack-cli/compare/@webpack-cli/serve@2.0.4...@webpack-cli/serve@2.0.5) (2023-06-04)
 
 ### Bug Fixes

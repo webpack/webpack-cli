@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@2.0.2...@webpack-cli/info@3.0.0) (2024-12-19)
+
+**Note:** Version bump only for package @webpack-cli/info
+
 ## [2.0.2](https://github.com/webpack/webpack-cli/compare/@webpack-cli/info@2.0.1...@webpack-cli/info@2.0.2) (2023-06-04)
 
 **Note:** Version bump only for package @webpack-cli/info
