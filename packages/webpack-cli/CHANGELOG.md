@@ -5,7 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [6.0.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@6.0.0...webpack-cli@6.0.1) (2024-12-20)
 
-**Note:** Version bump only for package webpack-cli
+### Bug Fixes
+
+- update peer dependencies ([#4356](https://github.com/webpack/webpack-cli/issues/4356)) ([7a7e5d9](https://github.com/webpack/webpack-cli/commit/7a7e5d9f4bd796c7d1089db228b9581e97cc897e))
 
 # [6.0.0](https://github.com/webpack/webpack-cli/compare/webpack-cli@5.1.4...webpack-cli@6.0.0) (2024-12-19)
 
