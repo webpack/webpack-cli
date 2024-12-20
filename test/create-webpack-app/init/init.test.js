@@ -9,6 +9,7 @@ jest.setTimeout(480000);
 const { run, runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");
 
 const ENTER = "\x0D";
+const UP = "\x1B\x5B\x41";
 const DOWN = "\x1B\x5B\x42";
 
 const defaultTemplateFiles = [
@@ -152,7 +153,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
+      [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -182,7 +183,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
+      [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -213,7 +214,7 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${DOWN}${ENTER}`,
+        `${DOWN}${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
@@ -246,7 +247,7 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${DOWN}${ENTER}`,
+        `${DOWN}${ENTER}`,
         `n${ENTER}`,
         `y${ENTER}`,
         `n${ENTER}`,
@@ -281,7 +282,7 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${DOWN}${ENTER}`,
+        `${DOWN}${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
         `y${ENTER}`,
@@ -314,7 +315,7 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${DOWN}${ENTER}`,
+        `${DOWN}${ENTER}`,
         `y${ENTER}`,
         `y${ENTER}`,
         `n${ENTER}`,
@@ -349,7 +350,7 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${DOWN}${DOWN}${ENTER}`,
+        `${DOWN}${DOWN}${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
@@ -382,7 +383,7 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${DOWN}${DOWN}${DOWN}${ENTER}`,
+        `${DOWN}${DOWN}${DOWN}${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
@@ -410,7 +411,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
+      [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
 
     expect(stdout).toContain("Would you like to use Webpack Dev server?");
@@ -434,16 +435,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [
-        `${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `${DOWN}${ENTER}`,
-        ENTER,
-        `n${ENTER}`,
-        ENTER,
-      ],
+      [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -468,7 +460,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, ENTER, ENTER],
+      [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
 
     expect(stdout).toContain("Do you want to simplify the creation of HTML files for your bundle?");
@@ -492,7 +484,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [ENTER, `n${ENTER}`, ENTER, ENTER, ENTER, ENTER],
+      [ENTER, `n${ENTER}`, ENTER, ENTER, `${UP}${ENTER}`, ENTER],
     );
 
     expect(stdout).toContain("Do you want to add PWA support?");
@@ -628,7 +620,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, `${DOWN}${ENTER}`],
+      [ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, `${DOWN}${ENTER}`],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
