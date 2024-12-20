@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/serve",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

@@ -1,6 +1,6 @@
 {
   "name": "@webpack-cli/info",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Outputs info about system and webpack config",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

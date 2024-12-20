@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/webpack/webpack-cli/compare/@webpack-cli/configtest@3.0.0...@webpack-cli/configtest@3.0.1) (2024-12-20)
+
+### Bug Fixes
+
+- update peer dependencies ([#4356](https://github.com/webpack/webpack-cli/issues/4356)) ([7a7e5d9](https://github.com/webpack/webpack-cli/commit/7a7e5d9f4bd796c7d1089db228b9581e97cc897e))
+
 # [3.0.0](https://github.com/webpack/webpack-cli/compare/@webpack-cli/configtest@2.1.1...@webpack-cli/configtest@3.0.0) (2024-12-19)
 
 **Note:** Version bump only for package @webpack-cli/configtest
