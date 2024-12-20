@@ -21,8 +21,8 @@
     "lib"
   ],
   "peerDependencies": {
-    "webpack": "5.x.x",
-    "webpack-cli": "5.x.x"
+    "webpack": "^5.82.0",
+    "webpack-cli": "6.x.x"
   },
   "peerDependenciesMeta": {
     "webpack-dev-server": {
