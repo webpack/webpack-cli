@@ -619,6 +619,7 @@ exports[`create-webpack-app cli should generate react template with state and ro
     "babel-loader": "x.x.x",
     "css-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "postcss": "x.x.x",
     "postcss-loader": "x.x.x",
     "react": "x.x.x",
@@ -646,12 +647,13 @@ exports[`create-webpack-app cli should generate react template with state and ro
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 
-const stylesHandler = 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 
 
@@ -708,6 +710,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
+        
+        config.plugins.push(new MiniCssExtractPlugin());
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
@@ -848,6 +852,7 @@ exports[`create-webpack-app cli should generate svelte template with prompt answ
     "babel-loader": "x.x.x",
     "css-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "postcss": "x.x.x",
     "postcss-loader": "x.x.x",
     "style-loader": "x.x.x",
@@ -874,12 +879,13 @@ exports[`create-webpack-app cli should generate svelte template with prompt answ
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 
 
 
-const stylesHandler = 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 
 
@@ -947,6 +953,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
+        
+        config.plugins.push(new MiniCssExtractPlugin());
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
@@ -1157,6 +1165,7 @@ exports[`create-webpack-app cli should generate vue template with store and rout
     "babel-loader": "x.x.x",
     "css-loader": "x.x.x",
     "html-webpack-plugin": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "pinia": "x.x.x",
     "postcss": "x.x.x",
     "postcss-loader": "x.x.x",
@@ -1187,12 +1196,13 @@ exports[`create-webpack-app cli should generate vue template with store and rout
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 
-const stylesHandler = 'vue-style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader';
 
 
 
@@ -1254,6 +1264,8 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
+        config.plugins.push(new MiniCssExtractPlugin());
+        
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
@@ -1272,6 +1284,7 @@ exports[`create-webpack-app cli should use less in project when selected 1`] = `
     "css-loader": "x.x.x",
     "less": "x.x.x",
     "less-loader": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "style-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -1290,11 +1303,12 @@ exports[`create-webpack-app cli should use less in project when selected 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 
-const stylesHandler = 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 
 
@@ -1329,6 +1343,8 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
+        config.plugins.push(new MiniCssExtractPlugin());
+        
         
     } else {
         config.mode = 'development';
@@ -1343,6 +1359,7 @@ exports[`create-webpack-app cli should use mini-css-extract-plugin when selected
   "description": "My webpack project",
   "devDependencies": {
     "css-loader": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "sass": "x.x.x",
     "sass-loader": "x.x.x",
     "style-loader": "x.x.x",
@@ -1363,11 +1380,12 @@ exports[`create-webpack-app cli should use mini-css-extract-plugin when selected
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 
-const stylesHandler = 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 
 
@@ -1402,6 +1420,8 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
+        config.plugins.push(new MiniCssExtractPlugin());
+        
         
     } else {
         config.mode = 'development';
@@ -1417,6 +1437,7 @@ exports[`create-webpack-app cli should use postcss in project when selected 1`] 
   "devDependencies": {
     "autoprefixer": "x.x.x",
     "css-loader": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "postcss": "x.x.x",
     "postcss-loader": "x.x.x",
     "style-loader": "x.x.x",
@@ -1437,11 +1458,12 @@ exports[`create-webpack-app cli should use postcss in project when selected 2`] 
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 
-const stylesHandler = 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 
 
@@ -1476,6 +1498,8 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
+        config.plugins.push(new MiniCssExtractPlugin());
+        
         
     } else {
         config.mode = 'development';
@@ -1491,6 +1515,7 @@ exports[`create-webpack-app cli should use sass and css with postcss in project 
   "devDependencies": {
     "autoprefixer": "x.x.x",
     "css-loader": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "postcss": "x.x.x",
     "postcss-loader": "x.x.x",
     "sass": "x.x.x",
@@ -1513,11 +1538,12 @@ exports[`create-webpack-app cli should use sass and css with postcss in project 
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 
-const stylesHandler = 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 
 
@@ -1556,6 +1582,8 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
+        config.plugins.push(new MiniCssExtractPlugin());
+        
         
     } else {
         config.mode = 'development';
@@ -1570,6 +1598,7 @@ exports[`create-webpack-app cli should use sass in project when selected 1`] = `
   "description": "My webpack project",
   "devDependencies": {
     "css-loader": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "sass": "x.x.x",
     "sass-loader": "x.x.x",
     "style-loader": "x.x.x",
@@ -1590,11 +1619,12 @@ exports[`create-webpack-app cli should use sass in project when selected 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 
-const stylesHandler = 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 
 
@@ -1629,6 +1659,8 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
+        config.plugins.push(new MiniCssExtractPlugin());
+        
         
     } else {
         config.mode = 'development';
@@ -1644,6 +1676,7 @@ exports[`create-webpack-app cli should use sass with postcss in project when sel
   "devDependencies": {
     "autoprefixer": "x.x.x",
     "css-loader": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "postcss": "x.x.x",
     "postcss-loader": "x.x.x",
     "sass": "x.x.x",
@@ -1666,11 +1699,12 @@ exports[`create-webpack-app cli should use sass with postcss in project when sel
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 
-const stylesHandler = 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 
 
@@ -1705,6 +1739,8 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
+        config.plugins.push(new MiniCssExtractPlugin());
+        
         
     } else {
         config.mode = 'development';
@@ -1719,6 +1755,7 @@ exports[`create-webpack-app cli should use stylus in project when selected 1`] =
   "description": "My webpack project",
   "devDependencies": {
     "css-loader": "x.x.x",
+    "mini-css-extract-plugin": "x.x.x",
     "style-loader": "x.x.x",
     "stylus": "x.x.x",
     "stylus-loader": "x.x.x",
@@ -1739,11 +1776,12 @@ exports[`create-webpack-app cli should use stylus in project when selected 2`] =
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 
-const stylesHandler = 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 
 
@@ -1777,6 +1815,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
+        
+        config.plugins.push(new MiniCssExtractPlugin());
         
         
     } else {
