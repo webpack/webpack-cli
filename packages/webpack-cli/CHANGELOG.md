@@ -17,7 +17,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - removed `init`, `loader` and `plugin` commands in favor [`create-webpack-app`](https://github.com/webpack/webpack-cli/tree/master/packages/create-webpack-app)
 - dropped support for `webpack-dev-server@v4`
 - minimum supported webpack version is `5.82.0`
-- removed `--define-process-env-node-env` in favor of `--config-node-env` option ([#4318](https://github.com/webpack/webpack-cli/pull/4318))
 
 ### Bug Fixes
 
