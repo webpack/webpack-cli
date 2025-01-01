@@ -167,7 +167,6 @@ type WebpackDevServerOptions = DevServerConfig &
     nodeEnv?: "string";
     watchOptionsStdin?: boolean;
     progress?: boolean | "profile" | undefined;
-    analyze?: boolean;
     prefetch?: string;
     json?: boolean;
     entry: EntryOptions;
