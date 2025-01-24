@@ -12,6 +12,7 @@
 - removed `init`, `loader` and `plugin` commands in favor [`create-webpack-app`](https://github.com/webpack/webpack-cli/tree/master/packages/create-webpack-app)
 - dropped support for `webpack-dev-server@v4`
 - minimum supported webpack version is `5.82.0`
+- The `--define-process-env-node-env` option was renamed to `--config-node-env`
 
 ### Bug Fixes
 
