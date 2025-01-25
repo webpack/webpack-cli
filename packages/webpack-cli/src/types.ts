@@ -164,7 +164,7 @@ type WebpackDevServerOptions = DevServerConfig &
   WebpackOptionsNormalized &
   FileCacheOptions &
   Argv & {
-    nodeEnv?: "string";
+    nodeEnv?: string;
     watchOptionsStdin?: boolean;
     progress?: boolean | "profile" | undefined;
     analyze?: boolean;
