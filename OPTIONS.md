@@ -10,13 +10,12 @@ Options:
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
   --disable-interpret                                                                Disable interpret for loading the config file.
   --env <value...>                                                                   Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".
-  --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value.
-  --define-process-env-node-env <value>                                              Sets process.env.NODE_ENV to the specified value. (Currently an alias for `--node-env`).
+  --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value for access within the configuration.(Deprecated: Use '--config-node-env' instead)
+  --config-node-env <value>                                                          Sets process.env.NODE_ENV to the specified value for access within the configuration.
   --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                                                 Print compilation progress during build.
   -j, --json [pathToJsonFile]                                                        Prints result as JSON or store it in a file.
   --fail-on-warnings                                                                 Stop webpack-cli process with non-zero exit code on warnings from webpack.
-  -e, --extends <value...>                                                           Path to the configuration to be extended (only works when using webpack-cli).
   --no-amd                                                                           Negative 'amd' option.
   --bail                                                                             Report the first error as a hard error instead of tolerating it.
   --no-bail                                                                          Negative 'bail' option.
@@ -99,7 +98,7 @@ Options:
   --no-experiments-sync-web-assembly                                                 Negative 'experiments-sync-web-assembly' option.
   --experiments-top-level-await                                                      Allow using top-level-await in EcmaScript Modules.
   --no-experiments-top-level-await                                                   Negative 'experiments-top-level-await' option.
-  --extends <value...>                                                               Path to the configuration to be extended (only works when using webpack-cli).
+  -e, --extends <value...>                                                           Path to the configuration to be extended (only works when using webpack-cli).
   --extends-reset                                                                    Clear all items provided in 'extends' configuration. Extend configuration from another configuration (only works when using webpack-cli).
   --externals <value...>                                                             Every matched dependency becomes external. An exact matched dependency becomes external. The same string is used as external dependency.
   --externals-reset                                                                  Clear all items provided in 'externals' configuration. Specify dependencies that shouldn't be resolved by webpack, but should become dependencies of the resulting bundle. The kind of the dependency depends on `output.libraryTarget`.
@@ -188,14 +187,30 @@ Options:
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
+  --module-parser-css-import                                                         Enable/disable `@import` at-rules handling.
+  --no-module-parser-css-import                                                      Negative 'module-parser-css-import' option.
   --module-parser-css-named-exports                                                  Use ES modules named export for css exports.
   --no-module-parser-css-named-exports                                               Negative 'module-parser-css-named-exports' option.
+  --module-parser-css-url                                                            Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
+  --no-module-parser-css-url                                                         Negative 'module-parser-css-url' option.
+  --module-parser-css-auto-import                                                    Enable/disable `@import` at-rules handling.
+  --no-module-parser-css-auto-import                                                 Negative 'module-parser-css-auto-import' option.
   --module-parser-css-auto-named-exports                                             Use ES modules named export for css exports.
   --no-module-parser-css-auto-named-exports                                          Negative 'module-parser-css-auto-named-exports' option.
+  --module-parser-css-auto-url                                                       Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
+  --no-module-parser-css-auto-url                                                    Negative 'module-parser-css-auto-url' option.
+  --module-parser-css-global-import                                                  Enable/disable `@import` at-rules handling.
+  --no-module-parser-css-global-import                                               Negative 'module-parser-css-global-import' option.
   --module-parser-css-global-named-exports                                           Use ES modules named export for css exports.
   --no-module-parser-css-global-named-exports                                        Negative 'module-parser-css-global-named-exports' option.
+  --module-parser-css-global-url                                                     Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
+  --no-module-parser-css-global-url                                                  Negative 'module-parser-css-global-url' option.
+  --module-parser-css-module-import                                                  Enable/disable `@import` at-rules handling.
+  --no-module-parser-css-module-import                                               Negative 'module-parser-css-module-import' option.
   --module-parser-css-module-named-exports                                           Use ES modules named export for css exports.
   --no-module-parser-css-module-named-exports                                        Negative 'module-parser-css-module-named-exports' option.
+  --module-parser-css-module-url                                                     Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
+  --no-module-parser-css-module-url                                                  Negative 'module-parser-css-module-url' option.
   --no-module-parser-javascript-amd                                                  Negative 'module-parser-javascript-amd' option.
   --module-parser-javascript-browserify                                              Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-browserify                                           Negative 'module-parser-javascript-browserify' option.
@@ -563,6 +578,8 @@ Options:
   --no-node-filename                                                                 Negative 'node-filename' option.
   --node-global [value]                                                              Include a polyfill for the 'global' variable.
   --no-node-global                                                                   Negative 'node-global' option.
+  --optimization-avoid-entry-iife                                                    Avoid wrapping the entry module in an IIFE.
+  --no-optimization-avoid-entry-iife                                                 Negative 'optimization-avoid-entry-iife' option.
   --optimization-check-wasm-types                                                    Check for incompatible wasm types when importing/exporting from/to ESM.
   --no-optimization-check-wasm-types                                                 Negative 'optimization-check-wasm-types' option.
   --optimization-chunk-ids <value>                                                   Define the algorithm to choose chunk ids (named: readable ids for better debugging, deterministic: numeric hash ids for better long term caching, size: numeric ids focused on minimal initial download size, total-size: numeric ids focused on minimal total download size, false: no algorithm used, as custom one can be provided via plugin).
@@ -656,8 +673,6 @@ Options:
   --no-output-cross-origin-loading                                                   Negative 'output-cross-origin-loading' option.
   --output-css-chunk-filename <value>                                                Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-css-filename <value>                                                      Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
-  --output-css-head-data-compression                                                 Compress the data in the head tag of CSS files.
-  --no-output-css-head-data-compression                                              Negative 'output-css-head-data-compression' option.
   --output-devtool-fallback-module-filename-template <value>                         Similar to `output.devtoolModuleFilenameTemplate`, but used in the case of duplicate module identifiers.
   --output-devtool-module-filename-template <value>                                  Filename template string of function for the sources array in a generated SourceMap.
   --output-devtool-namespace <value>                                                 Module namespace to use when interpolating filename template string for the sources array in a generated SourceMap. Defaults to `output.library` if not set. It's useful for avoiding runtime collisions in sourcemaps from multiple webpack projects built as libraries.
@@ -1075,9 +1090,6 @@ Commands:
   configtest|t [config-path]                                                         Validate a webpack configuration.
   help|h [command] [option]                                                          Display help for commands and options.
   info|i [options]                                                                   Outputs information about your system.
-  init|create|new|c|n [generation-path] [options]                                    Initialize a new webpack project.
-  loader|l [output-path] [options]                                                   Scaffold a loader.
-  plugin|p [output-path] [options]                                                   Scaffold a plugin.
   serve|server|s [entries...] [options]                                              Run the webpack dev server and watch for source file changes while serving.
   version|v [options]                                                                Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
   watch|w [entries...] [options]                                                     Run webpack and watch for files changes.

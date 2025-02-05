@@ -9,15 +9,16 @@ Options:
   -m, --merge                                         Merge two or more configurations using 'webpack-merge'.
   --disable-interpret                                 Disable interpret for loading the config file.
   --env <value...>                                    Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".
-  --node-env <value>                                  Sets process.env.NODE_ENV to the specified value.
+  --node-env <value>                                  Sets process.env.NODE_ENV to the specified value for access within the configuration.(Deprecated: Use '--config-node-env' instead)
+  --config-node-env <value>                           Sets process.env.NODE_ENV to the specified value for access within the configuration.
   --analyze                                           It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                  Print compilation progress during build.
   -j, --json [pathToJsonFile]                         Prints result as JSON or store it in a file.
   --fail-on-warnings                                  Stop webpack-cli process with non-zero exit code on warnings from webpack.
-  -e, --extends <value...>                            Path to the configuration to be extended (only works when using webpack-cli).
   -d, --devtool <value>                               A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                        Negative 'devtool' option.
   --entry <value...>                                  A module that is loaded upon startup. Only the last one is exported.
+  -e, --extends <value...>                            Path to the configuration to be extended (only works when using webpack-cli).
   --mode <value>                                      Enable production optimizations or development hints.
   --name <value>                                      Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                           The output directory as **absolute path** (required).
@@ -44,8 +45,8 @@ Options:
   --client-overlay-runtime-errors                     Enables a full-screen overlay in the browser when there are uncaught runtime errors.
   --no-client-overlay-runtime-errors                  Disables the full-screen overlay in the browser when there are uncaught runtime errors.
   --client-overlay-trusted-types-policy-name <value>  The name of a Trusted Types policy for the overlay. Defaults to 'webpack-dev-server#overlay'.
-  --client-progress                                   Prints compilation progress in percentage in the browser.
-  --no-client-progress                                Does not print compilation progress in percentage in the browser.
+  --client-progress [value]                           Displays compilation progress in the browser. Options include 'linear' and 'circular' for visual indicators.
+  --no-client-progress                                Does not display compilation progress in the browser.
   --client-reconnect [value]                          Tells dev-server the number of times it should try to reconnect the client.
   --no-client-reconnect                               Tells dev-server to not to try to reconnect the client.
   --client-web-socket-transport <value>               Allows to set custom web socket transport to communicate with dev server.
