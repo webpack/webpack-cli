@@ -275,7 +275,7 @@ describe("basic", () => {
     });
   });
 
-  it("should recompile upon file change using the `command` option and the `--watch` option and log warning", (done) => {
+  it("should recompile upon file change using the `command` option and the `--watch` option and log warning #2", (done) => {
     const proc = runAndGetProcess(__dirname, ["watch", "--no-watch", "--mode", "development"]);
 
     let modified = false;

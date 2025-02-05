@@ -58,10 +58,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18.x, 20.x, 22.x, 23.5.0]
+        node-version: [18.x, 20.x, 22.x, 23.x]
         shard: ["1/4", "2/4", "3/4", "4/4"]
         webpack-version: [latest]
         dev-server-version: [latest]
+        exclude:
+          # Node.js v23.7.0 is broken on windows
+          - os: windows-latest
+            node-version: 23.x
 
     steps:
       - uses: actions/checkout@v4

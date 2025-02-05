@@ -103,7 +103,8 @@
     "Zangetsu",
     "Zenitsu",
     "quickstart",
-    "pinia"
+    "pinia",
+    "watchpack"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [
