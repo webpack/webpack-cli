@@ -4,8 +4,9 @@ const { resolve } = require("path");
 
 describe("webpack cli", () => {
   it("should support typescript file", async () => {
+    const [major, minor] = process.versions.node.split(".").map(Number);
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.cts"], {
-      nodeOptions: ["--no-experimental-strip-types"],
+      nodeOptions: major >= 22 && minor >= 6 ? ["--no-experimental-strip-types"] : [],
     });
 
     expect(stderr).toBeFalsy();
