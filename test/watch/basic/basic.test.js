@@ -165,8 +165,7 @@ describe("basic", () => {
     proc.stderr.on("data", (chunk) => {
       const data = chunk.toString();
 
-      console.log(data);
-
+      // Skip on broken WSL
       if (/Watchpack Error/.test(data)) {
         return;
       }
@@ -214,6 +213,11 @@ describe("basic", () => {
 
     proc.stderr.on("data", (chunk) => {
       const data = chunk.toString();
+
+      // Skip on broken WSL
+      if (/Watchpack Error/.test(data)) {
+        return;
+      }
 
       expect(data).toContain(
         "No need to use the 'watch' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.",
@@ -275,6 +279,11 @@ describe("basic", () => {
     proc.stderr.on("data", (chunk) => {
       const data = chunk.toString();
 
+      // Skip on broken WSL
+      if (/Watchpack Error/.test(data)) {
+        return;
+      }
+
       expect(data).toContain(
         "No need to use the 'watch' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.",
       );
@@ -312,6 +321,11 @@ describe("basic", () => {
 
     proc.stderr.on("data", (chunk) => {
       const data = chunk.toString();
+
+      // Skip on broken WSL
+      if (/Watchpack Error/.test(data)) {
+        return;
+      }
 
       expect(data).toContain(
         "No need to use the 'watch' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.",
