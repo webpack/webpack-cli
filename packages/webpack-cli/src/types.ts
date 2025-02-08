@@ -244,6 +244,10 @@ interface CLIPluginOptions {
   analyze?: boolean;
 }
 
+interface DotenvPluginOptions {
+  prefixes?: string | string[];
+}
+
 type BasicPrimitive = string | boolean | number;
 type Instantiable<InstanceType = unknown, ConstructorParameters extends unknown[] = unknown[]> = {
   new (...args: ConstructorParameters): InstanceType;
@@ -323,6 +327,7 @@ export {
   CallableWebpackConfiguration,
   Callback,
   CLIPluginOptions,
+  DotenvPluginOptions,
   CommandAction,
   CommanderOption,
   CommandOptions,

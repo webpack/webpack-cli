@@ -39,6 +39,7 @@ import type {
   RechoirError,
   Argument,
   Problem,
+  DotenvPluginOptions,
 } from "./types";
 
 import type webpackMerge from "webpack-merge";
@@ -55,6 +56,7 @@ import { type stringifyChunked } from "@discoveryjs/json-ext";
 import { type Help, type ParseOptions } from "commander";
 
 import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
+import { type DotenvPlugin as DotenvPluginClass } from "./plugins/dotenv-plugin";
 
 const fs = require("fs");
 const { Readable } = require("stream");
@@ -2170,6 +2172,11 @@ class WebpackCLI implements IWebpackCLI {
         "./plugins/cli-plugin",
       );
 
+    const DotenvPlugin =
+      await this.tryRequireThenImport<Instantiable<DotenvPluginClass, [DotenvPluginOptions]>>(
+        "./plugins/dotenv-plugin",
+      );
+
     const internalBuildConfig = (item: WebpackConfiguration) => {
       const originalWatchValue = item.watch;
 
@@ -2340,6 +2347,9 @@ class WebpackCLI implements IWebpackCLI {
             progress: options.progress,
             analyze: options.analyze,
             isMultiCompiler: Array.isArray(config.options),
+          }),
+          new DotenvPlugin({
+            prefixes: ["WEBPACK_"],
           }),
         );
       }
