@@ -5,8 +5,8 @@ import { loadEnvFile } from "process";
 
 export interface EnvLoaderOptions {
   mode?: string;
-  envDir?: string;
-  prefixes?: string | string[];
+  dir?: string;
+  prefix?: string | string[];
 }
 
 export class EnvLoader {
@@ -20,17 +20,9 @@ export class EnvLoader {
   }
 
   static loadEnvFiles(options: EnvLoaderOptions = {}): Record<string, string> {
-    const {
-      mode = process.env.NODE_ENV || "development",
-      envDir = process.cwd(),
-      prefixes,
-    } = options;
+    const { mode = process.env.NODE_ENV, dir = process.cwd(), prefix } = options;
 
-    const normalizedPrefixes = prefixes
-      ? Array.isArray(prefixes)
-        ? prefixes
-        : [prefixes]
-      : undefined;
+    const normalizedPrefixes = prefix ? (Array.isArray(prefix) ? prefix : [prefix]) : ["WEBPACK_"];
 
     if (mode === "local") {
       throw new Error(
@@ -38,7 +30,7 @@ export class EnvLoader {
       );
     }
 
-    const envFiles = this.getEnvFilePaths(mode, envDir);
+    const envFiles = this.getEnvFilePaths(mode, dir);
     const env: Record<string, string> = {};
 
     // Load all env files
@@ -50,17 +42,13 @@ export class EnvLoader {
       }
     });
 
-    // If prefixes are specified, filter environment variables
-    if (normalizedPrefixes?.length) {
-      for (const [key, value] of Object.entries(process.env)) {
-        if (normalizedPrefixes.some((prefix) => key.startsWith(prefix))) {
-          env[key] = value as string;
-        }
+    // Filter env vars based on prefix
+    for (const [key, value] of Object.entries(process.env)) {
+      if (normalizedPrefixes.some((prefix) => key.startsWith(prefix))) {
+        env[key] = value as string;
       }
-      return env;
     }
 
-    // Return all environment variables if no prefixes specified
-    return { ...process.env } as Record<string, string>;
+    return env;
   }
 }

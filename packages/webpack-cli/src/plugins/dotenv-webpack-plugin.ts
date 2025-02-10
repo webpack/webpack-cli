@@ -6,24 +6,41 @@ export class DotenvPlugin {
   logger!: ReturnType<Compiler["getInfrastructureLogger"]>;
   options: DotenvPluginOptions;
 
-  constructor(options: DotenvPluginOptions) {
+  constructor(options: DotenvPluginOptions = {}) {
     this.options = options;
   }
-
   apply(compiler: Compiler) {
     this.logger = compiler.getInfrastructureLogger("DotenvPlugin");
 
     try {
       const env = EnvLoader.loadEnvFiles({
         mode: process.env.NODE_ENV,
-        prefixes: this.options.prefixes,
+        prefix: this.options.prefix,
+        dir: this.options.dir,
       });
+      const envObj = JSON.stringify(env);
 
-      new DefinePlugin(
-        Object.fromEntries(
+      const runtimeEnvObject = `(() => {
+          const env = ${envObj};
+          // Make it read-only
+          return Object.freeze(env);
+        })()`;
+
+      const definitions = {
+        "process.env": envObj,
+        ...Object.fromEntries(
           Object.entries(env).map(([key, value]) => [`process.env.${key}`, JSON.stringify(value)]),
         ),
-      ).apply(compiler);
+        "import.meta.env": runtimeEnvObject,
+        ...Object.fromEntries(
+          Object.entries(env).map(([key, value]) => [
+            `import.meta.env.${key}`,
+            JSON.stringify(value),
+          ]),
+        ),
+      };
+
+      new DefinePlugin(definitions).apply(compiler);
     } catch (error) {
       this.logger.error(error);
     }
