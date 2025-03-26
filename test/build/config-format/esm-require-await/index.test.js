@@ -6,7 +6,7 @@ describe("webpack cli", () => {
 
     const [major, minor] = process.versions.node.split(".").map(Number);
 
-    if ((major >= 22 && minor >= 11) || major >= 23) {
+    if ((major >= 20 && minor >= 17) || major >= 22 || major >= 23) {
       expect(exitCode).toBe(0);
       // stderr contains - Support for loading ES Module in require() is an experimental feature and might change at any time
       // expect(stderr).toBeFalsy();
