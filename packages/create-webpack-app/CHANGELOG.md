@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.1 (2025-03-27)
+
+### Bug Fixes
+
+- fix: removed plugin-syntax-dynamic-import
+
 # 1.1.0 (2024-12-20)
 
 ### Bug Fixes
