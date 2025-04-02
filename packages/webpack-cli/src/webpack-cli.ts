@@ -2237,6 +2237,10 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       // Output warnings
+      if (!Object.isExtensible(item)) {
+        return;
+      }
+
       if (
         options.isWatchingLikeCommand &&
         options.argv &&
@@ -2263,7 +2267,7 @@ class WebpackCLI implements IWebpackCLI {
       };
 
       // Setup default cache options
-      if (isFileSystemCacheOptions(item)) {
+      if (isFileSystemCacheOptions(item) && Object.isExtensible(item.cache)) {
         const configPath = config.path.get(item);
 
         if (configPath) {
@@ -2321,22 +2325,26 @@ class WebpackCLI implements IWebpackCLI {
         colors = Boolean(this.colors.isColorSupported);
       }
 
-      item.stats.colors = colors;
+      if (Object.isExtensible(item.stats)) {
+        item.stats.colors = colors;
+      }
 
       // Apply CLI plugin
       if (!item.plugins) {
         item.plugins = [];
       }
 
-      item.plugins.unshift(
-        new CLIPlugin({
-          configPath: config.path.get(item),
-          helpfulOutput: !options.json,
-          progress: options.progress,
-          analyze: options.analyze,
-          isMultiCompiler: Array.isArray(config.options),
-        }),
-      );
+      if (Object.isExtensible(item.plugins)) {
+        item.plugins.unshift(
+          new CLIPlugin({
+            configPath: config.path.get(item),
+            helpfulOutput: !options.json,
+            progress: options.progress,
+            analyze: options.analyze,
+            isMultiCompiler: Array.isArray(config.options),
+          }),
+        );
+      }
     };
 
     if (Array.isArray(config.options)) {
