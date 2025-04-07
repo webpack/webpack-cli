@@ -5,6 +5,7 @@ const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
 type Problem = NonNullable<ReturnType<(typeof cli)["processArguments"]>>[0];
+type StringsKeys<T> = { [K in keyof T]: T[K] extends string ? K : never }[keyof T];
 
 class ServeCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
@@ -174,22 +175,23 @@ class ServeCommand {
             {},
           );
           const result = { ...(compilerForDevServer.options.devServer || {}) };
-          const problems = (
-            cli.webpack.cli && typeof cli.webpack.cli.processArguments === "function"
-              ? cli.webpack.cli
-              : DevServer.cli
-          ).processArguments(args, result, values);
+          const problems = cli.webpack.cli.processArguments(args, result, values);
 
           if (problems) {
-            const groupBy = (xs: Problem[], key: keyof Problem) => {
+            const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(
+              xs: Problem[],
+              key: K,
+            ) => {
               return xs.reduce((rv: { [key: string]: Problem[] }, x: Problem) => {
-                (rv[x[key]] = rv[x[key]] || []).push(x);
+                const path = x[key];
+
+                (rv[path] = rv[path] || []).push(x);
 
                 return rv;
               }, {});
             };
 
-            const problemsByPath = groupBy(problems, "path");
+            const problemsByPath = groupBy<"path">(problems, "path");
 
             for (const path in problemsByPath) {
               const problems = problemsByPath[path];
