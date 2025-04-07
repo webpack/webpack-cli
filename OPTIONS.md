@@ -9,6 +9,7 @@ Options:
   --config-name <name...>                                                            Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
   --disable-interpret                                                                Disable interpret for loading the config file.
+  --env-file                                                                         Load environment variables from .env files for access within the configuration.
   --env <value...>                                                                   Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".
   --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value for access within the configuration.(Deprecated: Use '--config-node-env' instead)
   --config-node-env <value>                                                          Sets process.env.NODE_ENV to the specified value for access within the configuration.
