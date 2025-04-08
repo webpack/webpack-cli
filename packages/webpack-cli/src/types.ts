@@ -133,7 +133,7 @@ interface WebpackCLIBuiltInFlag {
     value: string,
     previous: Record<string, BasicPrimitive | object>,
   ) => Record<string, BasicPrimitive | object>;
-  configs?: Partial<FlagConfig>[];
+  configs?: ArgumentConfig[];
   negative?: boolean;
   multiple?: boolean;
   valueName?: string;
@@ -191,12 +191,17 @@ type LoadableWebpackConfiguration = PotentialPromise<
 type CallableWebpackConfiguration = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
 type WebpackCompiler = Compiler | MultiCompiler;
 
-type FlagType = boolean | "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset";
+type EnumValueObject = { [key: string]: EnumValue };
+type EnumValueArray = EnumValue[];
+type EnumValue = string | number | boolean | EnumValueObject | EnumValueArray | null;
 
-type FlagConfig = {
-  negatedDescription: string;
-  type: FlagType;
-  values: FlagType[];
+type ArgumentConfig = {
+  description?: string;
+  negatedDescription?: string;
+  path?: string;
+  multiple?: boolean;
+  type: "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset";
+  values?: EnumValue[];
 };
 
 type FileSystemCacheOptions = WebpackConfiguration & {
@@ -324,7 +329,8 @@ export {
   LoadableWebpackConfiguration,
   DynamicImport,
   FileSystemCacheOptions,
-  FlagConfig,
+  ArgumentConfig,
+  EnumValue,
   ImportLoaderError,
   Instantiable,
   JsonExt,

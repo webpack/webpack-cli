@@ -24,7 +24,7 @@ import type {
   LoadableWebpackConfiguration,
   DynamicImport,
   FileSystemCacheOptions,
-  FlagConfig,
+  EnumValue,
   ImportLoaderError,
   Instantiable,
   JsonExt,
@@ -1646,7 +1646,7 @@ class WebpackCLI implements IWebpackCLI {
                 return accumulator;
               }
             },
-            <FlagConfig["values"]>[],
+            <EnumValue[]>[],
           );
 
           if (possibleValues.length > 0) {
