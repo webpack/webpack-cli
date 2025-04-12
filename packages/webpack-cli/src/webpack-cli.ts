@@ -39,6 +39,7 @@ import type {
   RechoirError,
   Argument,
   Problem,
+  DotenvPluginOptions,
 } from "./types";
 
 import type webpackMerge from "webpack-merge";
@@ -55,6 +56,8 @@ import { type stringifyChunked } from "@discoveryjs/json-ext";
 import { type Help, type ParseOptions } from "commander";
 
 import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin";
+import { type DotenvPlugin as DotenvPluginClass } from "./plugins/dotenv-webpack-plugin";
+import { EnvLoader } from "./utils/env-loader";
 
 const fs = require("fs");
 const { Readable } = require("stream");
@@ -1019,6 +1022,18 @@ class WebpackCLI implements IWebpackCLI {
         description: "Print compilation progress during build.",
         helpLevel: "minimum",
       },
+      {
+        name: "env-file",
+        configs: [
+          {
+            type: "enum",
+            values: [true],
+          },
+        ],
+        description:
+          "Load environment variables from .env files for access within the configuration.",
+        helpLevel: "minimum",
+      },
 
       // Output options
       {
@@ -1791,6 +1806,10 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   async loadConfig(options: Partial<WebpackDevServerOptions>) {
+    if (options.envFile) {
+      EnvLoader.loadEnvFiles();
+    }
+
     const disableInterpret =
       typeof options.disableInterpret !== "undefined" && options.disableInterpret;
 
@@ -2170,6 +2189,10 @@ class WebpackCLI implements IWebpackCLI {
         "./plugins/cli-plugin",
       );
 
+    const DotenvPlugin = await this.tryRequireThenImport<
+      Instantiable<DotenvPluginClass, [DotenvPluginOptions?]>
+    >("./plugins/dotenv-webpack-plugin");
+
     const internalBuildConfig = (item: WebpackConfiguration) => {
       const originalWatchValue = item.watch;
 
@@ -2342,6 +2365,9 @@ class WebpackCLI implements IWebpackCLI {
             progress: options.progress,
             analyze: options.analyze,
             isMultiCompiler: Array.isArray(config.options),
+          }),
+          new DotenvPlugin({
+            prefixes: ["WEBPACK_"],
           }),
         );
       }

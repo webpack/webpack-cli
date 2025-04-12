@@ -177,6 +177,7 @@ type WebpackDevServerOptions = DevServerConfig &
     disableInterpret?: boolean;
     extends?: string[];
     argv: Argv;
+    envFile?: boolean;
   };
 
 type Callback<T extends unknown[]> = (...args: T) => void;
@@ -242,6 +243,11 @@ interface CLIPluginOptions {
   progress?: boolean | "profile";
   prefetch?: string;
   analyze?: boolean;
+}
+
+interface DotenvPluginOptions {
+  prefix?: string | string[];
+  dir?: string;
 }
 
 type BasicPrimitive = string | boolean | number;
@@ -323,6 +329,7 @@ export {
   CallableWebpackConfiguration,
   Callback,
   CLIPluginOptions,
+  DotenvPluginOptions,
   CommandAction,
   CommanderOption,
   CommandOptions,
