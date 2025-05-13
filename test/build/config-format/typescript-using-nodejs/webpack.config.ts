@@ -1,4 +1,4 @@
-import * as path from "path";
+const path = require("path");
 
 // cspell:ignore elopment
 const mode: string = "dev" + "elopment";
@@ -11,4 +11,4 @@ const config = {
   },
 };
 
-export default config;
+module.exports = config;
