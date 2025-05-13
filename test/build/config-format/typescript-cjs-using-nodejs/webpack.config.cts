@@ -1,5 +1,4 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
-/** eslint-disable **/
 const path = require("path");
 
 // cspell:ignore elopment
@@ -8,7 +7,7 @@ const config = {
   mode,
   entry: "./main.ts",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve("dist"),
     filename: "foo.bundle.js",
   },
 };

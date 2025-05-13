@@ -1,6 +1,5 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
 /** eslint-disable **/
-import * as path from "path";
+const path = require("path");
 
 // cspell:ignore elopment
 const mode: string = "dev" + "elopment";
@@ -13,4 +12,4 @@ const config = {
   },
 };
 
-export = config;
+module.exports = config;
