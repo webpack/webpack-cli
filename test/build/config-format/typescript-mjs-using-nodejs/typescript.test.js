@@ -5,16 +5,20 @@ const { resolve } = require("path");
 
 describe("webpack cli", () => {
   it("should support typescript esnext file", async () => {
-    const [major, minor] = process.versions.node.split(".").map(Number);
-    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.mts"], {
-      env: {
-        NODE_NO_WARNINGS: 1,
-        // Due nyc logic
-        WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true,
+    const [major] = process.versions.node.split(".").map(Number);
+    const { exitCode, stderr, stdout } = await run(
+      __dirname,
+      ["-c", "./webpack.config.ts", "--disable-interpret"],
+      {
+        env: {
+          NODE_NO_WARNINGS: 1,
+          // Due nyc logic
+          WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true,
+        },
+        // Fallback to `ts-node/esm` for old Node.js versions
+        nodeOptions: major >= 24 ? [] : ["--experimental-loader=ts-node/esm"],
       },
-      // Fallback to `ts-node/esm` for old Node.js versions
-      nodeOptions: major >= 22 && minor >= 6 ? [] : ["--experimental-loader=ts-node/esm"],
-    });
+    );
 
     expect(stderr).toBeFalsy(); // Deprecation warning logs on stderr
     expect(stdout).toBeTruthy();

@@ -1,5 +1,4 @@
-/** eslint-disable **/
-const path = require("path");
+import * as path from "path";
 
 // cspell:ignore elopment
 const mode: string = "dev" + "elopment";
@@ -7,9 +6,9 @@ const config = {
   mode,
   entry: "./main.ts",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve("dist"),
     filename: "foo.bundle.js",
   },
 };
 
-module.exports = config;
+export default config;
