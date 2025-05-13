@@ -6,7 +6,11 @@ describe("webpack cli", () => {
   it("should support typescript esnext file", async () => {
     const [major, minor] = process.versions.node.split(".").map(Number);
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
-      env: { NODE_NO_WARNINGS: 1 },
+      env: {
+        NODE_NO_WARNINGS: 1,
+        // Due nyc logic
+        WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true,
+      },
       // Fallback to `ts-node/esm` for old Node.js versions
       // We don't use Node.js@22 because it doesn't allow to load typescript files where we have `package.json` in root
       nodeOptions: major >= 22 && minor >= 6 ? [] : ["--experimental-loader=ts-node/esm"],

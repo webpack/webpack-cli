@@ -6,7 +6,11 @@ describe("webpack cli", () => {
   it("should support typescript file", async () => {
     const [major, minor] = process.versions.node.split(".").map(Number);
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
-      env: { NODE_NO_WARNINGS: 1 },
+      env: {
+        NODE_NO_WARNINGS: 1,
+        // Due nyc logic
+        WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true,
+      },
       nodeOptions:
         major >= 22 && minor >= 6
           ? ["--no-experimental-strip-types", "--require=ts-node/register"]
