@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "allowSyntheticDefaultImports": true
+    "target": "esnext",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "module": "esnext"
   }
 }
