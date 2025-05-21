@@ -62,10 +62,6 @@ jobs:
         shard: ["1/4", "2/4", "3/4", "4/4"]
         webpack-version: [latest]
         dev-server-version: [latest]
-        exclude:
-          # Node.js v23.7.0 is broken on windows
-          - os: windows-latest
-            node-version: 24.x
 
     steps:
       - uses: actions/checkout@v4
