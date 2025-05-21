@@ -184,33 +184,7 @@ class WebpackCLI implements IWebpackCLI {
     return false;
   }
 
-  getAvailablePackageManagers(): PackageManager[] {
-    const { sync } = require("cross-spawn");
-    const installers: PackageManager[] = ["npm", "yarn", "pnpm"];
-    const hasPackageManagerInstalled = (packageManager: PackageManager) => {
-      try {
-        sync(packageManager, ["--version"]);
-
-        return packageManager;
-      } catch (_err) {
-        return false;
-      }
-    };
-    const availableInstallers = installers.filter((installer) =>
-      hasPackageManagerInstalled(installer),
-    );
-
-    if (!availableInstallers.length) {
-      this.logger.error("No package manager found.");
-
-      process.exit(2);
-    }
-
-    return availableInstallers;
-  }
-
   getDefaultPackageManager(): PackageManager | undefined {
-    const { sync } = require("cross-spawn");
     const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), "package-lock.json"));
 
     if (hasLocalNpm) {
@@ -228,6 +202,8 @@ class WebpackCLI implements IWebpackCLI {
     if (hasLocalPnpm) {
       return "pnpm";
     }
+
+    const { sync } = require("cross-spawn");
 
     try {
       // the sync function below will fail if npm is not installed,

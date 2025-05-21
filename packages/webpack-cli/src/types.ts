@@ -43,7 +43,6 @@ interface IWebpackCLI {
   toKebabCase: StringFormatter;
   capitalizeFirstLetter: StringFormatter;
   checkPackageExists(packageName: string): boolean;
-  getAvailablePackageManagers(): PackageManager[];
   getDefaultPackageManager(): PackageManager | undefined;
   doInstall(packageName: string, options?: PackageInstallOptions): Promise<string>;
   loadJSONFile<T = unknown>(path: Path, handleError: boolean): Promise<T>;
