@@ -1804,7 +1804,7 @@ class WebpackCLI implements IWebpackCLI {
       // Fallback `.cts` to `.ts`
       // TODO implement good `.mts` support after https://github.com/gulpjs/rechoir/issues/43
       // For ESM and `.mts` you need to use: 'NODE_OPTIONS="--loader ts-node/esm" webpack-cli --config ./webpack.config.mts'
-      if (!interpreted && /\.cts$/.test(ext)) {
+      if (!interpreted && ext.endsWith(".cts")) {
         interpreted = interpret.jsVariants[".ts"];
       }
 

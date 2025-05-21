@@ -17,7 +17,7 @@ export default async function (plop: NodePlopAPI) {
   plop.setHelper("makeLoaderName", (name: string) => {
     name = plop.getHelper("kebabCase")(name);
 
-    if (!/loader$/.test(name)) {
+    if (!name.endsWith("loader")) {
       name += "-loader";
     }
     return name;
