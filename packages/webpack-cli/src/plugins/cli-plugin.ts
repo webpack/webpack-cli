@@ -70,7 +70,7 @@ export class CLIPlugin {
 
   setupHelpfulOutput(compiler: Compiler) {
     const pluginName = "webpack-cli";
-    const getCompilationName = () => (compiler.name ? `'${compiler.name}'` : "");
+    const getCompilationName = () => (compiler.name ? ` '${compiler.name}'` : "");
     const logCompilation = (message: string) => {
       if (process.env.WEBPACK_CLI_START_FINISH_FORCE_LOG) {
         process.stderr.write(message);
@@ -84,13 +84,11 @@ export class CLIPlugin {
     compiler.hooks.run.tap(pluginName, () => {
       const name = getCompilationName();
 
-      logCompilation(`Compiler${name ? ` ${name}` : ""} starting... `);
+      logCompilation(`Compiler${name} starting... `);
 
       if (configPath) {
         this.logger.log(
-          `Compiler${name ? ` ${name}` : ""} is using config: ${configPath
-            .map((path) => `'${path}'`)
-            .join(", ")}`,
+          `Compiler${name} is using config: ${configPath.map((path) => `'${path}'`).join(", ")}`,
         );
       }
     });
@@ -106,10 +104,10 @@ export class CLIPlugin {
 
       const name = getCompilationName();
 
-      logCompilation(`Compiler${name ? ` ${name}` : ""} starting... `);
+      logCompilation(`Compiler${name} starting... `);
 
       if (configPath) {
-        this.logger.log(`Compiler${name ? ` ${name}` : ""} is using config: '${configPath}'`);
+        this.logger.log(`Compiler${name} is using config: '${configPath}'`);
       }
     });
 
@@ -125,11 +123,11 @@ export class CLIPlugin {
       () => {
         const name = getCompilationName();
 
-        logCompilation(`Compiler${name ? ` ${name}` : ""} finished`);
+        logCompilation(`Compiler${name} finished`);
 
         process.nextTick(() => {
           if (compiler.watchMode) {
-            this.logger.log(`Compiler${name ? `${name}` : ""} is watching files for updates...`);
+            this.logger.log(`Compiler${name} is watching files for updates...`);
           }
         });
       },
