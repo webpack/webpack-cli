@@ -166,7 +166,7 @@ type WebpackDevServerOptions = DevServerConfig &
   Argv & {
     nodeEnv?: string;
     watchOptionsStdin?: boolean;
-    progress?: boolean | "profile" | undefined;
+    progress?: boolean | "profile";
     analyze?: boolean;
     prefetch?: string;
     json?: boolean;
