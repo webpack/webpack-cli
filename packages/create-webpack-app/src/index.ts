@@ -76,7 +76,7 @@ program
   .option("-t --template <template>", "Template to be used for scaffolding", "default")
   .action(async function (projectPath, opts: InitOptions) {
     const { force } = opts;
-    let templateOption = opts.template as string;
+    let templateOption = opts.template;
     let generator = initGenerators[templateOption];
 
     if (generator === undefined) {
@@ -134,7 +134,7 @@ program
   .argument("[projectPath]", "Path to create the project")
   .option("-t --template <template>", "Template to be used for scaffolding", "default")
   .action(async function (projectPath, opts: LoaderOptions) {
-    let templateOption = opts.template as string;
+    let templateOption = opts.template;
     let generator = loaderGenerators[templateOption];
 
     if (generator === undefined) {
@@ -175,7 +175,7 @@ program
   .argument("[projectPath]", "Path to create the project")
   .option("-t --template <template>", "Template to be used for scaffolding", "default")
   .action(async function (projectPath, opts: PluginOptions) {
-    let templateOption = opts.template as string;
+    let templateOption = opts.template;
     let generator = pluginGenerators[templateOption];
 
     if (generator === undefined) {

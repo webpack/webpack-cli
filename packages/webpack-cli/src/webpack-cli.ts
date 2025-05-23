@@ -1637,7 +1637,7 @@ class WebpackCLI implements IWebpackCLI {
 
         const flag = this.getBuiltInOptions().find((flag) => option.long === `--${flag.name}`);
 
-        if (flag && flag.configs) {
+        if (flag?.configs) {
           const possibleValues = flag.configs.reduce(
             (accumulator, currentValue) => {
               if (currentValue.values) {
@@ -2243,9 +2243,8 @@ class WebpackCLI implements IWebpackCLI {
 
       if (
         options.isWatchingLikeCommand &&
-        options.argv &&
-        options.argv.env &&
-        (typeof originalWatchValue !== "undefined" || typeof options.argv.watch !== "undefined")
+        options.argv?.env &&
+        (typeof originalWatchValue !== "undefined" || typeof options.argv?.watch !== "undefined")
       ) {
         this.logger.warn(
           `No need to use the '${
@@ -2292,8 +2291,7 @@ class WebpackCLI implements IWebpackCLI {
       // Respect `process.env.NODE_ENV`
       if (
         !item.mode &&
-        process.env &&
-        process.env.NODE_ENV &&
+        process.env?.NODE_ENV &&
         (process.env.NODE_ENV === "development" ||
           process.env.NODE_ENV === "production" ||
           process.env.NODE_ENV === "none")
@@ -2408,14 +2406,11 @@ class WebpackCLI implements IWebpackCLI {
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean {
     if (this.isMultipleCompiler(compiler)) {
       return Boolean(
-        compiler.compilers.some(
-          (compiler: Compiler) =>
-            compiler.options.watchOptions && compiler.options.watchOptions.stdin,
-        ),
+        compiler.compilers.some((compiler: Compiler) => compiler.options.watchOptions?.stdin),
       );
     }
 
-    return Boolean(compiler.options.watchOptions && compiler.options.watchOptions.stdin);
+    return Boolean(compiler.options.watchOptions?.stdin);
   }
 
   async runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void> {
