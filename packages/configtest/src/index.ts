@@ -27,13 +27,11 @@ class ConfigTestCommand {
               loadedConfigPaths.forEach((path) => configPaths.add(path));
             }
           });
-        } else {
-          if (config.path.get(config.options)) {
-            const loadedConfigPaths = config.path.get(config.options);
+        } else if (config.path.get(config.options)) {
+          const loadedConfigPaths = config.path.get(config.options);
 
-            if (loadedConfigPaths) {
-              loadedConfigPaths.forEach((path) => configPaths.add(path));
-            }
+          if (loadedConfigPaths) {
+            loadedConfigPaths.forEach((path) => configPaths.add(path));
           }
         }
 
