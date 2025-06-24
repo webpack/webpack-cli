@@ -1,4 +1,4 @@
-const { join } = require("path");
+const { join } = require("node:path");
 const { run } = require("../utils/test-utils");
 
 describe("basic usage", () => {

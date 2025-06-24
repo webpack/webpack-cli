@@ -1,8 +1,8 @@
 "use strict";
 
 const { run, readFile } = require("../../utils/test-utils");
-const { existsSync } = require("fs");
-const { resolve } = require("path");
+const { existsSync } = require("node:fs");
+const { resolve } = require("node:path");
 
 describe("warnings", () => {
   it("should output by default", async () => {
@@ -33,12 +33,9 @@ describe("warnings", () => {
 
     const json = JSON.parse(stdout);
 
-    expect(json["hash"]).toBeDefined();
-    expect(json["warnings"]).toHaveLength(2);
-    // `message` for `webpack@5`
-    expect(json["warnings"][0].message ? json["warnings"][0].message : json["warnings"][0]).toMatch(
-      /Can't resolve/,
-    );
+    expect(json.hash).toBeDefined();
+    expect(json.warnings).toHaveLength(2);
+    expect(json.warnings[0].message).toMatch(/Can't resolve/);
   });
 
   it("should store json to a file", async () => {
@@ -52,20 +49,17 @@ describe("warnings", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "stats.json"), "utf-8");
+      data = await readFile(resolve(__dirname, "stats.json"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(() => JSON.parse(data)).not.toThrow();
 
     const json = JSON.parse(data);
 
-    expect(json["hash"]).toBeDefined();
-    expect(json["warnings"]).toHaveLength(2);
-    // `message` for `webpack@5`
-    expect(json["warnings"][0].message ? json["warnings"][0].message : json["warnings"][0]).toMatch(
-      /Can't resolve/,
-    );
+    expect(json.hash).toBeDefined();
+    expect(json.warnings).toHaveLength(2);
+    expect(json.warnings[0].message).toMatch(/Can't resolve/);
   });
 });

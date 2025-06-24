@@ -20,18 +20,18 @@ class ConfigTestCommand {
         const configPaths = new Set<string>();
 
         if (Array.isArray(config.options)) {
-          config.options.forEach((options) => {
+          for (const options of config.options) {
             const loadedConfigPaths = config.path.get(options);
 
             if (loadedConfigPaths) {
-              loadedConfigPaths.forEach((path) => configPaths.add(path));
+              for (const path of loadedConfigPaths) configPaths.add(path);
             }
-          });
+          }
         } else if (config.path.get(config.options)) {
           const loadedConfigPaths = config.path.get(config.options);
 
           if (loadedConfigPaths) {
-            loadedConfigPaths.forEach((path) => configPaths.add(path));
+            for (const path of loadedConfigPaths) configPaths.add(path);
           }
         }
 
@@ -40,7 +40,7 @@ class ConfigTestCommand {
           process.exit(2);
         }
 
-        cli.logger.info(`Validate '${Array.from(configPaths).join(" ,")}'.`);
+        cli.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
 
         try {
           cli.webpack.validate(config.options);

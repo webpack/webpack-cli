@@ -1,6 +1,6 @@
 "use strict";
 
-const { resolve } = require("path");
+const { resolve } = require("node:path");
 const { run, readdir } = require("../../../utils/test-utils");
 
 describe("source-map object", () => {
@@ -18,10 +18,10 @@ describe("source-map object", () => {
     try {
       files = await readdir(resolve(__dirname, "dist"));
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
-    expect(files.length).toBe(3);
+    expect(files).toHaveLength(3);
   });
 
   it("should override entire array on flag", async () => {
@@ -41,9 +41,9 @@ describe("source-map object", () => {
     try {
       files = await readdir(resolve(__dirname, "binary"));
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
-    expect(files.length).toBe(4);
+    expect(files).toHaveLength(4);
   });
 });

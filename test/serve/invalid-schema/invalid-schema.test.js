@@ -1,4 +1,5 @@
 "use strict";
+
 const { run, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
 
 describe("invalid schema", () => {
@@ -9,7 +10,7 @@ describe("invalid schema", () => {
       "./webpack.config.mock.js",
     ]);
 
-    expect(exitCode).toEqual(2);
+    expect(exitCode).toBe(2);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
@@ -17,7 +18,7 @@ describe("invalid schema", () => {
   it("should log webpack error and exit process on invalid flag", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["serve", "--mode", "Yukihira"]);
 
-    expect(exitCode).toEqual(2);
+    expect(exitCode).toBe(2);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
@@ -25,7 +26,7 @@ describe("invalid schema", () => {
   it("should log webpack-dev-server error and exit process on invalid flag", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["serve", "--port", "-1"]);
 
-    expect(exitCode).toEqual(2);
+    expect(exitCode).toBe(2);
     expect(normalizeStderr(stderr).replace("Port", "options.port")).toMatchSnapshot("stderr");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
@@ -37,7 +38,7 @@ describe("invalid schema", () => {
       "./webpack-dev-server.config.mock.js",
     ]);
 
-    expect(exitCode).toEqual(2);
+    expect(exitCode).toBe(2);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });

@@ -1,5 +1,6 @@
 "use strict";
-const path = require("path");
+
+const path = require("node:path");
 const { run } = require("../../../utils/test-utils");
 
 describe("config with invalid path supplied by CLI", () => {

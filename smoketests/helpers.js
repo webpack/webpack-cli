@@ -1,11 +1,9 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 const execa = require("execa");
 const stripAnsi = require("strip-ansi");
 
-const ROOT_PATH = process.env.GITHUB_WORKSPACE
-  ? process.env.GITHUB_WORKSPACE
-  : path.resolve(__dirname, "..");
+const ROOT_PATH = process.env.GITHUB_WORKSPACE || path.resolve(__dirname, "..");
 
 const getPkgPath = (pkg, isSubPackage) => {
   const pkgPath = isSubPackage ? `./node_modules/@webpack-cli/${pkg}` : `./node_modules/${pkg}`;
@@ -24,7 +22,7 @@ const swapPkgName = (current, isSubPackage = false) => {
 
 const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, "./packages/webpack-cli/bin/cli.js");
 
-const runTest = (pkg, cliArgs = [], logMessage, isSubPackage = false) => {
+const runTest = (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
   // Simulate package missing
   swapPkgName(pkg, isSubPackage);
 
@@ -32,7 +30,7 @@ const runTest = (pkg, cliArgs = [], logMessage, isSubPackage = false) => {
     cwd: __dirname,
   });
 
-  proc.stdin.setDefaultEncoding("utf-8");
+  proc.stdin.setDefaultEncoding("utf8");
 
   proc.stdout.on("data", (chunk) => {
     console.log(`  stdout: ${chunk.toString()}`);
@@ -45,9 +43,9 @@ const runTest = (pkg, cliArgs = [], logMessage, isSubPackage = false) => {
     }, 60000);
 
     const prompt = "Would you like to install";
-    let hasLogMessage = false,
-      hasPrompt = false,
-      hasPassed = false;
+    let hasLogMessage = false;
+    let hasPrompt = false;
+    let hasPassed = false;
 
     proc.stderr.on("data", (chunk) => {
       const data = stripAnsi(chunk.toString());
@@ -90,7 +88,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
     cwd: __dirname,
   });
 
-  proc.stdin.setDefaultEncoding("utf-8");
+  proc.stdin.setDefaultEncoding("utf8");
 
   return new Promise((resolve) => {
     const timeout = setTimeout(() => {
@@ -144,7 +142,7 @@ const runTestStdoutWithInput = ({
     cwd: __dirname,
   });
 
-  proc.stdin.setDefaultEncoding("utf-8");
+  proc.stdin.setDefaultEncoding("utf8");
 
   return new Promise((resolve) => {
     const timeout = setTimeout(() => {
@@ -163,11 +161,11 @@ const runTestStdoutWithInput = ({
         proc.kill();
       }
 
-      Object.keys(inputs).forEach((input) => {
+      for (const input of Object.keys(inputs)) {
         if (data.includes(input)) {
           proc.stdin.write(inputs[input]);
         }
-      });
+      }
     });
 
     proc.stderr.on("data", (chunk) => {
@@ -189,7 +187,7 @@ const runTestStdoutWithInput = ({
   });
 };
 
-const runTestWithHelp = (pkg, cliArgs = [], logMessage, isSubPackage = false) => {
+const runTestWithHelp = (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
   // Simulate package missing
   swapPkgName(pkg, isSubPackage);
 
@@ -197,7 +195,7 @@ const runTestWithHelp = (pkg, cliArgs = [], logMessage, isSubPackage = false) =>
     cwd: __dirname,
   });
 
-  proc.stdin.setDefaultEncoding("utf-8");
+  proc.stdin.setDefaultEncoding("utf8");
 
   proc.stdout.on("data", (chunk) => {
     console.log(`  stdout: ${chunk.toString()}`);
@@ -211,9 +209,9 @@ const runTestWithHelp = (pkg, cliArgs = [], logMessage, isSubPackage = false) =>
 
     const undefinedLogMessage = "Can't find and load command";
 
-    let hasLogMessage = false,
-      hasUndefinedLogMessage = false,
-      hasPassed = false;
+    let hasLogMessage = false;
+    let hasUndefinedLogMessage = false;
+    let hasPassed = false;
 
     proc.stderr.on("data", (chunk) => {
       const data = stripAnsi(chunk.toString());

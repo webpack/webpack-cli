@@ -1,16 +1,16 @@
 import { type Compiler, type cli } from "webpack";
-import { type IWebpackCLI, type WebpackDevServerOptions } from "webpack-cli";
+import { type IWebpackCLI, type WebpackDevServerOptions, type StringsKeys } from "webpack-cli";
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
 
 type Problem = NonNullable<ReturnType<(typeof cli)["processArguments"]>>[0];
-type StringsKeys<T> = { [K in keyof T]: T[K] extends string ? K : never }[keyof T];
 
 class ServeCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
     const loadDevServerOptions = () => {
       const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const options: Record<string, any> = cli.webpack.cli.getArguments(devServer.schema);
       // New options format
@@ -56,7 +56,7 @@ class ServeCommand {
 
         try {
           devServerFlags = loadDevServerOptions();
-        } catch (_err) {
+        } catch {
           // Nothing, to prevent future updates
         }
 
@@ -66,7 +66,7 @@ class ServeCommand {
         const devServerCLIOptions: Record<string, any> = {};
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const processors: Array<(opts: Record<string, any>) => void> = [];
+        const processors: ((opts: Record<string, any>) => void)[] = [];
 
         for (const optionName in options) {
           const kebabedOption = cli.toKebabCase(optionName);
@@ -117,11 +117,7 @@ class ServeCommand {
 
         if (cli.needWatchStdin(compiler)) {
           process.stdin.on("end", () => {
-            Promise.all(
-              servers.map((server) => {
-                return server.stop();
-              }),
-            ).then(() => {
+            Promise.all(servers.map((server) => server.stop())).then(() => {
               process.exit(0);
             });
           });
@@ -149,8 +145,6 @@ class ServeCommand {
         const usedPorts: number[] = [];
 
         for (const compilerForDevServer of compilersForDevServer) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           if (compilerForDevServer.options.devServer === false) {
             continue;
           }
@@ -174,22 +168,21 @@ class ServeCommand {
             },
             {},
           );
-          const result = { ...(compilerForDevServer.options.devServer || {}) };
+          const result = { ...compilerForDevServer.options.devServer };
           const problems = cli.webpack.cli.processArguments(args, result, values);
 
           if (problems) {
             const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(
               xs: Problem[],
               key: K,
-            ) => {
-              return xs.reduce((rv: { [key: string]: Problem[] }, x: Problem) => {
-                const path = x[key];
+            ) =>
+              xs.reduce((rv: Record<string, Problem[]>, problem: Problem) => {
+                const path = problem[key];
 
-                (rv[path] = rv[path] || []).push(x);
+                (rv[path] ||= []).push(problem);
 
                 return rv;
               }, {});
-            };
 
             const problemsByPath = groupBy<"path">(problems, "path");
 
@@ -198,7 +191,7 @@ class ServeCommand {
 
               for (const problem of problems) {
                 cli.logger.error(
-                  `${cli.capitalizeFirstLetter(problem.type.replace(/-/g, " "))}${
+                  `${cli.capitalizeFirstLetter(problem.type.replace("-", " "))}${
                     problem.value ? ` '${problem.value}'` : ""
                   } for the '--${problem.argument}' option${
                     problem.index ? ` by index '${problem.index}'` : ""
@@ -219,7 +212,7 @@ class ServeCommand {
           if (devServerOptions.port) {
             const portNumber = Number(devServerOptions.port);
 
-            if (usedPorts.find((port) => portNumber === port)) {
+            if (usedPorts.includes(portNumber)) {
               throw new Error(
                 "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
               );

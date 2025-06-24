@@ -1,8 +1,8 @@
 "use strict";
 
 const { runAndGetProcess, processKill } = require("../../utils/test-utils");
-const { writeFileSync } = require("fs");
-const { resolve } = require("path");
+const { writeFileSync } = require("node:fs");
+const { resolve } = require("node:path");
 
 const wordsInStatsv5 = ["asset", "index.js", "compiled successfully"];
 
@@ -24,7 +24,7 @@ describe("watch variable", () => {
 
         if (!modified) {
           process.nextTick(() => {
-            writeFileSync(resolve(__dirname, "./src/index.js"), `console.log('watch flag test');`);
+            writeFileSync(resolve(__dirname, "./src/index.js"), "console.log('watch flag test');");
           });
 
           modified = true;
@@ -36,7 +36,7 @@ describe("watch variable", () => {
     });
   });
 
-  it.only("should pass `WEBPACK_WATCH` env variable and recompile upon file change using the `--watch` option", (done) => {
+  it("should pass `WEBPACK_WATCH` env variable and recompile upon file change using the `--watch` option", (done) => {
     const proc = runAndGetProcess(__dirname, ["--watch", "--mode", "development"]);
 
     let modified = false;
@@ -53,7 +53,7 @@ describe("watch variable", () => {
 
         if (!modified) {
           process.nextTick(() => {
-            writeFileSync(resolve(__dirname, "./src/index.js"), `console.log('watch flag test');`);
+            writeFileSync(resolve(__dirname, "./src/index.js"), "console.log('watch flag test');");
           });
 
           modified = true;

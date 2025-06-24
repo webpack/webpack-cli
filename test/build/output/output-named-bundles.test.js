@@ -1,6 +1,6 @@
 "use strict";
 
-const { resolve } = require("path");
+const { resolve } = require("node:path");
 const { run, normalizeStdout, normalizeStderr } = require("../../utils/test-utils");
 
 describe("output flag named bundles", () => {
@@ -54,7 +54,7 @@ describe("output flag named bundles", () => {
   it("should output file in bin directory using default webpack config with warning for empty output value", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--output-path"]);
 
-    expect(exitCode).toEqual(2);
+    expect(exitCode).toBe(2);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });

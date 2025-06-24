@@ -5,6 +5,5 @@
     "rootDir": "./src",
     "typeRoots": ["./src/types.ts"]
   },
-
   "include": ["./src"]
 }

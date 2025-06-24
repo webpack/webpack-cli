@@ -24,10 +24,10 @@ describe("'-o, --output <value>' usage", () => {
 
     const parse = () => {
       const output = JSON.parse(stdout);
-      expect(output["System"]).toBeTruthy();
-      expect(output["Binaries"]).toBeTruthy();
-      expect(output["System"]["OS"]).toBeTruthy();
-      expect(output["System"]["CPU"]).toBeTruthy();
+      expect(output.System).toBeTruthy();
+      expect(output.Binaries).toBeTruthy();
+      expect(output.System.OS).toBeTruthy();
+      expect(output.System.CPU).toBeTruthy();
     };
 
     expect(parse).not.toThrow();
@@ -45,7 +45,7 @@ describe("'-o, --output <value>' usage", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["version", "--output", "unknown"]);
 
     expect(exitCode).toBe(2);
-    expect(stderr).toContain(`'unknown' is not a valid value for output`);
+    expect(stderr).toContain("'unknown' is not a valid value for output");
     expect(stdout).toBeFalsy();
   });
 

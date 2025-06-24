@@ -1,8 +1,9 @@
 "use strict";
 
-const { existsSync } = require("fs");
-const { join, resolve } = require("path");
+const { existsSync } = require("node:fs");
+const { join, resolve } = require("node:path");
 
+// eslint-disable-next-line jest/no-confusing-set-timeout
 jest.setTimeout(480000);
 
 const {
@@ -11,11 +12,12 @@ const {
   normalizeStderr,
   createPathDependentUtils,
 } = require("../test.utils");
+
 const { runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");
 const { run } = createPathDependentUtils("webpack-cli");
 const firstPrompt = "? Loader name? (my-loader)";
-const ENTER = "\x0D";
-const DOWN = "\x1B\x5B\x42";
+const ENTER = "\u000D";
+const DOWN = "\u001B\u005B\u0042";
 
 const dataForTests = (rootAssetsPath) => ({
   loaderName: "test-loader",
@@ -60,9 +62,9 @@ describe("loader command", () => {
     expect(existsSync(defaultLoaderPath)).toBeTruthy();
 
     // All test files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(defaultLoaderPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated loader works successfully
     const path = resolve(defaultLoaderPath, "./examples/simple/");
@@ -92,9 +94,9 @@ describe("loader command", () => {
     expect(existsSync(loaderPath)).toBeTruthy();
 
     // All test files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(loaderPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated loader works successfully
     const path = resolve(loaderPath, "./examples/simple/");
@@ -124,9 +126,9 @@ describe("loader command", () => {
     expect(existsSync(customLoaderPath)).toBeTruthy();
 
     // All test files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(customLoaderPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated loader works successfully
     const path = resolve(customLoaderPath, "./examples/simple/");
@@ -157,9 +159,9 @@ describe("loader command", () => {
     expect(existsSync(customLoaderPath)).toBeTruthy();
 
     // All test files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(customLoaderPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated loader works successfully
     const path = resolve(customLoaderPath, "./examples/simple/");
@@ -200,9 +202,9 @@ describe("loader command", () => {
     expect(existsSync(defaultLoaderPath)).toBeTruthy();
 
     // All test files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(defaultLoaderPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated loader works successfully
     const path = resolve(assetsPath, "./my-loader/examples/simple/");
@@ -237,9 +239,9 @@ describe("loader command", () => {
       "yarn.lock",
     ];
 
-    files.forEach((file) => {
+    for (const file of files) {
       expect(existsSync(resolve(defaultLoaderPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated loader works successfully
     const path = resolve(assetsPath, "./my-loader/examples/simple/");

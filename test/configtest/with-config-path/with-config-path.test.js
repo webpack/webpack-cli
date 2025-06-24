@@ -30,7 +30,7 @@ describe("'configtest' command with the configuration path option", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  it(`should validate the config with alias 't'`, async () => {
+  it("should validate the config with alias 't'", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["t", "./error.config.js"]);
 
     expect(exitCode).toBe(2);

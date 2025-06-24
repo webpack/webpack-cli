@@ -1,7 +1,7 @@
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 const { run } = require("../../utils/test-utils");
 
 describe("cache", () => {
@@ -13,7 +13,7 @@ describe("cache", () => {
 
     let { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.js"]);
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
     expect(stderr.match(/Stored pack/g)).toHaveLength(1);
     expect(stderr).toBeTruthy();
@@ -21,7 +21,7 @@ describe("cache", () => {
 
     ({ exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.js"]));
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
@@ -47,7 +47,7 @@ describe("cache", () => {
 
     let { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./multi.config.js"]);
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/No pack exists at/g)).toHaveLength(2);
     expect(stderr.match(/Stored pack/g)).toHaveLength(2);
     expect(stderr).toBeTruthy();
@@ -55,7 +55,7 @@ describe("cache", () => {
 
     ({ exitCode, stderr, stdout } = await run(__dirname, ["-c", "./multi.config.js"]));
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/restore cache container:/g)).toHaveLength(2);
     expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(2);
     expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(2);
@@ -81,7 +81,7 @@ describe("cache", () => {
       "cache-test-third",
     ]);
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
     expect(stderr.match(/Stored pack/g)).toHaveLength(1);
     expect(stderr).toBeTruthy();
@@ -96,7 +96,7 @@ describe("cache", () => {
       "cache-test-third",
     ]));
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
@@ -120,7 +120,7 @@ describe("cache", () => {
       "cache-test-fourth",
     ]);
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
     expect(stderr.match(/Stored pack/g)).toHaveLength(1);
     expect(stderr).toBeTruthy();
@@ -136,7 +136,7 @@ describe("cache", () => {
       "cache-test-fourth",
     ]));
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
@@ -164,7 +164,7 @@ describe("cache", () => {
       "cache-test-fifth",
     ]);
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
     expect(stderr.match(/Stored pack/g)).toHaveLength(1);
     expect(stderr).toBeTruthy();
@@ -184,7 +184,7 @@ describe("cache", () => {
       "cache-test-fifth",
     ]));
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
@@ -203,7 +203,7 @@ describe("cache", () => {
 
     let { exitCode, stderr, stdout } = await run(__dirname, ["--name", "cache-test-autoloading"]);
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
     expect(stderr.match(/Stored pack/g)).toHaveLength(1);
     expect(stderr).toBeTruthy();
@@ -211,7 +211,7 @@ describe("cache", () => {
 
     ({ exitCode, stderr, stdout } = await run(__dirname, ["--name", "cache-test-autoloading"]));
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
     expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);

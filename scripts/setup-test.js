@@ -1,3 +1,5 @@
+/* global jest, expect */
+
 jest.setTimeout(180000);
 
 if (!expect.getState().testPath.includes("colors.test.js")) {

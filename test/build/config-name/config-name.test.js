@@ -60,6 +60,19 @@ describe("--config-name flag", () => {
     expect(stdout).toBeFalsy();
   });
 
+  it("should log error if invalid config name is provided #2", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--config",
+      "function-config.js",
+      "--config-name",
+      "test",
+    ]);
+
+    expect(exitCode).toBe(2);
+    expect(stderr).toContain('Configuration with the name "test" was not found.');
+    expect(stdout).toBeFalsy();
+  });
+
   it("should log error if multiple configurations are not found", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--config-name",
@@ -125,18 +138,5 @@ describe("--config-name flag", () => {
     expect(stdout).toContain("first");
     expect(stdout).not.toContain("second");
     expect(stdout).toContain("third");
-  });
-
-  it("should log error if invalid config name is provided ", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--config",
-      "function-config.js",
-      "--config-name",
-      "test",
-    ]);
-
-    expect(exitCode).toBe(2);
-    expect(stderr).toContain('Configuration with the name "test" was not found.');
-    expect(stdout).toBeFalsy();
   });
 });

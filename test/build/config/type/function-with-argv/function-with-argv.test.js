@@ -1,6 +1,7 @@
 "use strict";
-const { existsSync } = require("fs");
-const { resolve } = require("path");
+
+const { existsSync } = require("node:fs");
+const { resolve } = require("node:path");
 const { run } = require("../../../../utils/test-utils");
 
 describe("function configuration", () => {
@@ -13,6 +14,6 @@ describe("function configuration", () => {
     expect(stdout).toContain("WEBPACK_BUNDLE: true");
     expect(stdout).toContain("WEBPACK_BUILD: true");
     expect(stdout).toContain("mode: 'development'");
-    expect(existsSync(resolve(__dirname, "./dist/dev.js")));
+    expect(existsSync(resolve(__dirname, "./dist/dev.js"))).toBe(true);
   });
 });

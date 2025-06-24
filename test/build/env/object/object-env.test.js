@@ -1,7 +1,8 @@
 "use strict";
 
-const path = require("path");
+const path = require("node:path");
 const execa = require("execa");
+
 const { sync: spawnSync } = execa;
 
 const { run } = require("../../../utils/test-utils");

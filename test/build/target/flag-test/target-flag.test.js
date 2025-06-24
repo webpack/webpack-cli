@@ -1,4 +1,5 @@
 "use strict";
+
 const { run, normalizeStdout, normalizeStderr } = require("../../../utils/test-utils");
 
 const targetValues = [
@@ -13,7 +14,7 @@ const targetValues = [
 ];
 
 describe("--target flag", () => {
-  targetValues.forEach((val) => {
+  for (const val of targetValues) {
     it(`should accept ${val} with --target flag`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--target", `${val}`]);
 
@@ -29,9 +30,9 @@ describe("--target flag", () => {
       expect(stderr).toBeFalsy();
       expect(stdout).toContain(`target: [ '${val}' ]`);
     });
-  });
+  }
 
-  it(`should throw error with invalid value for --target`, async () => {
+  it("should throw error with invalid value for --target", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--target", "invalid"]);
 
     expect(exitCode).toBe(2);
@@ -49,7 +50,7 @@ describe("--target flag", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
+    expect(stdout).toContain("target: [ 'node', 'async-node' ]");
   });
 
   it("should throw an error for invalid target in multiple syntax", async () => {
@@ -78,19 +79,6 @@ describe("--target flag", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  it("should allow multiple targets", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--target",
-      "node",
-      "--target",
-      "async-node",
-    ]);
-
-    expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
-    expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
-  });
-
   it("should reset the `target` option when the `--target-reset` is used", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--config",
@@ -102,7 +90,7 @@ describe("--target flag", () => {
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).toContain(`target: [ 'node' ]`);
+    expect(stdout).toContain("target: [ 'node' ]");
   });
 
   it("should reset the `target` option when the `--target-reset` is used for multiple targets", async () => {
@@ -118,33 +106,7 @@ describe("--target flag", () => {
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).toContain(`target: [ 'node', 'async-node' ]`);
-  });
-
-  it("should throw an error for invalid target in multiple syntax", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--target",
-      "node",
-      "--target",
-      "invalid",
-    ]);
-
-    expect(exitCode).toBe(2);
-    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-  });
-
-  it("should throw an error for incompatible multiple targets", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, [
-      "--target",
-      "node",
-      "--target",
-      "web",
-    ]);
-
-    expect(exitCode).toBe(2);
-    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+    expect(stdout).toContain("target: [ 'node', 'async-node' ]");
   });
 
   it("should throw error if target is an empty array", async () => {

@@ -1,6 +1,6 @@
 "use strict";
 
-const { resolve } = require("path");
+const { resolve } = require("node:path");
 const { run } = require("../../utils/test-utils");
 
 describe("bundle command", () => {
@@ -154,7 +154,7 @@ describe("bundle command", () => {
     expect(stdout).toBeTruthy();
   });
 
-  it('should work with multiple entries syntax using the "build" alias and options', async () => {
+  it('should work with multiple entries syntax using the "build" alias and options #2', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "build",
       "--mode",

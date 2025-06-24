@@ -8,6 +8,6 @@ describe("single entry flag empty project", () => {
 
     expect(exitCode).toBe(1);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain(`not found: Error: Can't resolve`);
+    expect(stdout).toContain("not found: Error: Can't resolve");
   });
 });

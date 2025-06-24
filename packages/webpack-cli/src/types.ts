@@ -1,23 +1,21 @@
-import type {
-  EntryOptions,
-  Stats,
-  MultiStats,
-  Configuration,
-  WebpackError,
-  WebpackOptionsNormalized,
-  Compiler,
-  MultiCompiler,
-  Problem,
-  Argument,
-  AssetEmittedInfo,
-  FileCacheOptions,
+import {
+  default as webpack,
+  type EntryOptions,
+  type Stats,
+  type MultiStats,
+  type Configuration,
+  type WebpackError,
+  type WebpackOptionsNormalized,
+  type Compiler,
+  type MultiCompiler,
+  type AssetEmittedInfo,
+  type FileCacheOptions,
 } from "webpack";
-import type webpack from "webpack";
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore extraneous import is intended
-// eslint-disable-next-line n/no-extraneous-import
-import type { ClientConfiguration, Configuration as DevServerConfig } from "webpack-dev-server";
+import {
+  type ClientConfiguration,
+  type Configuration as DevServerConfig,
+} from "webpack-dev-server";
 
 import { type Colorette } from "colorette";
 import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
@@ -119,7 +117,7 @@ interface WebpackCLIOptions extends CommandOptions {
   usage?: string;
   dependencies?: string[];
   pkg?: string;
-  argsDescription?: { [argName: string]: string };
+  argsDescription?: Record<string, string>;
 }
 
 type WebpackCLICommandOptions =
@@ -191,18 +189,20 @@ type LoadableWebpackConfiguration = PotentialPromise<
 type CallableWebpackConfiguration = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
 type WebpackCompiler = Compiler | MultiCompiler;
 
-type EnumValueObject = { [key: string]: EnumValue };
+interface EnumValueObject {
+  [key: string]: EnumValue;
+}
 type EnumValueArray = EnumValue[];
 type EnumValue = string | number | boolean | EnumValueObject | EnumValueArray | null;
 
-type ArgumentConfig = {
+interface ArgumentConfig {
   description?: string;
   negatedDescription?: string;
   path?: string;
   multiple?: boolean;
   type: "enum" | "string" | "path" | "number" | "boolean" | "RegExp" | "reset";
   values?: EnumValue[];
-};
+}
 
 type FileSystemCacheOptions = WebpackConfiguration & {
   cache: FileCacheOptions & { defaultConfig: string[] };
@@ -245,9 +245,10 @@ interface CLIPluginOptions {
 }
 
 type BasicPrimitive = string | boolean | number;
-type Instantiable<InstanceType = unknown, ConstructorParameters extends unknown[] = unknown[]> = {
-  new (...args: ConstructorParameters): InstanceType;
-};
+type Instantiable<
+  InstanceType = unknown,
+  ConstructorParameters extends unknown[] = unknown[],
+> = new (...args: ConstructorParameters) => InstanceType;
 type PotentialPromise<T> = T | Promise<T>;
 type ModuleName = string;
 type Path = string;
@@ -300,48 +301,51 @@ interface PromptOptions {
   stream: NodeJS.WritableStream;
 }
 
+type StringsKeys<T> = { [K in keyof T]: T[K] extends string ? K : never }[keyof T];
+
 export {
-  IWebpackCLI,
-  WebpackCLICommandOption,
-  WebpackCLIBuiltInOption,
-  WebpackCLIBuiltInFlag,
-  WebpackCLIColors,
-  WebpackCLIConfig,
-  WebpackCLIExternalCommandInfo,
-  WebpackCLIOptions,
-  WebpackCLICommand,
-  WebpackCLICommandOptions,
-  WebpackCLIMainOption,
-  WebpackCLILogger,
-  WebpackDevServerOptions,
-  WebpackRunOptions,
-  WebpackCompiler,
-  WebpackConfiguration,
-  Argv,
-  Argument,
-  BasicPrimitive,
-  CallableWebpackConfiguration,
-  Callback,
-  CLIPluginOptions,
-  CommandAction,
-  CommanderOption,
-  CommandOptions,
-  LoadableWebpackConfiguration,
-  DynamicImport,
-  FileSystemCacheOptions,
-  ArgumentConfig,
-  EnumValue,
-  ImportLoaderError,
-  Instantiable,
-  JsonExt,
-  ModuleName,
-  PackageInstallOptions,
-  PackageManager,
-  Path,
-  ProcessedArguments,
-  PromptOptions,
-  Problem,
-  PotentialPromise,
-  Rechoir,
-  RechoirError,
+  type IWebpackCLI,
+  type WebpackCLICommandOption,
+  type WebpackCLIBuiltInOption,
+  type WebpackCLIBuiltInFlag,
+  type WebpackCLIColors,
+  type WebpackCLIConfig,
+  type WebpackCLIExternalCommandInfo,
+  type WebpackCLIOptions,
+  type WebpackCLICommand,
+  type WebpackCLICommandOptions,
+  type WebpackCLIMainOption,
+  type WebpackCLILogger,
+  type WebpackDevServerOptions,
+  type WebpackRunOptions,
+  type WebpackCompiler,
+  type WebpackConfiguration,
+  type Argv,
+  type BasicPrimitive,
+  type CallableWebpackConfiguration,
+  type Callback,
+  type CLIPluginOptions,
+  type CommandAction,
+  type CommanderOption,
+  type LoadableWebpackConfiguration,
+  type DynamicImport,
+  type FileSystemCacheOptions,
+  type ArgumentConfig,
+  type EnumValue,
+  type ImportLoaderError,
+  type Instantiable,
+  type JsonExt,
+  type ModuleName,
+  type PackageInstallOptions,
+  type PackageManager,
+  type Path,
+  type ProcessedArguments,
+  type PromptOptions,
+  type PotentialPromise,
+  type Rechoir,
+  type RechoirError,
+  type StringsKeys,
 };
+
+export { type CommandOptions } from "commander";
+export { type Problem, type Argument } from "webpack";

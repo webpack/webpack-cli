@@ -1,16 +1,17 @@
-const os = require("os");
-const path = require("path");
-const { mkdirSync, existsSync, readFileSync } = require("fs");
-const { join, resolve } = require("path");
-const { createPathDependentUtils, uniqueDirectoryForTest, isWindows } = require("../test.utils.js");
+const os = require("node:os");
+const path = require("node:path");
+const { mkdirSync, existsSync, readFileSync } = require("node:fs");
+const { join, resolve } = require("node:path");
+const { createPathDependentUtils, uniqueDirectoryForTest, isWindows } = require("../test.utils");
 
+// eslint-disable-next-line jest/no-confusing-set-timeout
 jest.setTimeout(480000);
 
 const { run, runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");
 
-const ENTER = "\x0D";
-const UP = "\x1B\x5B\x41";
-const DOWN = "\x1B\x5B\x42";
+const ENTER = "\u000D";
+const UP = "\u001B\u005B\u0041";
+const DOWN = "\u001B\u005B\u0042";
 
 const defaultTemplateFiles = [
   "package.json",
@@ -53,7 +54,7 @@ const readFromPkgJSON = (path) => {
   const { devDependencies: devDeps } = pkgJSON;
 
   // Update devDeps versions to be x.x.x to prevent frequent snapshot updates
-  Object.keys(devDeps).forEach((dep) => (devDeps[dep] = "x.x.x"));
+  for (const dep of Object.keys(devDeps)) devDeps[dep] = "x.x.x";
 
   return { ...pkgJSON, devDependencies: devDeps };
 };
@@ -69,9 +70,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(assetsPath, file)).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -84,9 +85,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     // expect(stderr).toContain("webpack.config.js");
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -101,11 +102,11 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(join(assetsPath, file))).toBeTruthy();
-    });
+    }
 
-    //Check if the generated package.json file content matches the snapshot
+    // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
 
@@ -116,9 +117,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -140,9 +141,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -167,9 +168,9 @@ describe("create-webpack-app cli", () => {
       "tsconfig.json",
     ];
 
-    files.forEach((file) => {
+    for (const file of files) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -193,9 +194,9 @@ describe("create-webpack-app cli", () => {
     // Test files
     const files = [...defaultTemplateFiles, "babel.config.json"];
 
-    files.forEach((file) => {
+    for (const file of files) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -226,9 +227,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -261,9 +262,9 @@ describe("create-webpack-app cli", () => {
     // Test files
     const files = [...defaultTemplateFiles, "postcss.config.js"];
 
-    files.forEach((file) => {
+    for (const file of files) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -294,9 +295,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -329,9 +330,9 @@ describe("create-webpack-app cli", () => {
     // Test files
     const files = [...defaultTemplateFiles, "postcss.config.js"];
 
-    files.forEach((file) => {
+    for (const file of files) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -362,9 +363,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -395,9 +396,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -419,9 +420,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -444,9 +445,9 @@ describe("create-webpack-app cli", () => {
     // Test files
     const files = [...defaultTemplateFiles, "postcss.config.js"];
 
-    files.forEach((file) => {
+    for (const file of files) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -468,9 +469,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -492,9 +493,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test file
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -527,9 +528,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -543,9 +544,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -559,9 +560,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -575,9 +576,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -591,9 +592,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -607,9 +608,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -632,9 +633,9 @@ describe("create-webpack-app cli", () => {
       "yarn.lock",
     ];
 
-    files.forEach((file) => {
+    for (const file of files) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -652,9 +653,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    reactTemplateFiles.forEach((file) => {
+    for (const file of reactTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -671,9 +672,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    reactTemplateFiles.forEach((file) => {
+    for (const file of reactTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -690,9 +691,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    vueTemplateFiles.forEach((file) => {
+    for (const file of vueTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -715,9 +716,9 @@ describe("create-webpack-app cli", () => {
     const files = [...vueTemplateFiles, "src/store/index.js"];
 
     // Test files
-    files.forEach((file) => {
+    for (const file of files) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -738,9 +739,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    svelteTemplateFiles.forEach((file) => {
+    for (const file of svelteTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
@@ -757,9 +758,9 @@ describe("create-webpack-app cli", () => {
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    svelteTemplateFiles.forEach((file) => {
+    for (const file of svelteTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();

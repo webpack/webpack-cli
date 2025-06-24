@@ -1,10 +1,10 @@
 "use strict";
 
 const { run, readFile } = require("../../../utils/test-utils");
-const { existsSync } = require("fs");
-const { resolve } = require("path");
+const { existsSync } = require("node:fs");
+const { resolve } = require("node:path");
 
-describe(" multiple entries", () => {
+describe("multiple entries", () => {
   it("should allow multiple entry flags", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--entry",
@@ -21,9 +21,9 @@ describe(" multiple entries", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf-8");
+      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(data).toContain("Hello from a.js");

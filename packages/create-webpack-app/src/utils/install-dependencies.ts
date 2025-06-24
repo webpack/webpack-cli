@@ -1,15 +1,15 @@
 import { type NodePlopAPI } from "node-plop";
-import { dirname, resolve } from "path";
+import { dirname, resolve } from "node:path";
 import { spawn } from "cross-spawn";
 import {
   type ChildProcess,
   type SpawnOptionsWithStdioTuple,
   type StdioNull,
   type StdioPipe,
-} from "child_process";
-import { fileURLToPath } from "url";
+} from "node:child_process";
+import { fileURLToPath } from "node:url";
 
-export default async function (plop: NodePlopAPI) {
+export default async function installDependencies(plop: NodePlopAPI) {
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
   plop.setPlopfilePath(resolve(__dirname, "../plopfile.js"));
@@ -29,11 +29,11 @@ export default async function (plop: NodePlopAPI) {
     };
 
     // promise to complete subprocess of installing packages and return a message
-    const returnPromise: Promise<string> = new Promise((resolve, reject) => {
-      const returnMessage = `Project dependencies installed successfully!`;
-      const packageManager = answers.packageManager;
-      const packages = config.packages.length == 1 ? [config.packages[0]] : config.packages;
-      const installOptions: Record<string, Array<string>> = {
+    const returnPromise = new Promise<string>((resolve, reject) => {
+      const returnMessage = "Project dependencies installed successfully!";
+      const { packageManager } = answers;
+      const packages = config.packages.length === 1 ? [config.packages[0]] : config.packages;
+      const installOptions: Record<string, string[]> = {
         npm: ["install", "--save-dev"],
         yarn: ["add", "-D"],
         pnpm: ["install", "--save-dev"],
@@ -53,7 +53,7 @@ export default async function (plop: NodePlopAPI) {
         if (code === 0) {
           resolve(returnMessage);
         } else {
-          reject(`Error occurred while installing packages\n Exit code: ${code}`);
+          reject(new Error(`Error occurred while installing packages\n Exit code: ${code}`));
         }
       });
     });

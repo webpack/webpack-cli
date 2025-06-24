@@ -1,5 +1,5 @@
-const fs = require("fs");
-const { join } = require("path");
+const fs = require("node:fs");
+const { join } = require("node:path");
 const collectTestFolders = require("./utils");
 
 const outputDirectories = [
@@ -15,15 +15,13 @@ const outputDirectories = [
   "stats.json",
 ];
 
-const folderStrategy = (stats, file) => {
-  return stats.isDirectory() && outputDirectories.includes(file);
-};
+const folderStrategy = (stats, file) => stats.isDirectory() && outputDirectories.includes(file);
 
 const cleanupOutputDirs = () => {
   for (const outputFolder of collectTestFolders(folderStrategy)) {
-    outputDirectories.forEach((dir) =>
-      fs.rmSync(join(outputFolder, dir), { recursive: true, force: true }),
-    );
+    for (const dir of outputDirectories) {
+      fs.rmSync(join(outputFolder, dir), { recursive: true, force: true });
+    }
   }
 };
 

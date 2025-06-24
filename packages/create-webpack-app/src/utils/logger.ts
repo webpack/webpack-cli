@@ -1,18 +1,20 @@
-import { green, yellow, Color, red, cyan, blue, blueBright, greenBright } from "colorette";
-import { type Logger, type PlopActionHooksChanges, type PlopActionHooksFailures } from "../types";
-import { relative, normalize } from "path";
+import { green, yellow, type Color, red, cyan, blue, blueBright, greenBright } from "colorette";
+import {
+  type Logger,
+  type PlopActionHooksChanges,
+  type PlopActionHooksFailures,
+} from "../types.js";
+import { relative, normalize } from "node:path";
 
 const prefix: string = blueBright("create-webpack");
-const getLogger = (): Logger => {
-  return {
-    error: (val) => console.error(`[${prefix}] ⛔${red(val)}`),
-    warn: (val) => console.warn(`[${prefix}] ⚠️${yellow(val)}`),
-    info: (val) => console.info(`[${prefix}] ℹ️ ${cyan(val)}`),
-    success: (val) => console.log(`[${prefix}] ✅ ${green(val)}`),
-    log: (val) => console.log(`[${prefix}] 📃${val}`),
-    raw: (val) => console.log(val),
-  };
-};
+const getLogger = (): Logger => ({
+  error: (val) => console.error(`[${prefix}] ⛔${red(val)}`),
+  warn: (val) => console.warn(`[${prefix}] ⚠️${yellow(val)}`),
+  info: (val) => console.info(`[${prefix}] ℹ️ ${cyan(val)}`),
+  success: (val) => console.log(`[${prefix}] ✅ ${green(val)}`),
+  log: (val) => console.log(`[${prefix}] 📃${val}`),
+  raw: (val) => console.log(val),
+});
 const logger = getLogger();
 
 const typeDisplay: Record<string, Color | string> = {
@@ -30,12 +32,12 @@ const typeDisplay: Record<string, Color | string> = {
 function onSuccessHandler(change: PlopActionHooksChanges): void {
   switch (change.type) {
     case "generate-files": {
-      change.path.split("\n").forEach((line) => {
+      for (const line of change.path.split("\n")) {
         const [operationType = "", renderPath = ""] = line.split("|");
         console.log(
           `\t${typeDisplay[operationType]} ${normalize(relative(process.cwd(), renderPath))}`,
         );
-      });
+      }
       break;
     }
     case "install-dependencies": {

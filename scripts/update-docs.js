@@ -1,9 +1,9 @@
 const { sync } = require("execa");
-const { resolve } = require("path");
-const { writeFileSync } = require("fs");
+const { resolve } = require("node:path");
+const { writeFileSync } = require("node:fs");
 const { version } = require("webpack-dev-server/package.json");
 
-const majorDevServerVersion = version.split(".")[0];
+const [majorDevServerVersion] = version.split(".");
 
 try {
   const { stdout: cliOptions } = sync(

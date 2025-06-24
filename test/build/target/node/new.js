@@ -1,2 +1,3 @@
-const url = require("url");
+const url = require("node:url");
+
 console.log(url);

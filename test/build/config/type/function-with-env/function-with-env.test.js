@@ -1,6 +1,7 @@
 "use strict";
-const { existsSync } = require("fs");
-const { resolve } = require("path");
+
+const { existsSync } = require("node:fs");
+const { resolve } = require("node:path");
 const { run, readFile, isWindows } = require("../../../../utils/test-utils");
 
 describe("function configuration", () => {
@@ -22,7 +23,7 @@ describe("function configuration", () => {
     expect(existsSync(resolve(__dirname, "./dist/prod.js"))).toBeTruthy();
   });
 
-  it("is able to understand a configuration file as a function", async () => {
+  it("is able to understand a configuration file as a function #2", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "isDev"]);
 
     expect(exitCode).toBe(0);
@@ -32,7 +33,7 @@ describe("function configuration", () => {
     expect(existsSync(resolve(__dirname, "./dist/dev.js"))).toBeTruthy();
   });
 
-  it("Supports passing string in env", async () => {
+  it("supports passing string in env", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--env",
       "environment=production",
@@ -50,7 +51,7 @@ describe("function configuration", () => {
     expect(existsSync(resolve(__dirname, "./dist/Luffy.js"))).toBeTruthy();
   });
 
-  it("Supports long nested values in env", async () => {
+  it("supports long nested values in env", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--env",
       "file.name.is.this=Atsumu",
@@ -67,7 +68,7 @@ describe("function configuration", () => {
     expect(existsSync(resolve(__dirname, "./dist/Atsumu.js"))).toBeTruthy();
   });
 
-  it("Supports multiple equal in a string", async () => {
+  it("supports multiple equal in a string", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--env",
       "file=name=is=Eren",
@@ -85,7 +86,7 @@ describe("function configuration", () => {
     expect(existsSync(resolve(__dirname, "./dist/name=is=Eren.js"))).toBeTruthy();
   });
 
-  it("Supports dot at the end", async () => {
+  it("supports dot at the end", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--env",
       "name.=Hisoka",
@@ -103,7 +104,7 @@ describe("function configuration", () => {
     expect(existsSync(resolve(__dirname, "./dist/Hisoka.js"))).toBeTruthy();
   });
 
-  it("Supports dot at the end", async () => {
+  it("supports dot at the end #2", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--env",
       "name.",
@@ -121,28 +122,28 @@ describe("function configuration", () => {
     expect(existsSync(resolve(__dirname, "./dist/true.js"))).toBeTruthy();
   });
 
-  it("Supports empty string", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--env", `foo=''`]);
+  it("supports empty string", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo=''"]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain(`foo: "''"`);
+    expect(stdout).toContain("foo: \"''\"");
     // Should generate the appropriate files
     expect(existsSync(resolve(__dirname, "./dist/empty-string.js"))).toBeTruthy();
   });
 
-  it('Supports empty string with multiple "="', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--env", `foo=bar=''`]);
+  it('supports empty string with multiple "="', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo=bar=''"]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain(`foo: "bar=''"`);
+    expect(stdout).toContain("foo: \"bar=''\"");
     // Should generate the appropriate files
     expect(existsSync(resolve(__dirname, "./dist/new-empty-string.js"))).toBeTruthy();
   });
 
-  it('Supports env variable with "=" at the end', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--env", `foo=`]);
+  it('supports env variable with "=" at the end', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo="]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -150,8 +151,8 @@ describe("function configuration", () => {
     expect(stdout).toContain("foo: undefined");
   });
 
-  it('Supports env variable with "foo=undefined" at the end', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--env", `foo=undefined`]);
+  it('supports env variable with "foo=undefined" at the end', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo=undefined"]);
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -163,17 +164,18 @@ describe("function configuration", () => {
 
   // macOS/Linux specific syntax
   if (!isWindows) {
-    it("Supports empty string in shell environment", async () => {
+    it("supports empty string in shell environment", async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo=\\'\\'"], {
         shell: true,
       });
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`foo: "''"`);
+      expect(stdout).toContain("foo: \"''\"");
       // Should generate the appropriate files
       expect(existsSync(resolve(__dirname, "./dist/empty-string.js"))).toBeTruthy();
     });
+
     it("should set the variable to undefined if empty string is not escaped in shell environment", async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo=''"], {
         shell: true,
@@ -181,12 +183,13 @@ describe("function configuration", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`foo: undefined`);
+      expect(stdout).toContain("foo: undefined");
     });
-    it('Supports env variable with "=$NON_EXISTENT_VAR" at the end', async () => {
+
+    it('supports env variable with "=$NON_EXISTENT_VAR" at the end', async () => {
       const { exitCode, stderr, stdout } = await run(
         __dirname,
-        ["--env", `foo=$NON_EXISTENT_VAR`],
+        ["--env", "foo=$NON_EXISTENT_VAR"],
         {
           shell: true,
         },
@@ -219,9 +222,9 @@ describe("function configuration", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "./dist/dev.js"), "utf-8");
+      data = await readFile(resolve(__dirname, "./dist/dev.js"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     // check if the values from DefinePlugin make it to the compiled code

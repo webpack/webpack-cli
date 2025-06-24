@@ -1,3 +1,5 @@
+const path = require("node:path");
+
 module.exports = [
   new Promise((resolve) => {
     setTimeout(() => {
@@ -5,7 +7,7 @@ module.exports = [
         entry: "./a",
         name: "first",
         output: {
-          path: __dirname + "/binary",
+          path: path.resolve(__dirname, "./binary"),
           filename: "a-promise.js",
         },
       });
@@ -17,7 +19,7 @@ module.exports = [
         entry: "./b",
         name: "second",
         output: {
-          path: __dirname + "/binary",
+          path: path.resolve(__dirname, "./binary"),
           filename: "b-promise.js",
         },
       });

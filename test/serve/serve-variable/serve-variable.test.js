@@ -1,6 +1,6 @@
 "use strict";
 
-const path = require("path");
+const path = require("node:path");
 const getPort = require("get-port");
 const { runWatch, normalizeStderr } = require("../../utils/test-utils");
 

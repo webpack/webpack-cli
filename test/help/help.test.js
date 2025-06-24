@@ -11,6 +11,7 @@ describe("help", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
+  // eslint-disable-next-line jest/no-disabled-tests
   it.skip('should show help information using the "--help" option with the "verbose" value', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "verbose"]);
 
@@ -19,6 +20,7 @@ describe("help", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
+  // eslint-disable-next-line jest/no-disabled-tests
   it.skip('should show help information using the "--help" option with the "verbose" value #2', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--help=verbose"]);
 
@@ -61,7 +63,7 @@ describe("help", () => {
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).toContain("\x1b[1m");
+    expect(stdout).toContain("\u001B[1m");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
@@ -96,7 +98,7 @@ describe("help", () => {
     },
   ];
 
-  commands.forEach(({ name, alias }) => {
+  for (const { name, alias } of commands) {
     // TODO fix it
     const needSkip = name === "serve";
 
@@ -111,6 +113,7 @@ describe("help", () => {
       }
     });
 
+    // eslint-disable-next-line jest/no-disabled-tests
     it.skip(`should show help information for '${name}' command using the "--help verbose" option`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "verbose"]);
 
@@ -138,7 +141,7 @@ describe("help", () => {
 
       expect(exitCode).toBe(0);
       expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-      expect(stdout).toContain("\x1b[1m");
+      expect(stdout).toContain("\u001B[1m");
 
       if (!needSkip) {
         expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
@@ -150,7 +153,7 @@ describe("help", () => {
 
       expect(exitCode).toBe(0);
       expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-      expect(stdout).not.toContain("\x1b[1m");
+      expect(stdout).not.toContain("\u001B[1m");
 
       if (!needSkip) {
         expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
@@ -159,7 +162,7 @@ describe("help", () => {
 
     const aliases = Array.isArray(alias) ? alias : [alias];
 
-    aliases.forEach((alias) => {
+    for (const alias of aliases) {
       it(`should show help information for '${alias}' command using the "--help" option`, async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help"]);
 
@@ -171,6 +174,7 @@ describe("help", () => {
         }
       });
 
+      // eslint-disable-next-line jest/no-disabled-tests
       it.skip(`should show help information for '${alias}' command using the "--help verbose" option`, async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help", "verbose"]);
 
@@ -192,8 +196,8 @@ describe("help", () => {
           expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
         }
       });
-    });
-  });
+    }
+  }
 
   it("should show help information with options for sub commands", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["info", "--help"]);
@@ -272,7 +276,7 @@ describe("help", () => {
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).toContain("\x1b[1m");
+    expect(stdout).toContain("\u001B[1m");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
@@ -289,7 +293,7 @@ describe("help", () => {
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).toContain("\x1b[1m");
+    expect(stdout).toContain("\u001B[1m");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
@@ -418,7 +422,7 @@ describe("help", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  it('should log error for invalid flag with the "--help" option #2', async () => {
+  it('should log error for invalid flag with the "--help" option #3', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--help="]);
 
     expect(exitCode).toBe(2);

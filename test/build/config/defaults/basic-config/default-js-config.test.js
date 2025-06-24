@@ -1,12 +1,12 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 const { run } = require("../../../../utils/test-utils");
 
 describe("default config", () => {
   it("should build and not throw error when config is present but not supplied via flag", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, []);
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
     // default entry should be used
     expect(stdout).toContain("./src/index.js");

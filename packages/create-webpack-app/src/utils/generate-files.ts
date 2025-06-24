@@ -1,12 +1,12 @@
-import * as fs from "fs/promises";
+import * as fs from "node:fs/promises";
 import * as ejs from "ejs";
 import expand from "@inquirer/expand";
 import { spawn, sync } from "cross-spawn";
-import * as path from "path";
-import { fileURLToPath } from "url";
+import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 import { logger } from "./logger.js";
 import { type NodePlopAPI } from "node-plop";
-import { type Answers } from "../types";
+import { type Answers } from "../types.js";
 
 export interface AddConfig {
   type: string; // Type of action
@@ -54,7 +54,7 @@ function checkIfCodeInstalled(): boolean {
 
 function getDiff(filePath: string, tempFilePath: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const platform = process.platform;
+    const { platform } = process;
     let editor = "";
 
     // Determine the editor based on platform and availability of VS Code
@@ -62,14 +62,16 @@ function getDiff(filePath: string, tempFilePath: string): Promise<void> {
       if (checkIfCodeInstalled()) {
         editor = "code";
       } else {
-        return reject(
+        reject(
           new Error("Visual Studio Code is not installed. Please install VS Code to continue."),
         );
+        return;
       }
     } else if (platform === "darwin" || platform === "linux") {
       editor = checkIfCodeInstalled() ? "code" : "vim";
     } else {
-      return reject(new Error(`Unsupported platform: ${platform}`));
+      reject(new Error(`Unsupported platform: ${platform}`));
+      return;
     }
 
     // Construct the appropriate diff command
@@ -156,7 +158,7 @@ async function checkAndPrepareContent(config: AddConfig, isTemplate: boolean): P
     }
 
     // If the contents are identical (text or binary), return identical status
-    if (existingFileContent == newContent) {
+    if (existingFileContent === newContent) {
       return { status: "identical", content: existingFileContent };
     }
 
@@ -229,12 +231,12 @@ async function checkAndPrepareContent(config: AddConfig, isTemplate: boolean): P
     });
 
     return userChoice;
-  } else {
-    // If the file doesn't exist, create it
-    return { status: "create", content: newContent };
   }
+  // If the file doesn't exist, create it
+  return { status: "create", content: newContent };
 }
-export default async function (plop: NodePlopAPI) {
+
+export default async function generateFiles(plop: NodePlopAPI) {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
   plop.setPlopfilePath(path.resolve(__dirname, "../plopfile.js"));

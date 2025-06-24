@@ -1,8 +1,8 @@
 "use strict";
 
 const { run, runAndGetProcess, processKill } = require("../../utils/test-utils");
-const { writeFileSync } = require("fs");
-const { resolve } = require("path");
+const { writeFileSync } = require("node:fs");
+const { resolve } = require("node:path");
 
 const wordsInStatsv5 = ["asset", "index.js", "compiled successfully"];
 
@@ -36,7 +36,7 @@ describe("basic", () => {
           process.nextTick(() => {
             writeFileSync(
               resolve(__dirname, "./src/index.js"),
-              `console.log('watch flag test');\n`,
+              "console.log('watch flag test');\n",
             );
           });
 
@@ -74,7 +74,7 @@ describe("basic", () => {
           process.nextTick(() => {
             writeFileSync(
               resolve(__dirname, "./src/index.js"),
-              `console.log('watch flag test');\n`,
+              "console.log('watch flag test');\n",
             );
           });
 
@@ -114,7 +114,7 @@ describe("basic", () => {
           process.nextTick(() => {
             writeFileSync(
               resolve(__dirname, "./src/entry.js"),
-              `console.log('watch flag test');\n`,
+              "console.log('watch flag test');\n",
             );
           });
 
@@ -150,7 +150,7 @@ describe("basic", () => {
           process.nextTick(() => {
             writeFileSync(
               resolve(__dirname, "./src/index.js"),
-              `console.log('watch flag test');\n`,
+              "console.log('watch flag test');\n",
             );
           });
 
@@ -194,7 +194,7 @@ describe("basic", () => {
           process.nextTick(() => {
             writeFileSync(
               resolve(__dirname, "./src/index.js"),
-              `console.log('watch flag test');\n`,
+              "console.log('watch flag test');\n",
             );
           });
 
@@ -254,7 +254,7 @@ describe("basic", () => {
           process.nextTick(() => {
             writeFileSync(
               resolve(__dirname, "./src/index.js"),
-              `console.log('watch flag test');\n`,
+              "console.log('watch flag test');\n",
             );
           });
 
@@ -292,7 +292,7 @@ describe("basic", () => {
           process.nextTick(() => {
             writeFileSync(
               resolve(__dirname, "./src/index.js"),
-              `console.log('watch flag test');\n`,
+              "console.log('watch flag test');\n",
             );
           });
 

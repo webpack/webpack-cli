@@ -1,6 +1,6 @@
 const { run } = require("../../../utils/test-utils");
-const { existsSync } = require("fs");
-const { resolve } = require("path");
+const { existsSync } = require("node:fs");
+const { resolve } = require("node:path");
 
 describe("webpack cli", () => {
   it("should support typescript file", async () => {

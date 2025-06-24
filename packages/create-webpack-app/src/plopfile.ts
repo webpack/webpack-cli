@@ -1,15 +1,15 @@
 import { type NodePlopAPI } from "node-plop";
 
-export default async function (plop: NodePlopAPI) {
-  //init generators
+export default async function plopfile(plop: NodePlopAPI) {
+  // init generators
   await plop.load("./generators/init/default.js", {}, true);
   await plop.load("./generators/init/react.js", {}, true);
   await plop.load("./generators/init/vue.js", {}, true);
   await plop.load("./generators/init/svelte.js", {}, true);
 
-  //loader generators
+  // loader generators
   await plop.load("./generators/loader/default.js", {}, true);
 
-  //plugin generators
+  // plugin generators
   await plop.load("./generators/plugin/default.js", {}, true);
 }

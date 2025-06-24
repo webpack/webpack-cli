@@ -3,7 +3,7 @@
 const { run, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
 
 describe("'configtest' command without the configuration path option", () => {
-  it.only("should validate default configuration", async () => {
+  it("should validate default configuration", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["configtest"]);
 
     expect(exitCode).toBe(0);

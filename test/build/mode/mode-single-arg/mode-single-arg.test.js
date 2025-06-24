@@ -8,9 +8,9 @@ describe("mode flags", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).not.toContain(`mode: 'production'`);
+    expect(stdout).not.toContain("mode: 'production'");
     expect(stdout).toContain(
-      `The 'mode' option has not been set, webpack will fallback to 'production' for this value.`,
+      "The 'mode' option has not been set, webpack will fallback to 'production' for this value.",
     );
   });
 
@@ -19,7 +19,7 @@ describe("mode flags", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain(`mode: 'development'`);
+    expect(stdout).toContain("mode: 'development'");
   });
 
   it("should load a production config when --mode=production is passed", async () => {
@@ -27,7 +27,7 @@ describe("mode flags", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain(`mode: 'production'`);
+    expect(stdout).toContain("mode: 'production'");
   });
 
   it("should load a none config when --mode=none is passed", async () => {
@@ -35,7 +35,7 @@ describe("mode flags", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain(`mode: 'none'`);
+    expect(stdout).toContain("mode: 'none'");
   });
 
   it("should pick mode form NODE_ENV", async () => {
@@ -45,7 +45,7 @@ describe("mode flags", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain(`mode: 'development'`);
+    expect(stdout).toContain("mode: 'development'");
   });
 
   it("should throw error when --mode=abcd is passed", async () => {

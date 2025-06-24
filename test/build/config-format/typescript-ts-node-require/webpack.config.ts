@@ -1,5 +1,6 @@
-/** eslint-disable **/
-import * as path from "path";
+import * as path from "node:path";
+
+/* eslint-disable no-useless-concat */
 
 // cspell:ignore elopment
 const mode: string = "dev" + "elopment";

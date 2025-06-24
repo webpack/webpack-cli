@@ -1,1 +1,1 @@
-export let config = {};
+export const config = {};

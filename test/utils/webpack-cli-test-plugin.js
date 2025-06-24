@@ -1,5 +1,5 @@
 class WebpackCLITestPlugin {
-  constructor(options, showAll = true, showHooks) {
+  constructor(options, showAll = true, showHooks = false) {
     this.opts = options;
     this.showAll = showAll;
     this.showHooks = showHooks;
@@ -12,9 +12,9 @@ class WebpackCLITestPlugin {
 
         let shown = compiler;
 
-        identifiers.forEach((identifier) => {
+        for (const identifier of identifiers) {
           shown = shown[identifier];
-        });
+        }
 
         console.log(shown);
       }
@@ -28,6 +28,8 @@ class WebpackCLITestPlugin {
           const config = Object.getOwnPropertyDescriptor(compiler.options, e);
 
           console.log(config.value);
+
+          return e;
         });
       }
     });
