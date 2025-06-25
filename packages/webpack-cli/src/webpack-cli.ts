@@ -397,7 +397,7 @@ class WebpackCLI implements IWebpackCLI {
       case "esm": {
         try {
           const dynamicImportLoader: null | DynamicImport<T> =
-            require("./utils/dynamic-import-loader.ts")();
+            require("./utils/dynamic-import-loader")();
 
           if (pathToFileURL && dynamicImportLoader) {
             const urlForConfig = pathToFileURL(module);
