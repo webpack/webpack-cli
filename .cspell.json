@@ -116,6 +116,7 @@
     "**/yarn.lock",
     "**/*.png.tpl",
     "**/package-lock.json",
+    "packages/*/lib/**",
     "node_modules",
     "coverage",
     "*.log"

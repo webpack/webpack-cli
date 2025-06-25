@@ -355,7 +355,7 @@ class WebpackCLI implements IWebpackCLI {
           result = require(module);
         } catch (error) {
           const dynamicImportLoader: null | DynamicImport<T> =
-            require("./utils/dynamic-import-loader.ts")();
+            require("./utils/dynamic-import-loader")();
 
           if (
             ((error as ImportLoaderError).code === "ERR_REQUIRE_ESM" ||

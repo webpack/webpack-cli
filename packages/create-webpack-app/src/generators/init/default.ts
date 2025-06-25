@@ -3,7 +3,7 @@ import { type NodePlopAPI, type DynamicActionsFunction } from "node-plop";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-export default async function defautInitGenerator(plop: NodePlopAPI) {
+export default async function defaultInitGenerator(plop: NodePlopAPI) {
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
   // dependencies to be installed
