@@ -5,7 +5,7 @@ const stripAnsi = require("strip-ansi");
 
 const readlineQuestionMock = jest.fn();
 
-jest.mock("readline", () => ({
+jest.mock("node:readline", () => ({
   createInterface: jest.fn().mockReturnValue({
     question: readlineQuestionMock,
     close: jest.fn().mockImplementation(() => undefined),
