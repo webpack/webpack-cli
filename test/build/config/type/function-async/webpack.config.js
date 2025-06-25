@@ -1,9 +1,9 @@
-module.exports = async () => {
-  return {
-    entry: "./a",
-    output: {
-      path: __dirname + "/binary",
-      filename: "functor.js",
-    },
-  };
-};
+const path = require("node:path");
+
+module.exports = async () => ({
+  entry: "./a",
+  output: {
+    path: path.resolve(__dirname, "./binary"),
+    filename: "functor.js",
+  },
+});

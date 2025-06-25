@@ -1,6 +1,6 @@
 "use strict";
 
-const { join } = require("path");
+const { join } = require("node:path");
 const { run } = require("../utils/test-utils");
 
 describe("'-a, --additional-package <value...>' usage", () => {
@@ -89,7 +89,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     ]);
 
     expect(exitCode).toBe(2);
-    expect(stderr).toContain(`Option '-a, --additional-package <value...>' argument missing`);
+    expect(stderr).toContain("Option '-a, --additional-package <value...>' argument missing");
     expect(stdout).toBeFalsy();
   });
 });

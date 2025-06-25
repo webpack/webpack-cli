@@ -1,12 +1,13 @@
 const tests = [
-  require("./missing-packages/webpack-dev-server.test.js"),
-  require("./missing-packages/webpack.test.js"),
-  require("./missing-packages/webpack-bundle-analyzer.test.js"),
-  require("./missing-command-packages/serve.test.js"),
-  require("./missing-command-packages/info.test.js"),
-  require("./missing-command-packages/configtest.test.js"),
+  require("./missing-packages/webpack-dev-server.test"),
+  require("./missing-packages/webpack.test"),
+  require("./missing-packages/webpack-bundle-analyzer.test"),
+  require("./missing-command-packages/serve.test"),
+  require("./missing-command-packages/info.test"),
+  require("./missing-command-packages/configtest.test"),
 ];
 
+// eslint-disable-next-line unicorn/prefer-top-level-await
 (async () => {
   let isAllPassed = true;
   const passResults = [];
@@ -18,7 +19,7 @@ const tests = [
     let isPass = true;
 
     for await (const testCase of test.run) {
-      isPass = isPass && (await testCase());
+      isPass &&= await testCase();
     }
 
     if (!isPass) {
@@ -33,7 +34,7 @@ const tests = [
     }
   }
 
-  console.log(`\n\nSummary of smoketest run:`);
+  console.log("\n\nSummary of smoketest run:");
   console.log(`${failResults.length} tests failed, ${passResults.length} tests passed`);
 
   for (const result of failResults) {

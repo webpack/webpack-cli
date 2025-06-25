@@ -1,6 +1,6 @@
 "use strict";
 
-const { resolve } = require("path");
+const { resolve } = require("node:path");
 const { run, isWindows } = require("../../utils/test-utils");
 
 describe("core flags", () => {
@@ -56,8 +56,8 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--ignore-warnings", "abc"]);
 
       expect(exitCode).toBe(2);
-      expect(stderr).toContain(`Invalid value 'abc' for the '--ignore-warnings' option`);
-      expect(stderr).toContain(`Expected: 'regular expression (example: /ab?c*/)'`);
+      expect(stderr).toContain("Invalid value 'abc' for the '--ignore-warnings' option");
+      expect(stderr).toContain("Expected: 'regular expression (example: /ab?c*/)'");
       expect(stdout).toBeFalsy();
     });
   });
@@ -108,8 +108,8 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--amd"]);
 
       expect(exitCode).toBe(2);
-      expect(stderr).toContain(`Invalid value 'true' for the '--amd' option`);
-      expect(stderr).toContain(`Expected: 'false'`);
+      expect(stderr).toContain("Invalid value 'true' for the '--amd' option");
+      expect(stderr).toContain("Expected: 'false'");
       expect(stdout).toBeFalsy();
     });
 
@@ -128,7 +128,7 @@ describe("core flags", () => {
       ]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toContain(`Compiler 'compiler' starting...`);
+      expect(stderr).toContain("Compiler 'compiler' starting...");
       expect(stdout).toContain("level: 'verbose'");
     });
 
@@ -140,9 +140,9 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(2);
       expect(stderr).toContain(
-        `Invalid value 'test' for the '--infrastructure-logging-level' option`,
+        "Invalid value 'test' for the '--infrastructure-logging-level' option",
       );
-      expect(stderr).toContain(`Expected: 'none | error | warn | info | log | verbose'`);
+      expect(stderr).toContain("Expected: 'none | error | warn | info | log | verbose'");
       expect(stdout).toBeFalsy();
     });
   });
@@ -155,7 +155,7 @@ describe("core flags", () => {
       expect(stderr).toBeFalsy();
 
       if (isWindows) {
-        const windowsPath = resolve(__dirname, "./").replace(/\\/g, "\\\\");
+        const windowsPath = resolve(__dirname, "./").replaceAll("\\", "\\\\");
         expect(stdout).toContain(`'${windowsPath}'`);
       } else {
         expect(stdout).toContain(`'${resolve(__dirname, "./")}'`);
@@ -170,7 +170,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(1);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`Module not found: Error: Can't resolve './src/main.js'`);
+      expect(stdout).toContain("Module not found: Error: Can't resolve './src/main.js'");
     });
   });
 
@@ -180,7 +180,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`dependencies: [ 'lodash' ]`);
+      expect(stdout).toContain("dependencies: [ 'lodash' ]");
     });
 
     it("should allow to set multiple dependencies", async () => {
@@ -192,7 +192,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`dependencies: [ 'lodash', 'react' ]`);
+      expect(stdout).toContain("dependencies: [ 'lodash', 'react' ]");
     });
   });
 
@@ -205,7 +205,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`debug: [ 'MyPlugin' ]`);
+      expect(stdout).toContain("debug: [ 'MyPlugin' ]");
     });
 
     it("should allow RegExp value for `infrastructureLogging.debug`", async () => {
@@ -216,7 +216,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`debug: [ /MyPlugin/ ],`);
+      expect(stdout).toContain("debug: [ /MyPlugin/ ],");
     });
 
     it("should allow multiple values for `infrastructureLogging.debug`", async () => {
@@ -228,7 +228,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`debug: [ 'MyPlugin', /MyAnotherPlugin/ ]`);
+      expect(stdout).toContain("debug: [ 'MyPlugin', /MyAnotherPlugin/ ]");
     });
 
     it("should allow string value devtool option", async () => {
@@ -236,7 +236,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`devtool: 'source-map'`);
+      expect(stdout).toContain("devtool: 'source-map'");
     });
 
     it("should allow string value devtool option using alias", async () => {
@@ -244,7 +244,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`devtool: 'source-map'`);
+      expect(stdout).toContain("devtool: 'source-map'");
     });
 
     it("should allow string value devtool option using alias #1", async () => {
@@ -253,7 +253,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`devtool: 'source-map'`);
+      expect(stdout).toContain("devtool: 'source-map'");
     });
 
     it("should allow --no-devtool", async () => {
@@ -261,7 +261,7 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(0);
       expect(stderr).toBeFalsy();
-      expect(stdout).toContain(`devtool: false`);
+      expect(stdout).toContain("devtool: false");
     });
 
     it("should log error for invalid devtool value", async () => {

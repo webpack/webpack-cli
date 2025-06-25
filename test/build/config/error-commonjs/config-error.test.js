@@ -1,5 +1,6 @@
 "use strict";
-const { resolve } = require("path");
+
+const { resolve } = require("node:path");
 const { run } = require("../../../utils/test-utils");
 
 describe("config with errors", () => {
@@ -11,7 +12,7 @@ describe("config with errors", () => {
 
     expect(exitCode).toBe(2);
     expect(stderr).toContain("Invalid configuration object");
-    expect(stderr).toContain(`"development" | "production" | "none"`);
+    expect(stderr).toContain('"development" | "production" | "none"');
     expect(stdout).toBeFalsy();
   });
 

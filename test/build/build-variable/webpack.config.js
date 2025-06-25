@@ -4,6 +4,7 @@ class CustomTestPlugin {
   constructor(isInEnvironment) {
     this.isInEnvironment = isInEnvironment;
   }
+
   apply(compiler) {
     compiler.hooks.done.tap("testPlugin", () => {
       if (!isInProcess && this.isInEnvironment) {
@@ -15,10 +16,8 @@ class CustomTestPlugin {
   }
 }
 
-module.exports = (env) => {
-  return {
-    mode: "development",
-    devtool: false,
-    plugins: [new CustomTestPlugin(env.WEBPACK_BUILD)],
-  };
-};
+module.exports = (env) => ({
+  mode: "development",
+  devtool: false,
+  plugins: [new CustomTestPlugin(env.WEBPACK_BUILD)],
+});

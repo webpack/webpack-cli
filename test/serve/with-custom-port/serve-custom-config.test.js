@@ -1,6 +1,6 @@
 "use strict";
 
-const path = require("path");
+const path = require("node:path");
 const getPort = require("get-port");
 const { runWatch, normalizeStderr } = require("../../utils/test-utils");
 
@@ -13,7 +13,7 @@ describe("serve with devServer in config", () => {
     port = await getPort();
   });
 
-  it("Should pick up the host and port from config", async () => {
+  it("should pick up the host and port from config", async () => {
     const { stdout, stderr } = await runWatch(testPath, ["serve"], {
       stdoutKillStr: /webpack \d+\.\d+\.\d/,
       stderrKillStr: /Content not from webpack is served from/,
@@ -24,7 +24,7 @@ describe("serve with devServer in config", () => {
     expect(stdout).toContain("main.js");
   });
 
-  it("Port flag should override the config port", async () => {
+  it("port flag should override the config port", async () => {
     const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port], {
       stdoutKillStr: /webpack \d+\.\d+\.\d/,
       stderrKillStr: /Content not from webpack is served from/,
@@ -35,7 +35,7 @@ describe("serve with devServer in config", () => {
     expect(stdout).toContain("main.js");
   });
 
-  it("Passing hot flag works alongside other server config", async () => {
+  it("passing hot flag works alongside other server config", async () => {
     const { stdout, stderr } = await runWatch(testPath, ["serve", "--port", port, "--hot"], {
       stdoutKillStr: /webpack \d+\.\d+\.\d/,
       stderrKillStr: /Content not from webpack is served from/,

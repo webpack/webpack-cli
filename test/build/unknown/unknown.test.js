@@ -91,14 +91,6 @@ describe("unknown behaviour", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  it('should log an error if an unknown flag is passed using "i" command', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "i"]);
-
-    expect(exitCode).toBe(2);
-    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-  });
-
   it("should log error and respect --color flag", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--unknown", "--color"]);
 

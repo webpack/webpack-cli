@@ -1,8 +1,9 @@
 import { type Compiler } from "webpack";
-import { type CLIPluginOptions } from "../types";
+import { type CLIPluginOptions } from "../types.js";
 
 export class CLIPlugin {
   logger!: ReturnType<Compiler["getInfrastructureLogger"]>;
+
   options: CLIPluginOptions;
 
   constructor(options: CLIPluginOptions) {
@@ -10,10 +11,11 @@ export class CLIPlugin {
   }
 
   async setupBundleAnalyzerPlugin(compiler: Compiler) {
-    // eslint-disable-next-line n/no-extraneous-require
+    // eslint-disable-next-line import/no-extraneous-dependencies
     const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-    const bundleAnalyzerPlugin = Boolean(
-      compiler.options.plugins.find((plugin) => plugin instanceof BundleAnalyzerPlugin),
+
+    const bundleAnalyzerPlugin = compiler.options.plugins.some(
+      (plugin) => plugin instanceof BundleAnalyzerPlugin,
     );
 
     if (!bundleAnalyzerPlugin) {
@@ -25,8 +27,8 @@ export class CLIPlugin {
 
   setupProgressPlugin(compiler: Compiler) {
     const { ProgressPlugin } = compiler.webpack || require("webpack");
-    const progressPlugin = Boolean(
-      compiler.options.plugins.find((plugin) => plugin instanceof ProgressPlugin),
+    const progressPlugin = compiler.options.plugins.some(
+      (plugin) => plugin instanceof ProgressPlugin,
     );
 
     if (progressPlugin) {
@@ -48,18 +50,18 @@ export class CLIPlugin {
 
       CLIPlugin.#progressStates[idx] = [0];
 
-      options.handler = (p: number, msg: string, ...args: string[]) => {
-        CLIPlugin.#progressStates[idx] = [p, msg, ...args];
+      options.handler = (progress: number, msg: string, ...args: string[]) => {
+        CLIPlugin.#progressStates[idx] = [progress, msg, ...args];
 
         let sum = 0;
 
-        for (const [p] of CLIPlugin.#progressStates) {
-          sum += p;
+        for (const [progress] of CLIPlugin.#progressStates) {
+          sum += progress;
         }
 
         handler(
           sum / CLIPlugin.#progressStates.length,
-          `[${compiler.name ? compiler.name : idx}] ${msg}`,
+          `[${compiler.name || idx}] ${msg}`,
           ...args,
         );
       };

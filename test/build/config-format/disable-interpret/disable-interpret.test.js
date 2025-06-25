@@ -1,8 +1,9 @@
 const { run } = require("../../../utils/test-utils");
-const { existsSync, unlinkSync } = require("fs");
-const { resolve } = require("path");
+const { existsSync, unlinkSync } = require("node:fs");
+const { resolve } = require("node:path");
 
 const execa = require("execa");
+
 const { sync: spawnSync } = execa;
 
 describe("webpack cli", () => {

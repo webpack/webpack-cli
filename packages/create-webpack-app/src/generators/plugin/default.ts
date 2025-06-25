@@ -1,14 +1,14 @@
-import { type Answers, type ActionType, type FileRecord } from "../../types";
+import { type ActionType, type FileRecord, PluginAnswers } from "../../types.js";
 import { type NodePlopAPI, type DynamicActionsFunction } from "node-plop";
-import { dirname, join, resolve } from "path";
-import { fileURLToPath } from "url";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { logger } from "../../utils/logger.js";
 
-export default async function (plop: NodePlopAPI) {
+export default async function pluginGenerator(plop: NodePlopAPI) {
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
   // dependencies to be installed
-  const devDependencies: Array<string> = ["webpack-defaults"];
+  const devDependencies: string[] = ["webpack-defaults"];
 
   await plop.load("../../utils/install-dependencies.js", {}, true);
   await plop.load("../../utils/generate-files.js", {}, true);
@@ -42,7 +42,7 @@ export default async function (plop: NodePlopAPI) {
         },
       },
     ],
-    actions: function (answers: Answers) {
+    actions: function actions(answers: PluginAnswers) {
       const actions: ActionType[] = [];
       answers.projectPath = join(answers.projectPath, answers.name);
 
@@ -53,7 +53,7 @@ export default async function (plop: NodePlopAPI) {
 
       answers.pluginIdentifier = plop.getHelper("pascalCase")(answers.name);
 
-      const files: Array<FileRecord> = [
+      const files: FileRecord[] = [
         { filePath: "./package.json", fileType: "text" },
         { filePath: "./examples/simple/src/index.js", fileType: "text" },
         { filePath: "./examples/simple/src/lazy-module.js", fileType: "text" },

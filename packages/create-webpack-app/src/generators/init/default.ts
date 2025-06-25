@@ -1,13 +1,13 @@
-import { type Answers, type ActionType, type FileRecord } from "../../types";
+import { type Answers, type ActionType, type FileRecord } from "../../types.js";
 import { type NodePlopAPI, type DynamicActionsFunction } from "node-plop";
-import { dirname, join, resolve } from "path";
-import { fileURLToPath } from "url";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-export default async function (plop: NodePlopAPI) {
+export default async function defaultInitGenerator(plop: NodePlopAPI) {
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
   // dependencies to be installed
-  const devDependencies: Array<string> = ["webpack", "webpack-cli"];
+  const devDependencies: string[] = ["webpack", "webpack-cli"];
 
   await plop.load("../../utils/install-dependencies.js", {}, true);
   await plop.load("../../utils/generate-files.js", {}, true);
@@ -74,7 +74,7 @@ export default async function (plop: NodePlopAPI) {
         type: "confirm",
         name: "isPostCSS",
         message: "Do you want to use PostCSS in your project?",
-        default: (answers: Answers) => answers.cssType == "CSS only",
+        default: (answers: Answers) => answers.cssType === "CSS only",
       },
       {
         type: "list",
@@ -97,7 +97,7 @@ export default async function (plop: NodePlopAPI) {
         },
       },
     ],
-    actions: function (answers: Answers) {
+    actions: function actions(answers: Answers) {
       const actions: ActionType[] = [];
 
       switch (answers.langType) {
@@ -147,7 +147,7 @@ export default async function (plop: NodePlopAPI) {
         devDependencies.push("mini-css-extract-plugin");
       }
 
-      const files: Array<FileRecord> = [
+      const files: FileRecord[] = [
         { filePath: "./index.html", fileType: "text" },
         { filePath: "webpack.config.js", fileType: "text" },
         { filePath: "package.json", fileType: "text" },

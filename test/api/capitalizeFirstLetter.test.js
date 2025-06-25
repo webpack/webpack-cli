@@ -4,12 +4,12 @@ describe("capitalizeFirstLetter", () => {
   it("should capitalize first letter", () => {
     const cli = new CLI();
 
-    expect(cli.capitalizeFirstLetter("webpack")).toEqual("Webpack");
+    expect(cli.capitalizeFirstLetter("webpack")).toBe("Webpack");
   });
 
   it("should return an empty string on passing a non-string value", () => {
     const cli = new CLI();
 
-    expect(cli.capitalizeFirstLetter(true)).toEqual("");
+    expect(cli.capitalizeFirstLetter(true)).toBe("");
   });
 });

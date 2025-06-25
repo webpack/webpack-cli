@@ -1,8 +1,8 @@
 "use strict";
 
 const { run, readFile } = require("../../../utils/test-utils");
-const { existsSync } = require("fs");
-const { resolve } = require("path");
+const { existsSync } = require("node:fs");
+const { resolve } = require("node:path");
 
 describe("entry flag", () => {
   it("should resolve the path to src/index.cjs", async () => {
@@ -24,9 +24,9 @@ describe("entry flag", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf-8");
+      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(data).toContain("Hello from a.js");
@@ -43,9 +43,9 @@ describe("entry flag", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf-8");
+      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(data).toContain("Hello from a.js");
@@ -55,7 +55,7 @@ describe("entry flag", () => {
   it("should throw error for invalid entry file", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--entry", "./src/test.js"]);
 
-    expect(exitCode).toEqual(1);
+    expect(exitCode).toBe(1);
     expect(stderr).toBeFalsy();
     expect(stdout).toContain("Module not found: Error: Can't resolve");
   });
@@ -77,9 +77,9 @@ describe("entry flag", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf-8");
+      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(data).toContain("Hello from a.js");
@@ -101,16 +101,16 @@ describe("entry flag", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf-8");
+      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(data).toContain("Hello from a.js");
     expect(data).toContain("Hello from index.cjs");
   });
 
-  it("should resolve the path to /src/a.js as ./src/a.js", async () => {
+  it("should resolve the path to /src/a.js as ./src/a.js with entry reset", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--config",
       "entry.config.js",
@@ -126,9 +126,9 @@ describe("entry flag", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf-8");
+      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(data).toContain("Hello from a.js");
@@ -153,9 +153,9 @@ describe("entry flag", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf-8");
+      data = await readFile(resolve(__dirname, "./dist/main.js"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(data).toContain("Hello from a.js");
@@ -186,7 +186,7 @@ describe("entry flag", () => {
       "./src/test.js",
     ]);
 
-    expect(exitCode).toEqual(1);
+    expect(exitCode).toBe(1);
     expect(stderr).toBeFalsy();
     expect(stdout).toContain("Module not found: Error: Can't resolve");
   });

@@ -1,6 +1,5 @@
-import { type IWebpackCLI } from "./types";
-
-const WebpackCLI = require("./webpack-cli");
+import { type IWebpackCLI } from "./types.js";
+import WebpackCLI from "./webpack-cli.js";
 
 const runCLI = async (args: Parameters<IWebpackCLI["run"]>[0]) => {
   // Create a new instance of the CLI object
@@ -14,4 +13,7 @@ const runCLI = async (args: Parameters<IWebpackCLI["run"]>[0]) => {
   }
 };
 
+export default runCLI;
+
+// TODO remove me in the next major release and use `default` export
 module.exports = runCLI;

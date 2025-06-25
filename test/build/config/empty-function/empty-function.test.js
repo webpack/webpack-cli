@@ -1,5 +1,6 @@
 "use strict";
-const { resolve } = require("path");
+
+const { resolve } = require("node:path");
 const { run } = require("../../../utils/test-utils");
 
 describe("config file with function returning empty object", () => {

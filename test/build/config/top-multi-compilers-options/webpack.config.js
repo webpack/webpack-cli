@@ -25,19 +25,17 @@ for (let i = 0; i < 3; i++) {
   });
 }
 
-configs.push(async () => {
-  return {
-    mode: "development",
-    name: `build${3}`,
-    entry: "./index.js",
-    plugins: [
-      new SimpleProgressWebpackPlugin({
-        name: `build${3}`,
-        format: "simple",
-      }),
-    ],
-  };
-});
+configs.push(async () => ({
+  mode: "development",
+  name: `build${3}`,
+  entry: "./index.js",
+  plugins: [
+    new SimpleProgressWebpackPlugin({
+      name: `build${3}`,
+      format: "simple",
+    }),
+  ],
+}));
 
 module.exports = configs;
 module.exports.parallelism = 1;

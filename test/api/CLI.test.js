@@ -735,7 +735,7 @@ describe("CLI API", () => {
       });
     });
 
-    it("should make command with multiple Number option and default value", async () => {
+    it("should make command with multiple Number option and default value #2", async () => {
       expect.assertions(1);
 
       cli.program.commands = [];
@@ -773,9 +773,7 @@ describe("CLI API", () => {
         [
           {
             name: "custom",
-            type: () => {
-              return "function";
-            },
+            type: () => "function",
             description: "description",
           },
         ],
@@ -799,9 +797,7 @@ describe("CLI API", () => {
         [
           {
             name: "custom",
-            type: () => {
-              return "function";
-            },
+            type: () => "function",
             description: "description",
             defaultValue: "default",
           },
@@ -826,9 +822,7 @@ describe("CLI API", () => {
         [
           {
             name: "custom",
-            type: (value, previous = []) => {
-              return previous.concat([value]);
-            },
+            type: (value, previous = []) => [...previous, value],
             description: "description",
             multiple: true,
           },
@@ -855,9 +849,7 @@ describe("CLI API", () => {
         [
           {
             name: "custom",
-            type: (value, previous = []) => {
-              return previous.concat([value]);
-            },
+            type: (value, previous = []) => [...previous, value],
             description: "description",
             multiple: true,
             defaultValue: 50,
@@ -891,7 +883,7 @@ describe("CLI API", () => {
                 skipDefault = false;
               }
 
-              return [].concat(previous).concat([value]);
+              return [...[previous].flat(), value];
             },
             description: "description",
             multiple: true,
@@ -1706,7 +1698,7 @@ describe("CLI API", () => {
     let exitSpy;
 
     beforeEach(async () => {
-      consoleSpy = jest.spyOn(global.console, "log");
+      consoleSpy = jest.spyOn(globalThis.console, "log");
       exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
 
       await new Promise((resolve, reject) => {

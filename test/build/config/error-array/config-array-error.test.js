@@ -1,4 +1,5 @@
 "use strict";
+
 const { run } = require("../../../utils/test-utils");
 
 describe("config with invalid array syntax", () => {

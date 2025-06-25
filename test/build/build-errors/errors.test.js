@@ -1,7 +1,7 @@
 "use strict";
 
 const { run, readFile } = require("../../utils/test-utils");
-const { resolve } = require("path");
+const { resolve } = require("node:path");
 
 describe("errors", () => {
   it("should output by default", async () => {
@@ -22,12 +22,9 @@ describe("errors", () => {
 
     const json = JSON.parse(stdout);
 
-    expect(json["hash"]).toBeDefined();
-    expect(json["errors"]).toHaveLength(1);
-    // `message` for `webpack@5`
-    expect(json["errors"][0].message ? json["errors"][0].message : json["errors"][0]).toMatch(
-      /Can't resolve/,
-    );
+    expect(json.hash).toBeDefined();
+    expect(json.errors).toHaveLength(1);
+    expect(json.errors[0].message).toMatch(/Can't resolve/);
   });
 
   it("should store json to a file", async () => {
@@ -40,20 +37,17 @@ describe("errors", () => {
     let data;
 
     try {
-      data = await readFile(resolve(__dirname, "stats.json"), "utf-8");
+      data = await readFile(resolve(__dirname, "stats.json"), "utf8");
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(() => JSON.parse(data)).not.toThrow();
 
     const json = JSON.parse(data);
 
-    expect(json["hash"]).toBeDefined();
-    expect(json["errors"]).toHaveLength(1);
-    // `message` for `webpack@5`
-    expect(json["errors"][0].message ? json["errors"][0].message : json["errors"][0]).toMatch(
-      /Can't resolve/,
-    );
+    expect(json.hash).toBeDefined();
+    expect(json.errors).toHaveLength(1);
+    expect(json.errors[0].message).toMatch(/Can't resolve/);
   });
 });

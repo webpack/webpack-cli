@@ -1,27 +1,33 @@
 "use strict";
 
-const testUtilsPkg = require("../utils/test-utils.js");
+const testUtilsPkg = require("../utils/test-utils");
+
 const { processKill } = testUtilsPkg;
-const path = require("path");
+
+const path = require("node:path");
 const execa = require("execa");
+
 const { node: execaNode } = execa;
+
 const stripAnsi = require("strip-ansi");
 const concat = require("concat-stream");
 const { Writable } = require("readable-stream");
 
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
-const nodeVersion = parseInt(process.versions.node.split(".")[0]);
+const nodeVersion = Number.parseInt(process.versions.node.split(".")[0], 10);
+
+// eslint-disable-next-line jsdoc/no-restricted-syntax
+/** @typedef {Record<string, any>} TestOptions */
 
 function createPathDependentUtils(cli) {
   const CLI_PATH = path.resolve(__dirname, `../../packages/${cli}/bin/cli.js`);
 
   /**
    * Webpack CLI test runner.
-   *
    * @param {string} cwd The path to folder that contains test
    * @param {Array<string>} args Array of arguments
-   * @param {Object<string, any>} options Options for tests
-   * @returns {Promise}
+   * @param {TestOptions} options Options for tests
+   * @returns {Promise<import("execa").ExecaChildProcess>} child process
    */
   const createProcess = (cwd, args, options) => {
     const { nodeOptions = [] } = options;
@@ -39,42 +45,35 @@ function createPathDependentUtils(cli) {
 
   /**
    * Run the webpack CLI for a test case.
-   *
    * @param {string} cwd The path to folder that contains test
    * @param {Array<string>} args Array of arguments
-   * @param {Object<string, any>} options Options for tests
-   * @returns {Promise}
+   * @param {TestOptions} options Options for tests
+   * @returns {Promise<import("execa").ExecaChildProcess>} child process
    */
-  const run = async (cwd, args = [], options = {}) => {
-    return createProcess(cwd, args, options);
-  };
+  const run = async (cwd, args = [], options = {}) => createProcess(cwd, args, options);
 
   /**
    * Run the webpack CLI for a test case and get process.
-   *
    * @param {string} cwd The path to folder that contains test
    * @param {Array<string>} args Array of arguments
-   * @param {Object<string, any>} options Options for tests
-   * @returns {Promise}
+   * @param {TestOptions} options Options for tests
+   * @returns {Promise<import("execa").ExecaChildProcess>} child process
    */
-  const runAndGetProcess = (cwd, args = [], options = {}) => {
-    return createProcess(cwd, args, options);
-  };
+  const runAndGetProcess = (cwd, args = [], options = {}) => createProcess(cwd, args, options);
 
   /**
    * Run the webpack CLI in watch mode for a test case.
-   *
    * @param {string} cwd The path to folder that contains test
    * @param {Array<string>} args Array of arguments
-   * @param {Object<string, any>} options Options for tests
-   * @returns {Object} The webpack output or Promise when nodeOptions are present
+   * @param {TestOptions} options Options for tests
+   * @returns {Promise<TestOptions>} The webpack output or Promise when nodeOptions are present
    */
-  const runWatch = (cwd, args = [], options = {}) => {
-    return new Promise((resolve, reject) => {
+  const runWatch = (cwd, args = [], options = {}) =>
+    new Promise((resolve, reject) => {
       const process = createProcess(cwd, args, options);
       const outputKillStr = options.killString || /webpack \d+\.\d+\.\d/;
-      const stdoutKillStr = options.stdoutKillStr;
-      const stderrKillStr = options.stderrKillStr;
+      const { stdoutKillStr } = options;
+      const { stderrKillStr } = options;
 
       let isStdoutDone = false;
       let isStderrDone = false;
@@ -127,17 +126,18 @@ function createPathDependentUtils(cli) {
           reject(error);
         });
     });
-  };
-  /*
+
+  /**
    * runPromptWithAnswers
    * @param {string} location of current working directory
    * @param {string[]} args CLI args to pass in
    * @param {string[]} answers to be passed to stdout for inquirer question
+   * @returns {Promise<{ stdout: string, stderr: string }>} result
    */
   const runPromptWithAnswers = (location, args, answers) => {
     const process = runAndGetProcess(location, args);
 
-    process.stdin.setDefaultEncoding("utf-8");
+    process.stdin.setDefaultEncoding("utf8");
 
     const delay = 1000;
     let outputTimeout;

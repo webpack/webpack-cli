@@ -26,7 +26,7 @@ describe("progress flag", () => {
 
     expect(exitCode).toBe(2);
     expect(stderr).toContain(
-      `'unknown' is an invalid value for the --progress option. Only 'profile' is allowed.`,
+      "'unknown' is an invalid value for the --progress option. Only 'profile' is allowed.",
     );
     expect(stdout).toBeFalsy();
   });
@@ -38,7 +38,7 @@ describe("progress flag", () => {
       "--progress",
     ]);
 
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr).not.toMatch(/\[webpack\.Progress] \d+ ms setup/);
     expect(stderr).toContain("[webpack.Progress] 100%");
     expect(stdout).toContain("main.js");

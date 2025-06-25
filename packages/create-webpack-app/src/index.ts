@@ -1,11 +1,11 @@
 import { Command } from "commander";
-import { resolve, dirname } from "path";
+import { resolve, dirname } from "node:path";
 import select from "@inquirer/select";
 import nodePlop, { type PlopGenerator } from "node-plop";
-import { fileURLToPath } from "url";
+import { fileURLToPath } from "node:url";
 
 import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger.js";
-import { type Answers, type InitOptions, type LoaderOptions, type PluginOptions } from "./types";
+import { type Answers, type InitOptions, type LoaderOptions, type PluginOptions } from "./types.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -74,7 +74,7 @@ program
   .argument("[projectPath]", "Path to create the project")
   .option("-f, --force", "Skip the prompt and use the default values", false)
   .option("-t --template <template>", "Template to be used for scaffolding", "default")
-  .action(async function (projectPath, opts: InitOptions) {
+  .action(async (projectPath, opts: InitOptions) => {
     const { force } = opts;
     let templateOption = opts.template;
     let generator = initGenerators[templateOption];
@@ -133,7 +133,7 @@ program
   .description("Initialize a new loader template.")
   .argument("[projectPath]", "Path to create the project")
   .option("-t --template <template>", "Template to be used for scaffolding", "default")
-  .action(async function (projectPath, opts: LoaderOptions) {
+  .action(async (projectPath, opts: LoaderOptions) => {
     let templateOption = opts.template;
     let generator = loaderGenerators[templateOption];
 
@@ -174,7 +174,7 @@ program
   .description("Initialize a new plugin template.")
   .argument("[projectPath]", "Path to create the project")
   .option("-t --template <template>", "Template to be used for scaffolding", "default")
-  .action(async function (projectPath, opts: PluginOptions) {
+  .action(async (projectPath, opts: PluginOptions) => {
     let templateOption = opts.template;
     let generator = pluginGenerators[templateOption];
 

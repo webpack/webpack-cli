@@ -1,7 +1,8 @@
-const path = require("path");
+const path = require("node:path");
 
 const webpack = require("webpack");
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
+
 const [webpackVersion] = webpack.version;
 
 const snapshotExtension = `.snap.webpack${webpackVersion}`;

@@ -1,6 +1,7 @@
-import { type IWebpackCLI } from "./types";
-export type * from "./types";
+import WebpackCLI from "./webpack-cli.js";
 
-const CLI: IWebpackCLI = require("./webpack-cli");
+export type * from "./types.js";
+export { default } from "./webpack-cli.js";
 
-module.exports = CLI;
+// TODO remove me in the next major release and use `default` export
+module.exports = WebpackCLI;

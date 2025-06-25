@@ -1,7 +1,6 @@
-// eslint-disable-next-line n/no-unpublished-require
 const { run } = require("../../../utils/test-utils");
-const { existsSync } = require("fs");
-const { resolve } = require("path");
+const { existsSync } = require("node:fs");
+const { resolve } = require("node:path");
 
 describe("webpack cli", () => {
   it("should support typescript esnext file", async () => {

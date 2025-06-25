@@ -1,8 +1,9 @@
-const { existsSync, mkdirSync } = require("fs");
-const { join, resolve } = require("path");
+const { existsSync, mkdirSync } = require("node:fs");
+const { join, resolve } = require("node:path");
 const { uniqueDirectoryForTest, normalizeStdout, normalizeStderr } = require("../test.utils");
 const { createPathDependentUtils } = require("../test.utils");
 
+// eslint-disable-next-line jest/no-confusing-set-timeout
 jest.setTimeout(480000);
 
 const webpackCliUtils = createPathDependentUtils("webpack-cli");
@@ -10,8 +11,8 @@ const createWebpackAppUtils = createPathDependentUtils("create-webpack-app");
 const { runPromptWithAnswers } = createWebpackAppUtils;
 const { run } = webpackCliUtils;
 
-const ENTER = "\x0D";
-const DOWN = "\x1B\x5B\x42";
+const ENTER = "\u000D";
+const DOWN = "\u001B\u005B\u0042";
 
 const firstPrompt = "? Plugin name";
 const dataForTests = (rootAssetsPath) => ({
@@ -56,9 +57,9 @@ describe("plugin command", () => {
     }
 
     // Test regressively files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(defaultPluginPath, [
@@ -88,9 +89,9 @@ describe("plugin command", () => {
     }
 
     // Test regressively files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(join(pluginPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(pluginPath, [
@@ -120,9 +121,9 @@ describe("plugin command", () => {
     }
 
     // Test regressively files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(join(customPluginPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(customPluginPath, [
@@ -158,9 +159,9 @@ describe("plugin command", () => {
     }
 
     // Test regressively files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(join(customPluginPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(customPluginPath, [
@@ -197,9 +198,9 @@ describe("plugin command", () => {
     }
 
     // Test regressively files are scaffolded
-    defaultTemplateFiles.forEach((file) => {
+    for (const file of defaultTemplateFiles) {
       expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(defaultPluginPath, [
@@ -234,9 +235,9 @@ describe("plugin command", () => {
       "yarn.lock",
     ];
 
-    files.forEach((file) => {
+    for (const file of files) {
       expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
-    });
+    }
 
     // Check if the generated plugin works successfully
     const { stdout: stdout2 } = await run(defaultPluginPath, [

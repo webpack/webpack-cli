@@ -17,13 +17,6 @@ describe('"bail" option', () => {
     expect(stdout).toBeTruthy();
   });
 
-  it('should not log warning without the "bail" option', async () => {
-    const { stderr, stdout } = await runWatch(__dirname, ["-c", "no-bail-webpack.config.js"]);
-
-    expect(stderr).toBeFalsy();
-    expect(stdout).toBeTruthy();
-  });
-
   it("should log warning in watch mode", async () => {
     const { stderr, stdout } = await runWatch(__dirname, [
       "-c",
@@ -32,19 +25,19 @@ describe('"bail" option', () => {
     ]);
 
     expect(stderr).toContain(
-      `You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.`,
+      'You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.',
     );
     expect(stdout).toBeTruthy();
   });
 
-  it("should log warning in watch mode", async () => {
+  it("should log warning in watch mode #2", async () => {
     const { stderr, stdout } = await runWatch(__dirname, [
       "-c",
       "bail-and-watch-webpack.config.js",
     ]);
 
     expect(stderr).toContain(
-      `You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.`,
+      'You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.',
     );
     expect(stdout).toBeTruthy();
   });
@@ -53,7 +46,7 @@ describe('"bail" option', () => {
     const { stderr, stdout } = await runWatch(__dirname, ["-c", "multi-webpack.config.js"]);
 
     expect(stderr).toContain(
-      `You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.`,
+      'You are using "bail" with "watch". "bail" will still exit webpack when the first error is found.',
     );
     expect(stdout).toBeTruthy();
   });

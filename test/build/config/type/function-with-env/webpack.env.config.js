@@ -7,7 +7,7 @@ module.exports = (env) => {
     return {
       entry: "./a.js",
       output: {
-        filename: `${customName ? customName : appTitle}.js`,
+        filename: `${customName || appTitle}.js`,
       },
     };
   }

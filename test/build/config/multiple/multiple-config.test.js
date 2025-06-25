@@ -12,7 +12,7 @@ describe("multiple configuration files", () => {
     ]);
 
     // Should contain the correct exit code
-    expect(exitCode).toEqual(0);
+    expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
     // Should spawn multiple compilers
     expect(stdout).toContain("amd:");

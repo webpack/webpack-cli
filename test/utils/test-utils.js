@@ -1,12 +1,14 @@
 "use strict";
 
-const os = require("os");
+const os = require("node:os");
 const stripAnsi = require("strip-ansi");
-const path = require("path");
-const fs = require("fs");
+const path = require("node:path");
+const fs = require("node:fs");
 const execa = require("execa");
-const { exec } = require("child_process");
+const { exec } = require("node:child_process");
+
 const { node: execaNode } = execa;
+
 const { Writable } = require("readable-stream");
 const concat = require("concat-stream");
 const { cli } = require("webpack");
@@ -20,26 +22,26 @@ const hyphenToUpperCase = (name) => {
     return name;
   }
 
-  return name.replace(/-([a-z])/g, function (g) {
-    return g[1].toUpperCase();
-  });
+  return name.replaceAll(/-([a-z])/g, (g) => g[1].toUpperCase());
 };
 
 const processKill = (process) => {
   if (isWindows) {
-    exec("taskkill /pid " + process.pid + " /T /F");
+    exec(`taskkill /pid ${process.pid} /T /F`);
   } else {
     process.kill();
   }
 };
 
+// eslint-disable-next-line jsdoc/no-restricted-syntax
+/** @typedef {Record<string, any>} TestOptions */
+
 /**
  * Webpack CLI test runner.
- *
  * @param {string} cwd The path to folder that contains test
  * @param {Array<string>} args Array of arguments
- * @param {Object<string, any>} options Options for tests
- * @returns {Promise}
+ * @param {TestOptions} options Options for tests
+ * @returns {Promise<import("execa").ExecaChildProcess>} child process
  */
 const createProcess = (cwd, args, options) => {
   const { nodeOptions = [] } = options;
@@ -57,42 +59,35 @@ const createProcess = (cwd, args, options) => {
 
 /**
  * Run the webpack CLI for a test case.
- *
  * @param {string} cwd The path to folder that contains test
  * @param {Array<string>} args Array of arguments
- * @param {Object<string, any>} options Options for tests
- * @returns {Promise}
+ * @param {TestOptions} options Options for tests
+ * @returns {Promise<import("execa").ExecaChildProcess>} child process
  */
-const run = async (cwd, args = [], options = {}) => {
-  return createProcess(cwd, args, options);
-};
+const run = async (cwd, args = [], options = {}) => createProcess(cwd, args, options);
 
 /**
  * Run the webpack CLI for a test case and get process.
- *
  * @param {string} cwd The path to folder that contains test
  * @param {Array<string>} args Array of arguments
- * @param {Object<string, any>} options Options for tests
- * @returns {Promise}
+ * @param {TestOptions} options Options for tests
+ * @returns {Promise<import("execa").ExecaChildProcess>} child process
  */
-const runAndGetProcess = (cwd, args = [], options = {}) => {
-  return createProcess(cwd, args, options);
-};
+const runAndGetProcess = (cwd, args = [], options = {}) => createProcess(cwd, args, options);
 
 /**
  * Run the webpack CLI in watch mode for a test case.
- *
  * @param {string} cwd The path to folder that contains test
  * @param {Array<string>} args Array of arguments
- * @param {Object<string, any>} options Options for tests
- * @returns {Object} The webpack output or Promise when nodeOptions are present
+ * @param {TestOptions} options Options for tests
+ * @returns {Promise<TestOptions>} The webpack output or Promise when nodeOptions are present
  */
-const runWatch = (cwd, args = [], options = {}) => {
-  return new Promise((resolve, reject) => {
+const runWatch = (cwd, args = [], options = {}) =>
+  new Promise((resolve, reject) => {
     const process = createProcess(cwd, args, options);
     const outputKillStr = options.killString || /webpack \d+\.\d+\.\d/;
-    const stdoutKillStr = options.stdoutKillStr;
-    const stderrKillStr = options.stderrKillStr;
+    const { stdoutKillStr } = options;
+    const { stderrKillStr } = options;
 
     let isStdoutDone = false;
     let isStderrDone = false;
@@ -145,18 +140,18 @@ const runWatch = (cwd, args = [], options = {}) => {
         reject(error);
       });
   });
-};
 
 /**
  * runPromptWithAnswers
  * @param {string} location location of current working directory
  * @param {string[]} args CLI args to pass in
  * @param {string[]} answers answers to be passed to stdout for inquirer question
+ * @returns {{ stdout: string, stderr: string }} result
  */
 const runPromptWithAnswers = (location, args, answers) => {
   const process = runAndGetProcess(location, args);
 
-  process.stdin.setDefaultEncoding("utf-8");
+  process.stdin.setDefaultEncoding("utf8");
 
   const delay = 2000;
   let outputTimeout;
@@ -235,24 +230,21 @@ const runPromptWithAnswers = (location, args, answers) => {
   });
 };
 
-const normalizeVersions = (output) => {
-  return output.replace(
+const normalizeVersions = (output) =>
+  output.replaceAll(
     /(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gi,
     "x.x.x",
   );
-};
 
-const normalizeCwd = (output) => {
-  return output
-    .replace(/\\/g, "/")
-    .replace(new RegExp(process.cwd().replace(/\\/g, "/"), "g"), "<cwd>");
-};
+const normalizeCwd = (output) =>
+  output
+    .replaceAll("\\", "/")
+    .replaceAll(new RegExp(process.cwd().replaceAll("\\", "/"), "g"), "<cwd>");
 
-const normalizeError = (output) => {
-  return output
+const normalizeError = (output) =>
+  output
     .replace(/SyntaxError: .+/, "SyntaxError: <error-message>")
-    .replace(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
-};
+    .replaceAll(/\s+at .+(}|\)|\d)/gs, "\n    at stack");
 
 const normalizeStdout = (stdout) => {
   if (typeof stdout !== "string") {
@@ -286,9 +278,9 @@ const normalizeStderr = (stderr) => {
   let normalizedStderr = stripAnsi(stderr);
   normalizedStderr = normalizeCwd(normalizedStderr);
 
-  normalizedStderr = normalizedStderr.replace(IPV4, "x.x.x.x");
-  normalizedStderr = normalizedStderr.replace(IPV6, "[x:x:x:x:x:x:x:x]");
-  normalizedStderr = normalizedStderr.replace(/:[0-9]+\//g, ":<port>/");
+  normalizedStderr = normalizedStderr.replaceAll(IPV4, "x.x.x.x");
+  normalizedStderr = normalizedStderr.replaceAll(IPV6, "[x:x:x:x:x:x:x:x]");
+  normalizedStderr = normalizedStderr.replaceAll(/:[0-9]+\//g, ":<port>/");
 
   if (!/On Your Network \(IPv6\)/.test(stderr)) {
     // Github Actions doesn't' support IPv6 on ubuntu in some cases

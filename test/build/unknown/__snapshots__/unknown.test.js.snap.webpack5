@@ -118,14 +118,7 @@ exports[`unknown behaviour should log an error if an unknown flag is passed usin
 [webpack-cli] Run 'webpack --help' to see available commands and options"
 `;
 
-exports[`unknown behaviour should log an error if an unknown flag is passed using "i" command: stderr 2`] = `
-"[webpack-cli] Error: Unknown option '--unknown'
-[webpack-cli] Run 'webpack --help' to see available commands and options"
-`;
-
 exports[`unknown behaviour should log an error if an unknown flag is passed using "i" command: stdout 1`] = `""`;
-
-exports[`unknown behaviour should log an error if an unknown flag is passed using "i" command: stdout 2`] = `""`;
 
 exports[`unknown behaviour should log an error if an unknown flag is passed using "info" command: stderr 1`] = `
 "[webpack-cli] Error: Unknown option '--unknown'

@@ -1,4 +1,4 @@
-const { resolve } = require("path");
+const { resolve } = require("node:path");
 const WebpackCLI = require("../../../packages/webpack-cli/lib/webpack-cli");
 const config1 = require("./webpack.config1.cjs");
 const config2 = require("./webpack.config2.cjs");
@@ -7,7 +7,7 @@ const promiseConfig = require("./webpack.promise.config.cjs");
 
 const cli = new WebpackCLI();
 
-describe("resolveConfig", function () {
+describe("resolveConfig", () => {
   it("should handle merge properly", async () => {
     const result = await cli.loadConfig({
       merge: true,

@@ -1,10 +1,11 @@
 "use strict";
 
+const path = require("node:path");
 const { run } = require("../../utils/test-utils");
 
 describe("extends property", () => {
   it("extends a provided webpack config correctly", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/simple-case");
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./simple-case"));
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -15,7 +16,7 @@ describe("extends property", () => {
   });
 
   it("extends a provided array of webpack configs correctly", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/multiple-extends");
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./multiple-extends"));
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -27,7 +28,9 @@ describe("extends property", () => {
   });
 
   it("extends a multilevel config correctly", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/multi-level-extends");
+    const { exitCode, stderr, stdout } = await run(
+      path.resolve(__dirname, "./multi-level-extends"),
+    );
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -39,7 +42,7 @@ describe("extends property", () => {
   });
 
   it("extends a provided webpack config for multiple configs correctly", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/multiple-configs");
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./multiple-configs"));
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -53,7 +56,7 @@ describe("extends property", () => {
   });
 
   it("extends a provided webpack config for multiple configs correctly #2", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/multiple-configs2");
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./multiple-configs2"));
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -66,12 +69,10 @@ describe("extends property", () => {
   });
 
   it("multiple extends a provided webpack config passed in the cli correctly", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/extends-cli-option", [
-      "--extends",
-      "./base.webpack.config.js",
-      "--extends",
-      "./deep.base.webpack.config.js",
-    ]);
+    const { exitCode, stderr, stdout } = await run(
+      path.resolve(__dirname, "./extends-cli-option"),
+      ["--extends", "./base.webpack.config.js", "--extends", "./deep.base.webpack.config.js"],
+    );
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
@@ -84,7 +85,7 @@ describe("extends property", () => {
   });
 
   it("should work with multiple extends and multiple configuration", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/multiple-configs1", [
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./multiple-configs1"), [
       "--extends",
       "./base.webpack.config.js",
       "--extends",
@@ -101,8 +102,8 @@ describe("extends property", () => {
     expect(stdout).toContain("topLevelAwait: true");
   });
 
-  it("CLI `extends` should override `extends` in a configuration", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/simple-case", [
+  it("cLI `extends` should override `extends` in a configuration", async () => {
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./simple-case"), [
       "--extends",
       "./override.config.js",
     ]);
@@ -116,7 +117,7 @@ describe("extends property", () => {
   });
 
   it("should throw an error on recursive", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/recursive-extends");
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./recursive-extends"));
 
     expect(exitCode).toBe(2);
     expect(stderr).toContain("Recursive configuration detected, exiting");
@@ -124,7 +125,7 @@ describe("extends property", () => {
   });
 
   it("should throw an error on recursive #2", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname + "/recursive-extends", [
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./recursive-extends"), [
       "--config",
       "other.config.js",
     ]);

@@ -10,7 +10,7 @@ module.exports = (env) => {
       },
     };
   }
-  if (env.foo === `''`) {
+  if (env.foo === "''") {
     return {
       entry: "./a.js",
       output: {
@@ -18,7 +18,7 @@ module.exports = (env) => {
       },
     };
   }
-  if (env.foo === `bar=''`) {
+  if (env.foo === "bar=''") {
     return {
       entry: "./a.js",
       output: {

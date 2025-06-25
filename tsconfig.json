@@ -3,9 +3,9 @@
   "files": [],
   "compilerOptions": {
     "skipLibCheck": true,
-    "target": "es2017",
+    "target": "ES2022",
     "module": "commonjs",
-    "lib": ["es6", "es2017"],
+    "lib": ["ES2022"],
     "strict": true,
     "rootDir": ".",
     "outDir": "lib",

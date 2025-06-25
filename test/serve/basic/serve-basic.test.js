@@ -1,6 +1,6 @@
 "use strict";
 
-const path = require("path");
+const path = require("node:path");
 const getPort = require("get-port");
 const { runWatch, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
 
@@ -92,6 +92,7 @@ describe("basic serve usage", () => {
   });
 
   // TODO need fix in future, edge case
+  // eslint-disable-next-line jest/no-disabled-tests
   it.skip("should work in multi compiler mode with multiple dev servers", async () => {
     const { stderr, stdout } = await runWatch(
       __dirname,
@@ -489,8 +490,8 @@ describe("basic serve usage", () => {
       },
     );
 
-    expect(normalizeStderr(stderr).includes("log.config.js")).toBe(true);
-    expect(normalizeStdout(stdout).includes("compiled successfully")).toBe(true);
+    expect(normalizeStderr(stderr)).toContain("log.config.js");
+    expect(normalizeStdout(stdout)).toContain("compiled successfully");
   });
 
   it("should throw error when same ports in multicompiler", async () => {

@@ -1,5 +1,8 @@
-// eslint-disable-next-line
-export type Answers = Record<string, any>;
+import { type ActionType as ActionTypeBase, type CustomActionConfig } from "node-plop";
+
+export type Answers = { projectPath: string } & Record<string, unknown>;
+export type LoaderAnswers = { name: string; projectPath: string } & Record<string, unknown>;
+export type PluginAnswers = { name: string; projectPath: string } & Record<string, unknown>;
 
 export interface PlopActionHooksFailures {
   type: string;
@@ -12,18 +15,24 @@ export interface PlopActionHooksChanges {
   type: string;
   path: string;
 }
-import { ActionType as ActionTypeBase, CustomActionConfig } from "node-plop";
 // extended ACtionType to include custom action config as previously it was not recognizing
 export type ActionType = ActionTypeBase | CustomActionConfig<string>;
 
-export type InitOptions = { template: string; force?: boolean };
-export type LoaderOptions = { template: string };
-export type PluginOptions = { template: string };
+export interface InitOptions {
+  template: string;
+  force?: boolean;
+}
+export interface LoaderOptions {
+  template: string;
+}
+export interface PluginOptions {
+  template: string;
+}
 
-export type FileRecord = {
+export interface FileRecord {
   filePath: string;
   fileType: string;
-};
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type LogHandler = (value: any) => void;

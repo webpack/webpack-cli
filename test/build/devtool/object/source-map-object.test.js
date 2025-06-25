@@ -1,6 +1,7 @@
 "use strict";
-const { existsSync } = require("fs");
-const { resolve } = require("path");
+
+const { existsSync } = require("node:fs");
+const { resolve } = require("node:path");
 const { run, readdir } = require("../../../utils/test-utils");
 
 describe("source-map object", () => {
@@ -16,7 +17,7 @@ describe("source-map object", () => {
     try {
       files = await readdir(resolve(__dirname, "dist"));
     } catch (error) {
-      expect(error).toBe(null);
+      expect(error).toBeNull();
     }
 
     expect(files.length).toBeGreaterThanOrEqual(1);
