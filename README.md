@@ -74,7 +74,7 @@ Otherwise, you would need to install webpack CLI and the packages you want to us
 If you want to create a fresh webpack project run the command as stated below:
 
 ```sh
-npx create-webpack-app init
+npx create-new-webpack-app init
 ```
 
 You will then be prompted for some questions about which features you want to use, such as `scss`, `typescript`, `PWA` support or other features.
