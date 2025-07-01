@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, normalizeStderr, normalizeStdout } = require("../utils/test-utils");
+const { normalizeStderr, normalizeStdout, run } = require("../utils/test-utils");
 
 describe("help", () => {
   it('should show help information using the "--help" option', async () => {

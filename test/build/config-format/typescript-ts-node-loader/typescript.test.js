@@ -1,6 +1,6 @@
-const { run } = require("../../../utils/test-utils");
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
+const { run } = require("../../../utils/test-utils");
 
 describe("webpack cli", () => {
   it("should support typescript esnext file", async () => {

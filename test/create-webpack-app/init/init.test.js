@@ -1,8 +1,8 @@
+const { existsSync, mkdirSync, readFileSync } = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
-const { mkdirSync, existsSync, readFileSync } = require("node:fs");
 const { join, resolve } = require("node:path");
-const { createPathDependentUtils, uniqueDirectoryForTest, isWindows } = require("../test.utils");
+const { createPathDependentUtils, isWindows, uniqueDirectoryForTest } = require("../test.utils");
 
 // eslint-disable-next-line jest/no-confusing-set-timeout
 jest.setTimeout(480000);

@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run, normalizeStdout, normalizeStderr } = require("../../utils/test-utils");
+const { normalizeStderr, normalizeStdout, run } = require("../../utils/test-utils");
 
 describe("output flag named bundles", () => {
   it("should output file given as flag instead of in configuration", async () => {

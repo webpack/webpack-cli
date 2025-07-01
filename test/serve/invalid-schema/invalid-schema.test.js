@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
+const { normalizeStderr, normalizeStdout, run } = require("../../utils/test-utils");
 
 describe("invalid schema", () => {
   it("should log webpack error and exit process on invalid config", async () => {

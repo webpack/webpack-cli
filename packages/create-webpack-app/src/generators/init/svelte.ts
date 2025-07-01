@@ -1,7 +1,7 @@
-import { type Answers, type ActionType, type FileRecord } from "../../types.js";
-import { type NodePlopAPI, type DynamicActionsFunction } from "node-plop";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { type DynamicActionsFunction, type NodePlopAPI } from "node-plop";
+import { type ActionType, type Answers, type FileRecord } from "../../types.js";
 
 export default async function svelteInitGenerator(plop: NodePlopAPI) {
   const __dirname = dirname(fileURLToPath(import.meta.url));

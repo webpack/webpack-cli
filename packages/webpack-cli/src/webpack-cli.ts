@@ -1,68 +1,67 @@
+import { type stringifyChunked } from "@discoveryjs/json-ext";
+import { type Help, type ParseOptions } from "commander";
 import {
-  type IWebpackCLI,
-  type WebpackCLICommandOption,
-  type WebpackCLIBuiltInOption,
-  type WebpackCLIBuiltInFlag,
-  type WebpackCLIColors,
-  type WebpackCLIConfig,
-  type WebpackCLIExternalCommandInfo,
-  type WebpackCLIOptions,
-  type WebpackCLICommand,
-  type WebpackCLICommandOptions,
-  type WebpackCLIMainOption,
-  type WebpackCLILogger,
-  type WebpackDevServerOptions,
-  type WebpackRunOptions,
-  type WebpackCompiler,
-  type WebpackConfiguration,
+  type Compiler,
+  type MultiCompiler,
+  type MultiStats,
+  type Stats,
+  type StatsOptions,
+  type WebpackError,
+  default as webpack,
+} from "webpack";
+import type webpackMerge from "webpack-merge";
+
+import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin.js";
+import {
+  type Argument,
   type Argv,
   type BasicPrimitive,
+  type CLIPluginOptions,
   type CallableWebpackConfiguration,
   type Callback,
-  type CLIPluginOptions,
   type CommandAction,
-  type LoadableWebpackConfiguration,
   type DynamicImport,
-  type FileSystemCacheOptions,
   type EnumValue,
+  type FileSystemCacheOptions,
+  type IWebpackCLI,
   type ImportLoaderError,
   type Instantiable,
   type JsonExt,
+  type LoadableWebpackConfiguration,
   type ModuleName,
   type PackageInstallOptions,
   type PackageManager,
   type Path,
+  type PotentialPromise,
+  type Problem,
   type ProcessedArguments,
   type PromptOptions,
-  type PotentialPromise,
   type Rechoir,
   type RechoirError,
-  type Argument,
-  type Problem,
   type StringsKeys,
+  type WebpackCLIBuiltInFlag,
+  type WebpackCLIBuiltInOption,
+  type WebpackCLIColors,
+  type WebpackCLICommand,
+  type WebpackCLICommandOption,
+  type WebpackCLICommandOptions,
+  type WebpackCLIConfig,
+  type WebpackCLIExternalCommandInfo,
+  type WebpackCLILogger,
+  type WebpackCLIMainOption,
+  type WebpackCLIOptions,
+  type WebpackCompiler,
+  type WebpackConfiguration,
+  type WebpackDevServerOptions,
+  type WebpackRunOptions,
 } from "./types.js";
 
-import type webpackMerge from "webpack-merge";
-import {
-  default as webpack,
-  type Compiler,
-  type MultiCompiler,
-  type WebpackError,
-  type StatsOptions,
-  type Stats,
-  type MultiStats,
-} from "webpack";
-import { type stringifyChunked } from "@discoveryjs/json-ext";
-import { type Help, type ParseOptions } from "commander";
-
-import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin.js";
-
 const fs = require("node:fs");
-const { Readable } = require("node:stream");
 const path = require("node:path");
+const { Readable } = require("node:stream");
 const { pathToFileURL } = require("node:url");
 const util = require("node:util");
-const { program, Option } = require("commander");
+const { Option, program } = require("commander");
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM

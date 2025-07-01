@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run, isWindows } = require("../../utils/test-utils");
+const { isWindows, run } = require("../../utils/test-utils");
 
 describe("core flags", () => {
   describe("boolean type flags", () => {

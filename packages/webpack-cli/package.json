@@ -2,24 +2,6 @@
   "name": "webpack-cli",
   "version": "6.0.1",
   "description": "CLI for webpack & friends",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/webpack/webpack-cli.git"
-  },
-  "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli",
-  "bugs": "https://github.com/webpack/webpack-cli/issues",
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/webpack"
-  },
-  "bin": {
-    "webpack-cli": "./bin/cli.js"
-  },
-  "main": "./lib/index.js",
-  "engines": {
-    "node": ">=18.12.0"
-  },
   "keywords": [
     "webpack",
     "cli",
@@ -28,6 +10,21 @@
     "bundler",
     "web"
   ],
+  "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli",
+  "bugs": "https://github.com/webpack/webpack-cli/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack/webpack-cli.git"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/webpack"
+  },
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "bin": {
+    "webpack-cli": "./bin/cli.js"
+  },
   "files": [
     "bin",
     "lib",
@@ -52,7 +49,9 @@
     "@types/envinfo": "^7.8.1"
   },
   "peerDependencies": {
-    "webpack": "^5.82.0"
+    "webpack": "^5.82.0",
+    "webpack-bundle-analyzer": "^4.0.0",
+    "webpack-dev-server": "^5.0.0"
   },
   "peerDependenciesMeta": {
     "webpack-bundle-analyzer": {
@@ -61,6 +60,9 @@
     "webpack-dev-server": {
       "optional": true
     }
+  },
+  "engines": {
+    "node": ">=18.12.0"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

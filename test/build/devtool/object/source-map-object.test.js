@@ -2,7 +2,7 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { run, readdir } = require("../../../utils/test-utils");
+const { readdir, run } = require("../../../utils/test-utils");
 
 describe("source-map object", () => {
   it("should not write a source map for obj config", async () => {

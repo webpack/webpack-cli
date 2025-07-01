@@ -66,6 +66,7 @@ const configtestCommand = () => {
   return runTest(packageName, args, logMessage);
 };
 
+module.exports.name = "Missing webpack";
 module.exports.run = [
   noCommand,
   buildCommand,
@@ -76,4 +77,3 @@ module.exports.run = [
   infoCommand,
   helpCommand,
 ];
-module.exports.name = "Missing webpack";

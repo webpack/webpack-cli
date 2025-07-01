@@ -19,5 +19,5 @@ const serveTestWithHelp = () => {
   return runTestWithHelp(packageName, args, logMessage, isSubPackage);
 };
 
-module.exports.run = [serveTest, serveTestWithHelp];
 module.exports.name = "Missing @webpack-cli/serve";
+module.exports.run = [serveTest, serveTestWithHelp];

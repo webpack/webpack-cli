@@ -7,10 +7,10 @@ const { join, resolve } = require("node:path");
 jest.setTimeout(480000);
 
 const {
-  uniqueDirectoryForTest,
-  normalizeStdout,
-  normalizeStderr,
   createPathDependentUtils,
+  normalizeStderr,
+  normalizeStdout,
+  uniqueDirectoryForTest,
 } = require("../test.utils");
 
 const { runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");

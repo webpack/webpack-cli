@@ -2,32 +2,33 @@
   "name": "@webpack-cli/serve",
   "version": "3.0.1",
   "description": "",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "keywords": [],
-  "publishConfig": {
-    "access": "public"
-  },
+  "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/serve",
   "repository": {
     "type": "git",
     "url": "https://github.com/webpack/webpack-cli.git"
   },
-  "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/serve",
   "license": "MIT",
-  "engines": {
-    "node": ">=18.12.0"
-  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib"
   ],
   "peerDependencies": {
     "webpack": "^5.82.0",
-    "webpack-cli": "6.x.x"
+    "webpack-cli": "6.x.x",
+    "webpack-dev-server": "^5.0.0"
   },
   "peerDependenciesMeta": {
     "webpack-dev-server": {
       "optional": true
     }
+  },
+  "engines": {
+    "node": ">=18.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "gitHead": "fb50f766851f500ca12867a2aa9de81fa6e368f9"
 }

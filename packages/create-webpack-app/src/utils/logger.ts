@@ -1,10 +1,10 @@
-import { green, yellow, type Color, red, cyan, blue, blueBright, greenBright } from "colorette";
+import { normalize, relative } from "node:path";
+import { type Color, blue, blueBright, cyan, green, greenBright, red, yellow } from "colorette";
 import {
   type Logger,
   type PlopActionHooksChanges,
   type PlopActionHooksFailures,
 } from "../types.js";
-import { relative, normalize } from "node:path";
 
 const prefix: string = blueBright("create-webpack");
 const getLogger = (): Logger => ({
@@ -51,4 +51,4 @@ function onFailureHandler(failure: PlopActionHooksFailures): void {
   throw new Error(failure.error);
 }
 
-export { logger, onSuccessHandler, onFailureHandler };
+export { logger, onFailureHandler, onSuccessHandler };

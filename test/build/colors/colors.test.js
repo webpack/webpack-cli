@@ -1,7 +1,7 @@
 "use strict";
 
-const { run } = require("../../utils/test-utils");
 const { resolve } = require("node:path");
+const { run } = require("../../utils/test-utils");
 
 describe("colors", () => {
   it("should output by default", async () => {

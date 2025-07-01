@@ -19,5 +19,5 @@ const webpackDevServerWithHelpTest = () => {
   return runTestStdout({ packageName, cliArgs, logMessage });
 };
 
-module.exports.run = [webpackDevServerTest, webpackDevServerWithHelpTest];
 module.exports.name = "Missing webpack-dev-server";
+module.exports.run = [webpackDevServerTest, webpackDevServerWithHelpTest];

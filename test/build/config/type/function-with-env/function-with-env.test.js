@@ -2,7 +2,7 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { run, readFile, isWindows } = require("../../../../utils/test-utils");
+const { isWindows, readFile, run } = require("../../../../utils/test-utils");
 
 describe("function configuration", () => {
   it("should throw when env is not supplied", async () => {

@@ -1,26 +1,25 @@
+import { type stringifyChunked } from "@discoveryjs/json-ext";
+import { type Colorette } from "colorette";
+import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
+import { type prepare } from "rechoir";
 import {
-  default as webpack,
-  type EntryOptions,
-  type Stats,
-  type MultiStats,
+  type AssetEmittedInfo,
+  type Compiler,
   type Configuration,
+  type EntryOptions,
+  type FileCacheOptions,
+  type MultiCompiler,
+  type MultiStats,
+  type Stats,
   type WebpackError,
   type WebpackOptionsNormalized,
-  type Compiler,
-  type MultiCompiler,
-  type AssetEmittedInfo,
-  type FileCacheOptions,
+  default as webpack,
 } from "webpack";
 
 import {
   type ClientConfiguration,
   type Configuration as DevServerConfig,
 } from "webpack-dev-server";
-
-import { type Colorette } from "colorette";
-import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
-import { type prepare } from "rechoir";
-import { type stringifyChunked } from "@discoveryjs/json-ext";
 
 /**
  * Webpack CLI
@@ -304,48 +303,48 @@ interface PromptOptions {
 type StringsKeys<T> = { [K in keyof T]: T[K] extends string ? K : never }[keyof T];
 
 export {
-  type IWebpackCLI,
-  type WebpackCLICommandOption,
-  type WebpackCLIBuiltInOption,
-  type WebpackCLIBuiltInFlag,
-  type WebpackCLIColors,
-  type WebpackCLIConfig,
-  type WebpackCLIExternalCommandInfo,
-  type WebpackCLIOptions,
-  type WebpackCLICommand,
-  type WebpackCLICommandOptions,
-  type WebpackCLIMainOption,
-  type WebpackCLILogger,
-  type WebpackDevServerOptions,
-  type WebpackRunOptions,
-  type WebpackCompiler,
-  type WebpackConfiguration,
+  type ArgumentConfig,
   type Argv,
   type BasicPrimitive,
+  type CLIPluginOptions,
   type CallableWebpackConfiguration,
   type Callback,
-  type CLIPluginOptions,
   type CommandAction,
   type CommanderOption,
-  type LoadableWebpackConfiguration,
   type DynamicImport,
-  type FileSystemCacheOptions,
-  type ArgumentConfig,
   type EnumValue,
+  type FileSystemCacheOptions,
+  type IWebpackCLI,
   type ImportLoaderError,
   type Instantiable,
   type JsonExt,
+  type LoadableWebpackConfiguration,
   type ModuleName,
   type PackageInstallOptions,
   type PackageManager,
   type Path,
+  type PotentialPromise,
   type ProcessedArguments,
   type PromptOptions,
-  type PotentialPromise,
   type Rechoir,
   type RechoirError,
   type StringsKeys,
+  type WebpackCLIBuiltInFlag,
+  type WebpackCLIBuiltInOption,
+  type WebpackCLIColors,
+  type WebpackCLICommand,
+  type WebpackCLICommandOption,
+  type WebpackCLICommandOptions,
+  type WebpackCLIConfig,
+  type WebpackCLIExternalCommandInfo,
+  type WebpackCLILogger,
+  type WebpackCLIMainOption,
+  type WebpackCLIOptions,
+  type WebpackCompiler,
+  type WebpackConfiguration,
+  type WebpackDevServerOptions,
+  type WebpackRunOptions,
 };
 
 export { type CommandOptions } from "commander";
-export { type Problem, type Argument } from "webpack";
+export { type Argument, type Problem } from "webpack";

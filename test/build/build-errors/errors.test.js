@@ -1,7 +1,7 @@
 "use strict";
 
-const { run, readFile } = require("../../utils/test-utils");
 const { resolve } = require("node:path");
+const { readFile, run } = require("../../utils/test-utils");
 
 describe("errors", () => {
   it("should output by default", async () => {

@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, normalizeStderr } = require("../../../utils/test-utils");
+const { normalizeStderr, run } = require("../../../utils/test-utils");
 
 describe("Node target", () => {
   it("should emit the correct code", async () => {

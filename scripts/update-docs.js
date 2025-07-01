@@ -1,6 +1,6 @@
-const { sync } = require("execa");
-const { resolve } = require("node:path");
 const { writeFileSync } = require("node:fs");
+const { resolve } = require("node:path");
+const { sync } = require("execa");
 const { version } = require("webpack-dev-server/package.json");
 
 const [majorDevServerVersion] = version.split(".");

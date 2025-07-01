@@ -10,5 +10,5 @@ const webpackBundleAnalyzerTest = () => {
   return runTest(packageName, args, logMessage);
 };
 
-module.exports.run = [webpackBundleAnalyzerTest];
 module.exports.name = "Missing webpack-bundle-analyzer";
+module.exports.run = [webpackBundleAnalyzerTest];

@@ -1,4 +1,4 @@
-const { writeFileSync, readFileSync } = require("node:fs");
+const { readFileSync, writeFileSync } = require("node:fs");
 const { resolve } = require("node:path");
 
 const tsConfigPath = resolve(__dirname, "../tsconfig.json");
