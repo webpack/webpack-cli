@@ -21,5 +21,5 @@ const configTestWithHelp = () => {
   return runTestWithHelp(packageName, args, logMessage, isSubPackage);
 };
 
-module.exports.run = [configTest, configTestWithHelp];
 module.exports.name = "Missing @webpack-cli/configtest";
+module.exports.run = [configTest, configTestWithHelp];

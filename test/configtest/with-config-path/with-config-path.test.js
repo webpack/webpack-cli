@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, normalizeStderr, normalizeStdout } = require("../../utils/test-utils");
+const { normalizeStderr, normalizeStdout, run } = require("../../utils/test-utils");
 
 describe("'configtest' command with the configuration path option", () => {
   it("should validate webpack config successfully", async () => {

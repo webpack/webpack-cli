@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run, readdir } = require("../../../utils/test-utils");
+const { readdir, run } = require("../../../utils/test-utils");
 
 describe("source-map object", () => {
   it("should treat source-map settings right", async () => {

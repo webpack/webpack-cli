@@ -1,18 +1,16 @@
 "use strict";
 
-const os = require("node:os");
-const stripAnsi = require("strip-ansi");
-const path = require("node:path");
-const fs = require("node:fs");
-const execa = require("execa");
 const { exec } = require("node:child_process");
-
-const { node: execaNode } = execa;
-
-const { Writable } = require("readable-stream");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 const concat = require("concat-stream");
+const execa = require("execa");
+const { Writable } = require("readable-stream");
+const stripAnsi = require("strip-ansi");
 const { cli } = require("webpack");
 
+const { node: execaNode } = execa;
 const WEBPACK_PATH = path.resolve(__dirname, "../../packages/webpack-cli/bin/cli.js");
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 const isWindows = process.platform === "win32";
@@ -377,17 +375,17 @@ const uniqueDirectoryForTest = async () => {
 };
 
 module.exports = {
-  run,
-  runAndGetProcess,
-  runWatch,
-  runPromptWithAnswers,
+  getWebpackCliArguments,
+  hyphenToUpperCase,
   isWindows,
   normalizeStderr,
   normalizeStdout,
-  uniqueDirectoryForTest,
+  processKill,
   readFile,
   readdir,
-  hyphenToUpperCase,
-  processKill,
-  getWebpackCliArguments,
+  run,
+  runAndGetProcess,
+  runPromptWithAnswers,
+  runWatch,
+  uniqueDirectoryForTest,
 };

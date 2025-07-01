@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, normalizeStdout, normalizeStderr } = require("../../../utils/test-utils");
+const { normalizeStderr, normalizeStdout, run } = require("../../../utils/test-utils");
 
 const targetValues = [
   "web",

@@ -1,7 +1,7 @@
-import { type LoaderAnswers, type ActionType, type FileRecord } from "../../types.js";
-import { type NodePlopAPI, type DynamicActionsFunction } from "node-plop";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { type DynamicActionsFunction, type NodePlopAPI } from "node-plop";
+import { type ActionType, type FileRecord, type LoaderAnswers } from "../../types.js";
 import { logger } from "../../utils/logger.js";
 
 export default async function loaderGenerator(plop: NodePlopAPI) {

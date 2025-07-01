@@ -2,7 +2,7 @@
 
 const path = require("node:path");
 const getPort = require("get-port");
-const { runWatch, normalizeStderr } = require("../../utils/test-utils");
+const { normalizeStderr, runWatch } = require("../../utils/test-utils");
 
 const testPath = path.resolve(__dirname);
 

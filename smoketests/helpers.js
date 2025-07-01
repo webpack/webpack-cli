@@ -249,6 +249,6 @@ const runTestWithHelp = (pkg, cliArgs = [], logMessage = undefined, isSubPackage
 module.exports = {
   runTest,
   runTestStdout,
-  runTestWithHelp,
   runTestStdoutWithInput,
+  runTestWithHelp,
 };

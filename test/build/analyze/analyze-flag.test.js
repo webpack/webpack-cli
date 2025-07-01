@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, normalizeStdout } = require("../../utils/test-utils");
+const { normalizeStdout, run } = require("../../utils/test-utils");
 
 describe('"analyze" option', () => {
   it("should not load webpack-bundle-analyzer plugin twice with --analyze flag and plugin", async () => {

@@ -1,4 +1,4 @@
-const { runAndGetProcess, processKill } = require("../../utils/test-utils");
+const { processKill, runAndGetProcess } = require("../../utils/test-utils");
 
 describe("--watch-options-stdin", () => {
   it('should stop the process when stdin ends using "--watch" and "--watch-options-stdin" options', (done) => {

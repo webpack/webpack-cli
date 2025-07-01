@@ -1,8 +1,8 @@
 "use strict";
 
-const { run, readFile } = require("../../utils/test-utils");
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
+const { readFile, run } = require("../../utils/test-utils");
 
 const successMessage = "stats are successfully stored as json to stats.json";
 

@@ -1,17 +1,14 @@
 "use strict";
 
+const path = require("node:path");
+const concat = require("concat-stream");
+const execa = require("execa");
+const { Writable } = require("readable-stream");
+const stripAnsi = require("strip-ansi");
 const testUtilsPkg = require("../utils/test-utils");
 
-const { processKill } = testUtilsPkg;
-
-const path = require("node:path");
-const execa = require("execa");
-
 const { node: execaNode } = execa;
-
-const stripAnsi = require("strip-ansi");
-const concat = require("concat-stream");
-const { Writable } = require("readable-stream");
+const { processKill } = testUtilsPkg;
 
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 const nodeVersion = Number.parseInt(process.versions.node.split(".")[0], 10);

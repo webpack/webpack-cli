@@ -19,5 +19,5 @@ const infoTestWithHelp = () => {
   return runTestWithHelp(packageName, args, logMessage, isSubPackage);
 };
 
-module.exports.run = [infoTest, infoTestWithHelp];
 module.exports.name = "Missing @webpack-cli/info";
+module.exports.run = [infoTest, infoTestWithHelp];

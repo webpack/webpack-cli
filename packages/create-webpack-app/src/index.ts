@@ -1,11 +1,11 @@
-import { Command } from "commander";
-import { resolve, dirname } from "node:path";
-import select from "@inquirer/select";
-import nodePlop, { type PlopGenerator } from "node-plop";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import select from "@inquirer/select";
+import { Command } from "commander";
+import nodePlop, { type PlopGenerator } from "node-plop";
 
-import { onSuccessHandler, onFailureHandler, logger } from "./utils/logger.js";
 import { type Answers, type InitOptions, type LoaderOptions, type PluginOptions } from "./types.js";
+import { logger, onFailureHandler, onSuccessHandler } from "./utils/logger.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

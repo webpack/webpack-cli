@@ -1,8 +1,8 @@
 "use strict";
 
-const { runAndGetProcess, processKill } = require("../../utils/test-utils");
 const { writeFileSync } = require("node:fs");
 const { resolve } = require("node:path");
+const { processKill, runAndGetProcess } = require("../../utils/test-utils");
 
 const wordsInStatsv5 = ["asset", "index.js", "compiled successfully"];
 

@@ -1,6 +1,6 @@
 const { existsSync, mkdirSync } = require("node:fs");
 const { join, resolve } = require("node:path");
-const { uniqueDirectoryForTest, normalizeStdout, normalizeStderr } = require("../test.utils");
+const { normalizeStderr, normalizeStdout, uniqueDirectoryForTest } = require("../test.utils");
 const { createPathDependentUtils } = require("../test.utils");
 
 // eslint-disable-next-line jest/no-confusing-set-timeout

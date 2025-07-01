@@ -1,12 +1,12 @@
 import * as fs from "node:fs/promises";
-import * as ejs from "ejs";
-import expand from "@inquirer/expand";
-import { spawn, sync } from "cross-spawn";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { logger } from "./logger.js";
+import expand from "@inquirer/expand";
+import { spawn, sync } from "cross-spawn";
+import * as ejs from "ejs";
 import { type NodePlopAPI } from "node-plop";
 import { type Answers } from "../types.js";
+import { logger } from "./logger.js";
 
 export interface AddConfig {
   type: string; // Type of action

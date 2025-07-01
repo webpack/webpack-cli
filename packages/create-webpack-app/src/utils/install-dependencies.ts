@@ -1,13 +1,13 @@
-import { type NodePlopAPI } from "node-plop";
-import { dirname, resolve } from "node:path";
-import { spawn } from "cross-spawn";
 import {
   type ChildProcess,
   type SpawnOptionsWithStdioTuple,
   type StdioNull,
   type StdioPipe,
 } from "node:child_process";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { spawn } from "cross-spawn";
+import { type NodePlopAPI } from "node-plop";
 
 export default async function installDependencies(plop: NodePlopAPI) {
   const __dirname = dirname(fileURLToPath(import.meta.url));

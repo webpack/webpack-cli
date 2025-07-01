@@ -1,6 +1,6 @@
 "use strict";
 
-const { run, normalizeStdout, normalizeStderr } = require("../../utils/test-utils");
+const { normalizeStderr, normalizeStdout, run } = require("../../utils/test-utils");
 
 describe("unknown behaviour", () => {
   it("should log an error if an unknown flag is passed", async () => {

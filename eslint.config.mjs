@@ -1,4 +1,4 @@
-import { globalIgnores, defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import config from "eslint-config-webpack";
 import configs from "eslint-config-webpack/configs.js";
 
@@ -23,6 +23,7 @@ export default defineConfig([
       // We are CLI, so using `console.log` is normal
       "no-console": "off",
       strict: "off",
+      "n/no-process-exit": "off",
     },
   },
   {
@@ -31,6 +32,7 @@ export default defineConfig([
     rules: {
       // We are CLI, so using `console.log` is normal
       "no-console": "off",
+      "n/no-process-exit": "off",
     },
   },
 ]);
