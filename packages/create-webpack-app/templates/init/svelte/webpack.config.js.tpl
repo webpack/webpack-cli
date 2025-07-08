@@ -16,6 +16,7 @@ const stylesHandler = 'style-loader';
 <% } %>
 <% } %>
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: '<%= entry %>',
     output: {

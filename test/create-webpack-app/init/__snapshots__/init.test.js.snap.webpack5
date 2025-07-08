@@ -93,6 +93,7 @@ const path = require('path');
 const isProduction = process.env.NODE_ENV === 'production';
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -165,6 +166,7 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -243,6 +245,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -317,6 +320,7 @@ const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -391,6 +395,7 @@ const path = require('path');
 const isProduction = process.env.NODE_ENV === 'production';
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -542,6 +547,7 @@ const stylesHandler = 'style-loader';
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.jsx',
     output: {
@@ -657,6 +663,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.jsx',
     output: {
@@ -766,6 +773,7 @@ const stylesHandler = 'style-loader';
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/main.js',
     output: {
@@ -889,6 +897,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/main.js',
     output: {
@@ -994,6 +1003,7 @@ const path = require('path');
 const isProduction = process.env.NODE_ENV === 'production';
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.ts',
     output: {
@@ -1085,6 +1095,7 @@ const stylesHandler = 'vue-style-loader';
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/main.js',
     output: {
@@ -1206,6 +1217,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'vue-style-lo
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/main.js',
     output: {
@@ -1312,6 +1324,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -1389,6 +1402,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -1467,6 +1481,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -1547,6 +1562,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -1628,6 +1644,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -1708,6 +1725,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
@@ -1785,6 +1803,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader
 
 
 
+/** @type {import("webpack").Configuration} */
 const config = {
     entry: './src/index.js',
     output: {
