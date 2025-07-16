@@ -2971,9 +2971,9 @@
     undici-types "~7.8.0"
 
 "@types/node@^22.5.5":
-  version "22.16.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.16.3.tgz#006f83d80e6f05f65768acc77f4a57bfac1d545f"
-  integrity sha512-sr4Xz74KOUeYadexo1r8imhRtlVXcs+j3XK3TcoiYk7B1t3YRVJgtaD3cwX73NYb71pmVuMLNRhJ9XKdoDB74g==
+  version "22.16.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.16.4.tgz#00c763ad4d4e45f62d5a270c040ae1a799c7e38a"
+  integrity sha512-PYRhNtZdm2wH/NT2k/oAJ6/f2VD2N2Dag0lGlx2vWgMSJXGNmlce5MiTQzoWAiIJtso30mjnfQCOKVH+kAQC/g==
   dependencies:
     undici-types "~6.21.0"
 
@@ -5337,9 +5337,9 @@ eslint-config-prettier@^10.1.5:
   integrity sha512-zc1UmCpNltmVY34vuLRV61r1K27sWuX39E+uyUnY8xS2Bex88VV9cugG+UZbRSRGtGyFboj+D8JODyme1plMpw==
 
 eslint-config-webpack@^4.2.2:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/eslint-config-webpack/-/eslint-config-webpack-4.3.4.tgz#995c7036898f015078b5d59716c4ec8fc8cfd0e6"
-  integrity sha512-u0wlSpmIaxEvPGzMi3hKtSxOmj933oMVM+pTabghQTrqLP27ZzYr1l/cs/WrnT2ZKP9VyccV16IVp9V2YZrh+w==
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-webpack/-/eslint-config-webpack-4.4.0.tgz#56fae0c217c1226b3ce9f3e00f4ce62d8f1cc6b1"
+  integrity sha512-W0hMYVayDR4Sk+owcKtJDNEoiFDTHNzQJk/wnIBOxh6xjgOVj9MnHPtIP6AB3Ru2Suc+T8juIjfxyn3vuM0ptg==
   dependencies:
     detect-indent "^7.0.1"
     jsonc-eslint-parser "^2.4.0"
@@ -5404,9 +5404,9 @@ eslint-plugin-jest@^29.0.1:
     "@typescript-eslint/utils" "^8.0.0"
 
 eslint-plugin-jsdoc@^51.2.3:
-  version "51.3.4"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-51.3.4.tgz#40cfc8e406d40a3d9fdf6e44dcccd3c39a198353"
-  integrity sha512-maz6qa95+sAjMr9m5oRyfejc+mnyQWsWSe9oyv9371bh4/T0kWOMryJNO4h8rEd97wo/9lbzwi3OOX4rDhnAzg==
+  version "51.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-51.4.0.tgz#03d3e2f40b5d8dda39f773430e0dad5ce29cd314"
+  integrity sha512-woooKbcFiQdpfJg1g/WmFHItaZuDE14SZ7QVW3eV/5e3mbOicjtgVz6cFkYJ3MP9n5WL9/ZAvuWuGkAkMFhDYQ==
   dependencies:
     "@es-joy/jsdoccomment" "~0.52.0"
     are-docs-informative "^0.0.2"
@@ -11896,9 +11896,9 @@ webpack-sources@^3.3.3:
   integrity sha512-yd1RBzSGanHkitROoPFd6qsrxt+oFhg/129YzheDGqeustzX0vTZJZsSsQjVQC4yzBQ56K55XU8gaNCtIzOnTg==
 
 webpack@^5.99.1:
-  version "5.100.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.100.1.tgz#d8a7e7761d253b961248ed9ed7661c51698593de"
-  integrity sha512-YJB/ESPUe2Locd0NKXmw72Dx8fZQk1gTzI6rc9TAT4+Sypbnhl8jd8RywB1bDsDF9Dy1RUR7gn3q/ZJTd0OZZg==
+  version "5.100.2"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.100.2.tgz#e2341facf9f7de1d702147c91bcb65b693adf9e8"
+  integrity sha512-QaNKAvGCDRh3wW1dsDjeMdDXwZm2vqq3zn6Pvq4rHOEOGSaUMgOOjG2Y9ZbIGzpfkJk9ZYTHpDqgDfeBDcnLaw==
   dependencies:
     "@types/eslint-scope" "^3.7.7"
     "@types/estree" "^1.0.8"
