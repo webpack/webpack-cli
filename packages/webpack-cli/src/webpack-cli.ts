@@ -3,8 +3,7 @@ import { type Help, type ParseOptions } from "commander";
 import {
   type Compiler,
   type MultiCompiler,
-  type MultiStats,
-  type Stats,
+  type MultiStatsOptions,
   type StatsOptions,
   type WebpackError,
   default as webpack,
@@ -18,7 +17,6 @@ import {
   type BasicPrimitive,
   type CLIPluginOptions,
   type CallableWebpackConfiguration,
-  type Callback,
   type CommandAction,
   type DynamicImport,
   type EnumValue,
@@ -50,6 +48,7 @@ import {
   type WebpackCLILogger,
   type WebpackCLIMainOption,
   type WebpackCLIOptions,
+  type WebpackCallback,
   type WebpackCompiler,
   type WebpackConfiguration,
   type WebpackDevServerOptions,
@@ -547,10 +546,7 @@ class WebpackCLI implements IWebpackCLI {
     }) as WebpackCLICommand;
 
     if (commandOptions.description) {
-      command.description(
-        commandOptions.description,
-        commandOptions.argsDescription as Record<string, string>,
-      );
+      command.description(commandOptions.description, commandOptions.argsDescription!);
     }
 
     if (commandOptions.usage) {
@@ -2338,7 +2334,7 @@ class WebpackCLI implements IWebpackCLI {
 
   async createCompiler(
     options: Partial<WebpackDevServerOptions>,
-    callback?: Callback<[Error | undefined, Stats | MultiStats | undefined]>,
+    callback?: WebpackCallback,
   ): Promise<WebpackCompiler> {
     if (typeof options.configNodeEnv === "string") {
       process.env.NODE_ENV = options.configNodeEnv;
@@ -2353,7 +2349,7 @@ class WebpackCLI implements IWebpackCLI {
 
     try {
       compiler = this.webpack(
-        config.options as WebpackConfiguration,
+        config.options,
         callback
           ? (error, stats) => {
               if (error && this.isValidationError(error)) {
@@ -2399,7 +2395,7 @@ class WebpackCLI implements IWebpackCLI {
       createStringifyChunked = jsonExt.stringifyChunked;
     }
 
-    const callback = (error: Error | undefined, stats: Stats | MultiStats | undefined): void => {
+    const callback: WebpackCallback = (error, stats): void => {
       if (error) {
         this.logger.error(error);
         process.exit(2);
@@ -2414,13 +2410,13 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       const statsOptions = this.isMultipleCompiler(compiler)
-        ? {
+        ? ({
             children: compiler.compilers.map((compiler) =>
               compiler.options ? compiler.options.stats : undefined,
             ),
-          }
+          } as MultiStatsOptions)
         : compiler.options
-          ? compiler.options.stats
+          ? (compiler.options.stats as StatsOptions)
           : undefined;
 
       if (options.json && createStringifyChunked) {

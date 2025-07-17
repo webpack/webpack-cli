@@ -9,6 +9,7 @@ import {
   type EntryOptions,
   type FileCacheOptions,
   type MultiCompiler,
+  type MultiCompilerOptions,
   type MultiStats,
   type Stats,
   type WebpackError,
@@ -24,6 +25,8 @@ import {
 /**
  * Webpack CLI
  */
+
+type WebpackCallback = Callback<[Error | undefined, Stats | MultiStats | undefined]>;
 
 interface IWebpackCLI {
   colors: WebpackCLIColors;
@@ -67,7 +70,7 @@ interface IWebpackCLI {
   isValidationError(error: Error): error is WebpackError;
   createCompiler(
     options: Partial<WebpackDevServerOptions>,
-    callback?: Callback<[Error | undefined, Stats | MultiStats | undefined]>,
+    callback?: WebpackCallback,
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
@@ -91,7 +94,7 @@ interface WebpackCLICommandOption extends CommanderOption {
 }
 
 interface WebpackCLIConfig {
-  options: WebpackConfiguration | WebpackConfiguration[];
+  options: WebpackConfiguration | (WebpackConfiguration[] & MultiCompilerOptions);
   path: WeakMap<object, string[]>;
 }
 
@@ -308,7 +311,6 @@ export {
   type BasicPrimitive,
   type CLIPluginOptions,
   type CallableWebpackConfiguration,
-  type Callback,
   type CommandAction,
   type CommanderOption,
   type DynamicImport,
@@ -340,6 +342,7 @@ export {
   type WebpackCLILogger,
   type WebpackCLIMainOption,
   type WebpackCLIOptions,
+  type WebpackCallback,
   type WebpackCompiler,
   type WebpackConfiguration,
   type WebpackDevServerOptions,
