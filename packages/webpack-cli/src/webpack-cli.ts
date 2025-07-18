@@ -3,7 +3,6 @@ import { type Help, type ParseOptions } from "commander";
 import {
   type Compiler,
   type MultiCompiler,
-  type MultiStatsOptions,
   type StatsOptions,
   type WebpackError,
   default as webpack,
@@ -27,6 +26,7 @@ import {
   type JsonExt,
   type LoadableWebpackConfiguration,
   type ModuleName,
+  type MultiStatsOptions,
   type PackageInstallOptions,
   type PackageManager,
   type Path,

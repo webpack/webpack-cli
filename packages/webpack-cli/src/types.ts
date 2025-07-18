@@ -12,6 +12,7 @@ import {
   type MultiCompilerOptions,
   type MultiStats,
   type Stats,
+  type StatsOptions,
   type WebpackError,
   type WebpackOptionsNormalized,
   default as webpack,
@@ -26,7 +27,13 @@ import {
  * Webpack CLI
  */
 
-type WebpackCallback = Callback<[Error | undefined, Stats | MultiStats | undefined]>;
+// TODO remove me and get it from webpack types
+type ChildrenStatsOptions = undefined | string | boolean | StatsOptions;
+type MultiStatsOptions = Omit<StatsOptions, "children"> & {
+  children?: ChildrenStatsOptions | ChildrenStatsOptions[];
+};
+
+type WebpackCallback = (err: Error | undefined, stats: Stats | MultiStats | undefined) => void;
 
 interface IWebpackCLI {
   colors: WebpackCLIColors;
@@ -179,8 +186,6 @@ type WebpackDevServerOptions = DevServerConfig &
     argv: Argv;
   };
 
-type Callback<T extends unknown[]> = (...args: T) => void;
-
 /**
  * Webpack
  */
@@ -322,6 +327,7 @@ export {
   type JsonExt,
   type LoadableWebpackConfiguration,
   type ModuleName,
+  type MultiStatsOptions,
   type PackageInstallOptions,
   type PackageManager,
   type Path,
