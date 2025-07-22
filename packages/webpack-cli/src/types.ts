@@ -9,8 +9,10 @@ import {
   type EntryOptions,
   type FileCacheOptions,
   type MultiCompiler,
+  type MultiCompilerOptions,
   type MultiStats,
   type Stats,
+  type StatsOptions,
   type WebpackError,
   type WebpackOptionsNormalized,
   default as webpack,
@@ -24,6 +26,14 @@ import {
 /**
  * Webpack CLI
  */
+
+// TODO remove me and get it from webpack types
+type ChildrenStatsOptions = undefined | string | boolean | StatsOptions;
+type MultiStatsOptions = Omit<StatsOptions, "children"> & {
+  children?: ChildrenStatsOptions | ChildrenStatsOptions[];
+};
+
+type WebpackCallback = (err: Error | undefined, stats: Stats | MultiStats | undefined) => void;
 
 interface IWebpackCLI {
   colors: WebpackCLIColors;
@@ -67,7 +77,7 @@ interface IWebpackCLI {
   isValidationError(error: Error): error is WebpackError;
   createCompiler(
     options: Partial<WebpackDevServerOptions>,
-    callback?: Callback<[Error | undefined, Stats | MultiStats | undefined]>,
+    callback?: WebpackCallback,
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
@@ -91,7 +101,7 @@ interface WebpackCLICommandOption extends CommanderOption {
 }
 
 interface WebpackCLIConfig {
-  options: WebpackConfiguration | WebpackConfiguration[];
+  options: WebpackConfiguration | (WebpackConfiguration[] & MultiCompilerOptions);
   path: WeakMap<object, string[]>;
 }
 
@@ -175,8 +185,6 @@ type WebpackDevServerOptions = DevServerConfig &
     extends?: string[];
     argv: Argv;
   };
-
-type Callback<T extends unknown[]> = (...args: T) => void;
 
 /**
  * Webpack
@@ -308,7 +316,6 @@ export {
   type BasicPrimitive,
   type CLIPluginOptions,
   type CallableWebpackConfiguration,
-  type Callback,
   type CommandAction,
   type CommanderOption,
   type DynamicImport,
@@ -320,6 +327,7 @@ export {
   type JsonExt,
   type LoadableWebpackConfiguration,
   type ModuleName,
+  type MultiStatsOptions,
   type PackageInstallOptions,
   type PackageManager,
   type Path,
@@ -340,6 +348,7 @@ export {
   type WebpackCLILogger,
   type WebpackCLIMainOption,
   type WebpackCLIOptions,
+  type WebpackCallback,
   type WebpackCompiler,
   type WebpackConfiguration,
   type WebpackDevServerOptions,
