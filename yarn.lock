@@ -5332,14 +5332,14 @@ eslint-config-prettier@^10.1.5:
   integrity sha512-82GZUjRS0p/jganf6q1rEO25VSoHH0hKPCTrgillPjdI/3bgBhAE1QzHrHTizjpRvy6pGAvKjDJtk2pF9NDq8w==
 
 eslint-config-webpack@^4.2.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-webpack/-/eslint-config-webpack-4.4.2.tgz#2d951026cc318510c138ab835f9b986bf0143ac0"
-  integrity sha512-mDYkabo0bgyJcZXU47pNAflGXUWqAUXsdHYhehhl2IElaC4PQ4E5MGeO1Nn2pLZ5jq3n727LF/c/fMOILhNxnA==
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-webpack/-/eslint-config-webpack-4.5.0.tgz#2bfa642dc2e18d5cbe3d5f6d679e1b229d492ac5"
+  integrity sha512-xQgZ7NaRvqLHEVT72tqR2NT+kohdTKTSzOvyep0Gq9azqDmhEnKDJ9JMZDQ3F62ynVgVmuhedoHvcYrgr49TiQ==
   dependencies:
     detect-indent "^7.0.1"
     jsonc-eslint-parser "^2.4.0"
     semver "^7.7.2"
-    sort-package-json "^3.3.1"
+    sort-package-json "^3.4.0"
 
 eslint-import-resolver-node@^0.3.9:
   version "0.3.9"
@@ -10801,10 +10801,10 @@ sort-object-keys@^1.1.3:
   resolved "https://registry.yarnpkg.com/sort-object-keys/-/sort-object-keys-1.1.3.tgz#bff833fe85cab147b34742e45863453c1e190b45"
   integrity sha512-855pvK+VkU7PaKYPc+Jjnmt4EzejQHyhhF33q31qG8x7maDzkeFhAAThdCYay11CISO+qAMwjOBP+fPZe0IPyg==
 
-sort-package-json@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/sort-package-json/-/sort-package-json-3.3.1.tgz#c31c0b4cd970b7fde6b1d0197f8b768584e2e65c"
-  integrity sha512-awjhQR2Iy5UN3NuguAK5+RezcEuUg9Ra4O8y2Aj+DlJa7MywyHaipAPf9bu4qqFj0hsYHHoT9sS3aV7Ucu728g==
+sort-package-json@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/sort-package-json/-/sort-package-json-3.4.0.tgz#98e42b78848c517736b069f8aa4fa322fae56677"
+  integrity sha512-97oFRRMM2/Js4oEA9LJhjyMlde+2ewpZQf53pgue27UkbEXfHJnDzHlUxQ/DWUkzqmp7DFwJp8D+wi/TYeQhpA==
   dependencies:
     detect-indent "^7.0.1"
     detect-newline "^4.0.1"
