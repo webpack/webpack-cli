@@ -3,6 +3,7 @@ import { type Help, type ParseOptions } from "commander";
 import {
   type Compiler,
   type MultiCompiler,
+  type MultiStatsOptions,
   type StatsOptions,
   type WebpackError,
   default as webpack,
@@ -26,7 +27,6 @@ import {
   type JsonExt,
   type LoadableWebpackConfiguration,
   type ModuleName,
-  type MultiStatsOptions,
   type PackageInstallOptions,
   type PackageManager,
   type Path,
@@ -103,9 +103,12 @@ class WebpackCLI implements IWebpackCLI {
     this.program = program;
     this.program.name("webpack");
     this.program.configureOutput({
-      writeErr: this.logger.error,
-      outputError: (str, write) =>
-        write(`Error: ${this.capitalizeFirstLetter(str.replace(/^error:/, "").trim())}`),
+      writeErr: (str) => {
+        this.logger.error(str);
+      },
+      outputError: (str, write) => {
+        write(`Error: ${this.capitalizeFirstLetter(str.replace(/^error:/, "").trim())}`);
+      },
     });
   }
 
@@ -134,6 +137,20 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   createColors(useColor?: boolean): WebpackCLIColors {
+    try {
+      const { cli } = require("webpack");
+
+      if (typeof cli.createColors === "function") {
+        const { createColors, isColorSupported } = cli;
+        const shouldUseColor = useColor || isColorSupported();
+
+        return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
+      }
+    } catch {
+      // Nothing
+    }
+
+    // TODO remove `colorette` and set webpack@5.101.0 as the minimum supported version in the next major release
     const { createColors, isColorSupported } = require("colorette");
 
     const shouldUseColor = useColor || isColorSupported;
@@ -1323,16 +1340,14 @@ class WebpackCLI implements IWebpackCLI {
     });
 
     this.program.option("--color", "Enable colors on console.");
-    this.program.on("option:color", function color() {
-      // @ts-expect-error shadowing 'this' is intended
+    this.program.on("option:color", function color(this: WebpackCLICommand) {
       const { color } = this.opts();
 
       cli.isColorSupportChanged = color;
       cli.colors = cli.createColors(color);
     });
     this.program.option("--no-color", "Disable colors on console.");
-    this.program.on("option:no-color", function noColor() {
-      // @ts-expect-error shadowing 'this' is intended
+    this.program.on("option:no-color", function noColor(this: WebpackCLICommand) {
       const { color } = this.opts();
 
       cli.isColorSupportChanged = color;
@@ -1830,8 +1845,7 @@ class WebpackCLI implements IWebpackCLI {
           false,
           moduleType,
         );
-        // @ts-expect-error error type assertion
-      } catch (error: Error) {
+      } catch (error) {
         this.logger.error(`Failed to load '${configPath}' config`);
 
         if (this.isValidationError(error)) {
@@ -2328,8 +2342,10 @@ class WebpackCLI implements IWebpackCLI {
     return config;
   }
 
-  isValidationError(error: Error): error is WebpackError {
-    return error instanceof this.webpack.ValidationError || error.name === "ValidationError";
+  isValidationError(error: unknown): error is WebpackError {
+    return (
+      error instanceof this.webpack.ValidationError || (error as Error).name === "ValidationError"
+    );
   }
 
   async createCompiler(
@@ -2360,9 +2376,8 @@ class WebpackCLI implements IWebpackCLI {
               callback(error as Error | undefined, stats);
             }
           : callback,
-      );
-      // @ts-expect-error error type assertion
-    } catch (error: Error) {
+      )!;
+    } catch (error) {
       if (this.isValidationError(error)) {
         this.logger.error(error.message);
       } else {

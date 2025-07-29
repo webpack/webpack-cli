@@ -1,9 +1,9 @@
 import { type stringifyChunked } from "@discoveryjs/json-ext";
-import { type Colorette } from "colorette";
 import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
 import { type prepare } from "rechoir";
 import {
   type AssetEmittedInfo,
+  type Colors,
   type Compiler,
   type Configuration,
   type EntryOptions,
@@ -12,7 +12,6 @@ import {
   type MultiCompilerOptions,
   type MultiStats,
   type Stats,
-  type StatsOptions,
   type WebpackError,
   type WebpackOptionsNormalized,
   default as webpack,
@@ -27,14 +26,9 @@ import {
  * Webpack CLI
  */
 
-// TODO remove me and get it from webpack types
-type ChildrenStatsOptions = undefined | string | boolean | StatsOptions;
-type MultiStatsOptions = Omit<StatsOptions, "children"> & {
-  children?: ChildrenStatsOptions | ChildrenStatsOptions[];
-};
-
 type WebpackCallback = (err: Error | undefined, stats: Stats | MultiStats | undefined) => void;
 
+// TODO remove me in the next major release, we don't need extra interface
 interface IWebpackCLI {
   colors: WebpackCLIColors;
   logger: WebpackCLILogger;
@@ -83,7 +77,7 @@ interface IWebpackCLI {
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
 }
 
-interface WebpackCLIColors extends Colorette {
+interface WebpackCLIColors extends Colors {
   isColorSupported: boolean;
 }
 
@@ -327,7 +321,6 @@ export {
   type JsonExt,
   type LoadableWebpackConfiguration,
   type ModuleName,
-  type MultiStatsOptions,
   type PackageInstallOptions,
   type PackageManager,
   type Path,
