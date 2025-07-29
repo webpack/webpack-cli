@@ -12,7 +12,6 @@ import {
   type MultiCompilerOptions,
   type MultiStats,
   type Stats,
-  type StatsOptions,
   type WebpackError,
   type WebpackOptionsNormalized,
   default as webpack,
@@ -27,14 +26,9 @@ import {
  * Webpack CLI
  */
 
-// TODO remove me and get it from webpack types
-type ChildrenStatsOptions = undefined | string | boolean | StatsOptions;
-type MultiStatsOptions = Omit<StatsOptions, "children"> & {
-  children?: ChildrenStatsOptions | ChildrenStatsOptions[];
-};
-
 type WebpackCallback = (err: Error | undefined, stats: Stats | MultiStats | undefined) => void;
 
+// TODO remove me in the next major release and set webpack@5.101.0 as the minimum supported version, we don't need extra interface because we use class
 interface IWebpackCLI {
   colors: WebpackCLIColors;
   logger: WebpackCLILogger;
@@ -327,7 +321,6 @@ export {
   type JsonExt,
   type LoadableWebpackConfiguration,
   type ModuleName,
-  type MultiStatsOptions,
   type PackageInstallOptions,
   type PackageManager,
   type Path,
