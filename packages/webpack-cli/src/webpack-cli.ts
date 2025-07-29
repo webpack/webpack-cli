@@ -6,6 +6,7 @@ import {
   type MultiStatsOptions,
   type StatsOptions,
   type WebpackError,
+  cli,
   default as webpack,
 } from "webpack";
 import type webpackMerge from "webpack-merge";
@@ -134,6 +135,14 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   createColors(useColor?: boolean): WebpackCLIColors {
+    if (typeof cli.createColors === "function") {
+      const { createColors, isColorSupported } = cli;
+      const shouldUseColor = useColor || isColorSupported();
+
+      return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
+    }
+
+    // TODO remove `colorette` and set webpack@5.101.0 as the minimum supported version in the next major release
     const { createColors, isColorSupported } = require("colorette");
 
     const shouldUseColor = useColor || isColorSupported;
