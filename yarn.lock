@@ -5338,9 +5338,9 @@ eslint-config-prettier@^10.1.5:
   integrity sha512-82GZUjRS0p/jganf6q1rEO25VSoHH0hKPCTrgillPjdI/3bgBhAE1QzHrHTizjpRvy6pGAvKjDJtk2pF9NDq8w==
 
 eslint-config-webpack@^4.5.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-webpack/-/eslint-config-webpack-4.6.0.tgz#3bf4cdad654cf8b7929c997c817247e57800eaa4"
-  integrity sha512-EcOVuPRz5WGjZ3XgEpynvUoQbR4WCFosLTnCZjNTqLuISjix+RSrR2c0zp1r0jo3+BOhqcDNgbN5ZwD5ns3IAg==
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-webpack/-/eslint-config-webpack-4.6.1.tgz#4de554e44e8c66af9d7056a3995e6b260497a660"
+  integrity sha512-TJEHjDq2NFdCcTdEB2JkYpM2UqN/uqCfxWwLa4Y+5b18GM8ae98ryZzB8FTUWF9mXSLQabfehmQoRlMTebK3FQ==
   dependencies:
     detect-indent "^7.0.1"
     jsonc-eslint-parser "^2.4.0"
