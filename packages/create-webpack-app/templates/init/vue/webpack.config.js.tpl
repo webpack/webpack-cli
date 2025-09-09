@@ -93,8 +93,7 @@ const config = {
     },
     resolve: {
         alias: {
-            "@": path.resolve(__dirname, "./src/"),
-            'vue': '@vue/runtime-dom'
+            "@": path.resolve(__dirname, "./src/")
         },<% if (langType == "Typescript") {%>
         extensions: ['.tsx', '.ts', '.js', '.vue', '.json'],<% } %>
     },
