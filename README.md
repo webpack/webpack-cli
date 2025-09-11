@@ -97,9 +97,9 @@ If you like **webpack**, please consider donating through [Open Collective](http
 
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
 [npm-url]: https://www.npmjs.com/package/webpack-cli
-[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=main
+[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
-[codecov-badge]: https://codecov.io/gh/webpack/webpack-cli/branch/main/graph/badge.svg?token=6B6NxtsZc3
+[codecov-badge]: https://codecov.io/gh/webpack/webpack-cli/graph/badge.svg?token=mDP3mQJNnn
 [codecov-url]: https://codecov.io/gh/webpack/webpack-cli
 [size]: https://packagephobia.com/badge?p=webpack-cli
 [size-url]: https://packagephobia.com/result?p=webpack-cli
