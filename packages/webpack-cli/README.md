@@ -110,7 +110,7 @@ Global options:
   -h, --help [verbose]                   Display help for commands and options.
 ```
 
-Checkout [`OPTIONS.md`](https://github.com/webpack/webpack-cli/blob/master/OPTIONS.md) to see list of all available options.
+Checkout [`OPTIONS.md`](https://github.com/webpack/webpack-cli/blob/main/OPTIONS.md) to see list of all available options.
 
 ## Exit codes and their meanings
 

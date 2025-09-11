@@ -48,7 +48,7 @@ Get to know what are the available commands and arguments [here](./packages/webp
 
 ## Packages
 
-We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). The main CLI logic using options, resides in [`packages/webpack-cli`](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli), while commands supported by the CLI, has dedicated subfolders in the folder [`packages`](https://github.com/webpack/webpack-cli/tree/master/packages).
+We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). The main CLI logic using options, resides in [`packages/webpack-cli`](https://github.com/webpack/webpack-cli/tree/main/packages/webpack-cli), while commands supported by the CLI, has dedicated subfolders in the folder [`packages`](https://github.com/webpack/webpack-cli/tree/master/packages).
 
 A summary of supported commands is described below.
 
@@ -97,9 +97,9 @@ If you like **webpack**, please consider donating through [Open Collective](http
 
 [npm]: https://img.shields.io/npm/v/webpack-cli.svg
 [npm-url]: https://www.npmjs.com/package/webpack-cli
-[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=master
+[build-status]: https://github.com/webpack/webpack-cli/workflows/webpack-cli/badge.svg?branch=main
 [build-status-url]: https://github.com/webpack/webpack-cli/actions
-[codecov-badge]: https://codecov.io/gh/webpack/webpack-cli/branch/master/graph/badge.svg?token=6B6NxtsZc3
+[codecov-badge]: https://codecov.io/gh/webpack/webpack-cli/branch/main/graph/badge.svg?token=6B6NxtsZc3
 [codecov-url]: https://codecov.io/gh/webpack/webpack-cli
 [size]: https://packagephobia.com/badge?p=webpack-cli
 [size-url]: https://packagephobia.com/result?p=webpack-cli

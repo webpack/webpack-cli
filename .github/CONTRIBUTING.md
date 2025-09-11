@@ -122,7 +122,7 @@ In case you are suggesting a new feature, we will match your idea with our curre
 
 ## Editor Config
 
-The [.editorconfig](https://github.com/webpack/webpack-cli/blob/master/.editorconfig) in the root should ensure consistent formatting. Please make sure you've [installed the plugin](http://editorconfig.org/#download) if your text editor needs one.
+The [.editorconfig](https://github.com/webpack/webpack-cli/blob/main/.editorconfig) in the root should ensure consistent formatting. Please make sure you've [installed the plugin](http://editorconfig.org/#download) if your text editor needs one.
 
 ## Dependencies
 
@@ -134,7 +134,7 @@ To update dependencies, import each dependency and make sure the command line bu
 
 ## Branching Model
 
-We base our branching model on [git flow](http://nvie.com/posts/a-successful-git-branching-model/). Instead of working with a `develop` base branch, we use the `master` branch. We do it to ease the workflow a bit. However, we find that adding prefixes to the branches is useful.
+We base our branching model on [git flow](http://nvie.com/posts/a-successful-git-branching-model/). Instead of working with a `develop` base branch, we use the `main` branch. We do it to ease the workflow a bit. However, we find that adding prefixes to the branches is useful.
 
 ## Naming a branch
 
@@ -143,7 +143,7 @@ Making a branch in your fork for your contribution is helpful in the following w
 - It allows you to submit more than one contribution in a single PR.
 - It allows us to identify what your contribution is about from the branch name.
 
-You will want to checkout the `master` branch locally before creating your new branch.
+You will want to checkout the `main` branch locally before creating your new branch.
 
 There are two types of branches:
 

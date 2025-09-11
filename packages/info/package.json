@@ -2,7 +2,7 @@
   "name": "@webpack-cli/info",
   "version": "3.0.1",
   "description": "Outputs info about system and webpack config",
-  "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/info",
+  "homepage": "https://github.com/webpack/webpack-cli/tree/main/packages/info",
   "repository": {
     "type": "git",
     "url": "https://github.com/webpack/webpack-cli.git"

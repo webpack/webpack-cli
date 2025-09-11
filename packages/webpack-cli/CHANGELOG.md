@@ -14,7 +14,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### BREAKING CHANGES
 
 - the minimum required Node.js version is `18.12.0`
-- removed `init`, `loader` and `plugin` commands in favor [`create-webpack-app`](https://github.com/webpack/webpack-cli/tree/master/packages/create-webpack-app)
+- removed `init`, `loader` and `plugin` commands in favor [`create-webpack-app`](https://github.com/webpack/webpack-cli/tree/main/packages/create-webpack-app)
 - dropped support for `webpack-dev-server@v4`
 - minimum supported webpack version is `5.82.0`
 
