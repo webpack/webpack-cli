@@ -13,11 +13,11 @@ This folder is the collection of those packages.
 
 ## Packages
 
-1. [configtest](https://github.com/webpack/webpack-cli/tree/master/packages/configtest)
-2. [create-webpack-app](https://github.com/webpack/webpack-cli/tree/master/packages/create-webpack-app)
-3. [info](https://github.com/webpack/webpack-cli/tree/master/packages/info)
-4. [serve](https://github.com/webpack/webpack-cli/tree/master/packages/serve)
-5. [webpack-cli](https://github.com/webpack/webpack-cli/tree/master/packages/webpack-cli)
+1. [configtest](https://github.com/webpack/webpack-cli/tree/main/packages/configtest)
+2. [create-webpack-app](https://github.com/webpack/webpack-cli/tree/main/packages/create-webpack-app)
+3. [info](https://github.com/webpack/webpack-cli/tree/main/packages/info)
+4. [serve](https://github.com/webpack/webpack-cli/tree/main/packages/serve)
+5. [webpack-cli](https://github.com/webpack/webpack-cli/tree/main/packages/webpack-cli)
 
 ## Generic Installation
 

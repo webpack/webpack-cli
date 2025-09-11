@@ -224,11 +224,11 @@ rules:
         minimum: 1d
         maximum: 1w
       pull_request:
-        head_ref: "^master$"
+        head_ref: "^main$"
       permission: "read|none"
     actions:
       comment:
-        identifier: "head-master"
+        identifier: "head-main"
         edit: true
         message: |-
           Hi @{{pull_request.user.login}}.

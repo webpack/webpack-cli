@@ -11,7 +11,7 @@
     "web",
     "frameworks"
   ],
-  "homepage": "https://github.com/webpack/webpack-cli/tree/master/packages/create-webpack-app",
+  "homepage": "https://github.com/webpack/webpack-cli/tree/main/packages/create-webpack-app",
   "bugs": "https://github.com/webpack/webpack-cli/issues",
   "repository": {
     "type": "git",
