@@ -79,6 +79,9 @@ jobs:
         with:
           version: 9
 
+      - name: Debug
+        run: echo CODECOV_TOKEN
+
       - name: Install dependencies
         run: yarn --frozen-lockfile --ignore-engines --ignore-scripts
 
