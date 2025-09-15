@@ -1654,14 +1654,19 @@
   resolved "https://registry.yarnpkg.com/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
   integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
 
-"@inquirer/core@^10.2.0":
-  version "10.2.0"
-  resolved "https://registry.yarnpkg.com/@inquirer/core/-/core-10.2.0.tgz#19ff527dbe0956891d825e320ecbc890bd6a1550"
-  integrity sha512-NyDSjPqhSvpZEMZrLCYUquWNl+XC/moEcVFqS55IEYIYsY0a1cUCevSqk7ctOlnm/RaSBU5psFryNlxcmGrjaA==
+"@inquirer/ansi@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@inquirer/ansi/-/ansi-1.0.0.tgz#29525c673caf36c12e719712830705b9c31f0462"
+  integrity sha512-JWaTfCxI1eTmJ1BIv86vUfjVatOdxwD0DAVKYevY8SazeUUZtW+tNbsdejVO1GYE0GXJW1N1ahmiC3TFd+7wZA==
+
+"@inquirer/core@^10.2.2":
+  version "10.2.2"
+  resolved "https://registry.yarnpkg.com/@inquirer/core/-/core-10.2.2.tgz#d31eb50ba0c76b26e7703c2c0d1d0518144c23ab"
+  integrity sha512-yXq/4QUnk4sHMtmbd7irwiepjB8jXU0kkFRL4nr/aDBA2mDz13cMakEWdDwX3eSCTkk03kwcndD1zfRAIlELxA==
   dependencies:
+    "@inquirer/ansi" "^1.0.0"
     "@inquirer/figures" "^1.0.13"
     "@inquirer/type" "^3.0.8"
-    ansi-escapes "^4.3.2"
     cli-width "^4.1.0"
     mute-stream "^2.0.0"
     signal-exit "^4.1.0"
@@ -1669,11 +1674,11 @@
     yoctocolors-cjs "^2.1.2"
 
 "@inquirer/expand@^4.0.3":
-  version "4.0.18"
-  resolved "https://registry.yarnpkg.com/@inquirer/expand/-/expand-4.0.18.tgz#8bf1bcd1ee99b8fa02e1143ed5bf69dc576bacd7"
-  integrity sha512-xUjteYtavH7HwDMzq4Cn2X4Qsh5NozoDHCJTdoXg9HfZ4w3R6mxV1B9tL7DGJX2eq/zqtsFjhm0/RJIMGlh3ag==
+  version "4.0.20"
+  resolved "https://registry.yarnpkg.com/@inquirer/expand/-/expand-4.0.20.tgz#7c2b542ccd0d0c85428263c6d56308b880b12cb2"
+  integrity sha512-Dt9S+6qUg94fEvgn54F2Syf0Z3U8xmnBI9ATq2f5h9xt09fs2IJXSCIXyyVHwvggKWFXEY/7jATRo2K6Dkn6Ow==
   dependencies:
-    "@inquirer/core" "^10.2.0"
+    "@inquirer/core" "^10.2.2"
     "@inquirer/type" "^3.0.8"
     yoctocolors-cjs "^2.1.2"
 
@@ -1683,14 +1688,14 @@
   integrity sha512-lGPVU3yO9ZNqA7vTYz26jny41lE7yoQansmqdMLBEfqaGsmdg7V3W9mK9Pvb5IL4EVZ9GnSDGMO/cJXud5dMaw==
 
 "@inquirer/select@^4.0.3":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@inquirer/select/-/select-4.3.2.tgz#7ff8942fb052c9c92110c9c044c7abb9b4ba9497"
-  integrity sha512-nwous24r31M+WyDEHV+qckXkepvihxhnyIaod2MG7eCE6G0Zm/HUF6jgN8GXgf4U7AU6SLseKdanY195cwvU6w==
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/@inquirer/select/-/select-4.3.4.tgz#e50e0c2539631ba93e26adc225a9e0e232883833"
+  integrity sha512-Qp20nySRmfbuJBBsgPU7E/cL62Hf250vMZRzYDcBHty2zdD1kKCnoDFWRr0WO2ZzaXp3R7a4esaVGJUx0E6zvA==
   dependencies:
-    "@inquirer/core" "^10.2.0"
+    "@inquirer/ansi" "^1.0.0"
+    "@inquirer/core" "^10.2.2"
     "@inquirer/figures" "^1.0.13"
     "@inquirer/type" "^3.0.8"
-    ansi-escapes "^4.3.2"
     yoctocolors-cjs "^2.1.2"
 
 "@inquirer/type@^3.0.8":
@@ -2963,9 +2968,9 @@
     undici-types "~7.8.0"
 
 "@types/node@^22.5.5":
-  version "22.18.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.18.1.tgz#cc85ee6999b2a2928739281d2f56ff410a140c52"
-  integrity sha512-rzSDyhn4cYznVG+PCzGe1lwuMYJrcBS1fc3JqSa2PvtABwWo+dZ1ij5OVok3tqfpEBCBoaR4d7upFJk73HRJDw==
+  version "22.18.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.18.3.tgz#e1a4eb680a688141cdd369c5a035f48cf8ece9e3"
+  integrity sha512-gTVM8js2twdtqM+AE2PdGEe9zGQY4UvmFjan9rZcVb6FGdStfjWoWejdmy4CfWVO9rh5MiYQGZloKAGkJt8lMw==
   dependencies:
     undici-types "~6.21.0"
 
@@ -5334,9 +5339,9 @@ eslint-plugin-jsdoc@^51.2.3:
     spdx-expression-parse "^4.0.0"
 
 eslint-plugin-n@^17.19.0:
-  version "17.21.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-n/-/eslint-plugin-n-17.21.3.tgz#a07592c28390ac742bf52acae89048c997a7b91c"
-  integrity sha512-MtxYjDZhMQgsWRm/4xYLL0i2EhusWT7itDxlJ80l1NND2AL2Vi5Mvneqv/ikG9+zpran0VsVRXTEHrpLmUZRNw==
+  version "17.22.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-n/-/eslint-plugin-n-17.22.0.tgz#cb963e643a9191275da065e73beb86e4dec229a2"
+  integrity sha512-+YQ4dW8gg3eVZ3A8lL6zugEmA+Le5IEpCXsI8vKvDvSIB8gEh2N3PKqDwI+J8uLb7nphTJkwiv2e5OlnEDNvpQ==
   dependencies:
     "@eslint-community/eslint-utils" "^4.5.0"
     enhanced-resolve "^5.17.1"
