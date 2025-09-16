@@ -2,7 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { run } = require("../../utils/test-utils");
+const { processKill, run, runAndGetProcess } = require("../../utils/test-utils");
 
 describe("cache", () => {
   it("should work", async () => {
@@ -217,5 +217,31 @@ describe("cache", () => {
     expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
     expect(stderr).toBeTruthy();
     expect(stdout).toBeTruthy();
+  });
+
+  it("should gracefully exit when cache is true", (done) => {
+    fs.rmSync(path.join(__dirname, "../../../node_modules/.cache/webpack/graceful-exit-test"), {
+      recursive: true,
+      force: true,
+    });
+
+    const proc = runAndGetProcess(__dirname, [
+      "--config",
+      "./graceful-exit.webpack.config.js",
+      "--name",
+      "graceful-exit-test",
+    ]);
+    proc.stdout.on("data", (chunk) => {
+      const data = chunk.toString();
+      if (data.includes("app.bundle.js")) {
+        processKill(proc);
+        return;
+      }
+      expect(data).toContain(
+        "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+      );
+    });
+
+    proc.on("exit", () => done());
   });
 });
