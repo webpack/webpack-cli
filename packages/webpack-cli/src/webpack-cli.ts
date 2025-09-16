@@ -2484,9 +2484,7 @@ class WebpackCLI implements IWebpackCLI {
 
     compiler = await this.createCompiler(options as WebpackDevServerOptions, callback);
 
-    if (!compiler) {
-      return;
-    }
+    if (!compiler) return;
 
     const isWatch = (compiler: WebpackCompiler): boolean =>
       Boolean(
@@ -2494,8 +2492,14 @@ class WebpackCLI implements IWebpackCLI {
           ? compiler.compilers.some((compiler) => compiler.options.watch)
           : compiler.options.watch,
       );
+    const isCacheEnabled = (compiler: WebpackCompiler): boolean =>
+      Boolean(
+        this.isMultipleCompiler(compiler)
+          ? compiler.compilers.some((compiler) => compiler.options.cache)
+          : compiler.options.cache,
+      );
 
-    if (isWatch(compiler)) {
+    if (isWatch(compiler) || isCacheEnabled(compiler)) {
       let needForceShutdown = false;
 
       for (const signal of EXIT_SIGNALS) {
