@@ -231,6 +231,33 @@ describe("function configuration", () => {
     expect(data).toContain("env message present");
   });
 
+  it("is able to understand multiple env flags without extra `--env`", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--env",
+      "isDev",
+      "verboseStats",
+      "envMessage",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain("verboseStats: true");
+    expect(stdout).toContain("envMessage: true");
+    // check that the verbose env is respected
+    expect(stdout).toContain("LOG from webpack");
+
+    let data;
+
+    try {
+      data = await readFile(resolve(__dirname, "./dist/dev.js"), "utf8");
+    } catch (error) {
+      expect(error).toBeNull();
+    }
+
+    // check if the values from DefinePlugin make it to the compiled code
+    expect(data).toContain("env message present");
+  });
+
   it("is able to apply last flag with same name", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--env",
