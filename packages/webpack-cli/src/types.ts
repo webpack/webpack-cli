@@ -107,7 +107,7 @@ interface WebpackCLICommand extends Command {
 
 type WebpackCLIMainOption = Pick<
   WebpackCLIBuiltInOption,
-  "valueName" | "description" | "defaultValue" | "multiple" | "variadic"
+  "valueName" | "description" | "defaultValue" | "multiple"
 > & {
   flags: string;
   type: Set<BooleanConstructor | StringConstructor | NumberConstructor>;
@@ -137,7 +137,6 @@ interface WebpackCLIBuiltInFlag {
   configs?: ArgumentConfig[];
   negative?: boolean;
   multiple?: boolean;
-  variadic?: boolean;
   valueName?: string;
   description?: string;
   describe?: string;

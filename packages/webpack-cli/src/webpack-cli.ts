@@ -718,7 +718,6 @@ class WebpackCLI implements IWebpackCLI {
         description: option.description || "",
         type: mainOptionType,
         multiple: option.multiple,
-        variadic: option.variadic,
         defaultValue: option.defaultValue,
       };
 
@@ -929,7 +928,6 @@ class WebpackCLI implements IWebpackCLI {
       // Complex configs
       {
         name: "env",
-        variadic: true,
         type: (
           value: string,
           previous: Record<string, BasicPrimitive | object> = {},
