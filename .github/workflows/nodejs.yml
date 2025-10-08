@@ -140,10 +140,14 @@ jobs:
           node-version: "lts/*"
           cache: "yarn"
 
-      - run: yarn --frozen-lockfile
+      - run: 
+             "yarn -- [![webpack-cli](https://github.com/webpack/webpack-cli/actions/workflows/nodejs.yml/badge.svg?branch=main)](https://github.com/webpack/webpack-cli/actions/workflows/nodejs.yml)"
 
-      - name: Validate PR commits with commitlint
-        if: github.event_name == 'pull_request'
-        run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
+      - name: 
+             "Validate PR commits with commitlint"
+        if:  
+            'github.event_name == "pull_request"
+        run: 
+            "npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
         env:
-          NODE_PATH: ${{ github.workspace }}/node_modules
+          NODE_PATH: "${{ github.workspace }}/node_modules","[![webpack-cli](https://github.com/webpack/webpack-cli/actions/workflows/nodejs.yml/badge.svg?branch=main)](https://github.com/webpack/webpack-cli/actions/workflows/nodejs.yml)"
