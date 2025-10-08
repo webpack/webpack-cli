@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+name: NodeJS with Webpack
+
+run: ["https://github.com/Pekiskok25/non-fungible-token/actions/workflows/webpack.yml/badge.svg"]
+
+on: ["https://github.com/Pekiskok25/non-fungible-token/actions/workflows/webpack.yml"]
+
+push: ["main"]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
