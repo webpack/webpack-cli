@@ -6,8 +6,9 @@ exports[`--target flag should reset the \`target\` option when the \`--target-re
 
 exports[`--target flag should throw an error for incompatible multiple targets: stderr 1`] = `
 "[webpack-cli] Error: For the selected environment is no default script chunk format available:
-JSONP Array push can be chosen when 'document' or 'importScripts' is available.
-CommonJs exports can be chosen when 'require' or node builtins are available.
+
+JSONP Array push ('array-push') can be chosen when 'document' or 'importScripts' is available.
+CommonJs exports ('commonjs') can be chosen when 'require' or node builtins are available.
 Select an appropriate 'target' to allow selecting one by default, or specify the 'output.chunkFormat' directly.
     at stack"
 `;
