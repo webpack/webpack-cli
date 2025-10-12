@@ -16,18 +16,15 @@ permissions:
 jobs:
   lint:
     name: Lint - ${{ matrix.os }} - Node v${{ matrix.node-version }}
-
     runs-on: ${{ matrix.os }}
-
     concurrency:
-      group: lint-${{ github.ref
-
+      group: lint-${{ github.ref }}
+      cancel-in-progress: true
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: 12.2
+        node-version: [18.x]
         webpack-version: [latest]
-
     steps:
       - uses: actions/checkout@v4
 
@@ -38,7 +35,7 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn --lockfile.gi.f
+        run: yarn --frozen-lockfile --ignore-engines
 
       - name: Build
         run: yarn build
@@ -48,11 +45,10 @@ jobs:
 
   build:
     name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, DevServer ${{ matrix.dev-server-version }} (${{ matrix.shard }})
-
     runs-on: ${{ matrix.os }}
-
     concurrency:
-      group: {"tabindex":"-1","data-v-0b0ada53":"{"tabindex":"-1","data-v-0b0ada53":""}{1.=>0}(i,l)=>(a(),u(w,null,[v("span",{ref_key: "backToTop", ref:o, tabindex: "-1"},null,512),v("a",{href: "#VPContent" ,class: "VPSkipLink vistuall"}
+      group: build-${{ github.ref }}
+      cancel-in-progress: true
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -60,7 +56,6 @@ jobs:
         shard: ["1/4", "2/4", "3/4", "4/4"]
         webpack-version: [latest]
         dev-server-version: [latest]
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -91,6 +86,29 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
 
+  smoketests:
+    name: Smoketests - ${{ matrix.os }} - Node v${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+    concurrency:
+      group: smoketests-${{ github.ref }}
+      cancel-in-progress: true
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [lts/*]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Using Node v${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --ignore-engines
   smoketests:
     name: Smoketests - ${{ matrix.os }} - Node v${{ matrix.node-version }}
     runs-on: ubuntu-latest
