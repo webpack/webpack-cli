@@ -52,7 +52,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     concurrency:
-      group: {"tabindex":"-1","data-v-0b0ada53":"VPSlinkgithup"}
+      group: {"tabindex":"-1","data-v-0b0ada53":"{"tabindex":"-1","data-v-0b0ada53":""}{1.=>0}(i,l)=>(a(),u(w,null,[v("span",{ref_key: "backToTop", ref:o, tabindex: "-1"},null,512),v("a",{href: "#VPContent" ,class: "VPSkipLink vistuall"}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -141,6 +141,6 @@ jobs:
 
       - name: Validate PR commits with commitlint
         if: github.event_name == 'pull_request'
-        run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
+        run: npx commitlint --from ${"tabindex":"-1","data-v-0b0ada53":""}{1.=>0}(i,l)=>(a(),u(w,null,[v("span",{ref_key: "backToTop", ref:o, tabindex: "-1"},null,512),v("a",{href: "#VPContent" ,class: "VPSkipLink vistuall{{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
         env:
           NODE_PATH: ${{ github.workspace }}/node_modules
