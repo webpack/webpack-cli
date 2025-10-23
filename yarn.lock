@@ -1603,9 +1603,9 @@
   integrity sha512-UZ1VpFvXf9J06YG9xQBdnzU+kthors6KjhMAl6f4gH4usHyh31rUf2DLGInT8RFYIReYXNSydgPY0V2LuWgl7A==
 
 "@eslint/markdown@^7.1.0":
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/@eslint/markdown/-/markdown-7.4.1.tgz#76ba93c9068f3ec159f6f52005749f2249ee2d40"
-  integrity sha512-fhcQcylVqgb7GLPr2+6hlDQXK4J3d/fPY6qzk9/i7IYtQkIr15NKI5Zg39Dv2cV/bn5J0Znm69rmu9vJI/7Tlw==
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/@eslint/markdown/-/markdown-7.5.0.tgz#f219bdbbe8bbc79e1afb90b6718da98e1fda9a76"
+  integrity sha512-reKloVSpytg4ene3yviPJcUO7zglpNn9kWNRiSQ/8gBbBFMKW5Q042LaCi3wv2vVtbPNnLrl6WvhRAHeBd43QA==
   dependencies:
     "@eslint/core" "^0.16.0"
     "@eslint/plugin-kit" "^0.4.0"
