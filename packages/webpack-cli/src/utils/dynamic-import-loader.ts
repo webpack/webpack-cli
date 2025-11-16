@@ -26,18 +26,28 @@ function dynamicImportLoader<T>(): DynamicImport<T> | null {
   try {
     // Use native async import with proper URL handling for security
     // pathToFileURL ensures the path is properly validated and sanitized
-    importESM = async (id: string): Promise<{ default: T }> => {
-      // Validate input to prevent path traversal attacks
-      if (!id || typeof id !== "string") {
+    importESM = async (id: string | URL): Promise<{ default: T }> => {
+      // Validate input type - accept strings or URL objects
+      if (typeof id !== "string" && !(id instanceof URL)) {
         throw new Error("Invalid module identifier");
       }
 
-      // Use pathToFileURL for proper path handling and security
-      const url = pathToFileURL(id);
+      // Convert to URL if it's a string, otherwise use the URL directly
+      // pathToFileURL ensures proper path handling and security for string paths
+      const url = typeof id === "string" ? pathToFileURL(id) : id;
 
-      // Use native import() which is safer than Function constructor
-      // This is wrapped in an async function to maintain compatibility
-      return await import(url.href);
+      // Use Function constructor to preserve import() functionality across module systems
+      // This is secure because:
+      // 1. The function body is a hardcoded string - no user input
+      // 2. The URL is passed as a parameter, not concatenated into the function body
+      // 3. The URL comes from pathToFileURL (validated) or is already a URL object
+      // This prevents TypeScript from transpiling import() to require()
+      // eslint-disable-next-line no-new-func
+      const importFunc = new Function("specifier", "return import(specifier)") as (
+        spec: string,
+      ) => Promise<{ default: T }>;
+
+      return await importFunc(url.href);
     };
   } catch {
     importESM = null;

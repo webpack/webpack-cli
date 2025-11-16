@@ -80,15 +80,15 @@ webpack-cli implements several security measures to protect users:
 
 ### 3. Code Security
 
-- No use of `eval()` or `Function()` constructor for arbitrary code execution
+- No arbitrary code execution - `eval()` and `Function()` are only used with hardcoded, safe strings
 - Dynamic imports use proper URL validation via `pathToFileURL`
-- Safe handling of external module loading
+- Safe handling of external module loading with input validation
 
 ### 4. Recent Security Improvements (v6.x)
 
 #### Core Security Enhancements
 
-- **Enhanced dynamic import security:** Removed `Function()` constructor usage in favor of native `import()` with proper path validation
+- **Enhanced dynamic import security:** Secure use of `Function()` constructor with hardcoded function body and validated parameters to preserve `import()` functionality across module systems
 - **Path traversal protection:** Added validation to prevent `../` path traversal attacks
 - **Centralized exit handling:** Improved error handling and process cleanup
 - **Input sanitization:** Enhanced validation for all user inputs

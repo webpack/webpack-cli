@@ -15,6 +15,10 @@ export default defineConfig([
     "test/build/config-format/esm-require-await/webpack.config.js",
     "test/configtest/with-config-path/syntax-error.config.js",
     "test/build/config-format/esm-require/webpack.config.js",
+    // Documentation files with code examples
+    "PHASE_*.md",
+    "REFACTORING_PLAN.md",
+    "SECURITY_ENHANCEMENTS.md",
   ]),
   {
     extends: [config],
