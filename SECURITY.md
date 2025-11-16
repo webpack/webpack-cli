@@ -86,10 +86,74 @@ webpack-cli implements several security measures to protect users:
 
 ### 4. Recent Security Improvements (v6.x)
 
+#### Core Security Enhancements
+
 - **Enhanced dynamic import security:** Removed `Function()` constructor usage in favor of native `import()` with proper path validation
 - **Path traversal protection:** Added validation to prevent `../` path traversal attacks
 - **Centralized exit handling:** Improved error handling and process cleanup
 - **Input sanitization:** Enhanced validation for all user inputs
+
+#### Comprehensive Security Validators (`utils/validators.ts`)
+
+webpack-cli now includes a dedicated security validation utility that prevents common vulnerabilities:
+
+**1. Path Traversal Protection**
+
+```typescript
+// Prevents: ../, ..\, null bytes, symbolic link attacks
+Validators.validatePath(userProvidedPath, basePath);
+```
+
+**2. Command Injection Prevention**
+
+```typescript
+// Validates package names to prevent shell command injection
+Validators.validatePackageName("webpack"); // ✅ Safe
+Validators.validatePackageName("pkg && rm -rf /"); // ❌ Blocked
+```
+
+**3. Prototype Pollution Protection**
+
+```typescript
+// Prevents __proto__, constructor, prototype pollution
+Validators.validateConfig(configObject);
+```
+
+**4. Environment Variable Validation**
+
+```typescript
+// Prevents command substitution and shell metacharacters
+Validators.validateEnvValue(envValue);
+```
+
+**5. URL Validation (SSRF Protection)**
+
+```typescript
+// Prevents SSRF attacks via file://, internal IPs, AWS metadata service
+Validators.validateUrl(url);
+```
+
+#### Manager-Level Security
+
+**PackageManager** (`core/package-manager.ts`):
+
+- ✅ Validates all package names before installation to prevent command injection
+- ✅ Blocks dangerous characters: `;&|<>$()` and shell metacharacters
+- ✅ Enforces npm package naming conventions
+- ✅ Prevents path traversal attempts via package names
+
+**ConfigManager** (`core/config-manager.ts`):
+
+- ✅ Validates all configuration file paths before loading
+- ✅ Prevents access outside project directory (path traversal)
+- ✅ Validates configuration objects for prototype pollution
+- ✅ Sanitizes all option values before processing
+
+**CompilerFactory** (`core/compiler-factory.ts`):
+
+- ✅ Safe webpack compiler instantiation
+- ✅ Validated configuration passing
+- ✅ Secure watch mode handling
 
 ## Security Best Practices for Users
 
@@ -184,9 +248,118 @@ All dependencies are:
 - Reviewed before major version updates
 - Kept up-to-date with security patches
 
+## Attack Vectors & Mitigations
+
+webpack-cli protects against the following attack vectors:
+
+### 1. Command Injection
+
+**Risk:** Malicious package names or arguments could inject shell commands
+
+**Mitigation:**
+
+- All package names validated against strict regex patterns
+- Dangerous characters (`;&|<>$(){}[]`) are blocked
+- Shell metacharacters are sanitized from user input
+- Command arguments are never directly concatenated into shell commands
+
+**Example Attack (Blocked):**
+
+```bash
+webpack install "evil-package && rm -rf /"
+# Blocked by: Validators.validatePackageName()
+```
+
+### 2. Path Traversal
+
+**Risk:** Attackers could access files outside the project directory using `../` sequences
+
+**Mitigation:**
+
+- All file paths validated before access
+- Path normalization prevents bypass attempts
+- Base directory restrictions enforced
+- Null byte injection blocked
+
+**Example Attack (Blocked):**
+
+```bash
+webpack --config "../../../etc/passwd"
+# Blocked by: Validators.validatePath()
+```
+
+### 3. Prototype Pollution
+
+**Risk:** Malicious configuration could pollute Object.prototype
+
+**Mitigation:**
+
+- All configuration objects validated recursively
+- Dangerous keys (`__proto__`, `constructor`, `prototype`) are blocked
+- Nested key validation prevents bypass attempts
+- Applies to both config files and CLI options
+
+**Example Attack (Blocked):**
+
+```javascript
+// webpack.config.js
+module.exports = {
+  __proto__: { isAdmin: true }, // Blocked by Validators.validateConfig()
+};
+```
+
+### 4. SSRF (Server-Side Request Forgery)
+
+**Risk:** Malicious URLs could access internal services or cloud metadata
+
+**Mitigation:**
+
+- URL protocol validation (only https://, http:// allowed)
+- Private IP range blocking (10.x.x.x, 192.168.x.x, 172.16-31.x.x)
+- Localhost and loopback address blocking
+- AWS/GCP metadata service blocking (169.254.169.254, metadata.google.internal)
+
+**Example Attack (Blocked):**
+
+```bash
+# Attempt to access AWS metadata service
+webpack --config "http://169.254.169.254/latest/meta-data/"
+# Blocked by: Validators.validateUrl()
+```
+
+### 5. Dependency Confusion
+
+**Risk:** Attackers could trick the CLI into installing malicious packages
+
+**Mitigation:**
+
+- Package name format validation
+- User confirmation required before installation
+- Scope validation for scoped packages
+- Lock file integrity respected
+
 ## Security Changelog
 
-### v6.0.0+ (Current)
+### v6.1.0+ (Latest)
+
+#### New Security Features:
+
+- ✅ **Comprehensive Validators Utility:** Dedicated security validation for all user inputs
+- ✅ **Command Injection Prevention:** Package name validation with dangerous character blocking
+- ✅ **Prototype Pollution Protection:** Recursive configuration object validation
+- ✅ **SSRF Protection:** URL validation with private IP and metadata service blocking
+- ✅ **Path Traversal Protection:** Enhanced validation for all file operations
+- ✅ **Manager-Level Security:** Security validation integrated into all manager classes
+- ✅ **Environment Variable Validation:** Shell metacharacter and command substitution prevention
+
+#### Security Documentation:
+
+- ✅ Detailed attack vector documentation
+- ✅ Mitigation strategy explanations
+- ✅ Code examples for secure usage
+- ✅ JSDoc security annotations on all security-critical methods
+
+### v6.0.0
 
 - ✅ Removed `Function()` constructor from dynamic imports
 - ✅ Added path validation for all file operations
@@ -224,6 +397,6 @@ We appreciate the security researchers and users who have responsibly disclosed 
 
 ---
 
-**Last Updated:** 2025-01-16
+**Last Updated:** 2025-11-16
 
 For general questions about security, please open a public GitHub issue (for non-sensitive topics) or contact the maintainers directly for sensitive matters.

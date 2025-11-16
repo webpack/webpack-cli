@@ -1,6 +1,7 @@
 import { resolve } from "node:path";
 import { type PackageInstallOptions, type PackageManager as PackageManagerType } from "../types.js";
 import { fsCache } from "../utils/file-system-cache.js";
+import { Validators } from "../utils/validators.js";
 
 /**
  * Options for prompting the user
@@ -184,8 +185,11 @@ export class PackageManager {
   /**
    * Checks if a package exists in node_modules
    *
+   * **Security**: Validates package name to prevent path traversal and injection attacks
+   *
    * @param packageName - The name of the package to check
    * @returns true if the package exists, false otherwise
+   * @throws {Error} If package name is invalid or contains malicious patterns
    *
    * @example
    * ```typescript
@@ -196,6 +200,13 @@ export class PackageManager {
    * ```
    */
   checkExists(packageName: string): boolean {
+    // Security: Validate package name to prevent injection attacks
+    const validation = Validators.validatePackageName(packageName);
+    if (!validation.valid) {
+      this.logger.error(`Invalid package name: ${validation.error}`);
+      return false;
+    }
+
     // Handle PnP (Yarn Plug'n'Play)
     if (process.versions.pnp) {
       return true;
@@ -262,10 +273,12 @@ export class PackageManager {
   /**
    * Installs a package using the default package manager
    *
+   * **Security**: Validates package name to prevent command injection attacks
+   *
    * @param packageName - The name of the package to install
    * @param options - Installation options including pre-message callback
    * @returns Promise resolving to the installed package name
-   * @throws {Error} If installation fails or user declines
+   * @throws {Error} If installation fails, user declines, or package name is invalid
    *
    * @example
    * ```typescript
@@ -275,6 +288,14 @@ export class PackageManager {
    * ```
    */
   async install(packageName: string, options: PackageInstallOptions = {}): Promise<string> {
+    // Security: Validate package name to prevent command injection
+    const validation = Validators.validatePackageName(packageName);
+    if (!validation.valid) {
+      this.logger.error(`Invalid package name: ${validation.error}`);
+      this.logger.error(`Attempted to install: '${packageName}'`);
+      process.exit(2);
+    }
+
     const packageManagerName = this.getDefault();
 
     if (!packageManagerName) {

@@ -1,6 +1,7 @@
 import { type Configuration, type MultiCompilerOptions, default as webpack } from "webpack";
 import { type Configuration as DevServerConfig } from "webpack-dev-server";
 import { type Instantiable, type WebpackCLIBuiltInOption } from "../types.js";
+import { Validators } from "../utils/validators.js";
 
 /**
  * Logger interface for configuration operations
@@ -146,6 +147,14 @@ export class ConfigManager {
       configPath: string,
       argv: unknown = {},
     ): Promise<{ options: Configuration | Configuration[]; path: string }> => {
+      // Security: Validate config path to prevent path traversal attacks
+      const pathValidation = Validators.validatePath(configPath, process.cwd());
+      if (!pathValidation.valid) {
+        this.logger.error(`Invalid config path: ${pathValidation.error}`);
+        this.logger.error(`Attempted to load: '${configPath}'`);
+        process.exit(2);
+      }
+
       const ext = path.extname(configPath).toLowerCase();
       let interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
 
@@ -541,6 +550,19 @@ export class ConfigManager {
       argv?: { env?: { WEBPACK_WATCH?: boolean; WEBPACK_SERVE?: boolean }; watch?: boolean };
     },
   ): Promise<WebpackCLIConfig> {
+    // Security: Validate configuration object to prevent prototype pollution
+    const configValidation = Validators.validateConfig(config.options);
+    if (!configValidation.valid) {
+      this.logger.error(`Invalid configuration: ${configValidation.error}`);
+      process.exit(2);
+    }
+
+    const optionsValidation = Validators.validateConfig(options);
+    if (!optionsValidation.valid) {
+      this.logger.error(`Invalid options: ${optionsValidation.error}`);
+      process.exit(2);
+    }
+
     // Install webpack-bundle-analyzer if needed
     if (options.analyze && !this.checkPackageExists("webpack-bundle-analyzer")) {
       await this.doInstall("webpack-bundle-analyzer", {
