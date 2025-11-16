@@ -169,6 +169,24 @@ class WebpackCLI implements IWebpackCLI {
     };
   }
 
+  /**
+   * Checks if a package exists in node_modules
+   *
+   * Searches for the package by:
+   * 1. Checking up the directory tree from __dirname
+   * 2. Checking Node.js global module paths
+   * 3. Handling Yarn PnP (Plug'n'Play) environments
+   *
+   * @param packageName - Name of the package to check (e.g., 'webpack', 'webpack-dev-server')
+   * @returns true if package exists, false otherwise
+   *
+   * @example
+   * ```typescript
+   * if (cli.checkPackageExists('webpack-bundle-analyzer')) {
+   *   // Package is installed
+   * }
+   * ```
+   */
   checkPackageExists(packageName: string): boolean {
     if (process.versions.pnp) {
       return true;
@@ -1087,10 +1105,45 @@ class WebpackCLI implements IWebpackCLI {
     return options;
   }
 
+  /**
+   * Loads the webpack package dynamically
+   *
+   * This method attempts to load webpack from the configured package location,
+   * which can be customized via the WEBPACK_PACKAGE environment variable.
+   *
+   * @param handleError - Whether to handle errors internally (default: true)
+   * @returns Promise resolving to the webpack module
+   * @throws {Error} If webpack cannot be loaded and handleError is false
+   *
+   * @example
+   * ```typescript
+   * const webpack = await cli.loadWebpack();
+   * const compiler = webpack(config);
+   * ```
+   */
   async loadWebpack(handleError = true) {
     return this.tryRequireThenImport<typeof webpack>(WEBPACK_PACKAGE, handleError);
   }
 
+  /**
+   * Main entry point for running the webpack CLI
+   *
+   * This method handles:
+   * - Command parsing and registration
+   * - Option handling (--help, --version, --color, etc.)
+   * - Command discovery and loading
+   * - Error handling and user feedback
+   *
+   * @param args - Command line arguments to parse
+   * @param parseOptions - Commander.js parse options
+   * @returns Promise that resolves when CLI execution completes
+   *
+   * @example
+   * ```typescript
+   * const cli = new WebpackCLI();
+   * await cli.run(process.argv, { from: 'user' });
+   * ```
+   */
   async run(args: Parameters<WebpackCLICommand["parseOptions"]>[0], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
     // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -1782,6 +1835,37 @@ class WebpackCLI implements IWebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
+  /**
+   * Loads webpack configuration from files or discovers default config
+   *
+   * This method handles:
+   * - Loading configs from specified paths
+   * - Auto-discovery of default config files (webpack.config.js, etc.)
+   * - Support for multiple config formats (JS, TS, CJS, ESM, CoffeeScript)
+   * - Config name filtering when config exports multiple configurations
+   * - Config extending and merging
+   *
+   * @param options - Configuration options including:
+   *   - config: Array of config file paths
+   *   - configName: Names of specific configs to use
+   *   - extends: Configs to extend from
+   *   - merge: Whether to merge multiple configs
+   *   - disableInterpret: Disable rechoir for loading TypeScript/CoffeeScript
+   * @returns Promise resolving to loaded configuration and path mapping
+   *
+   * @example
+   * ```typescript
+   * // Load specific config
+   * const config = await cli.loadConfig({
+   *   config: ['./webpack.prod.config.js']
+   * });
+   *
+   * // Load with extends
+   * const config = await cli.loadConfig({
+   *   extends: ['./webpack.base.config.js']
+   * });
+   * ```
+   */
   async loadConfig(options: Partial<WebpackDevServerOptions>) {
     const disableInterpret =
       typeof options.disableInterpret !== "undefined" && options.disableInterpret;
@@ -2348,6 +2432,28 @@ class WebpackCLI implements IWebpackCLI {
     );
   }
 
+  /**
+   * Creates a webpack compiler instance with the provided options
+   *
+   * This method:
+   * 1. Sets NODE_ENV based on config options
+   * 2. Loads and builds configuration
+   * 3. Creates webpack compiler
+   * 4. Handles validation errors
+   *
+   * @param options - Webpack and webpack-dev-server options
+   * @param callback - Optional callback for compilation events
+   * @returns Promise resolving to webpack Compiler or MultiCompiler instance
+   * @throws {Error} If configuration is invalid or compiler creation fails
+   *
+   * @example
+   * ```typescript
+   * const compiler = await cli.createCompiler({
+   *   mode: 'production',
+   *   entry: './src/index.js'
+   * });
+   * ```
+   */
   async createCompiler(
     options: Partial<WebpackDevServerOptions>,
     callback?: WebpackCallback,
@@ -2400,6 +2506,32 @@ class WebpackCLI implements IWebpackCLI {
     return Boolean(compiler.options.watchOptions?.stdin);
   }
 
+  /**
+   * Executes webpack compilation with the provided options
+   *
+   * This method:
+   * - Creates compiler with options
+   * - Handles watch mode
+   * - Outputs JSON stats if requested
+   * - Sets up graceful shutdown handlers
+   * - Manages stdin for watch mode termination
+   *
+   * @param options - Webpack run options including:
+   *   - json: Output stats as JSON
+   *   - watch: Enable watch mode
+   *   - env: Environment variables
+   *   - failOnWarnings: Exit with error code if warnings are present
+   * @param isWatchCommand - Whether this is a watch command
+   * @returns Promise that resolves when compilation completes (or never for watch mode)
+   *
+   * @example
+   * ```typescript
+   * await cli.runWebpack({
+   *   mode: 'production',
+   *   entry: './src/index.js'
+   * }, false);
+   * ```
+   */
   async runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void> {
     let compiler: Compiler | MultiCompiler;
     let createStringifyChunked: typeof stringifyChunked;
