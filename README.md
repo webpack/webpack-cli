@@ -6,10 +6,28 @@
 
 <h1 align="center">webpack CLI</h1>
 
-> **⚠️ INTERNAL FORK NOTICE**
-> This is a **private, internal fork** of webpack-cli with enterprise-grade security enhancements.
-> **DO NOT** push to public webpack/webpack-cli repository.
-> See [INTERNAL_FORK_NOTES.md](./INTERNAL_FORK_NOTES.md) and [NEXT_STEPS_RECOMMENDATIONS.md](./NEXT_STEPS_RECOMMENDATIONS.md) for details.
+> # 🔒 PRIVATE REPOSITORY - INTERNAL USE ONLY
+>
+> **⚠️ THIS REPOSITORY MUST REMAIN PRIVATE ⚠️**
+>
+> This is a **private, internal fork** of webpack-cli with **proprietary enterprise-grade security enhancements**.
+>
+> **CRITICAL RESTRICTIONS:**
+>
+> - ❌ **DO NOT** make this repository public
+> - ❌ **DO NOT** push to github.com/webpack/webpack-cli
+> - ❌ **DO NOT** share proprietary security validators
+> - ❌ **DO NOT** fork to public platforms
+> - ❌ **DO NOT** install from public npm registry
+>
+> **REQUIRED:**
+>
+> - ✅ Keep repository visibility as **Private** or **Internal**
+> - ✅ Use only for internal projects
+> - ✅ Review [.github/PRIVATE_REPO_WARNING.md](./.github/PRIVATE_REPO_WARNING.md)
+> - ✅ Follow [.github/SECURITY_BARRIERS.md](./.github/SECURITY_BARRIERS.md)
+>
+> **For details:** See [INTERNAL_FORK_NOTES.md](./INTERNAL_FORK_NOTES.md) and [NEXT_STEPS_RECOMMENDATIONS.md](./NEXT_STEPS_RECOMMENDATIONS.md)
 
 <p align="center">
   The official Command Line Interface of webpack
