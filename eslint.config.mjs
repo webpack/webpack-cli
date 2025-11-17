@@ -19,6 +19,9 @@ export default defineConfig([
     "PHASE_*.md",
     "REFACTORING_PLAN.md",
     "SECURITY_ENHANCEMENTS.md",
+    "INTERNAL_FORK_NOTES.md",
+    "NEXT_STEPS_RECOMMENDATIONS.md",
+    "QUICK_START_INTERNAL.md",
   ]),
   {
     extends: [config],

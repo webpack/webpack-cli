@@ -106,7 +106,14 @@
     "Zenitsu",
     "quickstart",
     "pinia",
-    "watchpack"
+    "watchpack",
+    "GPTI",
+    "Mqvr",
+    "Eyfwky",
+    "CODEOWNERS",
+    "codeowners",
+    "oneline",
+    "automagpt"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [
