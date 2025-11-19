@@ -9,7 +9,7 @@ import {
   type EntryOptions,
   type FileCacheOptions,
   type MultiCompiler,
-  type MultiCompilerOptions,
+  type MultiConfiguration,
   type MultiStats,
   type Stats,
   type WebpackError,
@@ -26,7 +26,10 @@ import {
  * Webpack CLI
  */
 
-type WebpackCallback = (err: Error | undefined, stats: Stats | MultiStats | undefined) => void;
+declare interface WebpackCallback {
+  (err: null | Error, result?: Stats): void;
+  (err: null | Error, result?: MultiStats): void;
+}
 
 // TODO remove me in the next major release, we don't need extra interface
 interface IWebpackCLI {
@@ -95,7 +98,7 @@ interface WebpackCLICommandOption extends CommanderOption {
 }
 
 interface WebpackCLIConfig {
-  options: WebpackConfiguration | (WebpackConfiguration[] & MultiCompilerOptions);
+  options: Configuration | MultiConfiguration;
   path: WeakMap<object, string[]>;
 }
 
@@ -159,7 +162,7 @@ type WebpackCLIExternalCommandInfo = Pick<WebpackCLIOptions, "name" | "alias" | 
  */
 
 type WebpackDevServerOptions = DevServerConfig &
-  WebpackConfiguration &
+  Configuration &
   ClientConfiguration &
   AssetEmittedInfo &
   WebpackOptionsNormalized &
@@ -183,11 +186,8 @@ type WebpackDevServerOptions = DevServerConfig &
 /**
  * Webpack
  */
-type WebpackConfiguration = Configuration;
-type LoadableWebpackConfiguration = PotentialPromise<
-  WebpackConfiguration | CallableWebpackConfiguration
->;
-type CallableWebpackConfiguration = (env: Env | undefined, argv: Argv) => WebpackConfiguration;
+type LoadableWebpackConfiguration = PotentialPromise<Configuration | CallableWebpackConfiguration>;
+type CallableWebpackConfiguration = (env: Env | undefined, argv: Argv) => Configuration;
 type WebpackCompiler = Compiler | MultiCompiler;
 
 interface EnumValueObject {
@@ -205,7 +205,7 @@ interface ArgumentConfig {
   values?: EnumValue[];
 }
 
-type FileSystemCacheOptions = WebpackConfiguration & {
+type FileSystemCacheOptions = Configuration & {
   cache: FileCacheOptions & { defaultConfig: string[] };
 };
 
@@ -343,7 +343,6 @@ export {
   type WebpackCLIOptions,
   type WebpackCallback,
   type WebpackCompiler,
-  type WebpackConfiguration,
   type WebpackDevServerOptions,
   type WebpackRunOptions,
 };
