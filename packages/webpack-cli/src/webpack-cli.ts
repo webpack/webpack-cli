@@ -2,7 +2,9 @@ import { type stringifyChunked } from "@discoveryjs/json-ext";
 import { type Help, type ParseOptions } from "commander";
 import {
   type Compiler,
+  type Configuration,
   type MultiCompiler,
+  type MultiConfiguration,
   type MultiStatsOptions,
   type StatsOptions,
   type WebpackError,
@@ -50,7 +52,6 @@ import {
   type WebpackCLIOptions,
   type WebpackCallback,
   type WebpackCompiler,
-  type WebpackConfiguration,
   type WebpackDevServerOptions,
   type WebpackRunOptions,
 } from "./types.js";
@@ -110,6 +111,12 @@ class WebpackCLI implements IWebpackCLI {
         write(`Error: ${this.capitalizeFirstLetter(str.replace(/^error:/, "").trim())}`);
       },
     });
+  }
+
+  isMultipleConfiguration(
+    config: Configuration | MultiConfiguration,
+  ): config is MultiConfiguration {
+    return Array.isArray(config);
   }
 
   isMultipleCompiler(compiler: WebpackCompiler): compiler is MultiCompiler {
@@ -1791,7 +1798,7 @@ class WebpackCLI implements IWebpackCLI {
     const loadConfigByPath = async (
       configPath: string,
       argv: Argv = {},
-    ): Promise<{ options: WebpackConfiguration | WebpackConfiguration[]; path: string }> => {
+    ): Promise<{ options: Configuration | Configuration[]; path: string }> => {
       const ext = path.extname(configPath).toLowerCase();
       let interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
       // Fallback `.cts` to `.ts`
@@ -1824,7 +1831,7 @@ class WebpackCLI implements IWebpackCLI {
 
       let options: LoadableWebpackConfiguration | LoadableWebpackConfiguration[];
 
-      type LoadConfigOption = PotentialPromise<WebpackConfiguration>;
+      type LoadConfigOption = PotentialPromise<Configuration>;
 
       let moduleType: "unknown" | "commonjs" | "esm" = "unknown";
 
@@ -1868,8 +1875,8 @@ class WebpackCLI implements IWebpackCLI {
         await Promise.all(
           optionsArray.map(async (_, i) => {
             if (
-              this.isPromise<WebpackConfiguration | CallableWebpackConfiguration>(
-                optionsArray[i] as Promise<WebpackConfiguration | CallableWebpackConfiguration>,
+              this.isPromise<Configuration | CallableWebpackConfiguration>(
+                optionsArray[i] as Promise<Configuration | CallableWebpackConfiguration>,
               )
             ) {
               optionsArray[i] = await optionsArray[i];
@@ -1908,7 +1915,7 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       return {
-        options: options as WebpackConfiguration | WebpackConfiguration[],
+        options: options as Configuration | Configuration[],
         path: configPath,
       };
     };
@@ -1933,11 +1940,11 @@ class WebpackCLI implements IWebpackCLI {
         for (const loadedConfig of loadedConfigs) {
           if (Array.isArray(loadedConfig.options)) {
             for (const item of loadedConfig.options) {
-              (config.options as WebpackConfiguration[]).push(item);
+              (config.options as Configuration[]).push(item);
               config.path.set(options, [loadedConfig.path]);
             }
           } else {
-            (config.options as WebpackConfiguration[]).push(loadedConfig.options);
+            (config.options as Configuration[]).push(loadedConfig.options);
             config.path.set(loadedConfig.options, [loadedConfig.path]);
           }
         }
@@ -1976,7 +1983,7 @@ class WebpackCLI implements IWebpackCLI {
 
         config.options = loadedConfig.options;
 
-        if (Array.isArray(config.options)) {
+        if (this.isMultipleConfiguration(config.options)) {
           for (const item of config.options) {
             config.path.set(item, [loadedConfig.path]);
           }
@@ -1992,7 +1999,7 @@ class WebpackCLI implements IWebpackCLI {
       config.options = options.configName.map((configName) => {
         let found;
 
-        if (Array.isArray(config.options)) {
+        if (this.isMultipleConfiguration(config.options)) {
           found = config.options.find((options) => options.name === configName);
         } else {
           found = config.options.name === configName ? config.options : undefined;
@@ -2003,7 +2010,7 @@ class WebpackCLI implements IWebpackCLI {
         }
 
         return found;
-      }) as WebpackConfiguration[];
+      }) as Configuration[];
 
       if (notFoundConfigNames.length > 0) {
         this.logger.error(
@@ -2016,10 +2023,10 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     const resolveExtends = async (
-      config: WebpackConfiguration,
+      config: Configuration,
       configPaths: WebpackCLIConfig["path"],
       extendsPaths: string[],
-    ): Promise<WebpackConfiguration> => {
+    ): Promise<Configuration> => {
       delete config.extends;
 
       const loadedConfigs = await Promise.all(
@@ -2044,10 +2051,7 @@ class WebpackCLI implements IWebpackCLI {
           }
         }
 
-        config = merge(
-          ...(loadedOptions as [WebpackConfiguration, ...WebpackConfiguration[]]),
-          config,
-        );
+        config = merge(...(loadedOptions as [Configuration, ...Configuration[]]), config);
 
         if (prevPaths) {
           configPaths.set(config, [...prevPaths, ...loadedPaths]);
@@ -2067,7 +2071,7 @@ class WebpackCLI implements IWebpackCLI {
     if (options.extends && options.extends.length > 0) {
       const extendsPaths = options.extends;
 
-      if (Array.isArray(config.options)) {
+      if (this.isMultipleConfiguration(config.options)) {
         config.options = await Promise.all(
           config.options.map((options) => resolveExtends(options, config.path, extendsPaths)),
         );
@@ -2077,7 +2081,10 @@ class WebpackCLI implements IWebpackCLI {
       }
     }
     // if no extends option is passed, check if the config file has extends
-    else if (Array.isArray(config.options) && config.options.some((options) => options.extends)) {
+    else if (
+      this.isMultipleConfiguration(config.options) &&
+      config.options.some((options) => options.extends)
+    ) {
       config.options = await Promise.all(
         config.options.map((options) => {
           if (options.extends) {
@@ -2090,7 +2097,7 @@ class WebpackCLI implements IWebpackCLI {
           return options;
         }),
       );
-    } else if (!Array.isArray(config.options) && config.options.extends) {
+    } else if (!this.isMultipleConfiguration(config.options) && config.options.extends) {
       config.options = await resolveExtends(
         config.options,
         config.path,
@@ -2106,7 +2113,7 @@ class WebpackCLI implements IWebpackCLI {
       // we can only merge when there are multiple configurations
       // either by passing multiple configs by flags or passing a
       // single config exporting an array
-      if (!Array.isArray(config.options) || config.options.length <= 1) {
+      if (!this.isMultipleConfiguration(config.options) || config.options.length <= 1) {
         this.logger.error("At least two configurations are required for merge.");
         process.exit(2);
       }
@@ -2159,7 +2166,7 @@ class WebpackCLI implements IWebpackCLI {
         "./plugins/cli-plugin",
       );
 
-    const internalBuildConfig = (item: WebpackConfiguration) => {
+    const internalBuildConfig = (item: Configuration) => {
       const originalWatchValue = item.watch;
 
       // Apply options
@@ -2246,9 +2253,7 @@ class WebpackCLI implements IWebpackCLI {
         }
       }
 
-      const isFileSystemCacheOptions = (
-        config: WebpackConfiguration,
-      ): config is FileSystemCacheOptions =>
+      const isFileSystemCacheOptions = (config: Configuration): config is FileSystemCacheOptions =>
         Boolean(config.cache) && (config as FileSystemCacheOptions).cache.type === "filesystem";
 
       // Setup default cache options
@@ -2325,13 +2330,13 @@ class WebpackCLI implements IWebpackCLI {
             helpfulOutput: !options.json,
             progress: options.progress,
             analyze: options.analyze,
-            isMultiCompiler: Array.isArray(config.options),
+            isMultiCompiler: this.isMultipleConfiguration(config.options),
           }),
         );
       }
     };
 
-    if (Array.isArray(config.options)) {
+    if (this.isMultipleConfiguration(config.options)) {
       for (const item of config.options) {
         internalBuildConfig(item);
       }
@@ -2364,19 +2369,16 @@ class WebpackCLI implements IWebpackCLI {
     let compiler: WebpackCompiler;
 
     try {
-      compiler = this.webpack(
-        config.options,
-        callback
-          ? (error, stats) => {
-              if (error && this.isValidationError(error)) {
-                this.logger.error(error.message);
-                process.exit(2);
-              }
-
-              callback(error as Error | undefined, stats);
+      compiler = callback
+        ? this.webpack(config.options, (error, stats) => {
+            if (error && this.isValidationError(error)) {
+              this.logger.error(error.message);
+              process.exit(2);
             }
-          : callback,
-      )!;
+
+            callback(error as Error | null, stats);
+          })!
+        : this.webpack(config.options);
     } catch (error) {
       if (this.isValidationError(error)) {
         this.logger.error(error.message);
