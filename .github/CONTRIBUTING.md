@@ -11,7 +11,7 @@ Table of Contents
 - [Your first Contribution](#your-first-contribution)
 - [Setup](#setup)
 - [Running Tests](#running-tests)
-  - [Using yarn](#using-yarn)
+  - [Using npm](#using-npm)
 - [Editor Config](#editor-config)
 - [Dependencies](#dependencies)
 - [Branching Model](#branching-model)
@@ -57,46 +57,44 @@ In case you are suggesting a new feature, we will match your idea with our curre
 - Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
 - `git clone <your-clone-url> && cd webpack-cli`
 
-- We use [yarn](https://yarnpkg.com/lang/en/) workspaces, please install it:
+- We use [npm](https://docs.npmjs.com/), please install it:
 
-  Read the [Installation Guide](https://yarnpkg.com/en/docs/install) on their official website for detailed instructions on how to install Yarn.
-
-> Using yarn is not a requirement, [npm](https://www.npmjs.com/) is included in node.
+  Read the [Installation Guide](https://docs.npmjs.com/cli/v11/configuring-npm/install) on their official website for detailed instructions on how to install NPM.
 
 - Install the dependencies:
 
   ```bash
-  yarn install
+  npm install
   ```
 
 - Build all the submodules before building for the first time
 
   ```bash
-  yarn build
+  npm run build
   ```
 
 > If you are a Docker and Visual Studio Code user, you can quickstart development using [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) Extension
 
 ## Running Tests
 
-### Using yarn
+### Using npm
 
 - Run all the tests with:
 
   ```bash
-  yarn test
+  npm run test
   ```
 
 - Run CLI tests with:
 
   ```bash
-  yarn test:cli
+  npm run test:cli
   ```
 
 - Run tests of all packages:
 
   ```bash
-  yarn test:packages
+  npm run test:packages
   ```
 
 - Test a single CLI test case:
@@ -104,20 +102,20 @@ In case you are suggesting a new feature, we will match your idea with our curre
   > Must run from root of the project
 
   ```bash
-  yarn jest path/to/my-test.js
+  npm run jest path/to/my-test.js
   ```
 
 - You can also install jest globally and run tests without npx:
 
   ```bash
-  yarn global add jest
+  npm install --global jest
   jest path/to/my-test.js
   ```
 
 - You can run the linters:
 
   ```bash
-  yarn lint
+  npm run lint
   ```
 
 ## Editor Config
@@ -128,7 +126,7 @@ The [.editorconfig](https://github.com/webpack/webpack-cli/blob/main/.editorconf
 
 This is a multi-package repository and dependencies are managed using [lerna](https://lerna.js.org/)
 
-> If you are adding or updating any dependency, please commit the updated `yarn.lock` file.
+> If you are adding or updating any dependency, please commit the updated `package-lock.json` file.
 
 To update dependencies, import each dependency and make sure the command line build passes. The dependency should support our minimal supported node version for webpack, found in `package.json`.
 
@@ -249,7 +247,7 @@ documentation.
 
 ## Releasing
 
-Run `yarn publish:monorepo` to build all packages and bump versions, this will then get published on npm.
+Run `npm run publish:monorepo` to build all packages and bump versions, this will then get published on npm.
 
 ## Join the development
 

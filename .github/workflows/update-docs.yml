@@ -31,27 +31,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
+          cache: "npm"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Install latest webpack and webpack-dev-server version
-        run: yarn add -W webpack-dev-server@latest webpack@latest
+        run: npm install --save webpack-dev-server@latest webpack@latest
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Update docs
-        run: yarn update:docs
+        run: npm run update:docs
 
       - name: Fix formatting
-        run: yarn lint:prettier --write
+        run: npm run lint:prettier --write
 
       - name: Commit updated docs
         uses: EndBug/add-and-commit@v9.0.0
         with:
           add: "*.md"
           message: "docs: update options"
-          author_name: Nitin Kumar
-          author_email: snitin315@gmail.com
+          author_name: Even Stensberg
+          author_email: evenstensberg@gmail.com
