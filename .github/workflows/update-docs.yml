@@ -34,10 +34,10 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install latest webpack and webpack-dev-server version
-        run: npm install --save webpack-dev-server@latest webpack@latest
+        run: npm ci --save webpack-dev-server@latest webpack@latest
 
       - name: Build
         run: npm run build
