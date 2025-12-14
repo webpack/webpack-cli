@@ -1,10 +1,14 @@
 # Security Policy
 
-This document explains the security policy of webpack-cli and how we intend to support webpack and webpack-cli.
+This document explains the security policy specific to `webpack-cli` and how we support versions of `webpack` and `webpack-cli`.
+
+This policy complements the webpack organization security policy. For general guidelines on responsible disclosure, reporting channels, and response times, see:
+
+https://github.com/webpack/.github/blob/main/.github/SECURITY.md
 
 ## Supported Versions
 
-webpack CLI is currently supporting webpack v4 and webpack v5. Security fixes are released in patches.
+`webpack-cli` currently supports `webpack` v4 and v5. Security fixes are released as patches.
 
 | webpack version | webpack-cli version           | Supported          |
 | --------------- | ----------------------------- | ------------------ |
@@ -18,4 +22,6 @@ webpack CLI is currently supporting webpack v4 and webpack v5. Security fixes ar
 
 ## Reporting a Vulnerability
 
-To report a vulnerability, please contact one of webpack maintainers through the email provided from either npm, GitHub or reach out at other social media platforms. For third party security vulnerabilities, submitting an issue or Pull Request to fix the security vulnerability is much appreciated. We also use dependabot from GitHub to avoid vulnerabilities.
+Please follow the steps and channels defined in the webpack organization’s security policy:
+
+https://github.com/webpack/.github/blob/main/.github/SECURITY.md
