@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`help should log error for invalid command using command syntax #3: stderr 1`] = `
 "[webpack-cli] Incorrect use of help

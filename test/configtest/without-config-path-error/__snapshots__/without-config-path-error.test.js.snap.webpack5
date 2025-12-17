@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`'configtest' command without the configuration path option should validate default configuration: stderr 1`] = `
 "[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.

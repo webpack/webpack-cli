@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`unknown behaviour should log an error if an unknown flag is passed #2: stderr 1`] = `
 "[webpack-cli] Error: Unknown option '-u'

@@ -1,6 +1,6 @@
 "use strict";
 
-const stripAnsi = require("strip-ansi");
+const { stripVTControlCharacters } = require("node:util");
 const CLI = require("../../packages/webpack-cli/lib/webpack-cli");
 
 const readlineQuestionMock = jest.fn();
@@ -39,9 +39,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBe("test-package");
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
-    expect(spawnMock.mock.calls).toHaveLength(1);
-    expect(stripAnsi(readlineQuestionMock.mock.calls[0][0])).toContain(
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+    expect(stripVTControlCharacters(readlineQuestionMock.mock.calls[0][0])).toContain(
       "Would you like to install 'test-package' package? (That will run 'npm install -D test-package')",
     );
 
@@ -57,9 +57,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBe("test-package");
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
-    expect(spawnMock.mock.calls).toHaveLength(1);
-    expect(stripAnsi(readlineQuestionMock.mock.calls[0][0])).toContain(
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+    expect(stripVTControlCharacters(readlineQuestionMock.mock.calls[0][0])).toContain(
       "Would you like to install 'test-package' package? (That will run 'yarn add -D test-package')",
     );
 
@@ -75,9 +75,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBe("test-package");
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
-    expect(spawnMock.mock.calls).toHaveLength(1);
-    expect(stripAnsi(readlineQuestionMock.mock.calls[0][0])).toContain(
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+    expect(stripVTControlCharacters(readlineQuestionMock.mock.calls[0][0])).toContain(
       "Would you like to install 'test-package' package? (That will run 'pnpm install -D test-package')",
     );
 
@@ -94,10 +94,10 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package", { preMessage });
 
     expect(installResult).toBe("test-package");
-    expect(preMessage.mock.calls).toHaveLength(1);
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
-    expect(spawnMock.mock.calls).toHaveLength(1);
-    expect(stripAnsi(readlineQuestionMock.mock.calls[0][0])).toContain(
+    expect(preMessage).toHaveBeenCalledTimes(1);
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+    expect(stripVTControlCharacters(readlineQuestionMock.mock.calls[0][0])).toContain(
       "Would you like to install 'test-package' package? (That will run 'npm install -D test-package')",
     );
 
@@ -113,9 +113,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBe("test-package");
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
-    expect(spawnMock.mock.calls).toHaveLength(1);
-    expect(stripAnsi(readlineQuestionMock.mock.calls[0][0])).toContain(
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+    expect(stripVTControlCharacters(readlineQuestionMock.mock.calls[0][0])).toContain(
       "Would you like to install 'test-package' package? (That will run 'npm install -D test-package')",
     );
 
@@ -131,9 +131,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBe("test-package");
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
-    expect(spawnMock.mock.calls).toHaveLength(1);
-    expect(stripAnsi(readlineQuestionMock.mock.calls[0][0])).toContain(
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+    expect(stripVTControlCharacters(readlineQuestionMock.mock.calls[0][0])).toContain(
       "Would you like to install 'test-package' package? (That will run 'npm install -D test-package')",
     );
 
@@ -149,9 +149,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBe("test-package");
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
-    expect(spawnMock.mock.calls).toHaveLength(1);
-    expect(stripAnsi(readlineQuestionMock.mock.calls[0][0])).toContain(
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
+    expect(spawnMock).toHaveBeenCalledTimes(1);
+    expect(stripVTControlCharacters(readlineQuestionMock.mock.calls[0][0])).toContain(
       "Would you like to install 'test-package' package? (That will run 'npm install -D test-package')",
     );
 
@@ -167,9 +167,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBeUndefined();
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
     // runCommand should not be called, because the installation is not confirmed
-    expect(spawnMock.mock.calls).toHaveLength(0);
+    expect(spawnMock).not.toHaveBeenCalled();
     expect(mockExit.mock.calls[0][0]).toBe(2);
 
     mockExit.mockRestore();
@@ -182,9 +182,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBeUndefined();
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
     // runCommand should not be called, because the installation is not confirmed
-    expect(spawnMock.mock.calls).toHaveLength(0);
+    expect(spawnMock).not.toHaveBeenCalled();
     expect(mockExit.mock.calls[0][0]).toBe(2);
 
     mockExit.mockRestore();
@@ -197,9 +197,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBeUndefined();
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
     // runCommand should not be called, because the installation is not confirmed
-    expect(spawnMock.mock.calls).toHaveLength(0);
+    expect(spawnMock).not.toHaveBeenCalled();
     expect(mockExit.mock.calls[0][0]).toBe(2);
 
     mockExit.mockRestore();
@@ -212,9 +212,9 @@ describe("doInstall", () => {
     const installResult = await cli.doInstall("test-package");
 
     expect(installResult).toBeUndefined();
-    expect(readlineQuestionMock.mock.calls).toHaveLength(1);
+    expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
     // runCommand should not be called, because the installation is not confirmed
-    expect(spawnMock.mock.calls).toHaveLength(0);
+    expect(spawnMock).not.toHaveBeenCalled();
     expect(mockExit.mock.calls[0][0]).toBe(2);
 
     mockExit.mockRestore();

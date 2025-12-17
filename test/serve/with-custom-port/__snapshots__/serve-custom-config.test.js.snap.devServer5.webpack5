@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`serve with devServer in config passing hot flag works alongside other server config: stderr 1`] = `
 "<i> [webpack-dev-server] Project is running at:

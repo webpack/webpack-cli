@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`output flag named bundles should output file in bin directory using default webpack config with warning for empty output value: stderr 1`] = `
 "[webpack-cli] Error: Option '-o, --output-path <value>' argument missing
