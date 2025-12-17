@@ -1,10 +1,10 @@
 "use strict";
 
 const path = require("node:path");
+const { stripVTControlCharacters } = require("node:util");
 const concat = require("concat-stream");
 const execa = require("execa");
 const { Writable } = require("readable-stream");
-const stripAnsi = require("strip-ansi");
 const testUtilsPkg = require("../utils/test-utils");
 
 const { node: execaNode } = execa;
@@ -13,7 +13,7 @@ const { processKill } = testUtilsPkg;
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 const nodeVersion = Number.parseInt(process.versions.node.split(".")[0], 10);
 
-// eslint-disable-next-line jsdoc/no-restricted-syntax
+// eslint-disable-next-line jsdoc/reject-any-type
 /** @typedef {Record<string, any>} TestOptions */
 
 function createPathDependentUtils(cli) {
@@ -78,7 +78,7 @@ function createPathDependentUtils(cli) {
       process.stdout.pipe(
         new Writable({
           write(chunk, encoding, callback) {
-            const output = stripAnsi(chunk.toString("utf8"));
+            const output = stripVTControlCharacters(chunk.toString("utf8"));
 
             if (stdoutKillStr && stdoutKillStr.test(output)) {
               isStdoutDone = true;
@@ -98,7 +98,7 @@ function createPathDependentUtils(cli) {
       process.stderr.pipe(
         new Writable({
           write(chunk, encoding, callback) {
-            const output = stripAnsi(chunk.toString("utf8"));
+            const output = stripVTControlCharacters(chunk.toString("utf8"));
 
             if (stderrKillStr && stderrKillStr.test(output)) {
               isStderrDone = true;

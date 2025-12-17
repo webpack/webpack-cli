@@ -14,7 +14,7 @@ describe("import local", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [], {
       env: { WEBPACK_CLI_SKIP_IMPORT_LOCAL: true },
     });
-    expect(importLocalMock).toHaveBeenCalledTimes(0);
+    expect(importLocalMock).not.toHaveBeenCalled();
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
     expect(stdout).toBeTruthy();

@@ -4,10 +4,10 @@ const { exec } = require("node:child_process");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
+const { stripVTControlCharacters } = require("node:util");
 const concat = require("concat-stream");
 const execa = require("execa");
 const { Writable } = require("readable-stream");
-const stripAnsi = require("strip-ansi");
 const { cli } = require("webpack");
 
 const { node: execaNode } = execa;
@@ -31,7 +31,7 @@ const processKill = (process) => {
   }
 };
 
-// eslint-disable-next-line jsdoc/no-restricted-syntax
+// eslint-disable-next-line jsdoc/reject-any-type
 /** @typedef {Record<string, any>} TestOptions */
 
 /**
@@ -93,7 +93,7 @@ const runWatch = (cwd, args = [], options = {}) =>
     process.stdout.pipe(
       new Writable({
         write(chunk, encoding, callback) {
-          const output = stripAnsi(chunk.toString("utf8"));
+          const output = stripVTControlCharacters(chunk.toString("utf8"));
 
           if (stdoutKillStr && stdoutKillStr.test(output)) {
             isStdoutDone = true;
@@ -113,7 +113,7 @@ const runWatch = (cwd, args = [], options = {}) =>
     process.stderr.pipe(
       new Writable({
         write(chunk, encoding, callback) {
-          const output = stripAnsi(chunk.toString("utf8"));
+          const output = stripVTControlCharacters(chunk.toString("utf8"));
 
           if (stderrKillStr && stderrKillStr.test(output)) {
             isStderrDone = true;
@@ -253,7 +253,7 @@ const normalizeStdout = (stdout) => {
     return stdout;
   }
 
-  let normalizedStdout = stripAnsi(stdout);
+  let normalizedStdout = stripVTControlCharacters(stdout);
   normalizedStdout = normalizeCwd(normalizedStdout);
   normalizedStdout = normalizeVersions(normalizedStdout);
   normalizedStdout = normalizeError(normalizedStdout);
@@ -273,7 +273,7 @@ const normalizeStderr = (stderr) => {
     return stderr;
   }
 
-  let normalizedStderr = stripAnsi(stderr);
+  let normalizedStderr = stripVTControlCharacters(stderr);
   normalizedStderr = normalizeCwd(normalizedStderr);
 
   normalizedStderr = normalizedStderr.replaceAll(IPV4, "x.x.x.x");

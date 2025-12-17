@@ -10,7 +10,6 @@ module.exports = {
   testRegex: ["/test/.*\\.(test.js|test.ts)$"],
   moduleFileExtensions: ["ts", "js", "json"],
   snapshotResolver: "<rootDir>/scripts/snapshot-resolver.js",
-  watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname"],
   setupFilesAfterEnv: ["<rootDir>/scripts/setup-test.js"],
   globalTeardown: "<rootDir>/scripts/cleanup-test.js",
   globalSetup: "<rootDir>/scripts/global-setup.js",

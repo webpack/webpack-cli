@@ -46,56 +46,56 @@ describe("getPackageManager", () => {
     cwdSpy.mockReturnValue(testYarnLockPath);
 
     expect(cli.getDefaultPackageManager()).toBe("yarn");
-    expect(syncMock.mock.calls).toHaveLength(0);
+    expect(syncMock).not.toHaveBeenCalled();
   });
 
   it("should find package-lock.json", () => {
     cwdSpy.mockReturnValue(testNpmLockPath);
 
     expect(cli.getDefaultPackageManager()).toBe("npm");
-    expect(syncMock.mock.calls).toHaveLength(0);
+    expect(syncMock).not.toHaveBeenCalled();
   });
 
   it("should find pnpm-lock.yaml", () => {
     cwdSpy.mockReturnValue(testPnpmLockPath);
 
     expect(cli.getDefaultPackageManager()).toBe("pnpm");
-    expect(syncMock.mock.calls).toHaveLength(0);
+    expect(syncMock).not.toHaveBeenCalled();
   });
 
   it("should prioritize npm over pnpm", () => {
     cwdSpy.mockReturnValue(testNpmAndPnpmPath);
 
     expect(cli.getDefaultPackageManager()).toBe("npm");
-    expect(syncMock.mock.calls).toHaveLength(0);
+    expect(syncMock).not.toHaveBeenCalled();
   });
 
   it("should prioritize npm over yarn", () => {
     cwdSpy.mockReturnValue(testNpmAndYarnPath);
 
     expect(cli.getDefaultPackageManager()).toBe("npm");
-    expect(syncMock.mock.calls).toHaveLength(0);
+    expect(syncMock).not.toHaveBeenCalled();
   });
 
   it("should prioritize yarn over pnpm", () => {
     cwdSpy.mockReturnValue(testYarnAndPnpmPath);
 
     expect(cli.getDefaultPackageManager()).toBe("yarn");
-    expect(syncMock.mock.calls).toHaveLength(0);
+    expect(syncMock).not.toHaveBeenCalled();
   });
 
   it("should prioritize npm with many lock files", () => {
     cwdSpy.mockReturnValue(testAllPath);
 
     expect(cli.getDefaultPackageManager()).toBe("npm");
-    expect(syncMock.mock.calls).toHaveLength(0);
+    expect(syncMock).not.toHaveBeenCalled();
   });
 
   it("should prioritize global npm over other package managers", () => {
     cwdSpy.mockReturnValue(noLockPath);
 
     expect(cli.getDefaultPackageManager()).toBe("npm");
-    expect(syncMock.mock.calls).toHaveLength(1);
+    expect(syncMock).toHaveBeenCalledTimes(1);
   });
 
   it("should throw error if no package manager is found", () => {
@@ -110,6 +110,6 @@ describe("getPackageManager", () => {
     expect(cli.getDefaultPackageManager()).toBeFalsy();
     expect(mockExit).toHaveBeenCalledWith(2);
     expect(consoleMock).toHaveBeenCalledTimes(1);
-    expect(syncMock.mock.calls).toHaveLength(3); // 3 calls for npm, yarn and pnpm
+    expect(syncMock).toHaveBeenCalledTimes(3); // 3 calls for npm, yarn and pnpm
   });
 });

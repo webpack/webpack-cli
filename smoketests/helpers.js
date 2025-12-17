@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
+const { stripVTControlCharacters } = require("node:util");
 const execa = require("execa");
-const stripAnsi = require("strip-ansi");
 
 const ROOT_PATH = process.env.GITHUB_WORKSPACE || path.resolve(__dirname, "..");
 
@@ -48,7 +48,7 @@ const runTest = (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false
     let hasPassed = false;
 
     proc.stderr.on("data", (chunk) => {
-      const data = stripAnsi(chunk.toString());
+      const data = stripVTControlCharacters(chunk.toString());
 
       console.log(`  stderr: ${data}`);
 
@@ -99,7 +99,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
     let hasPassed = false;
 
     proc.stdout.on("data", (chunk) => {
-      const data = stripAnsi(chunk.toString());
+      const data = stripVTControlCharacters(chunk.toString());
 
       console.log(`  stdout: ${data}`);
 
@@ -110,7 +110,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
     });
 
     proc.stderr.on("data", (chunk) => {
-      const data = stripAnsi(chunk.toString());
+      const data = stripVTControlCharacters(chunk.toString());
       console.log(`  stderr: ${data}`);
     });
 
@@ -153,7 +153,7 @@ const runTestStdoutWithInput = ({
     let hasPassed = false;
 
     proc.stdout.on("data", (chunk) => {
-      const data = stripAnsi(chunk.toString());
+      const data = stripVTControlCharacters(chunk.toString());
       console.log(`  stdout: ${data}`);
 
       if (data.includes(logMessage)) {
@@ -169,7 +169,7 @@ const runTestStdoutWithInput = ({
     });
 
     proc.stderr.on("data", (chunk) => {
-      const data = stripAnsi(chunk.toString());
+      const data = stripVTControlCharacters(chunk.toString());
       console.log(`  stderr: ${data}`);
     });
 
@@ -214,7 +214,7 @@ const runTestWithHelp = (pkg, cliArgs = [], logMessage = undefined, isSubPackage
     let hasPassed = false;
 
     proc.stderr.on("data", (chunk) => {
-      const data = stripAnsi(chunk.toString());
+      const data = stripVTControlCharacters(chunk.toString());
 
       console.log(`  stderr: ${data}`);
 
