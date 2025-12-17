@@ -18,6 +18,7 @@ node_modules
 test/**/node_modules
 
 # Lock files
+yarn.lock
 test/**/yarn.lock
 test/**/package-json.lock
 !test/api/**/yarn.lock
@@ -40,7 +41,6 @@ lerna-debug.log
 .yo-rc.json
 
 # package-lock file
-package-lock.json
 !test/api/**/package-lock.json
 
 junit.xml

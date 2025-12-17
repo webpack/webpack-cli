@@ -12,3 +12,5 @@ test/build/config/error-array/webpack.config.js
 test/build/config/error-mjs/syntax-error.mjs
 test/configtest/with-config-path/syntax-error.config.js
 test/build/build-errors/stats.json
+
+/.nx/workspace-data

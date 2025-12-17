@@ -36,16 +36,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
+          cache: "npm"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
   build:
     name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, DevServer ${{ matrix.dev-server-version }} (${{ matrix.shard }})
@@ -80,13 +80,13 @@ jobs:
           version: 9
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile --ignore-engines --ignore-scripts
+        run: npm ci --ignore-engines --ignore-scripts
 
       - name: Prepare environment for tests
-        run: yarn build:ci
+        run: npm run build:ci
 
       - name: Run tests and generate coverage
-        run: yarn test:coverage --ci --shard=${{ matrix.shard }}
+        run: npm run test:coverage --ci --shard=${{ matrix.shard }}
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
@@ -116,13 +116,13 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile --ignore-engines
+        run: npm ci --ignore-engines
 
       - name: Prepare environment for tests
-        run: yarn build:ci
+        run: npm run build:ci
 
       - name: Run smoketests
-        run: yarn test:smoketests
+        run: npm run test:smoketests
 
   commitlint:
     name: Lint Commit Messages
@@ -140,7 +140,7 @@ jobs:
           node-version: "lts/*"
           cache: "yarn"
 
-      - run: yarn --frozen-lockfile
+      - run: npm ci
 
       - name: Validate PR commits with commitlint
         if: github.event_name == 'pull_request'

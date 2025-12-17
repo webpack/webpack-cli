@@ -34,19 +34,19 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Install latest webpack and webpack-dev-server version
-        run: yarn add -W webpack-dev-server@latest webpack@latest
+        run: npm add -W webpack-dev-server@latest webpack@latest
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Update docs
-        run: yarn update:docs
+        run: npm run update:docs
 
       - name: Fix formatting
-        run: yarn lint:prettier --write
+        run: npm run lint:prettier --write
 
       - name: Commit updated docs
         uses: EndBug/add-and-commit@v9.0.0
