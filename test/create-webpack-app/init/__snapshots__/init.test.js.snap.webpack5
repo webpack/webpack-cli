@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`create-webpack-app cli recognizes '-f' as an alias for '--force' 1`] = `
 {
@@ -113,7 +113,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -124,8 +124,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -190,7 +190,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
             {
                 test: /\\.html$/i,
                 use: ['html-loader'],
@@ -205,10 +205,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -265,7 +265,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
             {
                 test: /\\.html$/i,
                 use: ['html-loader'],
@@ -280,8 +280,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -340,7 +340,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
             {
                 test: /\\.html$/i,
                 use: ['html-loader'],
@@ -355,10 +355,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -415,7 +415,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -426,8 +426,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -601,10 +601,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -717,12 +717,12 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -838,10 +838,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -962,12 +962,12 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -1024,7 +1024,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1038,8 +1038,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -1152,10 +1152,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -1273,12 +1273,12 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -1342,7 +1342,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1353,10 +1353,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -1420,7 +1420,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1431,10 +1431,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -1499,7 +1499,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1510,10 +1510,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -1584,7 +1584,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1595,10 +1595,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -1662,7 +1662,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1673,10 +1673,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -1743,7 +1743,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1754,10 +1754,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -1821,7 +1821,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1832,10 +1832,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
     } else {
         config.mode = 'development';
     }

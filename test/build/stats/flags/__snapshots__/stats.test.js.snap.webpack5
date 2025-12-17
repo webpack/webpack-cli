@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`stats flag should log error when an unknown flag stats value is passed: stderr 1`] = `
 "[webpack-cli] Invalid value 'foo' for the '--stats' option
