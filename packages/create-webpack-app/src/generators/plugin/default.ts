@@ -25,7 +25,7 @@ export default async function pluginGenerator(plop: NodePlopAPI) {
         name: "name",
         message: "Plugin name?",
         default: "my-webpack-plugin",
-        filter: (input) => plop.getHelper("kebabCase")(input),
+        filter: (input: string) => plop.getHelper("kebabCase")(input),
         validate: (str: string): boolean => str.length > 0,
       },
       {
@@ -34,7 +34,7 @@ export default async function pluginGenerator(plop: NodePlopAPI) {
         message: "Pick a package manager:",
         choices: ["npm", "yarn", "pnpm"],
         default: "npm",
-        validate(input) {
+        validate(input: string) {
           if (!input.trim()) {
             return "Package manager cannot be empty";
           }

@@ -54,7 +54,7 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
         message: "Which of the following CSS solution do you want to use?",
         choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
         default: "CSS only",
-        filter: (input, answers) => {
+        filter: (input: string, answers: Answers) => {
           if (input === "none") {
             answers.isCSS = false;
             answers.isPostCSS = false;
@@ -68,9 +68,9 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
       {
         type: "confirm",
         name: "isCSS",
-        message: (answers) =>
+        message: (answers: Answers) =>
           `Will you be using CSS styles along with ${answers.cssType} in your project?`,
-        when: (answers) => answers.cssType !== "CSS only",
+        when: (answers: Answers) => answers.cssType !== "CSS only",
         default: true,
       },
       {
@@ -92,7 +92,7 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
         message: "Which package manager do you want to use?",
         choices: ["npm", "yarn", "pnpm"],
         default: "npm",
-        validate(input) {
+        validate(input: string) {
           if (!input.trim()) {
             return "Package manager cannot be empty";
           }
