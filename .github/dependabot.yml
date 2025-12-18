@@ -6,9 +6,20 @@ updates:
       interval: daily
       time: "04:00"
       timezone: Europe/Berlin
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 20
     versioning-strategy: lockfile-only
+    labels:
+      - dependencies
     groups:
       dependencies:
         patterns:
           - "*"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "04:00"
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 20
+    labels:
+      - dependencies
