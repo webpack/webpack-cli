@@ -66,13 +66,13 @@ In case you are suggesting a new feature, we will match your idea with our curre
 - Install the dependencies:
 
   ```bash
-  yarn install
+  npm install
   ```
 
 - Build all the submodules before building for the first time
 
   ```bash
-  yarn build
+  npm run build
   ```
 
 > If you are a Docker and Visual Studio Code user, you can quickstart development using [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) Extension
@@ -84,19 +84,19 @@ In case you are suggesting a new feature, we will match your idea with our curre
 - Run all the tests with:
 
   ```bash
-  yarn test
+  npm run test
   ```
 
 - Run CLI tests with:
 
   ```bash
-  yarn test:cli
+  npm run test:cli
   ```
 
 - Run tests of all packages:
 
   ```bash
-  yarn test:packages
+  npm run test:packages
   ```
 
 - Test a single CLI test case:
@@ -104,20 +104,13 @@ In case you are suggesting a new feature, we will match your idea with our curre
   > Must run from root of the project
 
   ```bash
-  yarn jest path/to/my-test.js
-  ```
-
-- You can also install jest globally and run tests without npx:
-
-  ```bash
-  yarn global add jest
   jest path/to/my-test.js
   ```
 
 - You can run the linters:
 
   ```bash
-  yarn lint
+  npm run lint
   ```
 
 ## Editor Config

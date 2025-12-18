@@ -73,7 +73,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
+          cache: "npm"
 
       - uses: pnpm/action-setup@v4
         with:
@@ -113,7 +113,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci --ignore-engines
@@ -138,7 +138,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-          cache: "yarn"
+          cache: "npm"
 
       - run: npm ci
 
