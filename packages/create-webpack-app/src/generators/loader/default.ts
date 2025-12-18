@@ -43,7 +43,7 @@ export default async function loaderGenerator(plop: NodePlopAPI) {
         message: "Pick a package manager:",
         choices: ["npm", "yarn", "pnpm"],
         default: "npm",
-        validate(input) {
+        validate(input: string) {
           if (!input.trim()) {
             return "Package manager cannot be empty";
           }

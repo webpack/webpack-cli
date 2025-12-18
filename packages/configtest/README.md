@@ -13,10 +13,10 @@ This package validates a webpack configuration.
 ## Installation
 
 ```bash
-#npm
+# npm
 npm i -D @webpack-cli/configtest
 
-#yarn
+# yarn
 yarn add -D @webpack-cli/configtest
 
 ```

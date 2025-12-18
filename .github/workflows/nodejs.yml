@@ -30,22 +30,22 @@ jobs:
         webpack-version: [latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Using Node v${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
+          cache: "npm"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
   build:
     name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, DevServer ${{ matrix.dev-server-version }} (${{ matrix.shard }})
@@ -65,31 +65,31 @@ jobs:
         dev-server-version: [latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
 
       - name: Using Node v${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
+          cache: "npm"
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 #4.2.0
         with:
           version: 9
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile --ignore-engines --ignore-scripts
+        run: npm ci --ignore-scripts
 
       - name: Prepare environment for tests
-        run: yarn build:ci
+        run: npm run build:ci
 
       - name: Run tests and generate coverage
-        run: yarn test:coverage --ci --shard=${{ matrix.shard }}
+        run: npm run test:coverage --ci --shard=${{ matrix.shard }}
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
@@ -105,24 +105,24 @@ jobs:
         os: [ubuntu-latest]
         node-version: [lts/*]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
 
       - name: Using Node v${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
+          cache: "npm"
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile --ignore-engines
+        run: npm ci
 
       - name: Prepare environment for tests
-        run: yarn build:ci
+        run: npm run build:ci
 
       - name: Run smoketests
-        run: yarn test:smoketests
+        run: npm run test:smoketests
 
   commitlint:
     name: Lint Commit Messages
@@ -131,16 +131,16 @@ jobs:
       group: commitlint-${{ github.ref }}
       cancel-in-progress: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: "lts/*"
-          cache: "yarn"
+          cache: "npm"
 
-      - run: yarn --frozen-lockfile
+      - run: npm ci
 
       - name: Validate PR commits with commitlint
         if: github.event_name == 'pull_request'
