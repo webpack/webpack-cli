@@ -13,10 +13,10 @@ This package returns a set of information related to the local environment.
 ## Installation
 
 ```bash
-#npm
+# npm
 npm i -D @webpack-cli/info
 
-#yarn
+# yarn
 yarn add -D @webpack-cli/info
 
 ```
@@ -24,10 +24,10 @@ yarn add -D @webpack-cli/info
 ## Usage
 
 ```bash
-#npx
+# npx
 npx webpack info [options]
 
-#global installation
+# global installation
 webpack info [options]
 
 ```

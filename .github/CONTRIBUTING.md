@@ -11,7 +11,6 @@ Table of Contents
 - [Your first Contribution](#your-first-contribution)
 - [Setup](#setup)
 - [Running Tests](#running-tests)
-  - [Using yarn](#using-yarn)
 - [Editor Config](#editor-config)
 - [Dependencies](#dependencies)
 - [Branching Model](#branching-model)
@@ -53,15 +52,11 @@ In case you are suggesting a new feature, we will match your idea with our curre
 ## Setup
 
 - Install [Node.js](https://nodejs.org/) if you don't have it already.
-  _Note: Node 6 or greater would be better for "best results"._
+  _Note: Node 22 or greater would be better for "best results"._
+
 - Fork the **webpack-cli** repo at [https://github.com/webpack/webpack-cli](https://github.com/webpack/webpack-cli).
+
 - `git clone <your-clone-url> && cd webpack-cli`
-
-- We use [yarn](https://yarnpkg.com/lang/en/) workspaces, please install it:
-
-  Read the [Installation Guide](https://yarnpkg.com/en/docs/install) on their official website for detailed instructions on how to install Yarn.
-
-> Using yarn is not a requirement, [npm](https://www.npmjs.com/) is included in node.
 
 - Install the dependencies:
 
@@ -78,8 +73,6 @@ In case you are suggesting a new feature, we will match your idea with our curre
 > If you are a Docker and Visual Studio Code user, you can quickstart development using [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) Extension
 
 ## Running Tests
-
-### Using yarn
 
 - Run all the tests with:
 
@@ -120,8 +113,6 @@ The [.editorconfig](https://github.com/webpack/webpack-cli/blob/main/.editorconf
 ## Dependencies
 
 This is a multi-package repository and dependencies are managed using [lerna](https://lerna.js.org/)
-
-> If you are adding or updating any dependency, please commit the updated `yarn.lock` file.
 
 To update dependencies, import each dependency and make sure the command line build passes. The dependency should support our minimal supported node version for webpack, found in `package.json`.
 
@@ -242,7 +233,7 @@ documentation.
 
 ## Releasing
 
-Run `yarn publish:monorepo` to build all packages and bump versions, this will then get published on npm.
+Run `npm run publish:monorepo` to build all packages and bump versions, this will then get published on npm.
 
 ## Join the development
 
