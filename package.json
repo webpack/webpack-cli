@@ -39,7 +39,7 @@
     "fix:code": "npm run lint:code -- --fix",
     "pretest": "npm run build && npm run lint",
     "test": "npm run test:base",
-    "test:base": "node --experimental-vm-modules ./node_modules/.bin/jest",
+    "test:base": "node --experimental-vm-modules ./node_modules/jest-cli/bin/jest",
     "test:smoketests": "nyc node smoketests",
     "test:coverage": "nyc --no-clean npm run test:base -- --coverage",
     "test:ci": "npm run test:cli && npm run test:packages",
