@@ -3,11 +3,9 @@
 const path = require("node:path");
 const { stripVTControlCharacters } = require("node:util");
 const concat = require("concat-stream");
-const execa = require("execa");
 const { Writable } = require("readable-stream");
 const testUtilsPkg = require("../utils/test-utils");
 
-const { node: execaNode } = execa;
 const { processKill } = testUtilsPkg;
 
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
@@ -28,16 +26,21 @@ function createPathDependentUtils(cli) {
    */
   const createProcess = (cwd, args, options) => {
     const { nodeOptions = [] } = options;
-    const processExecutor = nodeOptions.length ? execaNode : execa;
 
-    return processExecutor(CLI_PATH, args, {
-      cwd: path.resolve(cwd),
-      reject: false,
-      stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
-      maxBuffer: Infinity,
-      env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
-      ...options,
-    });
+    return Promise.resolve()
+      .then(() => import("execa"))
+      .then((execa) => {
+        const processExecutor = nodeOptions.length ? execa.execaNode : execa.execa;
+
+        return processExecutor(CLI_PATH, args, {
+          cwd: path.resolve(cwd),
+          reject: false,
+          stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
+          maxBuffer: Infinity,
+          env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
+          ...options,
+        });
+      });
   };
 
   /**

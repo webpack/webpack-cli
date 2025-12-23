@@ -1,9 +1,6 @@
 "use strict";
 
 const path = require("node:path");
-const execa = require("execa");
-
-const { sync: spawnSync } = execa;
 
 const { run } = require("../../../utils/test-utils");
 
@@ -18,8 +15,9 @@ describe("env array", () => {
     expect(stderr).toBeFalsy();
     expect(stdout).toBeTruthy();
 
-    const devScript = spawnSync("node", [devFile]);
-    const prodScript = spawnSync("node", [prodFile]);
+    const { execa } = await import("execa");
+    const devScript = execa("node", [devFile]);
+    const prodScript = execa("node", [prodFile]);
 
     expect(devScript.stdout).toBe("environment is development");
     expect(prodScript.stdout).toBe("environment is production");

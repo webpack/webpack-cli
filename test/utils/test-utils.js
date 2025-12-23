@@ -6,11 +6,9 @@ const os = require("node:os");
 const path = require("node:path");
 const { stripVTControlCharacters } = require("node:util");
 const concat = require("concat-stream");
-const execa = require("execa");
 const { Writable } = require("readable-stream");
 const { cli } = require("webpack");
 
-const { node: execaNode } = execa;
 const WEBPACK_PATH = path.resolve(__dirname, "../../packages/webpack-cli/bin/cli.js");
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 const isWindows = process.platform === "win32";
@@ -43,16 +41,21 @@ const processKill = (process) => {
  */
 const createProcess = (cwd, args, options) => {
   const { nodeOptions = [] } = options;
-  const processExecutor = nodeOptions.length ? execaNode : execa;
 
-  return processExecutor(WEBPACK_PATH, args, {
-    cwd: path.resolve(cwd),
-    reject: false,
-    stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
-    maxBuffer: Infinity,
-    env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
-    ...options,
-  });
+  return Promise.resolve()
+    .then(() => import("execa"))
+    .then((execa) => {
+      const processExecutor = nodeOptions.length ? execa.execaNode : execa.execa;
+
+      return processExecutor(WEBPACK_PATH, args, {
+        cwd: path.resolve(cwd),
+        reject: false,
+        stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
+        maxBuffer: Infinity,
+        env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
+        ...options,
+      });
+    });
 };
 
 /**
