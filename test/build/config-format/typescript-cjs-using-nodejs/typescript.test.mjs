@@ -19,7 +19,7 @@ describe("webpack cli", () => {
           WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true,
         },
         // Fallback to `ts-node/esm` for old Node.js versions
-        nodeOptions: major >= 24 ? [] : ["--experimental-loader=ts-node/esm"],
+        nodeOptions: major >= 24 ? [] : ["--require=ts-node/register"],
       },
     );
 
