@@ -16,8 +16,8 @@ describe("env array", () => {
     expect(stdout).toBeTruthy();
 
     const { execa } = await import("execa");
-    const devScript = execa("node", [devFile]);
-    const prodScript = execa("node", [prodFile]);
+    const devScript = await execa("node", [devFile]);
+    const prodScript = await execa("node", [prodFile]);
 
     expect(devScript.stdout).toBe("environment is development");
     expect(prodScript.stdout).toBe("environment is production");

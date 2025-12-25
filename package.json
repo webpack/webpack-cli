@@ -42,7 +42,6 @@
     "test:base": "node --experimental-vm-modules ./node_modules/jest-cli/bin/jest",
     "test:smoketests": "nyc node smoketests",
     "test:coverage": "nyc --no-clean npm run test:base -- --coverage",
-    "test:ci": "npm run test:cli && npm run test:packages",
     "publish:monorepo": "npm run build && lerna version && lerna publish from-git",
     "update:docs": "node ./scripts/update-docs",
     "prepare": "husky"
