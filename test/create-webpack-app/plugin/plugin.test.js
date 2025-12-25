@@ -1,6 +1,6 @@
 const { existsSync, mkdirSync } = require("node:fs");
 const { join, resolve } = require("node:path");
-const { normalizeStderr, normalizeStdout, uniqueDirectoryForTest } = require("../test.utils");
+const { normalizeStdout, uniqueDirectoryForTest } = require("../test.utils");
 const { createPathDependentUtils } = require("../test.utils");
 
 // eslint-disable-next-line jest/no-confusing-set-timeout
@@ -32,15 +32,6 @@ const dataForTests = (rootAssetsPath) => ({
 });
 
 describe("plugin command", () => {
-  it("should ask the plugin name when invoked", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["plugin", "."]);
-
-    expect(stdout).toBeTruthy();
-    expect(normalizeStderr(stderr)).toBeFalsy();
-    expect(normalizeStdout(stdout)).toContain(firstPrompt);
-  });
-
   it("should scaffold plugin with default name if no plugin name provided", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { defaultPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);

@@ -144,34 +144,45 @@ const runWatch = async (cwd, args = [], options = {}) => {
  */
 const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
   const execa = await import("execa");
-  const process = createProcess(execa, cwd, args, options);
+  const proc = createProcess(execa, cwd, args, {
+    ...options,
+    // TODO remove me when node@18 will be removed from support
+    cleanup: false,
+  });
 
-  process.stdin.setDefaultEncoding("utf8");
+  proc.stdin.setDefaultEncoding("utf8");
 
   let currentAnswer = 0;
   let waitAnswer = true;
 
   const writeAnswer = (output) => {
     if (answers.length === 0) {
-      process.stdin.write(output);
-      processKill(process);
+      proc.stdin.write(output);
+      processKill(proc);
 
       return;
     }
 
     if (currentAnswer < answers.length) {
-      process.stdin.write(answers[currentAnswer]);
+      proc.stdin.write(answers[currentAnswer]);
       currentAnswer++;
       waitAnswer = true;
     }
   };
 
-  process.stdout.pipe(
+  proc.stdout.pipe(
     new Writable({
       write(chunk, encoding, callback) {
         const output = chunk.toString("utf8");
 
-        if (output && stripVTControlCharacters(output).trim().length > 0 && waitAnswer) {
+        if (!output) {
+          callback("No output");
+          return;
+        }
+
+        const text = stripVTControlCharacters(output).trim();
+
+        if (text.length > 0 && waitAnswer) {
           waitAnswer = false;
           writeAnswer(output);
         }
@@ -182,6 +193,7 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
   );
 
   return new Promise((resolve) => {
+    /** @type {{ stdout: string, stderr: string }} */
     const obj = {};
 
     let stdoutDone = false;
@@ -189,12 +201,12 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
 
     const complete = () => {
       if (stdoutDone && stderrDone) {
-        processKill(process);
+        processKill(proc);
         resolve(obj);
       }
     };
 
-    process.stdout.pipe(
+    proc.stdout.pipe(
       concat((result) => {
         stdoutDone = true;
         obj.stdout = result.toString();
@@ -203,7 +215,7 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
       }),
     );
 
-    process.stderr.pipe(
+    proc.stderr.pipe(
       concat((result) => {
         stderrDone = true;
         obj.stderr = result.toString();

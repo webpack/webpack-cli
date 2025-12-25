@@ -21,66 +21,63 @@ const swapPkgName = (current, isSubPackage = false) => {
 
 const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, "./packages/webpack-cli/bin/cli.js");
 
-const runTest = (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
+const runTest = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
   // Simulate package missing
   swapPkgName(pkg, isSubPackage);
 
-  return Promise.resolve()
-    .then(() => import("execa"))
-    .then(({ execa }) =>
-      execa(CLI_ENTRY_PATH, cliArgs, {
-        cwd: __dirname,
-      }),
-    )
-    .then((proc) => {
-      proc.stdin.setDefaultEncoding("utf8");
+  const { execa } = await import("execa");
+  const proc = execa(CLI_ENTRY_PATH, cliArgs, {
+    cwd: __dirname,
+  });
 
-      proc.stdout.on("data", (chunk) => {
-        console.log(`  stdout: ${chunk.toString()}`);
-      });
-      return new Promise((resolve) => {
-        const timeout = setTimeout(() => {
-          console.log("  timeout: killing process");
-          proc.kill();
-        }, 60000);
+  proc.stdin.setDefaultEncoding("utf8");
 
-        const prompt = "Would you like to install";
-        let hasLogMessage = false;
-        let hasPrompt = false;
-        let hasPassed = false;
+  proc.stdout.on("data", (chunk) => {
+    console.log(`  stdout: ${chunk.toString()}`);
+  });
 
-        proc.stderr.on("data", (chunk) => {
-          const data = stripVTControlCharacters(chunk.toString());
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => {
+      console.log("  timeout: killing process");
+      proc.kill();
+    }, 60000);
 
-          console.log(`  stderr: ${data}`);
+    const prompt = "Would you like to install";
+    let hasLogMessage = false;
+    let hasPrompt = false;
+    let hasPassed = false;
 
-          if (data.includes(logMessage)) {
-            hasLogMessage = true;
-          }
+    proc.stderr.on("data", (chunk) => {
+      const data = stripVTControlCharacters(chunk.toString());
 
-          if (data.includes(prompt)) {
-            hasPrompt = true;
-          }
+      console.log(`  stderr: ${data}`);
 
-          if (hasLogMessage && hasPrompt) {
-            hasPassed = true;
-            proc.kill();
-          }
-        });
+      if (data.includes(logMessage)) {
+        hasLogMessage = true;
+      }
 
-        proc.on("exit", () => {
-          swapPkgName(`.${pkg}`, isSubPackage);
-          clearTimeout(timeout);
-          resolve(hasPassed);
-        });
+      if (data.includes(prompt)) {
+        hasPrompt = true;
+      }
 
-        proc.on("error", () => {
-          swapPkgName(`.${pkg}`, isSubPackage);
-          clearTimeout(timeout);
-          resolve(false);
-        });
-      });
+      if (hasLogMessage && hasPrompt) {
+        hasPassed = true;
+        proc.kill();
+      }
     });
+
+    proc.on("exit", () => {
+      swapPkgName(`.${pkg}`, isSubPackage);
+      clearTimeout(timeout);
+      resolve(hasPassed);
+    });
+
+    proc.on("error", () => {
+      swapPkgName(`.${pkg}`, isSubPackage);
+      clearTimeout(timeout);
+      resolve(false);
+    });
+  });
 };
 
 const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) => {

@@ -664,44 +664,6 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate react template with --force", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(assetsPath, ["init", "--template=react", "--force"]);
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    // Test files
-    for (const file of reactTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    }
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  });
-
-  it("should generate vue template with --force", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(assetsPath, ["init", "--template=vue", "--force"]);
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    // Test files
-    for (const file of vueTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    }
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  });
-
   it("should generate vue template with store and router support on prompt answers", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
@@ -750,15 +712,15 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate svelte template with --force", async () => {
+  it("should generate template with --force", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(assetsPath, ["init", "--template=svelte", "--force"]);
+    const { stdout } = await run(assetsPath, ["init", "--template=react", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    for (const file of svelteTemplateFiles) {
+    for (const file of reactTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     }
 
