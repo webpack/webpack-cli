@@ -8,7 +8,7 @@ describe("webpack cli", () => {
     const configFileName = "webpack.config";
     const configFilePath = resolve(__dirname, `${configFileName}.ts`);
     const { execa } = await import("execa");
-    const buildScripts = execa("yarn", ["tsc", configFilePath]);
+    const buildScripts = await execa("yarn", ["tsc", configFilePath]);
     expect(buildScripts.stdout).toBeTruthy();
 
     const { exitCode, stderr, stdout } = await run(__dirname, ["--disable-interpret"]);
