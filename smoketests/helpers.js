@@ -80,60 +80,56 @@ const runTest = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage =
   });
 };
 
-const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) => {
+const runTestStdout = async ({ packageName, cliArgs, logMessage, isSubPackage } = {}) => {
   // Simulate package missing
   swapPkgName(packageName, isSubPackage);
 
-  return Promise.resolve()
-    .then(() => import("execa"))
-    .then(({ execa }) =>
-      execa(CLI_ENTRY_PATH, cliArgs, {
-        cwd: __dirname,
-      }),
-    )
-    .then((proc) => {
-      proc.stdin.setDefaultEncoding("utf8");
+  const { execa } = await import("execa");
+  const proc = execa(CLI_ENTRY_PATH, cliArgs, {
+    cwd: __dirname,
+  });
 
-      return new Promise((resolve) => {
-        const timeout = setTimeout(() => {
-          console.log("  timeout: killing process");
-          proc.kill();
-        }, 60000);
+  proc.stdin.setDefaultEncoding("utf8");
 
-        let hasPassed = false;
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => {
+      console.log("  timeout: killing process");
+      proc.kill();
+    }, 60000);
 
-        proc.stdout.on("data", (chunk) => {
-          const data = stripVTControlCharacters(chunk.toString());
+    let hasPassed = false;
 
-          console.log(`  stdout: ${data}`);
+    proc.stdout.on("data", (chunk) => {
+      const data = stripVTControlCharacters(chunk.toString());
 
-          if (data.includes(logMessage)) {
-            hasPassed = true;
-            proc.kill();
-          }
-        });
+      console.log(`  stdout: ${data}`);
 
-        proc.stderr.on("data", (chunk) => {
-          const data = stripVTControlCharacters(chunk.toString());
-          console.log(`  stderr: ${data}`);
-        });
-
-        proc.on("exit", () => {
-          swapPkgName(`.${packageName}`, isSubPackage);
-          clearTimeout(timeout);
-          resolve(hasPassed);
-        });
-
-        proc.on("error", () => {
-          swapPkgName(`.${packageName}`, isSubPackage);
-          clearTimeout(timeout);
-          resolve(false);
-        });
-      });
+      if (data.includes(logMessage)) {
+        hasPassed = true;
+        proc.kill();
+      }
     });
+
+    proc.stderr.on("data", (chunk) => {
+      const data = stripVTControlCharacters(chunk.toString());
+      console.log(`  stderr: ${data}`);
+    });
+
+    proc.on("exit", () => {
+      swapPkgName(`.${packageName}`, isSubPackage);
+      clearTimeout(timeout);
+      resolve(hasPassed);
+    });
+
+    proc.on("error", () => {
+      swapPkgName(`.${packageName}`, isSubPackage);
+      clearTimeout(timeout);
+      resolve(false);
+    });
+  });
 };
 
-const runTestStdoutWithInput = ({
+const runTestStdoutWithInput = async ({
   packageName,
   cliArgs,
   inputs,
@@ -143,122 +139,113 @@ const runTestStdoutWithInput = ({
   // Simulate package missing
   swapPkgName(packageName, isSubPackage);
 
-  return Promise.resolve()
-    .then(() => import("execa"))
-    .then(({ execa }) =>
-      execa(CLI_ENTRY_PATH, cliArgs, {
-        cwd: __dirname,
-      }),
-    )
-    .then((proc) => {
-      proc.stdin.setDefaultEncoding("utf8");
+  const { execa } = await import("execa");
+  const proc = execa(CLI_ENTRY_PATH, cliArgs, {
+    cwd: __dirname,
+  });
 
-      return new Promise((resolve) => {
-        const timeout = setTimeout(() => {
-          console.log("  timeout: killing process");
-          proc.kill();
-        }, 300000);
+  proc.stdin.setDefaultEncoding("utf8");
 
-        let hasPassed = false;
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => {
+      console.log("  timeout: killing process");
+      proc.kill();
+    }, 300000);
 
-        proc.stdout.on("data", (chunk) => {
-          const data = stripVTControlCharacters(chunk.toString());
-          console.log(`  stdout: ${data}`);
+    let hasPassed = false;
 
-          if (data.includes(logMessage)) {
-            hasPassed = true;
-            proc.kill();
-          }
+    proc.stdout.on("data", (chunk) => {
+      const data = stripVTControlCharacters(chunk.toString());
+      console.log(`  stdout: ${data}`);
 
-          for (const input of Object.keys(inputs)) {
-            if (data.includes(input)) {
-              proc.stdin.write(inputs[input]);
-            }
-          }
-        });
+      if (data.includes(logMessage)) {
+        hasPassed = true;
+        proc.kill();
+      }
 
-        proc.stderr.on("data", (chunk) => {
-          const data = stripVTControlCharacters(chunk.toString());
-          console.log(`  stderr: ${data}`);
-        });
-
-        proc.on("exit", () => {
-          swapPkgName(`.${packageName}`, isSubPackage);
-          clearTimeout(timeout);
-          resolve(hasPassed);
-        });
-
-        proc.on("error", () => {
-          swapPkgName(`.${packageName}`, isSubPackage);
-          clearTimeout(timeout);
-          resolve(false);
-        });
-      });
+      for (const input of Object.keys(inputs)) {
+        if (data.includes(input)) {
+          proc.stdin.write(inputs[input]);
+        }
+      }
     });
+
+    proc.stderr.on("data", (chunk) => {
+      const data = stripVTControlCharacters(chunk.toString());
+      console.log(`  stderr: ${data}`);
+    });
+
+    proc.on("exit", () => {
+      swapPkgName(`.${packageName}`, isSubPackage);
+      clearTimeout(timeout);
+      resolve(hasPassed);
+    });
+
+    proc.on("error", () => {
+      swapPkgName(`.${packageName}`, isSubPackage);
+      clearTimeout(timeout);
+      resolve(false);
+    });
+  });
 };
 
-const runTestWithHelp = (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
+const runTestWithHelp = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
   // Simulate package missing
   swapPkgName(pkg, isSubPackage);
 
-  return Promise.resolve()
-    .then(() => import("execa"))
-    .then(({ execa }) =>
-      execa(CLI_ENTRY_PATH, cliArgs, {
-        cwd: __dirname,
-      }),
-    )
-    .then((proc) => {
-      proc.stdin.setDefaultEncoding("utf8");
+  const { execa } = await import("execa");
+  const proc = execa(CLI_ENTRY_PATH, cliArgs, {
+    cwd: __dirname,
+  });
 
-      proc.stdout.on("data", (chunk) => {
-        console.log(`  stdout: ${chunk.toString()}`);
-      });
+  proc.stdin.setDefaultEncoding("utf8");
+  proc.stdout.on("data", (chunk) => {
+    console.log(`  stdout: ${chunk.toString()}`);
+  });
 
-      return new Promise((resolve) => {
-        const timeout = setTimeout(() => {
-          console.log("  timeout: killing process");
-          proc.kill();
-        }, 30000);
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => {
+      console.log("  timeout: killing process");
+      proc.kill();
+    }, 30000);
 
-        const undefinedLogMessage = "Can't find and load command";
+    const undefinedLogMessage = "Can't find and load command";
 
-        let hasLogMessage = false;
-        let hasUndefinedLogMessage = false;
-        let hasPassed = false;
+    let hasLogMessage = false;
+    let hasUndefinedLogMessage = false;
+    let hasPassed = false;
 
-        proc.stderr.on("data", (chunk) => {
-          const data = stripVTControlCharacters(chunk.toString());
+    proc.stderr.on("data", (chunk) => {
+      const data = stripVTControlCharacters(chunk.toString());
 
-          console.log(`  stderr: ${data}`);
+      console.log(`  stderr: ${data}`);
 
-          if (data.includes(logMessage)) {
-            hasLogMessage = true;
-          }
+      if (data.includes(logMessage)) {
+        hasLogMessage = true;
+      }
 
-          if (data.includes(undefinedLogMessage)) {
-            hasUndefinedLogMessage = true;
-          }
+      if (data.includes(undefinedLogMessage)) {
+        hasUndefinedLogMessage = true;
+      }
 
-          if (hasLogMessage || hasUndefinedLogMessage) {
-            hasPassed = true;
-            proc.kill();
-          }
-        });
-
-        proc.on("exit", () => {
-          swapPkgName(`.${pkg}`, isSubPackage);
-          clearTimeout(timeout);
-          resolve(hasPassed);
-        });
-
-        proc.on("error", () => {
-          swapPkgName(`.${pkg}`, isSubPackage);
-          clearTimeout(timeout);
-          resolve(false);
-        });
-      });
+      if (hasLogMessage || hasUndefinedLogMessage) {
+        hasPassed = true;
+        proc.kill();
+      }
     });
+
+    proc.on("exit", () => {
+      swapPkgName(`.${pkg}`, isSubPackage);
+      clearTimeout(timeout);
+      resolve(hasPassed);
+    });
+
+    proc.on("error", () => {
+      swapPkgName(`.${pkg}`, isSubPackage);
+      clearTimeout(timeout);
+      resolve(false);
+    });
+  });
 };
 
 module.exports = {
