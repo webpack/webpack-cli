@@ -86,7 +86,7 @@ jobs:
         run: npm run build:ci
 
       - name: Run tests and generate coverage
-        run: npm run test:coverage --ci --shard=${{ matrix.shard }}
+        run: npm run test:coverage -- --ci --shard=${{ matrix.shard }}
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2

@@ -1,33 +1,38 @@
-const getPort = require("get-port");
-
 const WebpackCLITestPlugin = require("../../utils/webpack-cli-test-plugin");
 const { devServerConfig } = require("./helper/base-dev-server.config");
 
-module.exports = async () => [
-  {
-    name: "one",
-    mode: "development",
-    devtool: false,
-    output: {
-      filename: "first-output/[name].js",
+const getGetPort = () => import("get-port");
+
+module.exports = async () => {
+  const port1 = await (await getGetPort()).default();
+  const port2 = await (await getGetPort()).default();
+
+  return [
+    {
+      name: "one",
+      mode: "development",
+      devtool: false,
+      output: {
+        filename: "first-output/[name].js",
+      },
+      devServer: {
+        ...devServerConfig,
+        port: port1,
+      },
+      plugins: [new WebpackCLITestPlugin(["mode", "output"], false, "hooks.compilation.taps")],
     },
-    devServer: {
-      ...devServerConfig,
-      port: await getPort(),
+    {
+      name: "two",
+      mode: "development",
+      devtool: false,
+      entry: "./src/other.js",
+      output: {
+        filename: "second-output/[name].js",
+      },
+      devServer: {
+        ...devServerConfig,
+        port: port2,
+      },
     },
-    plugins: [new WebpackCLITestPlugin(["mode", "output"], false, "hooks.compilation.taps")],
-  },
-  {
-    name: "two",
-    mode: "development",
-    devtool: false,
-    entry: "./src/other.js",
-    output: {
-      filename: "second-output/[name].js",
-    },
-    devServer: {
-      ...devServerConfig,
-      port: await getPort(),
-    },
-  },
-];
+  ];
+};

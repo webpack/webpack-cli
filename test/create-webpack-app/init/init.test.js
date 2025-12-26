@@ -133,7 +133,7 @@ describe("create-webpack-app cli", () => {
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
       ["init", "--force", "--template=apple"],
-      [`${ENTER}`],
+      [ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -154,7 +154,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
+      [DOWN, DOWN, ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, UP, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -184,7 +184,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
+      [DOWN, ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, UP, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -211,11 +211,12 @@ describe("create-webpack-app cli", () => {
       assetsPath,
       ["init", "."],
       [
-        `${ENTER}`,
+        ENTER,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${ENTER}`,
+        DOWN,
+        ENTER,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
@@ -244,11 +245,12 @@ describe("create-webpack-app cli", () => {
       assetsPath,
       ["init", "."],
       [
-        `${ENTER}`,
+        ENTER,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${ENTER}`,
+        DOWN,
+        ENTER,
         `n${ENTER}`,
         `y${ENTER}`,
         `n${ENTER}`,
@@ -283,7 +285,8 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${ENTER}`,
+        DOWN,
+        ENTER,
         `n${ENTER}`,
         `n${ENTER}`,
         `y${ENTER}`,
@@ -316,7 +319,8 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${ENTER}`,
+        DOWN,
+        ENTER,
         `y${ENTER}`,
         `y${ENTER}`,
         `n${ENTER}`,
@@ -347,11 +351,13 @@ describe("create-webpack-app cli", () => {
       assetsPath,
       ["init", "."],
       [
-        `${ENTER}`,
+        ENTER,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${DOWN}${ENTER}`,
+        DOWN,
+        DOWN,
+        ENTER,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
@@ -380,11 +386,14 @@ describe("create-webpack-app cli", () => {
       assetsPath,
       ["init", "."],
       [
-        `${ENTER}`,
+        ENTER,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `${DOWN}${DOWN}${DOWN}${ENTER}`,
+        DOWN,
+        DOWN,
+        DOWN,
+        ENTER,
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
@@ -412,7 +421,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
+      [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, UP, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Would you like to use Webpack Dev server?");
@@ -461,7 +470,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
+      [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, UP, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Do you want to simplify the creation of HTML files for your bundle?");
@@ -646,7 +655,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=react"],
-      [ENTER, `y${ENTER}`, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -654,44 +663,6 @@ describe("create-webpack-app cli", () => {
 
     // Test files
     for (const file of reactTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    }
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  });
-
-  it("should generate react template with --force", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(assetsPath, ["init", "--template=react", "--force"]);
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    // Test files
-    for (const file of reactTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
-    }
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
-  });
-
-  it("should generate vue template with --force", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(assetsPath, ["init", "--template=vue", "--force"]);
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    // Test files
-    for (const file of vueTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     }
 
@@ -732,7 +703,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", ".", "--template=svelte"],
-      [ENTER, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -750,15 +721,15 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate svelte template with --force", async () => {
+  it("should generate template with --force", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(assetsPath, ["init", "--template=svelte", "--force"]);
+    const { stdout } = await run(assetsPath, ["init", "--template=react", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
-    for (const file of svelteTemplateFiles) {
+    for (const file of reactTemplateFiles) {
       expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
     }
 

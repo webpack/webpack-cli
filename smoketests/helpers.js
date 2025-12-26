@@ -1,7 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { stripVTControlCharacters } = require("node:util");
-const execa = require("execa");
 
 const ROOT_PATH = process.env.GITHUB_WORKSPACE || path.resolve(__dirname, "..");
 
@@ -22,12 +21,16 @@ const swapPkgName = (current, isSubPackage = false) => {
 
 const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, "./packages/webpack-cli/bin/cli.js");
 
-const runTest = (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
+const runTest = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
   // Simulate package missing
   swapPkgName(pkg, isSubPackage);
 
+  const { execa } = await import("execa");
+  const abortController = new AbortController();
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
+    reject: false,
+    cancelSignal: abortController.signal,
   });
 
   proc.stdin.setDefaultEncoding("utf8");
@@ -61,8 +64,8 @@ const runTest = (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false
       }
 
       if (hasLogMessage && hasPrompt) {
+        abortController.abort();
         hasPassed = true;
-        proc.kill();
       }
     });
 
@@ -80,12 +83,16 @@ const runTest = (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false
   });
 };
 
-const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) => {
+const runTestStdout = async ({ packageName, cliArgs, logMessage, isSubPackage } = {}) => {
   // Simulate package missing
   swapPkgName(packageName, isSubPackage);
 
+  const { execa } = await import("execa");
+  const abortController = new AbortController();
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
+    reject: false,
+    cancelSignal: abortController.signal,
   });
 
   proc.stdin.setDefaultEncoding("utf8");
@@ -105,7 +112,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
 
       if (data.includes(logMessage)) {
         hasPassed = true;
-        proc.kill();
+        abortController.abort();
       }
     });
 
@@ -128,7 +135,7 @@ const runTestStdout = ({ packageName, cliArgs, logMessage, isSubPackage } = {}) 
   });
 };
 
-const runTestStdoutWithInput = ({
+const runTestStdoutWithInput = async ({
   packageName,
   cliArgs,
   inputs,
@@ -138,8 +145,12 @@ const runTestStdoutWithInput = ({
   // Simulate package missing
   swapPkgName(packageName, isSubPackage);
 
+  const { execa } = await import("execa");
+  const abortController = new AbortController();
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
+    reject: false,
+    cancelSignal: abortController.signal,
   });
 
   proc.stdin.setDefaultEncoding("utf8");
@@ -158,7 +169,7 @@ const runTestStdoutWithInput = ({
 
       if (data.includes(logMessage)) {
         hasPassed = true;
-        proc.kill();
+        abortController.abort();
       }
 
       for (const input of Object.keys(inputs)) {
@@ -187,16 +198,19 @@ const runTestStdoutWithInput = ({
   });
 };
 
-const runTestWithHelp = (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
+const runTestWithHelp = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
   // Simulate package missing
   swapPkgName(pkg, isSubPackage);
 
+  const { execa } = await import("execa");
+  const abortController = new AbortController();
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
+    reject: false,
+    cancelSignal: abortController.signal,
   });
 
   proc.stdin.setDefaultEncoding("utf8");
-
   proc.stdout.on("data", (chunk) => {
     console.log(`  stdout: ${chunk.toString()}`);
   });
@@ -228,7 +242,7 @@ const runTestWithHelp = (pkg, cliArgs = [], logMessage = undefined, isSubPackage
 
       if (hasLogMessage || hasUndefinedLogMessage) {
         hasPassed = true;
-        proc.kill();
+        abortController.abort();
       }
     });
 

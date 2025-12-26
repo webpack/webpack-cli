@@ -1,8 +1,9 @@
 "use strict";
 
 const path = require("node:path");
-const getPort = require("get-port");
 const { normalizeStderr, runWatch } = require("../../utils/test-utils");
+
+const getGetPort = () => import("get-port");
 
 const testPath = path.resolve(__dirname);
 
@@ -10,7 +11,7 @@ describe("serve with devServer in config", () => {
   let port;
 
   beforeEach(async () => {
-    port = await getPort();
+    port = await (await getGetPort()).default();
   });
 
   it("should pick up the host and port from config", async () => {
