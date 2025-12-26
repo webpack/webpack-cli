@@ -976,6 +976,117 @@ module.exports = () => {
 "
 `;
 
+exports[`create-webpack-app cli should generate template with --force 1`] = `
+{
+  "description": "My webpack project",
+  "devDependencies": {
+    "@babel/core": "x.x.x",
+    "@babel/preset-env": "x.x.x",
+    "@babel/preset-react": "x.x.x",
+    "@types/react-router-dom": "x.x.x",
+    "babel-loader": "x.x.x",
+    "css-loader": "x.x.x",
+    "html-webpack-plugin": "x.x.x",
+    "react": "x.x.x",
+    "react-dom": "x.x.x",
+    "react-router-dom": "x.x.x",
+    "style-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+    "webpack-dev-server": "x.x.x",
+    "workbox-webpack-plugin": "x.x.x",
+  },
+  "name": "my-webpack-project",
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
+  },
+  "version": "1.0.0",
+}
+`;
+
+exports[`create-webpack-app cli should generate template with --force 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+
+const stylesHandler = 'style-loader';
+
+
+
+/** @type {import("webpack").Configuration} */
+const config = {
+    entry: './src/index.jsx',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+        }),
+
+        // Add your plugins here
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env", "@babel/preset-react"],
+                    },
+                },
+            },
+            {
+                test: /\\.css$/i,
+                use: [stylesHandler,'css-loader'],
+            },
+            {
+                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
+            },
+
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "./src/"),
+        },
+        extensions: ['.jsx', '.js'],
+    },
+};
+
+module.exports = () => {
+    if (isProduction) {
+        config.mode = 'production';
+        
+        
+        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+        
+    } else {
+        config.mode = 'development';
+    }
+    return config;
+};
+"
+`;
+
 exports[`create-webpack-app cli should generate typescript project correctly 1`] = `
 {
   "description": "My webpack project",
