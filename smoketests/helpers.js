@@ -26,8 +26,11 @@ const runTest = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage =
   swapPkgName(pkg, isSubPackage);
 
   const { execa } = await import("execa");
+  const abortController = new AbortController();
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
+    reject: false,
+    cancelSignal: abortController.signal,
   });
 
   proc.stdin.setDefaultEncoding("utf8");
@@ -61,8 +64,8 @@ const runTest = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage =
       }
 
       if (hasLogMessage && hasPrompt) {
+        abortController.abort();
         hasPassed = true;
-        proc.kill();
       }
     });
 
@@ -85,8 +88,11 @@ const runTestStdout = async ({ packageName, cliArgs, logMessage, isSubPackage } 
   swapPkgName(packageName, isSubPackage);
 
   const { execa } = await import("execa");
+  const abortController = new AbortController();
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
+    reject: false,
+    cancelSignal: abortController.signal,
   });
 
   proc.stdin.setDefaultEncoding("utf8");
@@ -106,7 +112,7 @@ const runTestStdout = async ({ packageName, cliArgs, logMessage, isSubPackage } 
 
       if (data.includes(logMessage)) {
         hasPassed = true;
-        proc.kill();
+        abortController.abort();
       }
     });
 
@@ -140,8 +146,11 @@ const runTestStdoutWithInput = async ({
   swapPkgName(packageName, isSubPackage);
 
   const { execa } = await import("execa");
+  const abortController = new AbortController();
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
+    reject: false,
+    cancelSignal: abortController.signal,
   });
 
   proc.stdin.setDefaultEncoding("utf8");
@@ -160,7 +169,7 @@ const runTestStdoutWithInput = async ({
 
       if (data.includes(logMessage)) {
         hasPassed = true;
-        proc.kill();
+        abortController.abort();
       }
 
       for (const input of Object.keys(inputs)) {
@@ -194,8 +203,11 @@ const runTestWithHelp = async (pkg, cliArgs = [], logMessage = undefined, isSubP
   swapPkgName(pkg, isSubPackage);
 
   const { execa } = await import("execa");
+  const abortController = new AbortController();
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
+    reject: false,
+    cancelSignal: abortController.signal,
   });
 
   proc.stdin.setDefaultEncoding("utf8");
@@ -230,7 +242,7 @@ const runTestWithHelp = async (pkg, cliArgs = [], logMessage = undefined, isSubP
 
       if (hasLogMessage || hasUndefinedLogMessage) {
         hasPassed = true;
-        proc.kill();
+        abortController.abort();
       }
     });
 
