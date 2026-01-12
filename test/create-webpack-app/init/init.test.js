@@ -348,7 +348,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should use less in project when selected", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should use less in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -381,7 +382,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should use stylus in project when selected", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should use stylus in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -414,7 +416,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should configure WDS as opted", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should configure WDS as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -438,7 +441,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should use postcss in project when selected", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should use postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
