@@ -178,7 +178,7 @@ describe("loader command", () => {
     let { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["loader", ".", "-t", "default"],
-      [`${ENTER}`, ENTER],
+      [ENTER, ENTER],
     );
 
     expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -210,7 +210,7 @@ describe("loader command", () => {
     let { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["loader", ".", "-t", "default"],
-      [`${ENTER}`, `${DOWN}${ENTER}`],
+      [ENTER, `${DOWN}${ENTER}`],
     );
 
     expect(normalizeStdout(stdout)).toContain(firstPrompt);

@@ -154,7 +154,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [DOWN, DOWN, ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, UP, ENTER, ENTER],
+      [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -184,7 +184,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [DOWN, ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, UP, ENTER, ENTER],
+      [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -215,11 +215,10 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        DOWN,
+        `${DOWN}${ENTER}`,
+        `n${ENTER}`,
+        `n${ENTER}`,
         ENTER,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
         ENTER,
       ],
     );
@@ -249,11 +248,10 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        DOWN,
-        ENTER,
+        `${DOWN}${ENTER}`,
         `n${ENTER}`,
         `y${ENTER}`,
-        `n${ENTER}`,
+        ENTER,
         ENTER,
       ],
     );
@@ -281,15 +279,14 @@ describe("create-webpack-app cli", () => {
       assetsPath,
       ["init", "."],
       [
-        `${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        DOWN,
         ENTER,
         `n${ENTER}`,
         `n${ENTER}`,
-        `y${ENTER}`,
+        `n${ENTER}`,
+        `${DOWN}${ENTER}`,
+        `n${ENTER}`,
+        `n${ENTER}`,
+        ENTER,
         ENTER,
       ],
     );
@@ -319,11 +316,10 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        DOWN,
+        `${DOWN}${ENTER}`,
+        `y${ENTER}`,
+        `y${ENTER}`,
         ENTER,
-        `y${ENTER}`,
-        `y${ENTER}`,
-        `n${ENTER}`,
         ENTER,
       ],
     );
@@ -355,12 +351,10 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        DOWN,
-        DOWN,
+        `${DOWN}${DOWN}${ENTER}`,
+        `n${ENTER}`,
+        `n${ENTER}`,
         ENTER,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
         ENTER,
       ],
     );
@@ -390,13 +384,10 @@ describe("create-webpack-app cli", () => {
         `n${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        DOWN,
-        DOWN,
-        DOWN,
+        `${DOWN}${DOWN}${DOWN}${ENTER}`,
+        `n${ENTER}`,
+        `n${ENTER}`,
         ENTER,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
         ENTER,
       ],
     );
@@ -421,7 +412,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, UP, ENTER, ENTER],
+      [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
 
     expect(stdout).toContain("Would you like to use Webpack Dev server?");
@@ -445,7 +436,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [`${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER, ENTER, ENTER],
+      [ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -470,7 +461,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["init", "."],
-      [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, UP, ENTER, ENTER],
+      [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
 
     expect(stdout).toContain("Do you want to simplify the creation of HTML files for your bundle?");

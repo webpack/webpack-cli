@@ -175,7 +175,7 @@ describe("plugin command", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["plugin", ".", "-t", "default"],
-      [`${ENTER}`, ENTER],
+      [ENTER, ENTER],
     );
 
     expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -207,7 +207,7 @@ describe("plugin command", () => {
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["plugin", "."],
-      [`${ENTER}`, `${DOWN}${ENTER}`],
+      [ENTER, `${DOWN}${ENTER}`],
     );
 
     expect(normalizeStdout(stdout)).toContain(firstPrompt);

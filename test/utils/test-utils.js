@@ -166,16 +166,14 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
     if (currentAnswer < answers.length) {
       const answer = answers[currentAnswer];
 
-      if (!answer.includes("\u000D")) {
-        waitAnswer = true;
-      }
-
       proc.stdin.write(answer);
+      waitAnswer = true;
       currentAnswer++;
     }
   };
 
-  proc.stderr.pipe(process.stdout);
+  // Uncomment for debugging
+  // proc.stderr.pipe(process.stdout);
 
   proc.stdout.pipe(
     new Writable({
@@ -189,13 +187,14 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
 
         const text = stripVTControlCharacters(output).trim();
 
-        if (text.length > 0 && waitAnswer) {
+        if (text.length <= 0) {
+          callback();
+          return;
+        }
+
+        if (waitAnswer && /\(.+\)$/m.test(text)) {
           waitAnswer = false;
           writeAnswer(output);
-        }
-        // After each write into stdin, stdout outputs question and answer, after this we will wait the new answer
-        else if (text.length > 0 && !waitAnswer) {
-          waitAnswer = true;
         }
 
         callback();
