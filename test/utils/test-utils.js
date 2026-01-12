@@ -155,6 +155,8 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
   let currentAnswer = 0;
   let waitAnswer = true;
 
+  console.log("RUN", cwd, args, answers);
+
   const writeAnswer = (output) => {
     if (answers.length === 0) {
       proc.stdin.write(output);
@@ -173,7 +175,7 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
   };
 
   // Uncomment for debugging
-  // proc.stderr.pipe(process.stdout);
+  proc.stderr.pipe(process.stdout);
 
   proc.stdout.pipe(
     new Writable({
@@ -193,6 +195,7 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
         }
 
         if (waitAnswer && /\(.+\)$/m.test(text)) {
+          console.log("answer", text);
           waitAnswer = false;
           writeAnswer(output);
         }
