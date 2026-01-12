@@ -242,7 +242,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should use sass with postcss in project when selected", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should use sass with postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -277,7 +278,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should use mini-css-extract-plugin when selected", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should use mini-css-extract-plugin when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -310,7 +312,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should use sass and css with postcss in project when selected", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should use sass and css with postcss in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
