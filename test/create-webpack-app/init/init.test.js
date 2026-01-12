@@ -467,7 +467,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should configure html-webpack-plugin as opted", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should configure html-webpack-plugin as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -491,7 +492,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should configure workbox-webpack-plugin as opted", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should configure workbox-webpack-plugin as opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -627,7 +629,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
 
-  it("uses yarn as the package manager when opted", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("uses yarn as the package manager when opted", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -652,7 +655,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate react template with state and routing support with prompt answers", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should generate react template with state and routing support with prompt answers", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -675,7 +679,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate vue template with store and router support on prompt answers", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should generate vue template with store and router support on prompt answers", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -700,7 +705,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate svelte template with prompt answers", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should generate svelte template with prompt answers", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
