@@ -194,6 +194,8 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
           return;
         }
 
+        console.log("text", text, waitAnswer, /\(.+\)$/m.test(text));
+
         if (waitAnswer && /\(.+\)$/m.test(text)) {
           console.log("answer", text);
           waitAnswer = false;

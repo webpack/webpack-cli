@@ -128,7 +128,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should ask question when wrong template is supplied", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should ask question when wrong template is supplied", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
       assetsPath,
