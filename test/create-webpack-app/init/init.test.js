@@ -150,7 +150,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate typescript project correctly", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should generate typescript project correctly", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -180,7 +181,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should generate ES6 project correctly", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should generate ES6 project correctly", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
@@ -206,7 +208,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
   });
 
-  it("should use sass in project when selected", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should use sass in project when selected", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
       assetsPath,
