@@ -170,7 +170,6 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
         waitAnswer = true;
       }
 
-      // console.log(output, answer);
       proc.stdin.write(answer);
       currentAnswer++;
     }
@@ -191,7 +190,6 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
         const text = stripVTControlCharacters(output).trim();
 
         if (text.length > 0 && waitAnswer) {
-          console.log(output);
           waitAnswer = false;
           writeAnswer(output);
         }
