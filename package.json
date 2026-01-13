@@ -27,7 +27,6 @@
     "prebuild": "npm run clean",
     "prebuild:ci": "npm run clean && node ./scripts/setup-build.js",
     "build": "tsc --build",
-    "build:ci": "tsc --build",
     "watch": "tsc --build --watch",
     "lint": "npm run lint:code && npm run lint:spellcheck",
     "lint:code": "eslint --cache .",

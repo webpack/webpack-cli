@@ -86,7 +86,7 @@ jobs:
         run: npm ci --ignore-scripts
 
       - name: Prepare environment for tests
-        run: npm run build:ci
+        run: npm run build
 
       - name: Run tests and generate coverage
         run: npm run test:coverage -- --ci
@@ -127,7 +127,7 @@ jobs:
         run: npm ci
 
       - name: Prepare environment for tests
-        run: npm run build:ci
+        run: npm run build
 
       - name: Run smoketests
         run: npm run test:smoketests
