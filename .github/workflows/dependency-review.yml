@@ -1,4 +1,4 @@
-name: "Dependency Review"
+name: Review Dependencies
 on: [pull_request]
 
 permissions:
@@ -8,7 +8,8 @@ jobs:
   dependency-review:
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout Repository"
+      - name: Git Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-      - name: "Dependency Review"
+
+      - name: Review Dependencies
         uses: actions/dependency-review-action@3c4e3dcb1aa7874d2c16be7d79418e9b7efd6261 # v4.8.2

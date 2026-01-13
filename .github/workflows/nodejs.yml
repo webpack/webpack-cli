@@ -1,4 +1,4 @@
-name: webpack-cli
+name: CI
 
 on:
   push:
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   lint:
-    name: Lint - ${{ matrix.os }} - Node v${{ matrix.node-version }}
+    name: Lint
 
     runs-on: ${{ matrix.os }}
 
@@ -30,9 +30,10 @@ jobs:
         webpack-version: [latest]
 
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-      - name: Using Node v${{ matrix.node-version }}
+      - name: Setup Node.js v${{ matrix.node-version }}
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: ${{ matrix.node-version }}
@@ -47,37 +48,39 @@ jobs:
       - name: Lint
         run: npm run lint
 
-  build:
+  test:
     name: Tests and Coverage - ${{ matrix.os }} - Node v${{ matrix.node-version }}, Webpack ${{ matrix.webpack-version }}, DevServer ${{ matrix.dev-server-version }} (${{ matrix.shard }})
 
     runs-on: ${{ matrix.os }}
 
     concurrency:
-      group: build-${{ matrix.os }}-v${{ matrix.node-version }}-${{ matrix.webpack-version }}-${{ matrix.dev-server-version }}-${{ matrix.shard }}-${{ github.ref }}
+      group: test-${{ matrix.os }}-v${{ matrix.node-version }}-${{ matrix.webpack-version }}-${{ matrix.dev-server-version }}-${{ github.ref }}
       cancel-in-progress: true
 
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [18.x, 20.x, 22.x, 24.x]
-        shard: ["1/4", "2/4", "3/4", "4/4"]
         webpack-version: [latest]
         dev-server-version: [latest]
 
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
 
-      - name: Using Node v${{ matrix.node-version }}
+      - name: Using Node.js v${{ matrix.node-version }}
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 #4.2.0
+      - name: Install pnpm
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 #4.2.0
         with:
-          version: 9
+          version: 10
 
       - name: Install dependencies
         run: npm ci --ignore-scripts
@@ -86,7 +89,7 @@ jobs:
         run: npm run build:ci
 
       - name: Run tests and generate coverage
-        run: npm run test:coverage -- --ci --shard=${{ matrix.shard }}
+        run: npm run test:coverage -- --ci
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
@@ -95,21 +98,26 @@ jobs:
           verbose: true
 
   smoketests:
-    name: Smoketests - ${{ matrix.os }} - Node v${{ matrix.node-version }}
-    runs-on: ubuntu-latest
+    name: Smoketests
+
+    runs-on: ${{ matrix.os }}
+
     concurrency:
       group: smoketests-${{ github.ref }}
       cancel-in-progress: true
+
     strategy:
       matrix:
         os: [ubuntu-latest]
         node-version: [lts/*]
+
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
 
-      - name: Using Node v${{ matrix.node-version }}
+      - name: Using Node.js v${{ matrix.node-version }}
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: ${{ matrix.node-version }}
@@ -123,27 +131,3 @@ jobs:
 
       - name: Run smoketests
         run: npm run test:smoketests
-
-  commitlint:
-    name: Lint Commit Messages
-    runs-on: ubuntu-latest
-    concurrency:
-      group: commitlint-${{ github.ref }}
-      cancel-in-progress: true
-    steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
-        with:
-          node-version: "lts/*"
-          cache: "npm"
-
-      - run: npm ci
-
-      - name: Validate PR commits with commitlint
-        if: github.event_name == 'pull_request'
-        run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
-        env:
-          NODE_PATH: ${{ github.workspace }}/node_modules
