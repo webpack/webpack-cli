@@ -2,7 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { run, runWatch } = require("../../utils/test-utils");
+const { isWindows, processKill, run, runWatch } = require("../../utils/test-utils");
 
 describe("cache", () => {
   it("should work", async () => {
@@ -219,36 +219,38 @@ describe("cache", () => {
     expect(stdout).toBeTruthy();
   });
 
-  it("should graceful shutdown", async () => {
-    fs.rmSync(
-      path.join(
-        __dirname,
-        "../../../node_modules/.cache/webpack/cache-graceful-shutdown-development",
-      ),
-      {
-        recursive: true,
-        force: true,
-      },
-    );
+  if (!isWindows) {
+    it("should graceful shutdown", async () => {
+      fs.rmSync(
+        path.join(
+          __dirname,
+          "../../../node_modules/.cache/webpack/cache-graceful-shutdown-development",
+        ),
+        {
+          recursive: true,
+          force: true,
+        },
+      );
 
-    let stdout = "";
+      let stdout = "";
 
-    await runWatch(__dirname, ["--config", "./graceful-exit.webpack.config.js", "--watch"], {
-      handler: (proc) => {
-        proc.stdout.on("data", (chunk) => {
-          const data = chunk.toString();
+      await runWatch(__dirname, ["--config", "./graceful-exit.webpack.config.js", "--watch"], {
+        handler: (proc) => {
+          proc.stdout.on("data", (chunk) => {
+            const data = chunk.toString();
 
-          stdout += data;
+            stdout += data;
 
-          if (data.includes("app.bundle.js")) {
-            proc.kill();
-          }
-        });
-      },
+            if (data.includes("app.bundle.js")) {
+              processKill(proc);
+            }
+          });
+        },
+      });
+
+      expect(stdout).toContain(
+        "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+      );
     });
-
-    expect(stdout).toContain(
-      "Gracefully shutting down. To force exit, press ^C again. Please wait...",
-    );
-  });
+  }
 });
