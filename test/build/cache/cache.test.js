@@ -2,7 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { processKill, run, runWatch } = require("../../utils/test-utils");
+const { run, runWatch } = require("../../utils/test-utils");
 
 describe("cache", () => {
   it("should work", async () => {
@@ -241,7 +241,7 @@ describe("cache", () => {
           stdout += data;
 
           if (data.includes("app.bundle.js")) {
-            processKill(proc);
+            proc.kill();
           }
         });
       },
