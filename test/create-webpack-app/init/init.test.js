@@ -1,4 +1,5 @@
-const { existsSync, mkdirSync, readFileSync } = require("node:fs");
+const { existsSync, mkdirSync, readFileSync, writeFileSync } = require("node:fs");
+const { cp } = require("node:fs/promises");
 const os = require("node:os");
 const path = require("node:path");
 const { join, resolve } = require("node:path");
@@ -63,38 +64,88 @@ const readFromPkgJSON = (path) => {
 const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.js"), "utf8");
 
 describe("create-webpack-app cli", () => {
+  let dirWithNodeModules;
+
+  beforeAll(async () => {
+    dirWithNodeModules = await uniqueDirectoryForTest();
+
+    const { execa } = await import("execa");
+
+    writeFileSync(
+      resolve(dirWithNodeModules, "package.json"),
+      JSON.stringify({
+        name: "test",
+        description: "description",
+        version: "1.0.0",
+        dependencies: {
+          "babel-loader": "latest",
+          typescript: "latest",
+          "html-loader": "latest",
+          "html-webpack-plugin": "latest",
+          postcss: "latest",
+          "postcss-loader": "latest",
+          autoprefixer: "latest",
+          "sass-loader": "latest",
+          "less-loader": "latest",
+          "stylus-loader": "latest",
+          "mini-css-extract-plugin": "latest",
+          "style-loader": "latest",
+          webpack: "latest",
+          "webpack-cli": "latest",
+          "webpack-dev-server": "latest",
+          "workbox-webpack-plugin": "latest",
+        },
+      }),
+    );
+
+    const { exitCode } = await execa("npm", ["install"], { cwd: dirWithNodeModules });
+
+    if (exitCode !== 0) {
+      throw new Error("Problem with installation `node_modules` for caching");
+    }
+  });
+
+  let dir;
+
+  beforeEach(async () => {
+    dir = await uniqueDirectoryForTest();
+
+    await cp(resolve(dirWithNodeModules, "./node_modules"), resolve(dir, "./node_modules"), {
+      recursive: true,
+    });
+    await cp(resolve(dirWithNodeModules, "package-lock.json"), resolve(dir, "package-lock.json"));
+  });
+
   it("should generate default project when nothing is passed", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(assetsPath, ["init", "--force"]);
+    const { stdout } = await run(dir, ["init", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
     // Test files
     for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("should generate project when generationPath is supplied", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(__dirname, ["init", assetsPath, "--force"]);
+    const { stdout } = await run(__dirname, ["init", dir, "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
     for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
   });
 
   it("should generate folders if non existing generation path is given", async () => {
@@ -118,8 +169,7 @@ describe("create-webpack-app cli", () => {
       return;
     }
 
-    const assetsPath = await uniqueDirectoryForTest();
-    const projectPath = join(assetsPath, "non-writable-path");
+    const projectPath = join(dir, "non-writable-path");
 
     mkdirSync(projectPath, 0o500);
 
@@ -133,41 +183,38 @@ describe("create-webpack-app cli", () => {
 
   // We support more aliases - new/n and create/c, but to make tests faster we test only one alias
   it("should work with 'new' alias", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(assetsPath, ["new", "--force"]);
+    const { stdout } = await run(dir, ["new", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
     for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
   });
 
   it("recognizes '-t' as an alias for '--template' and '-f' as an alias for '--force'", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout } = await run(assetsPath, ["init", "-t", "default", "-f"]);
+    const { stdout } = await run(dir, ["init", "-t", "default", "-f"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.js");
 
     // Test files
     for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
   });
 
   it("should ask question when wrong template is supplied", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout, stderr } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", "--force", "--template=apple"],
       [ENTER],
     );
@@ -178,17 +225,16 @@ describe("create-webpack-app cli", () => {
 
     // Test files
     for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
   });
 
   it("should generate typescript project correctly", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", "."],
       [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
@@ -205,20 +251,19 @@ describe("create-webpack-app cli", () => {
     ];
 
     for (const file of files) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("should generate ES6 project correctly", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", "."],
       [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
@@ -231,20 +276,19 @@ describe("create-webpack-app cli", () => {
     const files = [...defaultTemplateFiles, "babel.config.json"];
 
     for (const file of files) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("should use to use css preprocessor with postcss with mini-css-extract-plugin in project when selected", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", "."],
       [
         ENTER,
@@ -264,20 +308,19 @@ describe("create-webpack-app cli", () => {
 
     // Test files
     for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("should use css preprocessor and css with postcss in project when selected", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", "."],
       [
         `${ENTER}`,
@@ -299,20 +342,19 @@ describe("create-webpack-app cli", () => {
     const files = [...defaultTemplateFiles, "postcss.config.js"];
 
     for (const file of files) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("should configure WDS as opted", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", "."],
       [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
@@ -323,20 +365,19 @@ describe("create-webpack-app cli", () => {
 
     // Test files
     for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("should configure html-webpack-plugin as opted", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", "."],
       [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
     );
@@ -347,20 +388,19 @@ describe("create-webpack-app cli", () => {
 
     // Test files
     for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("should configure workbox-webpack-plugin as opted", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", "."],
       [ENTER, `n${ENTER}`, ENTER, ENTER, `${UP}${ENTER}`, ENTER],
     );
@@ -371,20 +411,19 @@ describe("create-webpack-app cli", () => {
 
     // Test file
     for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("uses yarn as the package manager when opted", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", "."],
       [ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, `${DOWN}${ENTER}`],
     );
@@ -399,17 +438,16 @@ describe("create-webpack-app cli", () => {
     ];
 
     for (const file of files) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
   });
 
   it("should generate react template with state and routing support with prompt answers", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", ".", "--template=react"],
       [ENTER, `y${ENTER}`, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER, ENTER],
     );
@@ -419,20 +457,19 @@ describe("create-webpack-app cli", () => {
 
     // Test files
     for (const file of reactTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("should generate vue template with store and router support on prompt answers", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", ".", "--template=vue"],
       [ENTER, `y${ENTER}`, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
@@ -444,20 +481,19 @@ describe("create-webpack-app cli", () => {
 
     // Test files
     for (const file of files) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
   it("should generate svelte template with prompt answers", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
     const { stdout } = await runPromptWithAnswers(
-      assetsPath,
+      dir,
       ["init", ".", "--template=svelte"],
       [ENTER, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER],
     );
@@ -467,13 +503,13 @@ describe("create-webpack-app cli", () => {
 
     // Test files
     for (const file of svelteTemplateFiles) {
-      expect(existsSync(resolve(assetsPath, file))).toBeTruthy();
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
     // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(assetsPath)).toMatchSnapshot();
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(assetsPath)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 });

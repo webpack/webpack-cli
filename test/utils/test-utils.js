@@ -155,8 +155,6 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
   let currentAnswer = 0;
   let waitAnswer = true;
 
-  console.log("RUN", cwd, args, answers);
-
   const writeAnswer = (output) => {
     if (answers.length === 0) {
       proc.stdin.write(output);
