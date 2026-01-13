@@ -2490,14 +2490,19 @@ class WebpackCLI implements IWebpackCLI {
       return;
     }
 
-    const isWatch = (compiler: WebpackCompiler): boolean =>
+    const needGracefulShutdown = (compiler: WebpackCompiler): boolean =>
       Boolean(
         this.isMultipleCompiler(compiler)
-          ? compiler.compilers.some((compiler) => compiler.options.watch)
-          : compiler.options.watch,
+          ? compiler.compilers.some(
+              (compiler) =>
+                compiler.options.watch ||
+                (compiler.options.cache && compiler.options.cache.type === "filesystem"),
+            )
+          : compiler.options.watch ||
+              (compiler.options.cache && compiler.options.cache.type === "filesystem"),
       );
 
-    if (isWatch(compiler)) {
+    if (needGracefulShutdown(compiler)) {
       let needForceShutdown = false;
 
       for (const signal of EXIT_SIGNALS) {
@@ -2507,13 +2512,17 @@ class WebpackCLI implements IWebpackCLI {
             process.exit(0);
           }
 
-          this.logger.info(
-            "Gracefully shutting down. To force exit, press ^C again. Please wait...",
-          );
+          // Output message after delay to avoid extra logging
+          const timeout = setTimeout(() => {
+            this.logger.info(
+              "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+            );
+          }, 2000);
 
           needForceShutdown = true;
 
           compiler.close(() => {
+            clearTimeout(timeout);
             process.exit(0);
           });
         };
