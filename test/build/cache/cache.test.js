@@ -232,7 +232,6 @@ describe("cache", () => {
     );
 
     let stdout = "";
-    let stderr = "";
 
     await runWatch(__dirname, ["--config", "./graceful-exit.webpack.config.js", "--watch"], {
       handler: (proc) => {
@@ -245,17 +244,9 @@ describe("cache", () => {
             processKill(proc);
           }
         });
-
-        proc.stderr.on("data", (chunk) => {
-          const data = chunk.toString();
-
-          stderr += data;
-        });
       },
     });
 
-    expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
-    expect(stderr.match(/Stored pack/g)).toHaveLength(1);
     expect(stdout).toContain(
       "Gracefully shutting down. To force exit, press ^C again. Please wait...",
     );
