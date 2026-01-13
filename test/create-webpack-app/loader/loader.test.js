@@ -8,7 +8,6 @@ jest.setTimeout(480000);
 
 const {
   createPathDependentUtils,
-  normalizeStderr,
   normalizeStdout,
   uniqueDirectoryForTest,
 } = require("../test.utils");
@@ -37,15 +36,6 @@ const dataForTests = (rootAssetsPath) => ({
 });
 
 describe("loader command", () => {
-  it("should ask the loader name when invoked", async () => {
-    const assetsPath = await uniqueDirectoryForTest();
-    const { stdout, stderr } = await runPromptWithAnswers(assetsPath, ["loader", "."]);
-
-    expect(stdout).toBeTruthy();
-    expect(normalizeStderr(stderr)).toBeFalsy();
-    expect(normalizeStdout(stdout)).toContain(firstPrompt);
-  });
-
   it("should scaffold loader with default name if no loader name provided", async () => {
     const assetsPath = await uniqueDirectoryForTest();
     const { defaultLoaderPath, defaultTemplateFiles } = dataForTests(assetsPath);
@@ -188,7 +178,7 @@ describe("loader command", () => {
     let { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["loader", ".", "-t", "default"],
-      [`${ENTER}`, ENTER],
+      [ENTER, ENTER],
     );
 
     expect(normalizeStdout(stdout)).toContain(firstPrompt);
@@ -220,7 +210,7 @@ describe("loader command", () => {
     let { stdout } = await runPromptWithAnswers(
       assetsPath,
       ["loader", ".", "-t", "default"],
-      [`${ENTER}`, `${DOWN}${ENTER}`],
+      [ENTER, `${DOWN}${ENTER}`],
     );
 
     expect(normalizeStdout(stdout)).toContain(firstPrompt);

@@ -26,7 +26,7 @@ describe("core flags", () => {
     it("should ignore the warning emitted", async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [
         "--ignore-warnings",
-        /Generated Warning/,
+        "/Generated Warning/",
         "--config",
         "warning.config.js",
       ]);
@@ -40,7 +40,7 @@ describe("core flags", () => {
     it("should reset options.ignoreWarnings", async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [
         "--ignore-warnings",
-        /Generated Warning/,
+        "/Generated Warning/",
         "--ignore-warnings-reset",
         "--config",
         "warning.config.js",
@@ -211,7 +211,7 @@ describe("core flags", () => {
     it("should allow RegExp value for `infrastructureLogging.debug`", async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [
         "--infrastructure-logging-debug",
-        /MyPlugin/,
+        "/MyPlugin/",
       ]);
 
       expect(exitCode).toBe(0);
@@ -223,7 +223,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [
         "--infrastructure-logging-debug",
         "MyPlugin",
-        /MyAnotherPlugin/,
+        "/MyAnotherPlugin/",
       ]);
 
       expect(exitCode).toBe(0);

@@ -13,12 +13,13 @@ const tests = [
   const passResults = [];
   const failResults = [];
 
-  for await (const test of tests) {
-    console.log(`\nRUN  ${test.name}`);
+  for (const test of tests) {
+    console.log(`RUN ${test.name}`);
 
     let isPass = true;
 
-    for await (const testCase of test.run) {
+    for (const testCase of test.run) {
+      console.log(`RUN case ${testCase.name}`);
       isPass &&= await testCase();
     }
 
@@ -34,7 +35,7 @@ const tests = [
     }
   }
 
-  console.log("\n\nSummary of smoketest run:");
+  console.log("\nSummary of smoke tests run:");
   console.log(`${failResults.length} tests failed, ${passResults.length} tests passed`);
 
   for (const result of failResults) {

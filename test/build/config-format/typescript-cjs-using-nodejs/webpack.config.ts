@@ -1,4 +1,4 @@
-import * as path from "node:path";
+const path = require("node:path");
 
 /* eslint-disable no-useless-concat */
 
@@ -13,4 +13,4 @@ const config = {
   },
 };
 
-export default config;
+module.exports = config;

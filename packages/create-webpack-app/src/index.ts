@@ -82,7 +82,7 @@ program
     if (generator === undefined) {
       logger.warn(`${templateOption} is not a valid template, please select one from below`);
       const template = await select<string>({
-        message: "Select a valid template from below",
+        message: "Select a valid template from below: (Use arrow keys)",
         choices: Object.keys(initGenerators).map((key) => ({
           name: key,
           value: key.toLowerCase(),
@@ -140,7 +140,7 @@ program
     if (generator === undefined) {
       logger.warn(`${templateOption} is not a valid template, please select one from below`);
       const template = await select<string>({
-        message: "Select a valid template from below",
+        message: "Select a valid template from below: (Use arrow keys)",
         choices: Object.keys(loaderGenerators).map((key) => ({
           name: key,
           value: key.toLowerCase(),
@@ -181,7 +181,7 @@ program
     if (generator === undefined) {
       logger.warn(`${templateOption} is not a valid template, please select one from below`);
       const template = await select<string>({
-        message: "Select a valid template from below",
+        message: "Select a valid template from below: (Use arrow keys)",
         choices: Object.keys(pluginGenerators).map((key) => ({
           name: key,
           value: key.toLowerCase(),

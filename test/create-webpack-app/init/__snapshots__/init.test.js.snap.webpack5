@@ -1,28 +1,6 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`create-webpack-app cli recognizes '-f' as an alias for '--force' 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "html-loader": "x.x.x",
-    "html-webpack-plugin": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-    "workbox-webpack-plugin": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli recognizes '-t' as an alias for '--template' 1`] = `
+exports[`create-webpack-app cli recognizes '-t' as an alias for '--template' and '-f' as an alias for '--force' 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
@@ -125,89 +103,6 @@ module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
         
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
-"
-`;
-
-exports[`create-webpack-app cli should configure assets modules by default 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "html-loader": "x.x.x",
-    "html-webpack-plugin": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-    "workbox-webpack-plugin": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should configure assets modules by default 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    devServer: {
-        open: true,
-        host: 'localhost',
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: 'index.html',
-        }),
-
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-            
-            {
-                test: /\\.html$/i,
-                use: ['html-loader'],
-            },
-
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
         config.mode = 'development';
@@ -458,6 +353,67 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 }
 `;
 
+exports[`create-webpack-app cli should generate default project when nothing is passed 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+
+/** @type {import("webpack").Configuration} */
+const config = {
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+    },
+    devServer: {
+        open: true,
+        host: 'localhost',
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'index.html',
+        }),
+
+        // Add your plugins here
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
+            },
+            
+            {
+                test: /\\.html$/i,
+                use: ['html-loader'],
+            },
+
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+};
+
+module.exports = () => {
+    if (isProduction) {
+        config.mode = 'production';
+        
+        
+        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+        
+    } else {
+        config.mode = 'development';
+    }
+    return config;
+};
+"
+`;
+
 exports[`create-webpack-app cli should generate folders if non existing generation path is given 1`] = `
 {
   "description": "My webpack project",
@@ -500,117 +456,6 @@ exports[`create-webpack-app cli should generate project when generationPath is s
   },
   "version": "1.0.0",
 }
-`;
-
-exports[`create-webpack-app cli should generate react template with --force 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "@babel/core": "x.x.x",
-    "@babel/preset-env": "x.x.x",
-    "@babel/preset-react": "x.x.x",
-    "@types/react-router-dom": "x.x.x",
-    "babel-loader": "x.x.x",
-    "css-loader": "x.x.x",
-    "html-webpack-plugin": "x.x.x",
-    "react": "x.x.x",
-    "react-dom": "x.x.x",
-    "react-router-dom": "x.x.x",
-    "style-loader": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-    "workbox-webpack-plugin": "x.x.x",
-  },
-  "name": "my-webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should generate react template with --force 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-
-const stylesHandler = 'style-loader';
-
-
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: './src/index.jsx',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    devServer: {
-        open: true,
-        host: 'localhost',
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: 'index.html',
-        }),
-
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ["@babel/preset-env", "@babel/preset-react"],
-                    },
-                },
-            },
-            {
-                test: /\\.css$/i,
-                use: [stylesHandler,'css-loader'],
-            },
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-    resolve: {
-        alias: {
-            "@": path.resolve(__dirname, "./src/"),
-        },
-        extensions: ['.jsx', '.js'],
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
-"
 `;
 
 exports[`create-webpack-app cli should generate react template with state and routing support with prompt answers 1`] = `
@@ -719,125 +564,6 @@ module.exports = () => {
         config.mode = 'production';
         
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
-"
-`;
-
-exports[`create-webpack-app cli should generate svelte template with --force 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "@babel/core": "x.x.x",
-    "@babel/preset-env": "x.x.x",
-    "babel-loader": "x.x.x",
-    "css-loader": "x.x.x",
-    "html-webpack-plugin": "x.x.x",
-    "style-loader": "x.x.x",
-    "svelte": "x.x.x",
-    "svelte-loader": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-    "workbox-webpack-plugin": "x.x.x",
-  },
-  "name": "my-webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should generate svelte template with --force 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-const isProduction = process.env.NODE_ENV === 'production';
-
-
-
-const stylesHandler = 'style-loader';
-
-
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: './src/main.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    devServer: {
-        open: true,
-        host: 'localhost',
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './index.html',
-        }),
-
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.svelte$/,
-                use: {
-                    loader: 'svelte-loader',
-                    options: {
-                        emitCss: true,
-                        hotReload: true
-                    }
-                }
-            },
-            {
-                test: /\\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ["@babel/preset-env"],
-                    },
-                },
-            },
-            {
-                test: /\\.css$/i,
-                use: [stylesHandler,'css-loader'],
-            },
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-    resolve: {
-        alias: {
-            "@": path.resolve(__dirname, "./src/"),
-        },
-        extensions: ['.mjs', '.js', '.svelte'],
-        mainFields: ['svelte', 'browser', 'module', 'main'],
-        conditionNames: ['svelte', 'module', 'browser', 'main', 'default']
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
@@ -1048,122 +774,6 @@ module.exports = () => {
 "
 `;
 
-exports[`create-webpack-app cli should generate vue template with --force 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "@babel/core": "x.x.x",
-    "@babel/preset-env": "x.x.x",
-    "@vue/compiler-sfc": "x.x.x",
-    "babel-loader": "x.x.x",
-    "css-loader": "x.x.x",
-    "html-webpack-plugin": "x.x.x",
-    "pinia": "x.x.x",
-    "style-loader": "x.x.x",
-    "vue": "x.x.x",
-    "vue-loader": "x.x.x",
-    "vue-router": "x.x.x",
-    "vue-style-loader": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-    "workbox-webpack-plugin": "x.x.x",
-  },
-  "name": "my-webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should generate vue template with --force 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const { VueLoaderPlugin } = require('vue-loader');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-
-const stylesHandler = 'vue-style-loader';
-
-
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: './src/main.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    devServer: {
-        open: true,
-        host: 'localhost',
-    },
-    plugins: [
-        new VueLoaderPlugin(),
-        new HtmlWebpackPlugin({
-            template: 'index.html',
-        }),
-
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.vue$/,
-                loader: 'vue-loader'
-            },
-            {
-                test: /\\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ["@babel/preset-env"],
-                    },
-                },
-            },
-            {
-                test: /\\.css$/i,
-                use: [stylesHandler,'css-loader'],
-            },
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-    resolve: {
-        alias: {
-            "@": path.resolve(__dirname, "./src/")
-        },
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
-"
-`;
-
 exports[`create-webpack-app cli should generate vue template with store and router support on prompt answers 1`] = `
 {
   "description": "My webpack project",
@@ -1287,242 +897,7 @@ module.exports = () => {
 "
 `;
 
-exports[`create-webpack-app cli should use less in project when selected 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "css-loader": "x.x.x",
-    "less": "x.x.x",
-    "less-loader": "x.x.x",
-    "mini-css-extract-plugin": "x.x.x",
-    "style-loader": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should use less in project when selected 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
-
-
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    plugins: [
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.less$/i,
-                use: [stylesHandler, 'css-loader', 'less-loader'],
-            },
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-            
-
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        config.plugins.push(new MiniCssExtractPlugin());
-        
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
-"
-`;
-
-exports[`create-webpack-app cli should use mini-css-extract-plugin when selected 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "css-loader": "x.x.x",
-    "mini-css-extract-plugin": "x.x.x",
-    "sass": "x.x.x",
-    "sass-loader": "x.x.x",
-    "style-loader": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should use mini-css-extract-plugin when selected 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
-
-
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    plugins: [
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.s[ac]ss$/i,
-                use: [stylesHandler, 'css-loader', 'sass-loader'],
-            },
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-            
-
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        config.plugins.push(new MiniCssExtractPlugin());
-        
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
-"
-`;
-
-exports[`create-webpack-app cli should use postcss in project when selected 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "autoprefixer": "x.x.x",
-    "css-loader": "x.x.x",
-    "mini-css-extract-plugin": "x.x.x",
-    "postcss": "x.x.x",
-    "postcss-loader": "x.x.x",
-    "style-loader": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should use postcss in project when selected 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
-
-
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    plugins: [
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.css$/i,
-                use: [stylesHandler, 'css-loader', 'postcss-loader'],
-            },
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-            
-
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        config.plugins.push(new MiniCssExtractPlugin());
-        
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
-"
-`;
-
-exports[`create-webpack-app cli should use sass and css with postcss in project when selected 1`] = `
+exports[`create-webpack-app cli should use css preprocessor and css with postcss in project when selected 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
@@ -1547,7 +922,7 @@ exports[`create-webpack-app cli should use sass and css with postcss in project 
 }
 `;
 
-exports[`create-webpack-app cli should use sass and css with postcss in project when selected 2`] = `
+exports[`create-webpack-app cli should use css preprocessor and css with postcss in project when selected 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
@@ -1607,85 +982,7 @@ module.exports = () => {
 "
 `;
 
-exports[`create-webpack-app cli should use sass in project when selected 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "css-loader": "x.x.x",
-    "mini-css-extract-plugin": "x.x.x",
-    "sass": "x.x.x",
-    "sass-loader": "x.x.x",
-    "style-loader": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should use sass in project when selected 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
-
-
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    plugins: [
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.s[ac]ss$/i,
-                use: [stylesHandler, 'css-loader', 'sass-loader'],
-            },
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-            
-
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        config.plugins.push(new MiniCssExtractPlugin());
-        
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
-"
-`;
-
-exports[`create-webpack-app cli should use sass with postcss in project when selected 1`] = `
+exports[`create-webpack-app cli should use to use css preprocessor with postcss with mini-css-extract-plugin in project when selected 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
@@ -1710,7 +1007,7 @@ exports[`create-webpack-app cli should use sass with postcss in project when sel
 }
 `;
 
-exports[`create-webpack-app cli should use sass with postcss in project when selected 2`] = `
+exports[`create-webpack-app cli should use to use css preprocessor with postcss with mini-css-extract-plugin in project when selected 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 const path = require('path');
@@ -1764,150 +1061,6 @@ module.exports = () => {
     return config;
 };
 "
-`;
-
-exports[`create-webpack-app cli should use stylus in project when selected 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "css-loader": "x.x.x",
-    "mini-css-extract-plugin": "x.x.x",
-    "style-loader": "x.x.x",
-    "stylus": "x.x.x",
-    "stylus-loader": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should use stylus in project when selected 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
-
-
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-    },
-    plugins: [
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.styl$/i,
-                use: [stylesHandler, 'css-loader', 'stylus-loader'],
-            },
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
-            },
-            
-
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-};
-
-module.exports = () => {
-    if (isProduction) {
-        config.mode = 'production';
-        
-        config.plugins.push(new MiniCssExtractPlugin());
-        
-        
-    } else {
-        config.mode = 'development';
-    }
-    return config;
-};
-"
-`;
-
-exports[`create-webpack-app cli should work with 'c' alias 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "html-loader": "x.x.x",
-    "html-webpack-plugin": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-    "workbox-webpack-plugin": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should work with 'create' alias 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "html-loader": "x.x.x",
-    "html-webpack-plugin": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-    "workbox-webpack-plugin": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should work with 'n' alias 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "html-loader": "x.x.x",
-    "html-webpack-plugin": "x.x.x",
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-    "webpack-dev-server": "x.x.x",
-    "workbox-webpack-plugin": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "serve": "webpack serve",
-    "watch": "webpack --watch",
-  },
-  "version": "1.0.0",
-}
 `;
 
 exports[`create-webpack-app cli should work with 'new' alias 1`] = `
