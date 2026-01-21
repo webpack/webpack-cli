@@ -1,9 +1,6 @@
 "use strict";
 
 const path = require("node:path");
-const execa = require("execa");
-
-const { sync: spawnSync } = execa;
 
 const { run } = require("../../../utils/test-utils");
 
@@ -15,8 +12,9 @@ describe("env object", () => {
     expect(stderr).toBeFalsy();
     expect(stdout).toBeTruthy();
 
+    const { execa } = await import("execa");
     const executable = path.join(__dirname, "./dist/main.js");
-    const bundledScript = spawnSync("node", [executable]);
+    const bundledScript = await execa("node", [executable]);
 
     expect(bundledScript.stdout).toBe("environment is development");
   });

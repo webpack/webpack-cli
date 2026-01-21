@@ -1,16 +1,14 @@
 const { existsSync, unlinkSync } = require("node:fs");
 const { resolve } = require("node:path");
 
-const execa = require("execa");
 const { run } = require("../../../utils/test-utils");
-
-const { sync: spawnSync } = execa;
 
 describe("webpack cli", () => {
   it('should work with the "disable-interpret" option from flags', async () => {
     const configFileName = "webpack.config";
     const configFilePath = resolve(__dirname, `${configFileName}.ts`);
-    const buildScripts = spawnSync("yarn", ["tsc", configFilePath]);
+    const { execa } = await import("execa");
+    const buildScripts = await execa("yarn", ["tsc", configFilePath]);
     expect(buildScripts.stdout).toBeTruthy();
 
     const { exitCode, stderr, stdout } = await run(__dirname, ["--disable-interpret"]);

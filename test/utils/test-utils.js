@@ -6,11 +6,9 @@ const os = require("node:os");
 const path = require("node:path");
 const { stripVTControlCharacters } = require("node:util");
 const concat = require("concat-stream");
-const execa = require("execa");
 const { Writable } = require("readable-stream");
 const { cli } = require("webpack");
 
-const { node: execaNode } = execa;
 const WEBPACK_PATH = path.resolve(__dirname, "../../packages/webpack-cli/bin/cli.js");
 const ENABLE_LOG_COMPILATION = process.env.ENABLE_PIPE || false;
 const isWindows = process.platform === "win32";
@@ -36,60 +34,62 @@ const processKill = (process) => {
 
 /**
  * Webpack CLI test runner.
+ * @param {import("execa")} execa execa API
  * @param {string} cwd The path to folder that contains test
- * @param {Array<string>} args Array of arguments
- * @param {TestOptions} options Options for tests
- * @returns {Promise<import("execa").ExecaChildProcess>} child process
+ * @param {Array<string>=} args Array of arguments
+ * @param {TestOptions=} options Options for tests
+ * @returns {import("execa").Result} child process
  */
-const createProcess = (cwd, args, options) => {
+const createProcess = ({ execaNode, execa }, cwd, args, options) => {
   const { nodeOptions = [] } = options;
   const processExecutor = nodeOptions.length ? execaNode : execa;
 
-  return processExecutor(WEBPACK_PATH, args, {
-    cwd: path.resolve(cwd),
-    reject: false,
-    stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
-    maxBuffer: Infinity,
-    env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
-    ...options,
-  });
+  return processExecutor(
+    typeof options.executorPath !== "undefined" ? options.executorPath : WEBPACK_PATH,
+    args || [],
+    {
+      cwd: path.resolve(cwd),
+      reject: false,
+      stdio: ENABLE_LOG_COMPILATION ? "inherit" : "pipe",
+      maxBuffer: Infinity,
+      env: { WEBPACK_CLI_HELP_WIDTH: 1024 },
+      ...options,
+    },
+  );
 };
 
 /**
  * Run the webpack CLI for a test case.
  * @param {string} cwd The path to folder that contains test
- * @param {Array<string>} args Array of arguments
- * @param {TestOptions} options Options for tests
- * @returns {Promise<import("execa").ExecaChildProcess>} child process
+ * @param {Array<string>=} args Array of arguments
+ * @param {TestOptions=} options Options for tests
+ * @returns {Promise<import("execa").Result>} child process
  */
-const run = async (cwd, args = [], options = {}) => createProcess(cwd, args, options);
-
-/**
- * Run the webpack CLI for a test case and get process.
- * @param {string} cwd The path to folder that contains test
- * @param {Array<string>} args Array of arguments
- * @param {TestOptions} options Options for tests
- * @returns {Promise<import("execa").ExecaChildProcess>} child process
- */
-const runAndGetProcess = (cwd, args = [], options = {}) => createProcess(cwd, args, options);
+const run = async (cwd, args = [], options = {}) => {
+  const execa = await import("execa");
+  return createProcess(execa, cwd, args, options);
+};
 
 /**
  * Run the webpack CLI in watch mode for a test case.
  * @param {string} cwd The path to folder that contains test
- * @param {Array<string>} args Array of arguments
- * @param {TestOptions} options Options for tests
- * @returns {Promise<TestOptions>} The webpack output or Promise when nodeOptions are present
+ * @param {Array<string>=} args Array of arguments
+ * @param {TestOptions=} options Options for tests
+ * @returns {Promise<import("execa").Result>} The webpack output or Promise when nodeOptions are present
  */
-const runWatch = (cwd, args = [], options = {}) =>
-  new Promise((resolve, reject) => {
-    const process = createProcess(cwd, args, options);
-    const outputKillStr = options.killString || /webpack \d+\.\d+\.\d/;
-    const { stdoutKillStr } = options;
-    const { stderrKillStr } = options;
+const runWatch = async (cwd, args = [], options = {}) => {
+  const execa = await import("execa");
+  const process = createProcess(execa, cwd, args, options);
+  const outputKillStr = options.killString || /webpack \d+\.\d+\.\d/;
+  const { stdoutKillStr } = options;
+  const { stderrKillStr } = options;
 
-    let isStdoutDone = false;
-    let isStderrDone = false;
+  let isStdoutDone = false;
+  let isStderrDone = false;
 
+  if (options.handler) {
+    options.handler(process);
+  } else {
     process.stdout.pipe(
       new Writable({
         write(chunk, encoding, callback) {
@@ -129,61 +129,72 @@ const runWatch = (cwd, args = [], options = {}) =>
         },
       }),
     );
+  }
 
-    process
-      .then((result) => {
-        resolve(result);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+  return process;
+};
 
 /**
  * runPromptWithAnswers
- * @param {string} location location of current working directory
- * @param {string[]} args CLI args to pass in
- * @param {string[]} answers answers to be passed to stdout for inquirer question
- * @returns {{ stdout: string, stderr: string }} result
+ * @param {string} cwd The path to folder that contains test
+ * @param {string[]=} args CLI args to pass in
+ * @param {string[]=} answers answers to be passed to stdout for inquirer question
+ * @param {TestOptions=} options Options for tests
+ * @returns {Promise<{ stdout: string, stderr: string }>} result
  */
-const runPromptWithAnswers = (location, args, answers) => {
-  const process = runAndGetProcess(location, args);
+const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
+  const execa = await import("execa");
+  const proc = createProcess(execa, cwd, args, {
+    ...options,
+    // TODO remove me when node@18 will be removed from support
+    cleanup: false,
+  });
 
-  process.stdin.setDefaultEncoding("utf8");
+  proc.stdin.setDefaultEncoding("utf8");
 
-  const delay = 2000;
-  let outputTimeout;
   let currentAnswer = 0;
+  let waitAnswer = true;
 
   const writeAnswer = (output) => {
-    if (!answers) {
-      process.stdin.write(output);
-      processKill(process);
+    if (answers.length === 0) {
+      proc.stdin.write(output);
+      processKill(proc);
 
       return;
     }
 
     if (currentAnswer < answers.length) {
-      process.stdin.write(answers[currentAnswer]);
+      const answer = answers[currentAnswer];
+
+      proc.stdin.write(answer);
+      waitAnswer = true;
       currentAnswer++;
     }
   };
 
-  process.stdout.pipe(
+  // Uncomment for debugging
+  // proc.stderr.pipe(process.stdout);
+
+  proc.stdout.pipe(
     new Writable({
       write(chunk, encoding, callback) {
         const output = chunk.toString("utf8");
 
-        if (output) {
-          if (outputTimeout) {
-            clearTimeout(outputTimeout);
-          }
+        if (!output) {
+          callback("No output");
+          return;
+        }
 
-          // we must receive new stdout, then have 2 seconds
-          // without any stdout before writing the next answer
-          outputTimeout = setTimeout(() => {
-            writeAnswer(output);
-          }, delay);
+        const text = stripVTControlCharacters(output).trim();
+
+        if (text.length <= 0) {
+          callback();
+          return;
+        }
+
+        if (waitAnswer && /\(.+\)$/m.test(text)) {
+          waitAnswer = false;
+          writeAnswer(output);
         }
 
         callback();
@@ -192,23 +203,20 @@ const runPromptWithAnswers = (location, args, answers) => {
   );
 
   return new Promise((resolve) => {
+    /** @type {{ stdout: string, stderr: string }} */
     const obj = {};
 
     let stdoutDone = false;
     let stderrDone = false;
 
     const complete = () => {
-      if (outputTimeout) {
-        clearTimeout(outputTimeout);
-      }
-
       if (stdoutDone && stderrDone) {
-        processKill(process);
+        processKill(proc);
         resolve(obj);
       }
     };
 
-    process.stdout.pipe(
+    proc.stdout.pipe(
       concat((result) => {
         stdoutDone = true;
         obj.stdout = result.toString();
@@ -217,7 +225,7 @@ const runPromptWithAnswers = (location, args, answers) => {
       }),
     );
 
-    process.stderr.pipe(
+    proc.stderr.pipe(
       concat((result) => {
         stderrDone = true;
         obj.stderr = result.toString();
@@ -384,7 +392,6 @@ module.exports = {
   readFile,
   readdir,
   run,
-  runAndGetProcess,
   runPromptWithAnswers,
   runWatch,
   uniqueDirectoryForTest,

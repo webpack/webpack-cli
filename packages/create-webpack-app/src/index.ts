@@ -100,7 +100,7 @@ program
     if (generator === undefined) {
       logger.warn(`${templateOption} is not a valid template, please select one from below`);
       const template = await select<string>({
-        message: "Select a valid template from below",
+        message: "Select a valid template from below: (Use arrow keys)",
         choices: Object.keys(initGenerators).map((key) => ({
           name: key,
           value: key.toLowerCase(),
@@ -130,12 +130,10 @@ program
           },
         );
       } else {
-        console.log("Running Prompts");
         const answers =
           templateOption === "webpack"
             ? { projectPath, ...webpackInitValues, ...(await generator.runPrompts()) }
             : { projectPath, ...(await generator.runPrompts()) };
-        console.log("answers is", answers);
         logger.info("Initializing a new Webpack project");
         await generator.runActions(answers, {
           onSuccess: onSuccessHandler,
@@ -162,7 +160,7 @@ program
     if (generator === undefined) {
       logger.warn(`${templateOption} is not a valid template, please select one from below`);
       const template = await select<string>({
-        message: "Select a valid template from below",
+        message: "Select a valid template from below: (Use arrow keys)",
         choices: Object.keys(loaderGenerators).map((key) => ({
           name: key,
           value: key.toLowerCase(),
@@ -203,7 +201,7 @@ program
     if (generator === undefined) {
       logger.warn(`${templateOption} is not a valid template, please select one from below`);
       const template = await select<string>({
-        message: "Select a valid template from below",
+        message: "Select a valid template from below: (Use arrow keys)",
         choices: Object.keys(pluginGenerators).map((key) => ({
           name: key,
           value: key.toLowerCase(),

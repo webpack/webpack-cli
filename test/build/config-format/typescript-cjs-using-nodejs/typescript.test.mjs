@@ -1,6 +1,10 @@
-const { existsSync } = require("node:fs");
-const { resolve } = require("node:path");
-const { run } = require("../../../utils/test-utils");
+import { existsSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { run } from "../../../utils/test-utils.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 describe("webpack cli", () => {
   it("should support typescript esnext file", async () => {
@@ -15,7 +19,7 @@ describe("webpack cli", () => {
           WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true,
         },
         // Fallback to `ts-node/esm` for old Node.js versions
-        nodeOptions: major >= 24 ? [] : ["--experimental-loader=ts-node/esm"],
+        nodeOptions: major >= 24 ? [] : ["--require=ts-node/register"],
       },
     );
 
