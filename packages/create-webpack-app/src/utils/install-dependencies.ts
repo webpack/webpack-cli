@@ -33,10 +33,11 @@ export default async function installDependencies(plop: NodePlopAPI) {
       const returnMessage = "Project dependencies installed successfully!";
       const { packageManager } = answers;
       const packages = config.packages.length === 1 ? [config.packages[0]] : config.packages;
+      const isDev = config.dev ?? true;
       const installOptions: Record<string, string[]> = {
-        npm: ["install", "--save-dev"],
-        yarn: ["add", "-D"],
-        pnpm: ["install", "--save-dev"],
+        npm: isDev ? ["install", "--save-dev"] : ["install"],
+        yarn: isDev ? ["add", "-D"] : ["add"],
+        pnpm: isDev ? ["install", "--save-dev"] : ["install"],
       };
       const npmInstallPackages: ChildProcess = spawn(
         `${packageManager}`,

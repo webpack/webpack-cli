@@ -15,6 +15,7 @@ export default defineConfig([
     "test/build/config-format/esm-require-await/webpack.config.js",
     "test/configtest/with-config-path/syntax-error.config.js",
     "test/build/config-format/esm-require/webpack.config.js",
+    "packages/create-webpack-app/templates/init/webpack-defaults/",
   ]),
   {
     extends: [config],

@@ -104,7 +104,11 @@
     "Zenitsu",
     "quickstart",
     "pinia",
-    "watchpack"
+    "watchpack",
+    "accomodate",
+    "opencollective",
+    "Artem",
+    "Sapegin"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [

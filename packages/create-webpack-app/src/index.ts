@@ -2,8 +2,8 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import select from "@inquirer/select";
 import { Command } from "commander";
+import gitUsername from "git-username";
 import nodePlop, { type PlopGenerator } from "node-plop";
-
 import { type Answers, type InitOptions, type LoaderOptions, type PluginOptions } from "./types.js";
 import { logger, onFailureHandler, onSuccessHandler } from "./utils/logger.js";
 
@@ -12,6 +12,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const program = new Command();
 
 const plop = await nodePlop(resolve(__dirname, "./plopfile.js"));
+
+const github = gitUsername();
+const packageName = "@webpack-contrib/defaults";
+const startCase = (name: string) => name.replace(name.charAt(0), name.charAt(0).toUpperCase());
 
 const baseAnswers: Answers = {
   projectPath: process.cwd(),
@@ -48,11 +52,25 @@ const initValues: Record<string, Answers> = {
   },
 };
 
+const webpackInitValues: Record<string, unknown> = {
+  github,
+  packageManager: "npm",
+  packageName,
+  repository: `${github}/${packageName}`,
+  description: "Project configuration and boilerplate defaults for webpack projects",
+  loaderOrPluginName: packageName
+    .replace(/(-loader|-webpack-plugin)$/, "")
+    .split("-")
+    .map((name) => startCase(name))
+    .join(""),
+};
+
 const initGenerators: Record<string, PlopGenerator> = {
   default: plop.getGenerator("init-default"),
   react: plop.getGenerator("init-react"),
   vue: plop.getGenerator("init-vue"),
   svelte: plop.getGenerator("init-svelte"),
+  webpack: plop.getGenerator("init-webpack"),
 };
 const loaderGenerators: Record<string, PlopGenerator> = {
   default: plop.getGenerator("loader-default"),
@@ -103,7 +121,7 @@ program
         logger.info("Initializing a new Webpack project");
         await generator.runActions(
           {
-            ...initValues[templateOption],
+            ...(templateOption === "webpack" ? webpackInitValues : initValues[templateOption]),
             projectPath,
           },
           {
@@ -112,8 +130,12 @@ program
           },
         );
       } else {
-        const answers = { projectPath, ...(await generator.runPrompts()) };
-
+        console.log("Running Prompts");
+        const answers =
+          templateOption === "webpack"
+            ? { projectPath, ...webpackInitValues, ...(await generator.runPrompts()) }
+            : { projectPath, ...(await generator.runPrompts()) };
+        console.log("answers is", answers);
         logger.info("Initializing a new Webpack project");
         await generator.runActions(answers, {
           onSuccess: onSuccessHandler,

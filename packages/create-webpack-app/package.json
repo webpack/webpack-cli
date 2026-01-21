@@ -45,11 +45,13 @@
     "commander": "^12.1.0",
     "cross-spawn": "^7.0.6",
     "ejs": "^3.1.10",
+    "git-username": "^1.0.0",
     "node-plop": "^0.32.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.6",
-    "@types/ejs": "^3.1.5"
+    "@types/ejs": "^3.1.5",
+    "@types/git-username": "^1.0.5"
   },
   "engines": {
     "node": ">=18.12.0"
