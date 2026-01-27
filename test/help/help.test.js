@@ -1,7 +1,10 @@
 "use strict";
 
 const path = require("node:path");
+const { pathToFileURL } = require("node:url");
 const { normalizeStderr, normalizeStdout, run } = require("../utils/test-utils");
+
+const nodeOptions = [`--import=${pathToFileURL(path.resolve(__dirname, "./set-blocking.js"))}`];
 
 describe("help", () => {
   it('should show help information using the "--help" option', async () => {
@@ -12,15 +15,10 @@ describe("help", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  // eslint-disable-next-line jest/no-focused-tests
-  it.only('should show help information using the "--help" option with the "verbose" value', async () => {
+  it('should show help information using the "--help" option with the "verbose" value', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "verbose"], {
-      nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+      nodeOptions,
     });
-
-    console.log(exitCode);
-    console.log(stderr);
-    console.log(stdout);
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
@@ -32,7 +30,7 @@ describe("help", () => {
 
   it('should show help information using the "--help" option with the "verbose" value #2', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--help=verbose"], {
-      nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+      nodeOptions,
     });
 
     expect(exitCode).toBe(0);
@@ -114,7 +112,7 @@ describe("help", () => {
   for (const { name, alias } of commands) {
     it(`should show help information for '${name}' command using the "--help" option`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help"], {
-        nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+        nodeOptions,
       });
 
       expect(exitCode).toBe(0);
@@ -124,7 +122,7 @@ describe("help", () => {
 
     it(`should show help information for '${name}' command using the "--help verbose" option`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "verbose"], {
-        nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+        nodeOptions,
       });
 
       expect(exitCode).toBe(0);
@@ -134,7 +132,7 @@ describe("help", () => {
 
     it(`should show help information for '${name}' command using command syntax`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["help", name], {
-        nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+        nodeOptions,
       });
 
       expect(exitCode).toBe(0);
@@ -144,7 +142,7 @@ describe("help", () => {
 
     it(`should show help information for '${name}' and respect the "--color" flag using the "--help" option`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--color"], {
-        nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+        nodeOptions,
       });
 
       expect(exitCode).toBe(0);
@@ -155,7 +153,7 @@ describe("help", () => {
 
     it(`should show help information for '${name}' and respect the "--no-color" flag using the "--help" option`, async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--no-color"], {
-        nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+        nodeOptions,
       });
 
       expect(exitCode).toBe(0);
@@ -169,7 +167,7 @@ describe("help", () => {
     for (const alias of aliases) {
       it(`should show help information for '${alias}' command using the "--help" option`, async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help"], {
-          nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+          nodeOptions,
         });
 
         expect(exitCode).toBe(0);
@@ -179,7 +177,7 @@ describe("help", () => {
 
       it(`should show help information for '${alias}' command using the "--help verbose" option`, async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help", "verbose"], {
-          nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+          nodeOptions,
         });
 
         expect(exitCode).toBe(0);
@@ -189,7 +187,7 @@ describe("help", () => {
 
       it(`should show help information for '${alias}' command using command syntax`, async () => {
         const { exitCode, stderr, stdout } = await run(__dirname, ["help", alias], {
-          nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
+          nodeOptions,
         });
 
         expect(exitCode).toBe(0);

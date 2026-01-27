@@ -1,5 +1,6 @@
 const { writeFileSync } = require("node:fs");
 const { resolve } = require("node:path");
+const { pathToFileURL } = require("node:url");
 const { version } = require("webpack-dev-server/package.json");
 
 const [majorDevServerVersion] = version.split(".");
@@ -14,7 +15,7 @@ async function updateDocs() {
     ["--help=verbose", "--no-color"],
     {
       cwd: __dirname,
-      nodeOptions: [`--import=${resolve(__dirname, "./set-blocking.js")}`],
+      nodeOptions: [`--import=${pathToFileURL(resolve(__dirname, "./set-blocking.js"))}`],
     },
   );
 
