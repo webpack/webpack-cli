@@ -1,5 +1,5 @@
 import { type stringifyChunked } from "@discoveryjs/json-ext";
-import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
+import { type Command, type CommandOptions, type Option } from "commander";
 import { type prepare } from "rechoir";
 import {
   type AssetEmittedInfo,
@@ -12,9 +12,7 @@ import {
   type MultiConfiguration,
   type MultiStats,
   type Stats,
-  type WebpackError,
   type WebpackOptionsNormalized,
-  default as webpack,
 } from "webpack";
 
 import {
@@ -29,55 +27,6 @@ import {
 declare interface WebpackCallback {
   (err: null | Error, result?: Stats): void;
   (err: null | Error, result?: MultiStats): void;
-}
-
-// TODO remove me in the next major release, we don't need extra interface
-interface IWebpackCLI {
-  colors: WebpackCLIColors;
-  logger: WebpackCLILogger;
-  isColorSupportChanged: boolean | undefined;
-  webpack: typeof webpack;
-  builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
-  program: WebpackCLICommand;
-  isMultipleCompiler(compiler: WebpackCompiler): compiler is MultiCompiler;
-  isPromise<T>(value: Promise<T>): value is Promise<T>;
-  isFunction(value: unknown): value is CallableFunction;
-  getLogger(): WebpackCLILogger;
-  createColors(useColors?: boolean): WebpackCLIColors;
-  toKebabCase: StringFormatter;
-  capitalizeFirstLetter: StringFormatter;
-  checkPackageExists(packageName: string): boolean;
-  getAvailablePackageManagers(): PackageManager[];
-  getDefaultPackageManager(): PackageManager | undefined;
-  doInstall(packageName: string, options?: PackageInstallOptions): Promise<string>;
-  loadJSONFile<T = unknown>(path: Path, handleError: boolean): Promise<T>;
-  tryRequireThenImport<T = unknown>(module: ModuleName, handleError: boolean): Promise<T>;
-  getInfoOptions(): WebpackCLIBuiltInOption[];
-  getInfoOutput(options: { output: string; additionalPackage: string[] }): Promise<string>;
-  makeCommand(
-    commandOptions: WebpackCLIOptions,
-    options: WebpackCLICommandOptions,
-    action: CommandAction,
-  ): Promise<WebpackCLICommand | undefined>;
-  makeOption(command: WebpackCLICommand, option: WebpackCLIBuiltInOption): void;
-  run(
-    args: Parameters<WebpackCLICommand["parseOptions"]>[0],
-    parseOptions?: ParseOptions,
-  ): Promise<void>;
-  getBuiltInOptions(): WebpackCLIBuiltInOption[];
-  loadWebpack(handleError?: boolean): Promise<typeof webpack>;
-  loadConfig(options: Partial<WebpackDevServerOptions>): Promise<WebpackCLIConfig>;
-  buildConfig(
-    config: WebpackCLIConfig,
-    options: WebpackDevServerOptions,
-  ): Promise<WebpackCLIConfig>;
-  isValidationError(error: Error): error is WebpackError;
-  createCompiler(
-    options: Partial<WebpackDevServerOptions>,
-    callback?: WebpackCallback,
-  ): Promise<WebpackCompiler>;
-  needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
-  runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
 }
 
 interface WebpackCLIColors extends Colors {
@@ -118,17 +67,12 @@ type WebpackCLIMainOption = Pick<
 
 interface WebpackCLIOptions extends CommandOptions {
   name: string;
-  alias: string | string[];
-  description?: string;
-  usage?: string;
+  alias: string[];
+  description: string;
   dependencies?: string[];
-  pkg?: string;
-  argsDescription?: Record<string, string>;
+  options?: Option[];
+  action: CommandAction;
 }
-
-type WebpackCLICommandOptions =
-  | WebpackCLIBuiltInOption[]
-  | (() => Promise<WebpackCLIBuiltInOption[]>);
 
 interface WebpackCLIBuiltInFlag {
   name: string;
@@ -145,17 +89,12 @@ interface WebpackCLIBuiltInFlag {
   describe?: string;
   negatedDescription?: string;
   defaultValue?: string;
-  helpLevel: "minimum" | "verbose";
+  hidden: boolean;
 }
 
 interface WebpackCLIBuiltInOption extends WebpackCLIBuiltInFlag {
-  hidden?: boolean;
   group?: "core";
 }
-
-type WebpackCLIExternalCommandInfo = Pick<WebpackCLIOptions, "name" | "alias" | "description"> & {
-  pkg: string;
-};
 
 /**
  * Webpack dev server
@@ -254,8 +193,7 @@ type PotentialPromise<T> = T | Promise<T>;
 type ModuleName = string;
 type Path = string;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type LogHandler = (value: any) => void;
-type StringFormatter = (value: string) => string;
+type LogHandler = (value: any, raw?: boolean) => void;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Argv extends Record<string, any> {
@@ -313,9 +251,7 @@ export {
   type CommandAction,
   type CommanderOption,
   type DynamicImport,
-  type EnumValue,
   type FileSystemCacheOptions,
-  type IWebpackCLI,
   type ImportLoaderError,
   type Instantiable,
   type JsonExt,
@@ -335,9 +271,7 @@ export {
   type WebpackCLIColors,
   type WebpackCLICommand,
   type WebpackCLICommandOption,
-  type WebpackCLICommandOptions,
   type WebpackCLIConfig,
-  type WebpackCLIExternalCommandInfo,
   type WebpackCLILogger,
   type WebpackCLIMainOption,
   type WebpackCLIOptions,

@@ -173,8 +173,8 @@ describe("bundle command", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["buil"]);
 
     expect(exitCode).toBe(2);
-    expect(stderr).toContain("Unknown command or entry 'buil'");
-    expect(stderr).toContain("Did you mean 'build' (alias 'bundle, b')?");
+    expect(stderr).toContain("Unknown command 'buil'");
+    expect(stderr).toContain("(Did you mean build?)");
     expect(stderr).toContain("Run 'webpack --help' to see available commands and options");
     expect(stdout).toBeFalsy();
   });

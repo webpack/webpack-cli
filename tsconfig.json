@@ -22,15 +22,6 @@
   },
   "references": [
     {
-      "path": "packages/configtest"
-    },
-    {
-      "path": "packages/info"
-    },
-    {
-      "path": "packages/serve"
-    },
-    {
       "path": "packages/webpack-cli"
     },
     {
