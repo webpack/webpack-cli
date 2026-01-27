@@ -14,7 +14,6 @@ async function updateDocs() {
     ["--help=verbose", "--no-color"],
     {
       cwd: __dirname,
-      reject: false,
     },
   );
 
@@ -30,7 +29,6 @@ async function updateDocs() {
     ["serve", "--help", "--no-color"],
     {
       cwd: __dirname,
-      reject: false,
     },
   );
 
