@@ -108,6 +108,8 @@
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [
+    "OPTIONS.md",
+    "SERVE-OPTIONS-v*.md",
     "**/CHANGELOG.md",
     "**/package.json",
     "**/dist/**",
