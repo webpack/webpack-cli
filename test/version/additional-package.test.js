@@ -56,8 +56,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     expect(stdout).toContain("pnpm");
     expect(stdout).toContain("typescript");
     expect(stdout).toContain("eslint");
-    expect(stdout).toContain("eslint-config-prettier");
-    expect(stdout).toContain("eslint-plugin-n");
+    expect(stdout).toContain("eslint-config-webpack");
   });
 
   it("should work with multiple packages using '-a' alias", async () => {
@@ -78,8 +77,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     expect(stdout).toContain("pnpm");
     expect(stdout).toContain("typescript");
     expect(stdout).toContain("eslint");
-    expect(stdout).toContain("eslint-config-prettier");
-    expect(stdout).toContain("eslint-plugin-n");
+    expect(stdout).toContain("eslint-config-webpack");
   });
 
   it("should throw an error on invalid usage", async () => {
