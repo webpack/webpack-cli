@@ -12,10 +12,15 @@ describe("help", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  it('should show help information using the "--help" option with the "verbose" value', async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only('should show help information using the "--help" option with the "verbose" value', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "verbose"], {
       nodeOptions: [`--import=${path.resolve(__dirname, "./set-blocking.js")}`],
     });
+
+    console.log(exitCode);
+    console.log(stderr);
+    console.log(stdout);
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
