@@ -8,7 +8,7 @@ const readlineQuestionMock = jest.fn();
 jest.mock("node:readline", () => ({
   createInterface: jest.fn().mockReturnValue({
     question: readlineQuestionMock,
-    close: jest.fn().mockImplementation(() => undefined),
+    close: jest.fn().mockReturnValue(undefined),
   }),
 }));
 

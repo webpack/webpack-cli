@@ -14,7 +14,7 @@ function createPathDependentUtils(cli) {
   /**
    * Run the webpack CLI for a test case.
    * @param {string} cwd The path to folder that contains test
-   * @param {Array<string>} args Array of arguments
+   * @param {string[]} args Array of arguments
    * @param {TestOptions} options Options for tests
    * @returns {Promise<import("execa").Result>} child process
    */
@@ -27,7 +27,7 @@ function createPathDependentUtils(cli) {
   /**
    * Run the webpack CLI in watch mode for a test case.
    * @param {string} cwd The path to folder that contains test
-   * @param {Array<string>} args Array of arguments
+   * @param {string[]} args Array of arguments
    * @param {TestOptions} options Options for tests
    * @returns {Promise<import("execa").Result>} The webpack output or Promise when nodeOptions are present
    */
