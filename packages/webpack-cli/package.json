@@ -32,9 +32,6 @@
   ],
   "dependencies": {
     "@discoveryjs/json-ext": "^0.6.1",
-    "@webpack-cli/configtest": "^3.0.1",
-    "@webpack-cli/info": "^3.0.1",
-    "@webpack-cli/serve": "^3.0.1",
     "colorette": "^2.0.14",
     "commander": "^12.1.0",
     "cross-spawn": "^7.0.6",
