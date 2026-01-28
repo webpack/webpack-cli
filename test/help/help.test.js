@@ -1,6 +1,10 @@
 "use strict";
 
+const path = require("node:path");
+const { pathToFileURL } = require("node:url");
 const { normalizeStderr, normalizeStdout, run } = require("../utils/test-utils");
+
+const nodeOptions = [`--import=${pathToFileURL(path.resolve(__dirname, "./set-blocking.js"))}`];
 
 describe("help", () => {
   it('should show help information using the "--help" option', async () => {
@@ -11,22 +15,29 @@ describe("help", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('should show help information using the "--help" option with the "verbose" value', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "verbose"]);
+  it('should show help information using the "--help" option with the "verbose" value', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--help", "verbose"], {
+      nodeOptions,
+    });
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+    // Since the output file is very large, let's make sure we have a header and footer.
+    expect(
+      `${normalizeStdout(stdout.slice(0, 145))}\n...\n${normalizeStdout(stdout.slice(-132))}`,
+    ).toMatchSnapshot("stdout");
   });
 
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('should show help information using the "--help" option with the "verbose" value #2', async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--help=verbose"]);
+  it('should show help information using the "--help" option with the "verbose" value #2', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--help=verbose"], {
+      nodeOptions,
+    });
 
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+    expect(
+      `${normalizeStdout(stdout.slice(0, 145))}\n...\n${normalizeStdout(stdout.slice(-132))}`,
+    ).toMatchSnapshot("stdout");
   });
 
   it("should show help information using command syntax", async () => {
@@ -99,102 +110,89 @@ describe("help", () => {
   ];
 
   for (const { name, alias } of commands) {
-    // TODO fix it
-    const needSkip = name === "serve";
-
     it(`should show help information for '${name}' command using the "--help" option`, async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help"]);
+      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help"], {
+        nodeOptions,
+      });
 
       expect(exitCode).toBe(0);
       expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-      if (!needSkip) {
-        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-      }
+      expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip(`should show help information for '${name}' command using the "--help verbose" option`, async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "verbose"]);
+    it(`should show help information for '${name}' command using the "--help verbose" option`, async () => {
+      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "verbose"], {
+        nodeOptions,
+      });
 
       expect(exitCode).toBe(0);
       expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-      if (!needSkip) {
-        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-      }
+      expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
     it(`should show help information for '${name}' command using command syntax`, async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, ["help", name]);
+      const { exitCode, stderr, stdout } = await run(__dirname, ["help", name], {
+        nodeOptions,
+      });
 
       expect(exitCode).toBe(0);
       expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-      if (!needSkip) {
-        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-      }
+      expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
     it(`should show help information for '${name}' and respect the "--color" flag using the "--help" option`, async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--color"]);
+      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--color"], {
+        nodeOptions,
+      });
 
       expect(exitCode).toBe(0);
       expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
       expect(stdout).toContain("\u001B[1m");
-
-      if (!needSkip) {
-        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-      }
+      expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
     it(`should show help information for '${name}' and respect the "--no-color" flag using the "--help" option`, async () => {
-      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--no-color"]);
+      const { exitCode, stderr, stdout } = await run(__dirname, [name, "--help", "--no-color"], {
+        nodeOptions,
+      });
 
       expect(exitCode).toBe(0);
       expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
       expect(stdout).not.toContain("\u001B[1m");
-
-      if (!needSkip) {
-        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-      }
+      expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
     });
 
     const aliases = Array.isArray(alias) ? alias : [alias];
 
     for (const alias of aliases) {
       it(`should show help information for '${alias}' command using the "--help" option`, async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help"]);
+        const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help"], {
+          nodeOptions,
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-        if (!needSkip) {
-          expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-        }
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
       });
 
-      // eslint-disable-next-line jest/no-disabled-tests
-      it.skip(`should show help information for '${alias}' command using the "--help verbose" option`, async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help", "verbose"]);
+      it(`should show help information for '${alias}' command using the "--help verbose" option`, async () => {
+        const { exitCode, stderr, stdout } = await run(__dirname, [alias, "--help", "verbose"], {
+          nodeOptions,
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-        if (!needSkip) {
-          expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-        }
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
       });
 
       it(`should show help information for '${alias}' command using command syntax`, async () => {
-        const { exitCode, stderr, stdout } = await run(__dirname, ["help", alias]);
+        const { exitCode, stderr, stdout } = await run(__dirname, ["help", alias], {
+          nodeOptions,
+        });
 
         expect(exitCode).toBe(0);
         expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-
-        if (!needSkip) {
-          expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
-        }
+        expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
       });
     }
   }

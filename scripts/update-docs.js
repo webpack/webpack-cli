@@ -1,5 +1,6 @@
 const { writeFileSync } = require("node:fs");
 const { resolve } = require("node:path");
+const { pathToFileURL } = require("node:url");
 const { version } = require("webpack-dev-server/package.json");
 
 const [majorDevServerVersion] = version.split(".");
@@ -8,12 +9,13 @@ const [majorDevServerVersion] = version.split(".");
  * @returns {Promise<void>}
  */
 async function updateDocs() {
-  const { execa } = await import("execa");
-  const { stdout: cliOptions } = await execa(
+  const { execaNode } = await import("execa");
+  const { stdout: cliOptions } = await execaNode(
     resolve(__dirname, "../packages/webpack-cli/bin/cli.js"),
     ["--help=verbose", "--no-color"],
     {
       cwd: __dirname,
+      nodeOptions: [`--import=${pathToFileURL(resolve(__dirname, "./set-blocking.js"))}`],
     },
   );
 
@@ -24,11 +26,12 @@ async function updateDocs() {
   writeFileSync("OPTIONS.md", mdContent);
 
   // serve options
-  const { stdout: serveOptions } = await execa(
+  const { stdout: serveOptions } = await execaNode(
     resolve(__dirname, "../packages/webpack-cli/bin/cli.js"),
     ["serve", "--help", "--no-color"],
     {
       cwd: __dirname,
+      nodeOptions: [`--import=${resolve(__dirname, "./set-blocking.js")}`],
     },
   );
 
