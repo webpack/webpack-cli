@@ -2,7 +2,6 @@
 
 const { exec } = require("node:child_process");
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
 const { stripVTControlCharacters } = require("node:util");
 const concat = require("concat-stream");
@@ -373,10 +372,10 @@ const uuid = (size = 21) => {
 };
 
 const uniqueDirectoryForTest = async () => {
-  const result = path.resolve(os.tmpdir(), uuid());
+  const result = path.resolve(path.resolve(__dirname, "../create-webpack-app-testing"), uuid());
 
   if (!fs.existsSync(result)) {
-    fs.mkdirSync(result);
+    fs.mkdirSync(result, { recursive: true });
   }
 
   return result;

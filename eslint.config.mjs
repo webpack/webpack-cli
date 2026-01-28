@@ -5,6 +5,7 @@ import configs from "eslint-config-webpack/configs.js";
 export default defineConfig([
   globalIgnores([
     "packages/*/lib/**/*",
+    "test/**/create-webpack-app-testing/**/*",
     "test/**/dist/**/*",
     "test/**/bin/**/*",
     "test/**/binary/**/*",
