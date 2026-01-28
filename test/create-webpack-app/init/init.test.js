@@ -1,5 +1,4 @@
-const { existsSync, mkdirSync, readFileSync, writeFileSync } = require("node:fs");
-const { cp } = require("node:fs/promises");
+const { existsSync, mkdirSync, readFileSync } = require("node:fs");
 const path = require("node:path");
 const { join, resolve } = require("node:path");
 const { createPathDependentUtils, isWindows, uniqueDirectoryForTest } = require("../test.utils");
