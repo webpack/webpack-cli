@@ -56,6 +56,14 @@ Options:
   --no-dev-server                                                                    Negative 'dev-server' option.
   -d, --devtool <value>                                                              A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                                                       Negative 'devtool' option.
+  --dotenv                                                                           Enable Dotenv plugin with default options.
+  --no-dotenv                                                                        Negative 'dotenv' option.
+  --dotenv-dir <value>                                                               The directory from which .env files are loaded. Can be an absolute path, false will disable the .env file loading.
+  --no-dotenv-dir                                                                    Negative 'dotenv-dir' option.
+  --dotenv-prefix <value...>                                                         A prefix that environment variables must start with to be exposed.
+  --dotenv-prefix-reset                                                              Clear all items provided in 'dotenv.prefix' configuration. Only expose environment variables that start with these prefixes. Defaults to 'WEBPACK_'.
+  --dotenv-template <value...>                                                       A template pattern for .env file names.
+  --dotenv-template-reset                                                            Clear all items provided in 'dotenv.template' configuration. Template patterns for .env file names. Use [mode] as placeholder for the webpack mode. Defaults to ['.env', '.env.local', '.env.[mode]', '.env.[mode].local'].
   --entry <value...>                                                                 A module that is loaded upon startup. Only the last one is exported.
   --entry-reset                                                                      Clear all items provided in 'entry' configuration. All modules are loaded upon startup. The last one is exported.
   --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
@@ -76,10 +84,10 @@ Options:
   --no-experiments-cache-unaffected                                                  Negative 'experiments-cache-unaffected' option.
   --experiments-css                                                                  Enable css support.
   --no-experiments-css                                                               Negative 'experiments-css' option.
+  --experiments-defer-import                                                         Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
+  --no-experiments-defer-import                                                      Negative 'experiments-defer-import' option.
   --experiments-future-defaults                                                      Apply defaults of next major version.
   --no-experiments-future-defaults                                                   Negative 'experiments-future-defaults' option.
-  --experiments-layers                                                               Enable module layers.
-  --no-experiments-layers                                                            Negative 'experiments-layers' option.
   --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
   --no-experiments-lazy-compilation                                                  Negative 'experiments-lazy-compilation' option.
   --experiments-lazy-compilation-backend-client <value>                              A custom client.
@@ -96,8 +104,6 @@ Options:
   --no-experiments-output-module                                                     Negative 'experiments-output-module' option.
   --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
   --no-experiments-sync-web-assembly                                                 Negative 'experiments-sync-web-assembly' option.
-  --experiments-top-level-await                                                      Allow using top-level-await in EcmaScript Modules.
-  --no-experiments-top-level-await                                                   Negative 'experiments-top-level-await' option.
   -e, --extends <value...>                                                           Path to the configuration to be extended (only works when using webpack-cli).
   --extends-reset                                                                    Clear all items provided in 'extends' configuration. Extend configuration from another configuration (only works when using webpack-cli).
   --externals <value...>                                                             Every matched dependency becomes external. An exact matched dependency becomes external. The same string is used as external dependency.
@@ -168,43 +174,97 @@ Options:
   --no-module-generator-css-exports-only                                             Negative 'module-generator-css-exports-only' option.
   --module-generator-css-auto-es-module                                              Configure the generated JS modules that use the ES modules syntax.
   --no-module-generator-css-auto-es-module                                           Negative 'module-generator-css-auto-es-module' option.
+  --module-generator-css-auto-export-type <value>                                    Configure how CSS content is exported as default.
   --module-generator-css-auto-exports-convention <value>                             Specifies the convention of exported names.
   --module-generator-css-auto-exports-only                                           Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-auto-exports-only                                        Negative 'module-generator-css-auto-exports-only' option.
+  --module-generator-css-auto-local-ident-hash-digest <value>                        Digest types used for the hash.
+  --module-generator-css-auto-local-ident-hash-digest-length <value>                 Number of chars which are used for the hash.
+  --module-generator-css-auto-local-ident-hash-salt <value>                          Any string which is added to the hash to salt it.
   --module-generator-css-auto-local-ident-name <value>                               Configure the generated local ident name.
   --module-generator-css-global-es-module                                            Configure the generated JS modules that use the ES modules syntax.
   --no-module-generator-css-global-es-module                                         Negative 'module-generator-css-global-es-module' option.
+  --module-generator-css-global-export-type <value>                                  Configure how CSS content is exported as default.
   --module-generator-css-global-exports-convention <value>                           Specifies the convention of exported names.
   --module-generator-css-global-exports-only                                         Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-global-exports-only                                      Negative 'module-generator-css-global-exports-only' option.
+  --module-generator-css-global-local-ident-hash-digest <value>                      Digest types used for the hash.
+  --module-generator-css-global-local-ident-hash-digest-length <value>               Number of chars which are used for the hash.
+  --module-generator-css-global-local-ident-hash-salt <value>                        Any string which is added to the hash to salt it.
   --module-generator-css-global-local-ident-name <value>                             Configure the generated local ident name.
   --module-generator-css-module-es-module                                            Configure the generated JS modules that use the ES modules syntax.
   --no-module-generator-css-module-es-module                                         Negative 'module-generator-css-module-es-module' option.
+  --module-generator-css-module-export-type <value>                                  Configure how CSS content is exported as default.
   --module-generator-css-module-exports-convention <value>                           Specifies the convention of exported names.
   --module-generator-css-module-exports-only                                         Avoid generating and loading a stylesheet and only embed exports from css into output javascript files.
   --no-module-generator-css-module-exports-only                                      Negative 'module-generator-css-module-exports-only' option.
+  --module-generator-css-module-local-ident-hash-digest <value>                      Digest types used for the hash.
+  --module-generator-css-module-local-ident-hash-digest-length <value>               Number of chars which are used for the hash.
+  --module-generator-css-module-local-ident-hash-salt <value>                        Any string which is added to the hash to salt it.
   --module-generator-css-module-local-ident-name <value>                             Configure the generated local ident name.
+  --module-generator-json-json-parse                                                 Use `JSON.parse` when the JSON string is longer than 20 characters.
+  --no-module-generator-json-json-parse                                              Negative 'module-generator-json-json-parse' option.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
+  --module-parser-css-export-type <value>                                            Configure how CSS content is exported as default.
   --module-parser-css-import                                                         Enable/disable `@import` at-rules handling.
   --no-module-parser-css-import                                                      Negative 'module-parser-css-import' option.
   --module-parser-css-named-exports                                                  Use ES modules named export for css exports.
   --no-module-parser-css-named-exports                                               Negative 'module-parser-css-named-exports' option.
   --module-parser-css-url                                                            Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-url                                                         Negative 'module-parser-css-url' option.
+  --module-parser-css-auto-animation                                                 Enable/disable renaming of `@keyframes`.
+  --no-module-parser-css-auto-animation                                              Negative 'module-parser-css-auto-animation' option.
+  --module-parser-css-auto-container                                                 Enable/disable renaming of `@container` names.
+  --no-module-parser-css-auto-container                                              Negative 'module-parser-css-auto-container' option.
+  --module-parser-css-auto-custom-idents                                             Enable/disable renaming of custom identifiers.
+  --no-module-parser-css-auto-custom-idents                                          Negative 'module-parser-css-auto-custom-idents' option.
+  --module-parser-css-auto-dashed-idents                                             Enable/disable renaming of dashed identifiers, e. g. custom properties.
+  --no-module-parser-css-auto-dashed-idents                                          Negative 'module-parser-css-auto-dashed-idents' option.
+  --module-parser-css-auto-export-type <value>                                       Configure how CSS content is exported as default.
+  --module-parser-css-auto-function                                                  Enable/disable renaming of `@function` names.
+  --no-module-parser-css-auto-function                                               Negative 'module-parser-css-auto-function' option.
+  --module-parser-css-auto-grid                                                      Enable/disable renaming of grid identifiers.
+  --no-module-parser-css-auto-grid                                                   Negative 'module-parser-css-auto-grid' option.
   --module-parser-css-auto-import                                                    Enable/disable `@import` at-rules handling.
   --no-module-parser-css-auto-import                                                 Negative 'module-parser-css-auto-import' option.
   --module-parser-css-auto-named-exports                                             Use ES modules named export for css exports.
   --no-module-parser-css-auto-named-exports                                          Negative 'module-parser-css-auto-named-exports' option.
   --module-parser-css-auto-url                                                       Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-auto-url                                                    Negative 'module-parser-css-auto-url' option.
+  --module-parser-css-global-animation                                               Enable/disable renaming of `@keyframes`.
+  --no-module-parser-css-global-animation                                            Negative 'module-parser-css-global-animation' option.
+  --module-parser-css-global-container                                               Enable/disable renaming of `@container` names.
+  --no-module-parser-css-global-container                                            Negative 'module-parser-css-global-container' option.
+  --module-parser-css-global-custom-idents                                           Enable/disable renaming of custom identifiers.
+  --no-module-parser-css-global-custom-idents                                        Negative 'module-parser-css-global-custom-idents' option.
+  --module-parser-css-global-dashed-idents                                           Enable/disable renaming of dashed identifiers, e. g. custom properties.
+  --no-module-parser-css-global-dashed-idents                                        Negative 'module-parser-css-global-dashed-idents' option.
+  --module-parser-css-global-export-type <value>                                     Configure how CSS content is exported as default.
+  --module-parser-css-global-function                                                Enable/disable renaming of `@function` names.
+  --no-module-parser-css-global-function                                             Negative 'module-parser-css-global-function' option.
+  --module-parser-css-global-grid                                                    Enable/disable renaming of grid identifiers.
+  --no-module-parser-css-global-grid                                                 Negative 'module-parser-css-global-grid' option.
   --module-parser-css-global-import                                                  Enable/disable `@import` at-rules handling.
   --no-module-parser-css-global-import                                               Negative 'module-parser-css-global-import' option.
   --module-parser-css-global-named-exports                                           Use ES modules named export for css exports.
   --no-module-parser-css-global-named-exports                                        Negative 'module-parser-css-global-named-exports' option.
   --module-parser-css-global-url                                                     Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-global-url                                                  Negative 'module-parser-css-global-url' option.
+  --module-parser-css-module-animation                                               Enable/disable renaming of `@keyframes`.
+  --no-module-parser-css-module-animation                                            Negative 'module-parser-css-module-animation' option.
+  --module-parser-css-module-container                                               Enable/disable renaming of `@container` names.
+  --no-module-parser-css-module-container                                            Negative 'module-parser-css-module-container' option.
+  --module-parser-css-module-custom-idents                                           Enable/disable renaming of custom identifiers.
+  --no-module-parser-css-module-custom-idents                                        Negative 'module-parser-css-module-custom-idents' option.
+  --module-parser-css-module-dashed-idents                                           Enable/disable renaming of dashed identifiers, e. g. custom properties.
+  --no-module-parser-css-module-dashed-idents                                        Negative 'module-parser-css-module-dashed-idents' option.
+  --module-parser-css-module-export-type <value>                                     Configure how CSS content is exported as default.
+  --module-parser-css-module-function                                                Enable/disable renaming of `@function` names.
+  --no-module-parser-css-module-function                                             Negative 'module-parser-css-module-function' option.
+  --module-parser-css-module-grid                                                    Enable/disable renaming of grid identifiers.
+  --no-module-parser-css-module-grid                                                 Negative 'module-parser-css-module-grid' option.
   --module-parser-css-module-import                                                  Enable/disable `@import` at-rules handling.
   --no-module-parser-css-module-import                                               Negative 'module-parser-css-module-import' option.
   --module-parser-css-module-named-exports                                           Use ES modules named export for css exports.
@@ -220,6 +280,8 @@ Options:
   --no-module-parser-javascript-commonjs-magic-comments                              Negative 'module-parser-javascript-commonjs-magic-comments' option.
   --module-parser-javascript-create-require [value]                                  Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
   --no-module-parser-javascript-create-require                                       Negative 'module-parser-javascript-create-require' option.
+  --module-parser-javascript-defer-import                                            Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
+  --no-module-parser-javascript-defer-import                                         Negative 'module-parser-javascript-defer-import' option.
   --module-parser-javascript-dynamic-import-fetch-priority <value>                   Specifies global fetchPriority for dynamic import.
   --no-module-parser-javascript-dynamic-import-fetch-priority                        Negative 'module-parser-javascript-dynamic-import-fetch-priority' option.
   --module-parser-javascript-dynamic-import-mode <value>                             Specifies global mode for dynamic import.
@@ -227,6 +289,8 @@ Options:
   --no-module-parser-javascript-dynamic-import-prefetch                              Negative 'module-parser-javascript-dynamic-import-prefetch' option.
   --module-parser-javascript-dynamic-import-preload [value]                          Specifies global preload for dynamic import.
   --no-module-parser-javascript-dynamic-import-preload                               Negative 'module-parser-javascript-dynamic-import-preload' option.
+  --module-parser-javascript-dynamic-url [value]                                     Enable/disable parsing of dynamic URL. Enable/disable parsing of new URL() syntax.
+  --no-module-parser-javascript-dynamic-url                                          Negative 'module-parser-javascript-dynamic-url' option.
   --module-parser-javascript-exports-presence <value>                                Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
   --no-module-parser-javascript-exports-presence                                     Negative 'module-parser-javascript-exports-presence' option.
   --module-parser-javascript-expr-context-critical                                   Enable warnings for full dynamic dependencies.
@@ -296,6 +360,8 @@ Options:
   --no-module-parser-javascript-auto-commonjs-magic-comments                         Negative 'module-parser-javascript-auto-commonjs-magic-comments' option.
   --module-parser-javascript-auto-create-require [value]                             Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
   --no-module-parser-javascript-auto-create-require                                  Negative 'module-parser-javascript-auto-create-require' option.
+  --module-parser-javascript-auto-defer-import                                       Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
+  --no-module-parser-javascript-auto-defer-import                                    Negative 'module-parser-javascript-auto-defer-import' option.
   --module-parser-javascript-auto-dynamic-import-fetch-priority <value>              Specifies global fetchPriority for dynamic import.
   --no-module-parser-javascript-auto-dynamic-import-fetch-priority                   Negative 'module-parser-javascript-auto-dynamic-import-fetch-priority' option.
   --module-parser-javascript-auto-dynamic-import-mode <value>                        Specifies global mode for dynamic import.
@@ -303,6 +369,8 @@ Options:
   --no-module-parser-javascript-auto-dynamic-import-prefetch                         Negative 'module-parser-javascript-auto-dynamic-import-prefetch' option.
   --module-parser-javascript-auto-dynamic-import-preload [value]                     Specifies global preload for dynamic import.
   --no-module-parser-javascript-auto-dynamic-import-preload                          Negative 'module-parser-javascript-auto-dynamic-import-preload' option.
+  --module-parser-javascript-auto-dynamic-url                                        Enable/disable parsing of dynamic URL.
+  --no-module-parser-javascript-auto-dynamic-url                                     Negative 'module-parser-javascript-auto-dynamic-url' option.
   --module-parser-javascript-auto-exports-presence <value>                           Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
   --no-module-parser-javascript-auto-exports-presence                                Negative 'module-parser-javascript-auto-exports-presence' option.
   --module-parser-javascript-auto-expr-context-critical                              Enable warnings for full dynamic dependencies.
@@ -372,6 +440,8 @@ Options:
   --no-module-parser-javascript-dynamic-commonjs-magic-comments                      Negative 'module-parser-javascript-dynamic-commonjs-magic-comments' option.
   --module-parser-javascript-dynamic-create-require [value]                          Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
   --no-module-parser-javascript-dynamic-create-require                               Negative 'module-parser-javascript-dynamic-create-require' option.
+  --module-parser-javascript-dynamic-defer-import                                    Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
+  --no-module-parser-javascript-dynamic-defer-import                                 Negative 'module-parser-javascript-dynamic-defer-import' option.
   --module-parser-javascript-dynamic-dynamic-import-fetch-priority <value>           Specifies global fetchPriority for dynamic import.
   --no-module-parser-javascript-dynamic-dynamic-import-fetch-priority                Negative 'module-parser-javascript-dynamic-dynamic-import-fetch-priority' option.
   --module-parser-javascript-dynamic-dynamic-import-mode <value>                     Specifies global mode for dynamic import.
@@ -379,6 +449,8 @@ Options:
   --no-module-parser-javascript-dynamic-dynamic-import-prefetch                      Negative 'module-parser-javascript-dynamic-dynamic-import-prefetch' option.
   --module-parser-javascript-dynamic-dynamic-import-preload [value]                  Specifies global preload for dynamic import.
   --no-module-parser-javascript-dynamic-dynamic-import-preload                       Negative 'module-parser-javascript-dynamic-dynamic-import-preload' option.
+  --module-parser-javascript-dynamic-dynamic-url                                     Enable/disable parsing of dynamic URL.
+  --no-module-parser-javascript-dynamic-dynamic-url                                  Negative 'module-parser-javascript-dynamic-dynamic-url' option.
   --module-parser-javascript-dynamic-exports-presence <value>                        Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
   --no-module-parser-javascript-dynamic-exports-presence                             Negative 'module-parser-javascript-dynamic-exports-presence' option.
   --module-parser-javascript-dynamic-expr-context-critical                           Enable warnings for full dynamic dependencies.
@@ -429,8 +501,6 @@ Options:
   --module-parser-javascript-dynamic-unknown-context-reg-exp [value]                 Sets the regular expression when using the require function in a not statically analyse-able way.
   --no-module-parser-javascript-dynamic-unknown-context-reg-exp                      Negative 'module-parser-javascript-dynamic-unknown-context-reg-exp' option.
   --module-parser-javascript-dynamic-unknown-context-request <value>                 Sets the request when using the require function in a not statically analyse-able way.
-  --module-parser-javascript-dynamic-url [value]                                     Enable/disable parsing of new URL() syntax.
-  --no-module-parser-javascript-dynamic-url                                          Negative 'module-parser-javascript-dynamic-url' option.
   --module-parser-javascript-dynamic-worker [value...]                               Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --no-module-parser-javascript-dynamic-worker                                       Negative 'module-parser-javascript-dynamic-worker' option.
   --module-parser-javascript-dynamic-worker-reset                                    Clear all items provided in 'module.parser.javascript/dynamic.worker' configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
@@ -448,6 +518,8 @@ Options:
   --no-module-parser-javascript-esm-commonjs-magic-comments                          Negative 'module-parser-javascript-esm-commonjs-magic-comments' option.
   --module-parser-javascript-esm-create-require [value]                              Enable/disable parsing "import { createRequire } from "module"" and evaluating createRequire().
   --no-module-parser-javascript-esm-create-require                                   Negative 'module-parser-javascript-esm-create-require' option.
+  --module-parser-javascript-esm-defer-import                                        Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
+  --no-module-parser-javascript-esm-defer-import                                     Negative 'module-parser-javascript-esm-defer-import' option.
   --module-parser-javascript-esm-dynamic-import-fetch-priority <value>               Specifies global fetchPriority for dynamic import.
   --no-module-parser-javascript-esm-dynamic-import-fetch-priority                    Negative 'module-parser-javascript-esm-dynamic-import-fetch-priority' option.
   --module-parser-javascript-esm-dynamic-import-mode <value>                         Specifies global mode for dynamic import.
@@ -455,6 +527,8 @@ Options:
   --no-module-parser-javascript-esm-dynamic-import-prefetch                          Negative 'module-parser-javascript-esm-dynamic-import-prefetch' option.
   --module-parser-javascript-esm-dynamic-import-preload [value]                      Specifies global preload for dynamic import.
   --no-module-parser-javascript-esm-dynamic-import-preload                           Negative 'module-parser-javascript-esm-dynamic-import-preload' option.
+  --module-parser-javascript-esm-dynamic-url                                         Enable/disable parsing of dynamic URL.
+  --no-module-parser-javascript-esm-dynamic-url                                      Negative 'module-parser-javascript-esm-dynamic-url' option.
   --module-parser-javascript-esm-exports-presence <value>                            Specifies the behavior of invalid export names in "import ... from ..." and "export ... from ...".
   --no-module-parser-javascript-esm-exports-presence                                 Negative 'module-parser-javascript-esm-exports-presence' option.
   --module-parser-javascript-esm-expr-context-critical                               Enable warnings for full dynamic dependencies.
@@ -515,6 +589,9 @@ Options:
   --module-parser-javascript-esm-wrapped-context-recursive                           Enable recursive directory lookup for partial dynamic dependencies.
   --no-module-parser-javascript-esm-wrapped-context-recursive                        Negative 'module-parser-javascript-esm-wrapped-context-recursive' option.
   --module-parser-javascript-esm-wrapped-context-reg-exp <value>                     Set the inner regular expression for partial dynamic dependencies.
+  --module-parser-json-exports-depth <value>                                         The depth of json dependency flagged as `exportInfo`.
+  --module-parser-json-named-exports                                                 Allow named exports for json of object type.
+  --no-module-parser-json-named-exports                                              Negative 'module-parser-json-named-exports' option.
   --module-rules-compiler <value...>                                                 Match the child compiler name.
   --module-rules-compiler-not <value...>                                             Logical NOT.
   --module-rules-dependency <value...>                                               Match dependency type.
@@ -522,6 +599,8 @@ Options:
   --module-rules-enforce <value...>                                                  Enforce this rule as pre or post step.
   --module-rules-exclude <value...>                                                  Shortcut for resource.exclude.
   --module-rules-exclude-not <value...>                                              Logical NOT.
+  --module-rules-extract-source-map                                                  Enable/Disable extracting source map.
+  --no-module-rules-extract-source-map                                               Negative 'module-rules-extract-source-map' option.
   --module-rules-include <value...>                                                  Shortcut for resource.include.
   --module-rules-include-not <value...>                                              Logical NOT.
   --module-rules-issuer <value...>                                                   Match the issuer of the module (The module pointing to this module).
@@ -702,6 +781,10 @@ Options:
   --no-output-environment-for-of                                                     Negative 'output-environment-for-of' option.
   --output-environment-global-this                                                   The environment supports 'globalThis'.
   --no-output-environment-global-this                                                Negative 'output-environment-global-this' option.
+  --output-environment-import-meta-dirname-and-filename                              The environment supports `import.meta.dirname` and `import.meta.filename`.
+  --no-output-environment-import-meta-dirname-and-filename                           Negative 'output-environment-import-meta-dirname-and-filename' option.
+  --output-environment-method-shorthand                                              The environment supports object method shorthand ('{ module() {} }').
+  --no-output-environment-method-shorthand                                           Negative 'output-environment-method-shorthand' option.
   --output-environment-module                                                        The environment supports EcmaScript Module syntax to import EcmaScript modules (import ... from '...').
   --no-output-environment-module                                                     Negative 'output-environment-module' option.
   --output-environment-node-prefix-for-core-modules                                  The environment supports `node:` prefix for Node.js core modules.
@@ -712,7 +795,7 @@ Options:
   --no-output-environment-template-literal                                           Negative 'output-environment-template-literal' option.
   --output-filename <value>                                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-global-object <value>                                                     An expression which is used to address the global object/scope in runtime code.
-  --output-hash-digest <value>                                                       Digest type used for the hash.
+  --output-hash-digest <value>                                                       Digest types used for the hash.
   --output-hash-digest-length <value>                                                Number of chars which are used for the hash.
   --output-hash-function <value>                                                     Algorithm used for generation the hash (see node.js crypto package).
   --output-hash-salt <value>                                                         Any string which is added to the hash to salt it.
@@ -896,6 +979,10 @@ Options:
   --no-snapshot-build-dependencies-hash                                              Negative 'snapshot-build-dependencies-hash' option.
   --snapshot-build-dependencies-timestamp                                            Use timestamps of the files/directories to determine invalidation.
   --no-snapshot-build-dependencies-timestamp                                         Negative 'snapshot-build-dependencies-timestamp' option.
+  --snapshot-context-module-hash                                                     Use hashes of the content of the files/directories to determine invalidation.
+  --no-snapshot-context-module-hash                                                  Negative 'snapshot-context-module-hash' option.
+  --snapshot-context-module-timestamp                                                Use timestamps of the files/directories to determine invalidation.
+  --no-snapshot-context-module-timestamp                                             Negative 'snapshot-context-module-timestamp' option.
   --snapshot-immutable-paths <value...>                                              A RegExp matching an immutable directory (usually a package manager cache directory, including the tailing slash) A path to an immutable directory (usually a package manager cache directory).
   --snapshot-immutable-paths-reset                                                   Clear all items provided in 'snapshot.immutablePaths' configuration. List of paths that are managed by a package manager and contain a version or hash in its path so all files are immutable.
   --snapshot-managed-paths <value...>                                                A RegExp matching a managed directory (usually a node_modules directory, including the tailing slash) A path to a managed directory (usually a node_modules directory).
@@ -921,6 +1008,7 @@ Options:
   --stats-assets                                                                     Add assets information.
   --no-stats-assets                                                                  Negative 'stats-assets' option.
   --stats-assets-sort <value>                                                        Sort the assets by that field.
+  --no-stats-assets-sort                                                             Negative 'stats-assets-sort' option.
   --stats-assets-space <value>                                                       Space to display assets (groups will be collapsed to fit this space).
   --stats-built-at                                                                   Add built at time information.
   --no-stats-built-at                                                                Negative 'stats-built-at' option.
@@ -930,8 +1018,162 @@ Options:
   --no-stats-cached-assets                                                           Negative 'stats-cached-assets' option.
   --stats-cached-modules                                                             Add information about cached (not built) modules.
   --no-stats-cached-modules                                                          Negative 'stats-cached-modules' option.
-  --stats-children                                                                   Add children information.
+  --stats-children [value...]                                                        Stats options object or preset name.
   --no-stats-children                                                                Negative 'stats-children' option.
+  --stats-children-all                                                               Fallback value for stats options when an option is not defined (has precedence over local webpack defaults).
+  --no-stats-children-all                                                            Negative 'stats-children-all' option.
+  --stats-children-assets                                                            Add assets information.
+  --no-stats-children-assets                                                         Negative 'stats-children-assets' option.
+  --stats-children-assets-sort <value...>                                            Sort the assets by that field.
+  --no-stats-children-assets-sort                                                    Negative 'stats-children-assets-sort' option.
+  --stats-children-assets-space <value...>                                           Space to display assets (groups will be collapsed to fit this space).
+  --stats-children-built-at                                                          Add built at time information.
+  --no-stats-children-built-at                                                       Negative 'stats-children-built-at' option.
+  --stats-children-cached                                                            Add information about cached (not built) modules (deprecated: use 'cachedModules' instead).
+  --no-stats-children-cached                                                         Negative 'stats-children-cached' option.
+  --stats-children-cached-assets                                                     Show cached assets (setting this to `false` only shows emitted files).
+  --no-stats-children-cached-assets                                                  Negative 'stats-children-cached-assets' option.
+  --stats-children-cached-modules                                                    Add information about cached (not built) modules.
+  --no-stats-children-cached-modules                                                 Negative 'stats-children-cached-modules' option.
+  --stats-children-chunk-group-auxiliary                                             Display auxiliary assets in chunk groups.
+  --no-stats-children-chunk-group-auxiliary                                          Negative 'stats-children-chunk-group-auxiliary' option.
+  --stats-children-chunk-group-children                                              Display children of chunk groups.
+  --no-stats-children-chunk-group-children                                           Negative 'stats-children-chunk-group-children' option.
+  --stats-children-chunk-group-max-assets <value...>                                 Limit of assets displayed in chunk groups.
+  --stats-children-chunk-groups                                                      Display all chunk groups with the corresponding bundles.
+  --no-stats-children-chunk-groups                                                   Negative 'stats-children-chunk-groups' option.
+  --stats-children-chunk-modules                                                     Add built modules information to chunk information.
+  --no-stats-children-chunk-modules                                                  Negative 'stats-children-chunk-modules' option.
+  --stats-children-chunk-modules-space <value...>                                    Space to display chunk modules (groups will be collapsed to fit this space, value is in number of modules/group).
+  --stats-children-chunk-origins                                                     Add the origins of chunks and chunk merging info.
+  --no-stats-children-chunk-origins                                                  Negative 'stats-children-chunk-origins' option.
+  --stats-children-chunk-relations                                                   Add information about parent, children and sibling chunks to chunk information.
+  --no-stats-children-chunk-relations                                                Negative 'stats-children-chunk-relations' option.
+  --stats-children-chunks                                                            Add chunk information.
+  --no-stats-children-chunks                                                         Negative 'stats-children-chunks' option.
+  --stats-children-chunks-sort <value...>                                            Sort the chunks by that field.
+  --no-stats-children-chunks-sort                                                    Negative 'stats-children-chunks-sort' option.
+  --stats-children-colors                                                            Enables/Disables colorful output.
+  --no-stats-children-colors                                                         Negative 'stats-children-colors' option.
+  --stats-children-colors-bold <value...>                                            Custom color for bold text.
+  --stats-children-colors-cyan <value...>                                            Custom color for cyan text.
+  --stats-children-colors-green <value...>                                           Custom color for green text.
+  --stats-children-colors-magenta <value...>                                         Custom color for magenta text.
+  --stats-children-colors-red <value...>                                             Custom color for red text.
+  --stats-children-colors-yellow <value...>                                          Custom color for yellow text.
+  --stats-children-context <value...>                                                Context directory for request shortening.
+  --stats-children-dependent-modules                                                 Show chunk modules that are dependencies of other modules of the chunk.
+  --no-stats-children-dependent-modules                                              Negative 'stats-children-dependent-modules' option.
+  --stats-children-depth                                                             Add module depth in module graph.
+  --no-stats-children-depth                                                          Negative 'stats-children-depth' option.
+  --stats-children-entrypoints [value...]                                            Display the entry points with the corresponding bundles.
+  --no-stats-children-entrypoints                                                    Negative 'stats-children-entrypoints' option.
+  --stats-children-env                                                               Add --env information.
+  --no-stats-children-env                                                            Negative 'stats-children-env' option.
+  --stats-children-error-cause [value...]                                            Add cause to errors.
+  --no-stats-children-error-cause                                                    Negative 'stats-children-error-cause' option.
+  --stats-children-error-details [value...]                                          Add details to errors (like resolving log).
+  --no-stats-children-error-details                                                  Negative 'stats-children-error-details' option.
+  --stats-children-error-errors [value...]                                           Add nested errors to errors (like in AggregateError).
+  --no-stats-children-error-errors                                                   Negative 'stats-children-error-errors' option.
+  --stats-children-error-stack                                                       Add internal stack trace to errors.
+  --no-stats-children-error-stack                                                    Negative 'stats-children-error-stack' option.
+  --stats-children-errors                                                            Add errors.
+  --no-stats-children-errors                                                         Negative 'stats-children-errors' option.
+  --stats-children-errors-count                                                      Add errors count.
+  --no-stats-children-errors-count                                                   Negative 'stats-children-errors-count' option.
+  --stats-children-errors-space <value...>                                           Space to display errors (value is in number of lines).
+  --stats-children-exclude-assets <value...>                                         Suppress assets that match the specified filters. Filters can be Strings, RegExps or Functions.
+  --stats-children-exclude-modules [value...]                                        Suppress modules that match the specified filters. Filters can be Strings, RegExps, Booleans or Functions.
+  --no-stats-children-exclude-modules                                                Negative 'stats-children-exclude-modules' option.
+  --stats-children-group-assets-by-chunk                                             Group assets by how their are related to chunks.
+  --no-stats-children-group-assets-by-chunk                                          Negative 'stats-children-group-assets-by-chunk' option.
+  --stats-children-group-assets-by-emit-status                                       Group assets by their status (emitted, compared for emit or cached).
+  --no-stats-children-group-assets-by-emit-status                                    Negative 'stats-children-group-assets-by-emit-status' option.
+  --stats-children-group-assets-by-extension                                         Group assets by their extension.
+  --no-stats-children-group-assets-by-extension                                      Negative 'stats-children-group-assets-by-extension' option.
+  --stats-children-group-assets-by-info                                              Group assets by their asset info (immutable, development, hotModuleReplacement, etc).
+  --no-stats-children-group-assets-by-info                                           Negative 'stats-children-group-assets-by-info' option.
+  --stats-children-group-assets-by-path                                              Group assets by their path.
+  --no-stats-children-group-assets-by-path                                           Negative 'stats-children-group-assets-by-path' option.
+  --stats-children-group-modules-by-attributes                                       Group modules by their attributes (errors, warnings, assets, optional, orphan, or dependent).
+  --no-stats-children-group-modules-by-attributes                                    Negative 'stats-children-group-modules-by-attributes' option.
+  --stats-children-group-modules-by-cache-status                                     Group modules by their status (cached or built and cacheable).
+  --no-stats-children-group-modules-by-cache-status                                  Negative 'stats-children-group-modules-by-cache-status' option.
+  --stats-children-group-modules-by-extension                                        Group modules by their extension.
+  --no-stats-children-group-modules-by-extension                                     Negative 'stats-children-group-modules-by-extension' option.
+  --stats-children-group-modules-by-layer                                            Group modules by their layer.
+  --no-stats-children-group-modules-by-layer                                         Negative 'stats-children-group-modules-by-layer' option.
+  --stats-children-group-modules-by-path                                             Group modules by their path.
+  --no-stats-children-group-modules-by-path                                          Negative 'stats-children-group-modules-by-path' option.
+  --stats-children-group-modules-by-type                                             Group modules by their type.
+  --no-stats-children-group-modules-by-type                                          Negative 'stats-children-group-modules-by-type' option.
+  --stats-children-group-reasons-by-origin                                           Group reasons by their origin module.
+  --no-stats-children-group-reasons-by-origin                                        Negative 'stats-children-group-reasons-by-origin' option.
+  --stats-children-hash                                                              Add the hash of the compilation.
+  --no-stats-children-hash                                                           Negative 'stats-children-hash' option.
+  --stats-children-ids                                                               Add ids.
+  --no-stats-children-ids                                                            Negative 'stats-children-ids' option.
+  --stats-children-logging [value...]                                                Specify log level of logging output. Enable/disable logging output (`true`: shows normal logging output, loglevel: log).
+  --no-stats-children-logging                                                        Negative 'stats-children-logging' option.
+  --stats-children-logging-debug [value...]                                          Enable/Disable debug logging for all loggers. Include debug logging of specified loggers (i. e. for plugins or loaders). Filters can be Strings, RegExps or Functions.
+  --no-stats-children-logging-debug                                                  Negative 'stats-children-logging-debug' option.
+  --stats-children-logging-trace                                                     Add stack traces to logging output.
+  --no-stats-children-logging-trace                                                  Negative 'stats-children-logging-trace' option.
+  --stats-children-module-assets                                                     Add information about assets inside modules.
+  --no-stats-children-module-assets                                                  Negative 'stats-children-module-assets' option.
+  --stats-children-module-trace                                                      Add dependencies and origin of warnings/errors.
+  --no-stats-children-module-trace                                                   Negative 'stats-children-module-trace' option.
+  --stats-children-modules                                                           Add built modules information.
+  --no-stats-children-modules                                                        Negative 'stats-children-modules' option.
+  --stats-children-modules-sort <value...>                                           Sort the modules by that field.
+  --no-stats-children-modules-sort                                                   Negative 'stats-children-modules-sort' option.
+  --stats-children-modules-space <value...>                                          Space to display modules (groups will be collapsed to fit this space, value is in number of modules/groups).
+  --stats-children-nested-modules                                                    Add information about modules nested in other modules (like with module concatenation).
+  --no-stats-children-nested-modules                                                 Negative 'stats-children-nested-modules' option.
+  --stats-children-nested-modules-space <value...>                                   Space to display modules nested within other modules (groups will be collapsed to fit this space, value is in number of modules/group).
+  --stats-children-optimization-bailout                                              Show reasons why optimization bailed out for modules.
+  --no-stats-children-optimization-bailout                                           Negative 'stats-children-optimization-bailout' option.
+  --stats-children-orphan-modules                                                    Add information about orphan modules.
+  --no-stats-children-orphan-modules                                                 Negative 'stats-children-orphan-modules' option.
+  --stats-children-output-path                                                       Add output path information.
+  --no-stats-children-output-path                                                    Negative 'stats-children-output-path' option.
+  --stats-children-performance                                                       Add performance hint flags.
+  --no-stats-children-performance                                                    Negative 'stats-children-performance' option.
+  --stats-children-preset [value...]                                                 Preset for the default values.
+  --no-stats-children-preset                                                         Negative 'stats-children-preset' option.
+  --stats-children-provided-exports                                                  Show exports provided by modules.
+  --no-stats-children-provided-exports                                               Negative 'stats-children-provided-exports' option.
+  --stats-children-public-path                                                       Add public path information.
+  --no-stats-children-public-path                                                    Negative 'stats-children-public-path' option.
+  --stats-children-reasons                                                           Add information about the reasons why modules are included.
+  --no-stats-children-reasons                                                        Negative 'stats-children-reasons' option.
+  --stats-children-reasons-space <value...>                                          Space to display reasons (groups will be collapsed to fit this space).
+  --stats-children-related-assets                                                    Add information about assets that are related to other assets (like SourceMaps for assets).
+  --no-stats-children-related-assets                                                 Negative 'stats-children-related-assets' option.
+  --stats-children-runtime                                                           Add information about runtime modules (deprecated: use 'runtimeModules' instead).
+  --no-stats-children-runtime                                                        Negative 'stats-children-runtime' option.
+  --stats-children-runtime-modules                                                   Add information about runtime modules.
+  --no-stats-children-runtime-modules                                                Negative 'stats-children-runtime-modules' option.
+  --stats-children-source                                                            Add the source code of modules.
+  --no-stats-children-source                                                         Negative 'stats-children-source' option.
+  --stats-children-timings                                                           Add timing information.
+  --no-stats-children-timings                                                        Negative 'stats-children-timings' option.
+  --stats-children-used-exports                                                      Show exports used by modules.
+  --no-stats-children-used-exports                                                   Negative 'stats-children-used-exports' option.
+  --stats-children-version                                                           Add webpack version information.
+  --no-stats-children-version                                                        Negative 'stats-children-version' option.
+  --stats-children-warnings                                                          Add warnings.
+  --no-stats-children-warnings                                                       Negative 'stats-children-warnings' option.
+  --stats-children-warnings-count                                                    Add warnings count.
+  --no-stats-children-warnings-count                                                 Negative 'stats-children-warnings-count' option.
+  --stats-children-warnings-filter <value...>                                        Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
+  --stats-children-warnings-space <value...>                                         Space to display warnings (value is in number of lines).
+  --stats-children-reset                                                             Clear all items provided in 'stats.children' configuration. Add children information.
+  --stats-children-exclude-assets-reset                                              Clear all items provided in 'stats.children.excludeAssets' configuration. Suppress assets that match the specified filters. Filters can be Strings, RegExps or Functions.
+  --stats-children-exclude-modules-reset                                             Clear all items provided in 'stats.children.excludeModules' configuration. Suppress modules that match the specified filters. Filters can be Strings, RegExps, Booleans or Functions.
+  --stats-children-logging-debug-reset                                               Clear all items provided in 'stats.children.loggingDebug' configuration. Include debug logging of specified loggers (i. e. for plugins or loaders). Filters can be Strings, RegExps or Functions.
+  --stats-children-warnings-filter-reset                                             Clear all items provided in 'stats.children.warningsFilter' configuration. Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
   --stats-chunk-group-auxiliary                                                      Display auxiliary assets in chunk groups.
   --no-stats-chunk-group-auxiliary                                                   Negative 'stats-chunk-group-auxiliary' option.
   --stats-chunk-group-children                                                       Display children of chunk groups.
@@ -949,6 +1191,7 @@ Options:
   --stats-chunks                                                                     Add chunk information.
   --no-stats-chunks                                                                  Negative 'stats-chunks' option.
   --stats-chunks-sort <value>                                                        Sort the chunks by that field.
+  --no-stats-chunks-sort                                                             Negative 'stats-chunks-sort' option.
   --stats-colors                                                                     Enables/Disables colorful output.
   --no-stats-colors                                                                  Negative 'stats-colors' option.
   --stats-colors-bold <value>                                                        Custom color for bold text.
@@ -966,8 +1209,12 @@ Options:
   --no-stats-entrypoints                                                             Negative 'stats-entrypoints' option.
   --stats-env                                                                        Add --env information.
   --no-stats-env                                                                     Negative 'stats-env' option.
+  --stats-error-cause [value]                                                        Add cause to errors.
+  --no-stats-error-cause                                                             Negative 'stats-error-cause' option.
   --stats-error-details [value]                                                      Add details to errors (like resolving log).
   --no-stats-error-details                                                           Negative 'stats-error-details' option.
+  --stats-error-errors [value]                                                       Add nested errors to errors (like in AggregateError).
+  --no-stats-error-errors                                                            Negative 'stats-error-errors' option.
   --stats-error-stack                                                                Add internal stack trace to errors.
   --no-stats-error-stack                                                             Negative 'stats-error-stack' option.
   --stats-errors                                                                     Add errors.
@@ -1022,6 +1269,7 @@ Options:
   --stats-modules                                                                    Add built modules information.
   --no-stats-modules                                                                 Negative 'stats-modules' option.
   --stats-modules-sort <value>                                                       Sort the modules by that field.
+  --no-stats-modules-sort                                                            Negative 'stats-modules-sort' option.
   --stats-modules-space <value>                                                      Space to display modules (groups will be collapsed to fit this space, value is in number of modules/groups).
   --stats-nested-modules                                                             Add information about modules nested in other modules (like with module concatenation).
   --no-stats-nested-modules                                                          Negative 'stats-nested-modules' option.
