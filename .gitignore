@@ -59,6 +59,7 @@ packages/**/yarn.lock
 
 # test output files
 test/js/*
+test/create-webpack-app-testing/*
 test/**/bin/
 test/**/**/bin/
 test/**/**/**/bin/

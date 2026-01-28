@@ -1,6 +1,5 @@
 const { existsSync, mkdirSync, readFileSync, writeFileSync } = require("node:fs");
 const { cp } = require("node:fs/promises");
-const os = require("node:os");
 const path = require("node:path");
 const { join, resolve } = require("node:path");
 const { createPathDependentUtils, isWindows, uniqueDirectoryForTest } = require("../test.utils");
@@ -149,7 +148,11 @@ describe("create-webpack-app cli", () => {
   });
 
   it("should generate folders if non existing generation path is given", async () => {
-    const assetsPath = path.resolve(os.tmpdir(), Date.now().toString());
+    const assetsPath = path.resolve(
+      __dirname,
+      "../create-webpack-app-testing",
+      Date.now().toString(),
+    );
     const { stdout } = await run(__dirname, ["init", assetsPath, "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");

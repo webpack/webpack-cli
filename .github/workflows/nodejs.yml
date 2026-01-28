@@ -74,8 +74,14 @@ jobs:
       - name: Add workspace to Defender exclusions
         if: matrix.os == 'windows-latest'
         run: |
-          Set-MpPreference -DisableRealtimeMonitoring $true -ErrorAction SilentlyContinue
-          Add-MpPreference -ExclusionPath "${{ github.workspace }}" -ErrorAction SilentlyContinue
+          Add-MpPreference -ExclusionPath "${{ github.workspace }}"
+
+          Add-MpPreference -ExclusionProcess "node.exe"
+
+          $npmCache = (npm config get cache)
+          Add-MpPreference -ExclusionPath $npmCache
+
+          Set-MpPreference -DisableRealtimeMonitoring $true
         shell: powershell
 
       - name: Using Node.js v${{ matrix.node-version }}
