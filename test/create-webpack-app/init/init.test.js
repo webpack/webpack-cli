@@ -1,5 +1,4 @@
-const { existsSync, mkdirSync, readFileSync, writeFileSync } = require("node:fs");
-const { cp } = require("node:fs/promises");
+const { existsSync, mkdirSync, readFileSync } = require("node:fs");
 const path = require("node:path");
 const { join, resolve } = require("node:path");
 const { createPathDependentUtils, isWindows, uniqueDirectoryForTest } = require("../test.utils");
@@ -63,56 +62,10 @@ const readFromPkgJSON = (path) => {
 const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.js"), "utf8");
 
 describe("create-webpack-app cli", () => {
-  let dirWithNodeModules;
-
-  beforeAll(async () => {
-    dirWithNodeModules = await uniqueDirectoryForTest();
-
-    const { execa } = await import("execa");
-
-    writeFileSync(
-      resolve(dirWithNodeModules, "package.json"),
-      JSON.stringify({
-        name: "test",
-        description: "description",
-        version: "1.0.0",
-        dependencies: {
-          "babel-loader": "latest",
-          typescript: "latest",
-          "html-loader": "latest",
-          "html-webpack-plugin": "latest",
-          postcss: "latest",
-          "postcss-loader": "latest",
-          autoprefixer: "latest",
-          "sass-loader": "latest",
-          "less-loader": "latest",
-          "stylus-loader": "latest",
-          "mini-css-extract-plugin": "latest",
-          "style-loader": "latest",
-          webpack: "latest",
-          "webpack-cli": "latest",
-          "webpack-dev-server": "latest",
-          "workbox-webpack-plugin": "latest",
-        },
-      }),
-    );
-
-    const { exitCode } = await execa("npm", ["install"], { cwd: dirWithNodeModules });
-
-    if (exitCode !== 0) {
-      throw new Error("Problem with installation `node_modules` for caching");
-    }
-  });
-
   let dir;
 
   beforeEach(async () => {
     dir = await uniqueDirectoryForTest();
-
-    await cp(resolve(dirWithNodeModules, "./node_modules"), resolve(dir, "./node_modules"), {
-      recursive: true,
-    });
-    await cp(resolve(dirWithNodeModules, "package-lock.json"), resolve(dir, "package-lock.json"));
   });
 
   it("should generate default project when nothing is passed", async () => {
