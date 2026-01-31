@@ -1,5 +1,10 @@
 import { type Compiler, type cli } from "webpack";
-import { type IWebpackCLI, type StringsKeys, type WebpackDevServerOptions } from "webpack-cli";
+import {
+  type IWebpackCLI,
+  type StringsKeys,
+  WebpackCLICommandOption,
+  type WebpackDevServerOptions,
+} from "webpack-cli";
 
 const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "webpack-dev-server";
@@ -7,58 +12,23 @@ const WEBPACK_DEV_SERVER_PACKAGE = process.env.WEBPACK_DEV_SERVER_PACKAGE || "we
 type Problem = NonNullable<ReturnType<(typeof cli)["processArguments"]>>[0];
 
 class ServeCommand {
-  async apply(cli: IWebpackCLI): Promise<void> {
-    const loadDevServerOptions = () => {
-      const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
+  async apply(cli: IWebpackCLI, options: WebpackCLICommandOption[]): Promise<void> {
+    const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
 
+    const devServerFlags = Object.entries(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const options: Record<string, any> = cli.webpack.cli.getArguments(devServer.schema);
-      // New options format
-      // { flag1: {}, flag2: {} }
-      return Object.keys(options).map((key) => {
-        options[key].name = key;
+      cli.webpack.cli.getArguments(devServer.schema) as Record<string, any>,
+    ).map(([name, option]) => ({ name, ...option, group: "core", hidden: true }));
 
-        return options[key];
-      });
-    };
-
-    await cli.makeCommand(
-      {
-        name: "serve [entries...]",
-        alias: ["server", "s"],
-        description: "Run the webpack dev server and watch for source file changes while serving.",
-        usage: "[entries...] [options]",
-        pkg: "@webpack-cli/serve",
-        dependencies: [WEBPACK_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE],
-      },
-      async () => {
-        let devServerFlags = [];
-
-        cli.webpack = await cli.loadWebpack();
-
-        try {
-          devServerFlags = loadDevServerOptions();
-        } catch (error) {
-          cli.logger.error(
-            `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
-          );
-          process.exit(2);
-        }
-
-        const builtInOptions = cli.getBuiltInOptions();
-
-        return [...builtInOptions, ...devServerFlags];
-      },
+    await cli.makeCommand({
+      name: "serve [entries...]",
+      alias: ["server", "s"],
+      description: "Run the webpack dev server and watch for source file changes while serving.",
+      options: [...options, ...devServerFlags.flatMap(cli.makeOption.bind(cli))],
+      dependencies: [WEBPACK_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      async (entries: string[], options: any) => {
+      async action(entries: string[], options: any) {
         const builtInOptions = cli.getBuiltInOptions();
-        let devServerFlags = [];
-
-        try {
-          devServerFlags = loadDevServerOptions();
-        } catch {
-          // Nothing, to prevent future updates
-        }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const webpackCLIOptions: Record<string, any> = {};
@@ -243,7 +213,7 @@ class ServeCommand {
           process.exit(2);
         }
       },
-    );
+    });
   }
 }
 

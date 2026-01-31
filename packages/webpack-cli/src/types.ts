@@ -54,12 +54,8 @@ interface IWebpackCLI {
   tryRequireThenImport<T = unknown>(module: ModuleName, handleError: boolean): Promise<T>;
   getInfoOptions(): WebpackCLIBuiltInOption[];
   getInfoOutput(options: { output: string; additionalPackage: string[] }): Promise<string>;
-  makeCommand(
-    commandOptions: WebpackCLIOptions,
-    options: WebpackCLICommandOptions,
-    action: CommandAction,
-  ): Promise<WebpackCLICommand | undefined>;
-  makeOption(command: WebpackCLICommand, option: WebpackCLIBuiltInOption): void;
+  makeCommand(commandOptions: WebpackCLIOptions): Promise<WebpackCLICommand | undefined>;
+  makeOption(option: WebpackCLIBuiltInFlag): WebpackCLICommandOption[];
   run(
     args: Parameters<WebpackCLICommand["parseOptions"]>[0],
     parseOptions?: ParseOptions,
@@ -78,6 +74,11 @@ interface IWebpackCLI {
   ): Promise<WebpackCompiler>;
   needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
   runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
+}
+
+declare interface WebpackCallback {
+  (err: null | Error, result?: Stats): void;
+  (err: null | Error, result?: MultiStats): void;
 }
 
 interface WebpackCLIColors extends Colors {
@@ -118,17 +119,12 @@ type WebpackCLIMainOption = Pick<
 
 interface WebpackCLIOptions extends CommandOptions {
   name: string;
-  alias: string | string[];
-  description?: string;
-  usage?: string;
+  alias: string[];
+  description: string;
   dependencies?: string[];
-  pkg?: string;
-  argsDescription?: Record<string, string>;
+  options?: Option[];
+  action: CommandAction;
 }
-
-type WebpackCLICommandOptions =
-  | WebpackCLIBuiltInOption[]
-  | (() => Promise<WebpackCLIBuiltInOption[]>);
 
 interface WebpackCLIBuiltInFlag {
   name: string;
@@ -145,17 +141,12 @@ interface WebpackCLIBuiltInFlag {
   describe?: string;
   negatedDescription?: string;
   defaultValue?: string;
-  helpLevel: "minimum" | "verbose";
+  hidden: boolean;
 }
 
 interface WebpackCLIBuiltInOption extends WebpackCLIBuiltInFlag {
-  hidden?: boolean;
   group?: "core";
 }
-
-type WebpackCLIExternalCommandInfo = Pick<WebpackCLIOptions, "name" | "alias" | "description"> & {
-  pkg: string;
-};
 
 /**
  * Webpack dev server
@@ -254,7 +245,7 @@ type PotentialPromise<T> = T | Promise<T>;
 type ModuleName = string;
 type Path = string;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type LogHandler = (value: any) => void;
+type LogHandler = (value: any, raw?: boolean) => void;
 type StringFormatter = (value: string) => string;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -313,7 +304,6 @@ export {
   type CommandAction,
   type CommanderOption,
   type DynamicImport,
-  type EnumValue,
   type FileSystemCacheOptions,
   type IWebpackCLI,
   type ImportLoaderError,
@@ -335,9 +325,7 @@ export {
   type WebpackCLIColors,
   type WebpackCLICommand,
   type WebpackCLICommandOption,
-  type WebpackCLICommandOptions,
   type WebpackCLIConfig,
-  type WebpackCLIExternalCommandInfo,
   type WebpackCLILogger,
   type WebpackCLIMainOption,
   type WebpackCLIOptions,

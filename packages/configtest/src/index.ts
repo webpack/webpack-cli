@@ -4,16 +4,12 @@ const WEBPACK_PACKAGE = process.env.WEBPACK_PACKAGE || "webpack";
 
 class ConfigTestCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
-    await cli.makeCommand(
-      {
-        name: "configtest [config-path]",
-        alias: "t",
-        description: "Validate a webpack configuration.",
-        pkg: "@webpack-cli/configtest",
-        dependencies: [WEBPACK_PACKAGE],
-      },
-      [],
-      async (configPath: string | undefined): Promise<void> => {
+    await cli.makeCommand({
+      name: "configtest [config-path]",
+      alias: ["t"],
+      description: "Validate a webpack configuration.",
+      dependencies: [WEBPACK_PACKAGE],
+      async action(configPath: string | undefined): Promise<void> {
         cli.webpack = await cli.loadWebpack();
 
         const config = await cli.loadConfig(configPath ? { config: [configPath] } : {});
@@ -56,7 +52,7 @@ class ConfigTestCommand {
 
         cli.logger.success("There are no validation errors in the given webpack configuration.");
       },
-    );
+    });
   }
 }
 

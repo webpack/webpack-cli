@@ -107,19 +107,14 @@
     "watchpack"
   ],
   "dictionaries": ["npm", "software-terms"],
+  "useGitignore": true,
   "ignorePaths": [
     "OPTIONS.md",
     "SERVE-OPTIONS-v*.md",
     "**/CHANGELOG.md",
-    "**/package.json",
-    "**/dist/**",
     "**/__snapshots__/**",
-    "**/*.tsbuildinfo",
     "**/*.png.tpl",
-    "**/package-lock.json",
-    "packages/*/lib/**",
-    "node_modules",
-    "coverage",
-    "*.log"
+    "**/package.json",
+    "**/package-lock.json"
   ]
 }
