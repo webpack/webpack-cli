@@ -17,6 +17,3 @@ export default runCLI;
 
 // TODO remove me in the next major release and use `default` export
 module.exports = runCLI;
-
-// @ts-expect-error ...
-if (process.env.npm_lifecycle_script === "tsx") runCLI();
