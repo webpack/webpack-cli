@@ -54,6 +54,10 @@ Options:
   --dependencies <value...>                                                          References to another configuration to depend on.
   --dependencies-reset                                                               Clear all items provided in 'dependencies' configuration. References to other configurations to depend on.
   --no-dev-server                                                                    Negative 'dev-server' option.
+  --devtool-type <value...>                                                          Which asset type should receive this devtool value.
+  --devtool-use <value...>                                                           A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
+  --no-devtool-use                                                                   Negative 'devtool-use' option.
+  --devtool-reset                                                                    Clear all items provided in 'devtool' configuration. A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   -d, --devtool <value>                                                              A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                                                       Negative 'devtool' option.
   --dotenv                                                                           Enable Dotenv plugin with default options.
@@ -306,7 +310,7 @@ Options:
   --no-module-parser-javascript-import                                               Negative 'module-parser-javascript-import' option.
   --module-parser-javascript-import-exports-presence <value>                         Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-import-exports-presence                              Negative 'module-parser-javascript-import-exports-presence' option.
-  --module-parser-javascript-import-meta                                             Enable/disable evaluating import.meta.
+  --module-parser-javascript-import-meta [value]                                     Enable/disable evaluating import.meta. Set to 'preserve-unknown' to preserve unknown properties for runtime evaluation.
   --no-module-parser-javascript-import-meta                                          Negative 'module-parser-javascript-import-meta' option.
   --module-parser-javascript-import-meta-context                                     Enable/disable evaluating import.meta.webpackContext.
   --no-module-parser-javascript-import-meta-context                                  Negative 'module-parser-javascript-import-meta-context' option.
@@ -386,7 +390,7 @@ Options:
   --no-module-parser-javascript-auto-import                                          Negative 'module-parser-javascript-auto-import' option.
   --module-parser-javascript-auto-import-exports-presence <value>                    Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-auto-import-exports-presence                         Negative 'module-parser-javascript-auto-import-exports-presence' option.
-  --module-parser-javascript-auto-import-meta                                        Enable/disable evaluating import.meta.
+  --module-parser-javascript-auto-import-meta [value]                                Enable/disable evaluating import.meta. Set to 'preserve-unknown' to preserve unknown properties for runtime evaluation.
   --no-module-parser-javascript-auto-import-meta                                     Negative 'module-parser-javascript-auto-import-meta' option.
   --module-parser-javascript-auto-import-meta-context                                Enable/disable evaluating import.meta.webpackContext.
   --no-module-parser-javascript-auto-import-meta-context                             Negative 'module-parser-javascript-auto-import-meta-context' option.
@@ -466,7 +470,7 @@ Options:
   --no-module-parser-javascript-dynamic-import                                       Negative 'module-parser-javascript-dynamic-import' option.
   --module-parser-javascript-dynamic-import-exports-presence <value>                 Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-dynamic-import-exports-presence                      Negative 'module-parser-javascript-dynamic-import-exports-presence' option.
-  --module-parser-javascript-dynamic-import-meta                                     Enable/disable evaluating import.meta.
+  --module-parser-javascript-dynamic-import-meta [value]                             Enable/disable evaluating import.meta. Set to 'preserve-unknown' to preserve unknown properties for runtime evaluation.
   --no-module-parser-javascript-dynamic-import-meta                                  Negative 'module-parser-javascript-dynamic-import-meta' option.
   --module-parser-javascript-dynamic-import-meta-context                             Enable/disable evaluating import.meta.webpackContext.
   --no-module-parser-javascript-dynamic-import-meta-context                          Negative 'module-parser-javascript-dynamic-import-meta-context' option.
@@ -544,7 +548,7 @@ Options:
   --no-module-parser-javascript-esm-import                                           Negative 'module-parser-javascript-esm-import' option.
   --module-parser-javascript-esm-import-exports-presence <value>                     Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-esm-import-exports-presence                          Negative 'module-parser-javascript-esm-import-exports-presence' option.
-  --module-parser-javascript-esm-import-meta                                         Enable/disable evaluating import.meta.
+  --module-parser-javascript-esm-import-meta [value]                                 Enable/disable evaluating import.meta. Set to 'preserve-unknown' to preserve unknown properties for runtime evaluation.
   --no-module-parser-javascript-esm-import-meta                                      Negative 'module-parser-javascript-esm-import-meta' option.
   --module-parser-javascript-esm-import-meta-context                                 Enable/disable evaluating import.meta.webpackContext.
   --no-module-parser-javascript-esm-import-meta-context                              Negative 'module-parser-javascript-esm-import-meta-context' option.
@@ -919,6 +923,10 @@ Options:
   --resolve-roots-reset                                                              Clear all items provided in 'resolve.roots' configuration. A list of directories in which requests that are server-relative URLs (starting with '/') are resolved.
   --resolve-symlinks                                                                 Enable resolving symlinks to the original location.
   --no-resolve-symlinks                                                              Negative 'resolve-symlinks' option.
+  --resolve-tsconfig [value]                                                         TypeScript config for paths mapping. Can be `false` (disabled), `true` (use default `tsconfig.json`), a string path to `tsconfig.json`, or an object with `configFile` and `references` options.
+  --no-resolve-tsconfig                                                              Negative 'resolve-tsconfig' option.
+  --resolve-tsconfig-config-file <value>                                             A path to the tsconfig file.
+  --resolve-tsconfig-references <value>                                              References to other tsconfig files. 'auto' inherits from TypeScript config, or an array of relative/absolute paths.
   --resolve-unsafe-cache                                                             Enable caching of successfully resolved requests (cache entries are not revalidated).
   --no-resolve-unsafe-cache                                                          Negative 'resolve-unsafe-cache' option.
   --resolve-use-sync-file-system-calls                                               Use synchronous filesystem calls for the resolver.
@@ -971,6 +979,10 @@ Options:
   --resolve-loader-roots-reset                                                       Clear all items provided in 'resolveLoader.roots' configuration. A list of directories in which requests that are server-relative URLs (starting with '/') are resolved.
   --resolve-loader-symlinks                                                          Enable resolving symlinks to the original location.
   --no-resolve-loader-symlinks                                                       Negative 'resolve-loader-symlinks' option.
+  --resolve-loader-tsconfig [value]                                                  TypeScript config for paths mapping. Can be `false` (disabled), `true` (use default `tsconfig.json`), a string path to `tsconfig.json`, or an object with `configFile` and `references` options.
+  --no-resolve-loader-tsconfig                                                       Negative 'resolve-loader-tsconfig' option.
+  --resolve-loader-tsconfig-config-file <value>                                      A path to the tsconfig file.
+  --resolve-loader-tsconfig-references <value>                                       References to other tsconfig files. 'auto' inherits from TypeScript config, or an array of relative/absolute paths.
   --resolve-loader-unsafe-cache                                                      Enable caching of successfully resolved requests (cache entries are not revalidated).
   --no-resolve-loader-unsafe-cache                                                   Negative 'resolve-loader-unsafe-cache' option.
   --resolve-loader-use-sync-file-system-calls                                        Use synchronous filesystem calls for the resolver.
