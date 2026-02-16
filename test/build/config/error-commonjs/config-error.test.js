@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../../utils/test-utils");
+const { normalizeStderr, run } = require("../../../utils/test-utils");
 
 describe("config with errors", () => {
   it("should throw error with invalid configuration", async () => {
@@ -23,7 +23,7 @@ describe("config with errors", () => {
     ]);
 
     expect(exitCode).toBe(2);
-    expect(stderr).toContain("SyntaxError: Unexpected token");
+    expect(normalizeStderr(stderr)).toMatchSnapshot();
     expect(stdout).toBeFalsy();
   });
 });

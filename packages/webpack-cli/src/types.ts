@@ -1,4 +1,3 @@
-import { type stringifyChunked } from "@discoveryjs/json-ext";
 import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
 import { type prepare } from "rechoir";
 import {
@@ -32,6 +31,7 @@ declare interface WebpackCallback {
 }
 
 // TODO remove me in the next major release, we don't need extra interface
+// TODO also revisit all methods - remove unused or make private
 interface IWebpackCLI {
   colors: WebpackCLIColors;
   logger: WebpackCLILogger;
@@ -287,10 +287,6 @@ interface Rechoir {
   prepare: typeof prepare;
 }
 
-interface JsonExt {
-  stringifyChunked: typeof stringifyChunked;
-}
-
 interface RechoirError extends Error {
   failures: RechoirError[];
   error: Error;
@@ -318,7 +314,6 @@ export {
   type IWebpackCLI,
   type ImportLoaderError,
   type Instantiable,
-  type JsonExt,
   type LoadableWebpackConfiguration,
   type ModuleName,
   type PackageInstallOptions,

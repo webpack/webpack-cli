@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`config with invalid array syntax should throw syntax error and exit with non-zero exit code when even 1 object has syntax error 1`] = `
+"[webpack-cli] Failed to load '<cwd>/test/build/config/error-array/webpack.config.js' config
+▶ ESM (\`import\`) failed:
+  Unexpected token ';'
+
+▶ CJS (\`require\`) failed:
+  Unexpected token ';'"
+`;

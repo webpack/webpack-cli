@@ -2,15 +2,11 @@ const { run } = require("../../../utils/test-utils");
 
 describe("webpack cli", () => {
   it("should support mjs config format", async () => {
-    const { exitCode, stderr } = await run(__dirname, ["-c", "webpack.config.mjs"], {
-      env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
-    });
+    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "webpack.config.mjs"]);
 
-    if (/Error: Not supported/.test(stderr)) {
-      expect(exitCode).toBe(2);
-    } else {
-      expect(exitCode).toBe(2);
-      expect(stderr).toMatch(/Unable to find default export./);
-    }
+    // Exit `1` because entry was not found
+    expect(exitCode).toBe(1);
+    expect(stderr).toMatch(/Default export is missing or nullish at/);
+    expect(stdout).toBeTruthy();
   });
 });
