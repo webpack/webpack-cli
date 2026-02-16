@@ -1868,11 +1868,17 @@ class WebpackCLI implements IWebpackCLI {
 
         throw new ConfigurationLoadingError([loadingError, err]);
       }
+    }
 
-      // To handle `babel`/`module.exports.default = {};`
-      if (pkg && typeof pkg === "object" && "default" in pkg) {
-        pkg = pkg.default || {};
-      }
+    // To handle `babel`/`module.exports.default = {};`
+    if (pkg && typeof pkg === "object" && "default" in pkg) {
+      pkg = pkg.default || {};
+    }
+
+    if (!pkg) {
+      this.logger.warn(
+        `Default export is missing or nullish at (from ${configPath}). Webpack will run with an empty configuration. Please double-check that this is what you want. If you want to run webpack with an empty config, \`export {}\`/\`module.exports = {};\` to remove this warning.`,
+      );
     }
 
     return pkg || {};
@@ -1898,11 +1904,6 @@ class WebpackCLI implements IWebpackCLI {
           this.logger.error(error);
         }
 
-        process.exit(2);
-      }
-
-      if (!options) {
-        this.logger.error(`Failed to load '${configPath}' config. Unable to find default export.`);
         process.exit(2);
       }
 
