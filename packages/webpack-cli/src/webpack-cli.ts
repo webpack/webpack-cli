@@ -84,6 +84,8 @@ interface Information {
   npmPackages?: string | string[];
 }
 
+type LoadConfigOption = PotentialPromise<Configuration>;
+
 class ConfigurationLoadingError extends Error {
   name = "ConfigurationLoadingError";
 
@@ -1807,20 +1809,20 @@ class WebpackCLI implements IWebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
-  async #loadConfigurationFile<T>(configPath: string, disableInterpret = false): Promise<T> {
-    let pkg;
+  async #loadConfigurationFile(
+    configPath: string,
+    disableInterpret = false,
+  ): Promise<LoadConfigOption | LoadConfigOption[] | undefined> {
+    let pkg: LoadConfigOption | LoadConfigOption[] | undefined;
 
     let loadingError;
 
     try {
       // eslint-disable-next-line no-eval
-      pkg = await eval(`import("${configPath}")`);
+      pkg = (await eval(`import("${configPath}")`)).default;
+      return pkg;
     } catch (err) {
-      if (this.isValidationError(err)) {
-        throw err;
-      }
-
-      if (process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
+      if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
         throw err;
       }
 
@@ -1867,10 +1869,11 @@ class WebpackCLI implements IWebpackCLI {
 
         throw new ConfigurationLoadingError([loadingError, err]);
       }
-    }
 
-    if (pkg && typeof pkg === "object" && "default" in pkg) {
-      pkg = pkg.default || {};
+      // To handle `babel`/`module.exports.default = {};`
+      if (pkg && typeof pkg === "object" && "default" in pkg) {
+        pkg = pkg.default || {};
+      }
     }
 
     return pkg || {};
@@ -1884,15 +1887,10 @@ class WebpackCLI implements IWebpackCLI {
       configPath: string,
       argv: Argv = {},
     ): Promise<{ options: Configuration | Configuration[]; path: string }> => {
-      let options: LoadableWebpackConfiguration | LoadableWebpackConfiguration[];
-
-      type LoadConfigOption = PotentialPromise<Configuration>;
+      let options: LoadableWebpackConfiguration | LoadableWebpackConfiguration[] | undefined;
 
       try {
-        options = await this.#loadConfigurationFile<LoadConfigOption | LoadConfigOption[]>(
-          configPath,
-          disableInterpret,
-        );
+        options = await this.#loadConfigurationFile(configPath, disableInterpret);
       } catch (error) {
         if (error instanceof ConfigurationLoadingError) {
           this.logger.error(`Failed to load '${configPath}' config\n${error.message}`);

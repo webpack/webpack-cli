@@ -6,12 +6,11 @@ exports[`'configtest' command with the configuration path option should throw er
 
 exports[`'configtest' command with the configuration path option should throw syntax error: stderr 1`] = `
 "[webpack-cli] Failed to load '<cwd>/test/configtest/with-config-path/syntax-error.config.js' config
-[webpack-cli] <cwd>/test/configtest/with-config-path/syntax-error.config.js:5
-    target: 'node';
-                  ^
+▶ ESM (\`import\`) failed:
+  Unexpected token ';'
 
-SyntaxError: <error-message>
-    at stack"
+▶ CJS (\`require\`) failed:
+  Unexpected token ';'"
 `;
 
 exports[`'configtest' command with the configuration path option should throw syntax error: stdout 1`] = `""`;

@@ -15,8 +15,6 @@ describe("webpack cli", () => {
       {
         env: {
           NODE_NO_WARNINGS: 1,
-          // Due nyc logic
-          WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true,
         },
         // Fallback to `ts-node/esm` for old Node.js versions
         nodeOptions: major >= 24 ? [] : ["--experimental-loader=ts-node/esm"],
