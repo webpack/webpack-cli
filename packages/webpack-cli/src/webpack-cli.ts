@@ -1815,6 +1815,10 @@ class WebpackCLI implements IWebpackCLI {
         throw err;
       }
 
+      if (process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
+        throw err;
+      }
+
       loadingError = err;
     }
 
