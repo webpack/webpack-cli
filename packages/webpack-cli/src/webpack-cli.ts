@@ -1807,14 +1807,14 @@ class WebpackCLI implements IWebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
-  async #loadConfigurationFile<T>(module: ModuleName, disableInterpret = false): Promise<T> {
+  async #loadConfigurationFile<T>(configPath: string, disableInterpret = false): Promise<T> {
     let pkg;
 
     let loadingError;
 
     try {
       // eslint-disable-next-line no-eval
-      pkg = await eval(`import("${module}")`);
+      pkg = await eval(`import("${configPath}")`);
     } catch (err) {
       if (this.isValidationError(err)) {
         throw err;
@@ -1842,10 +1842,10 @@ class WebpackCLI implements IWebpackCLI {
         const rechoir: Rechoir = (await import("rechoir")).default;
 
         try {
-          rechoir.prepare(extensions, module);
+          rechoir.prepare(extensions, configPath);
         } catch (error) {
           if ((error as RechoirError)?.failures) {
-            this.logger.error(`Unable load '${module}'`);
+            this.logger.error(`Unable load '${configPath}'`);
             this.logger.error((error as RechoirError).message);
             for (const failure of (error as RechoirError).failures) {
               this.logger.error(failure.error.message);
@@ -1859,7 +1859,7 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       try {
-        pkg = require(module);
+        pkg = require(configPath);
       } catch (err) {
         if (this.isValidationError(err)) {
           throw err;
