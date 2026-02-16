@@ -1872,7 +1872,7 @@ class WebpackCLI implements IWebpackCLI {
 
     // To handle `babel`/`module.exports.default = {};`
     if (pkg && typeof pkg === "object" && "default" in pkg) {
-      pkg = pkg.default || {};
+      pkg = pkg.default as LoadConfigOption | LoadConfigOption[] | undefined;
     }
 
     if (!pkg) {
