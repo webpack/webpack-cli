@@ -10,14 +10,11 @@ import {
   type WebpackError,
   default as webpack,
 } from "webpack";
-import type webpackMerge from "webpack-merge";
 
-import { type CLIPlugin as CLIPluginClass } from "./plugins/cli-plugin.js";
 import {
   type Argument,
   type Argv,
   type BasicPrimitive,
-  type CLIPluginOptions,
   type CallableWebpackConfiguration,
   type CommandAction,
   type DynamicImport,
@@ -26,7 +23,6 @@ import {
   type IWebpackCLI,
   type ImportLoaderError,
   type Instantiable,
-  type JsonExt,
   type LoadableWebpackConfiguration,
   type ModuleName,
   type PackageInstallOptions,
@@ -81,6 +77,23 @@ interface Information {
   System?: string[];
   npmGlobalPackages?: string[];
   npmPackages?: string | string[];
+}
+
+class ConfigurationLoadingError extends Error {
+  name = "ConfigurationLoadingError";
+
+  constructor(errors: [unknown, unknown]) {
+    const message1 = errors[0] instanceof Error ? errors[0].message : String(errors[0]);
+    const message2 = util.stripVTControlCharacters(
+      errors[1] instanceof Error ? errors[1].message : String(errors[1]),
+    );
+    const message =
+      `▶ ESM (\`import\`) failed:\n  ${message1.split("\n").join("\n  ")}\n\n▶ CJS (\`require\`) failed:\n  ${message2.split("\n").join("\n  ")}`.trim();
+
+    super(message);
+
+    this.stack = "";
+  }
 }
 
 class WebpackCLI implements IWebpackCLI {
@@ -348,7 +361,7 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     if (needInstall) {
-      const { sync } = require("cross-spawn");
+      const { sync } = await import("cross-spawn");
 
       try {
         sync(packageManager, commandArguments, { stdio: "inherit" });
@@ -364,6 +377,7 @@ class WebpackCLI implements IWebpackCLI {
     process.exit(2);
   }
 
+  // TODO remove me in the next major release
   async tryRequireThenImport<T>(
     module: ModuleName,
     handleError = true,
@@ -539,7 +553,7 @@ class WebpackCLI implements IWebpackCLI {
 
     defaultInformation.npmPackages = `{${defaultPackages.map((item) => `*${item}*`).join(",")}}`;
 
-    const envinfo = await this.tryRequireThenImport<typeof import("envinfo")>("envinfo", false);
+    const envinfo = await import("envinfo");
 
     let info = await envinfo.run(defaultInformation, envinfoConfig);
 
@@ -1094,8 +1108,8 @@ class WebpackCLI implements IWebpackCLI {
     return options;
   }
 
-  async loadWebpack(handleError = true) {
-    return this.tryRequireThenImport<typeof webpack>(WEBPACK_PACKAGE, handleError);
+  async loadWebpack(): Promise<typeof webpack> {
+    return require(WEBPACK_PACKAGE);
   }
 
   async run(args: Parameters<WebpackCLICommand["parseOptions"]>[0], parseOptions: ParseOptions) {
@@ -1264,7 +1278,7 @@ class WebpackCLI implements IWebpackCLI {
         let loadedCommand;
 
         try {
-          loadedCommand = await this.tryRequireThenImport<Instantiable<() => void>>(pkg, false);
+          loadedCommand = (await import(pkg)) as Instantiable<() => void>;
         } catch {
           // Ignore, command is not installed
 
@@ -1325,10 +1339,10 @@ class WebpackCLI implements IWebpackCLI {
               process.exit(2);
             }
 
-            const levenshtein = require("fastest-levenshtein");
+            const { distance } = await import("fastest-levenshtein");
 
             for (const option of (command as WebpackCLICommand).options) {
-              if (!option.hidden && levenshtein.distance(name, option.long?.slice(2)) < 3) {
+              if (!option.hidden && distance(name, option.long?.slice(2) as string) < 3) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
             }
@@ -1761,11 +1775,10 @@ class WebpackCLI implements IWebpackCLI {
         } else {
           this.logger.error(`Unknown command or entry '${operand}'`);
 
-          const levenshtein = require("fastest-levenshtein");
+          const { distance } = await import("fastest-levenshtein");
 
           const found = knownCommands.find(
-            (commandOptions) =>
-              levenshtein.distance(operand, getCommandName(commandOptions.name)) < 3,
+            (commandOptions) => distance(operand, getCommandName(commandOptions.name)) < 3,
           );
 
           if (found) {
@@ -1789,33 +1802,41 @@ class WebpackCLI implements IWebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
-  async loadConfig(options: Partial<WebpackDevServerOptions>) {
-    const disableInterpret =
-      typeof options.disableInterpret !== "undefined" && options.disableInterpret;
+  async #loadConfigurationFile<T>(module: ModuleName, disableInterpret = false): Promise<T> {
+    let pkg;
 
-    const interpret = require("interpret");
+    let loadingError;
 
-    const loadConfigByPath = async (
-      configPath: string,
-      argv: Argv = {},
-    ): Promise<{ options: Configuration | Configuration[]; path: string }> => {
-      const ext = path.extname(configPath).toLowerCase();
-      let interpreted = Object.keys(interpret.jsVariants).find((variant) => variant === ext);
-      // Fallback `.cts` to `.ts`
-      // TODO implement good `.mts` support after https://github.com/gulpjs/rechoir/issues/43
-      // For ESM and `.mts` you need to use: 'NODE_OPTIONS="--loader ts-node/esm" webpack-cli --config ./webpack.config.mts'
+    try {
+      // eslint-disable-next-line no-eval
+      pkg = await eval(`import("${module}")`);
+    } catch (err) {
+      if (this.isValidationError(err)) {
+        throw err;
+      }
+
+      loadingError = err;
+    }
+
+    // Fallback logic when we can't use `import(...)`
+    if (loadingError) {
+      const { jsVariants, extensions } = await import("interpret");
+      const ext = path.extname(module).toLowerCase();
+
+      let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
+
       if (!interpreted && ext.endsWith(".cts")) {
-        interpreted = interpret.jsVariants[".ts"];
+        interpreted = jsVariants[".ts"] as string;
       }
 
       if (interpreted && !disableInterpret) {
-        const rechoir: Rechoir = require("rechoir");
+        const rechoir: Rechoir = (await import("rechoir")).default;
 
         try {
-          rechoir.prepare(interpret.extensions, configPath);
+          rechoir.prepare(extensions, module);
         } catch (error) {
           if ((error as RechoirError)?.failures) {
-            this.logger.error(`Unable load '${configPath}'`);
+            this.logger.error(`Unable load '${module}'`);
             this.logger.error((error as RechoirError).message);
             for (const failure of (error as RechoirError).failures) {
               this.logger.error(failure.error.message);
@@ -1823,41 +1844,51 @@ class WebpackCLI implements IWebpackCLI {
             this.logger.error("Please install one of them");
             process.exit(2);
           }
-
           this.logger.error(error);
           process.exit(2);
         }
       }
 
+      try {
+        pkg = require(module);
+      } catch (err) {
+        if (this.isValidationError(err)) {
+          throw err;
+        }
+
+        throw new ConfigurationLoadingError([loadingError, err]);
+      }
+    }
+
+    if (pkg && typeof pkg === "object" && "default" in pkg) {
+      pkg = pkg.default || {};
+    }
+
+    return pkg || {};
+  }
+
+  async loadConfig(options: Partial<WebpackDevServerOptions>) {
+    const disableInterpret =
+      typeof options.disableInterpret !== "undefined" && options.disableInterpret;
+
+    const loadConfigByPath = async (
+      configPath: string,
+      argv: Argv = {},
+    ): Promise<{ options: Configuration | Configuration[]; path: string }> => {
       let options: LoadableWebpackConfiguration | LoadableWebpackConfiguration[];
 
       type LoadConfigOption = PotentialPromise<Configuration>;
 
-      let moduleType: "unknown" | "commonjs" | "esm" = "unknown";
-
-      switch (ext) {
-        case ".cjs":
-        case ".cts":
-          moduleType = "commonjs";
-          break;
-        case ".mjs":
-        case ".mts":
-          moduleType = "esm";
-          break;
-      }
-
       try {
-        options = await this.tryRequireThenImport<LoadConfigOption | LoadConfigOption[]>(
+        options = await this.#loadConfigurationFile<LoadConfigOption | LoadConfigOption[]>(
           configPath,
-          false,
-          moduleType,
+          disableInterpret,
         );
       } catch (error) {
-        this.logger.error(`Failed to load '${configPath}' config`);
-
-        if (this.isValidationError(error)) {
-          this.logger.error(error.message);
+        if (error instanceof ConfigurationLoadingError) {
+          this.logger.error(`Failed to load '${configPath}' config\n${error.message}`);
         } else {
+          this.logger.error(`Failed to load '${configPath}' config`);
           this.logger.error(error);
         }
 
@@ -1950,6 +1981,7 @@ class WebpackCLI implements IWebpackCLI {
         }
       }
     } else {
+      const interpret = await import("interpret");
       // Prioritize popular extensions first to avoid unnecessary fs calls
       const extensions = new Set([
         ".js",
@@ -2035,7 +2067,7 @@ class WebpackCLI implements IWebpackCLI {
         ),
       );
 
-      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
+      const { merge } = await import("webpack-merge");
       const loadedOptions = loadedConfigs.flatMap((config) => config.options);
 
       if (loadedOptions.length > 0) {
@@ -2108,7 +2140,7 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     if (options.merge) {
-      const merge = await this.tryRequireThenImport<typeof webpackMerge>("webpack-merge");
+      const { merge } = await import("webpack-merge");
 
       // we can only merge when there are multiple configurations
       // either by passing multiple configs by flags or passing a
@@ -2161,10 +2193,7 @@ class WebpackCLI implements IWebpackCLI {
       process.exit(2);
     }
 
-    const CLIPlugin =
-      await this.tryRequireThenImport<Instantiable<CLIPluginClass, [CLIPluginOptions]>>(
-        "./plugins/cli-plugin",
-      );
+    const CLIPlugin = (await import("./plugins/cli-plugin.js")).default;
 
     const internalBuildConfig = (item: Configuration) => {
       const originalWatchValue = item.watch;
@@ -2407,9 +2436,9 @@ class WebpackCLI implements IWebpackCLI {
     let createStringifyChunked: typeof stringifyChunked;
 
     if (options.json) {
-      const jsonExt = await this.tryRequireThenImport<JsonExt>("@discoveryjs/json-ext");
+      const { stringifyChunked } = await import("@discoveryjs/json-ext");
 
-      createStringifyChunked = jsonExt.stringifyChunked;
+      createStringifyChunked = stringifyChunked;
     }
 
     const callback: WebpackCallback = (error, stats): void => {
