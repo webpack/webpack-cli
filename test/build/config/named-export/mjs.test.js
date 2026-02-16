@@ -4,6 +4,7 @@ describe("webpack cli", () => {
   it("should support mjs config format", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "webpack.config.mjs"]);
 
+    // Exit `1` because entry was not found
     expect(exitCode).toBe(1);
     expect(stderr).toMatch(/Default export is missing or nullish at/);
     expect(stdout).toBeTruthy();

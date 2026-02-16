@@ -11,7 +11,7 @@ describe("config flag with undefined default export config file", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(stderr).toMatch(/Default export is missing or nullish at/);
     expect(stdout).toBeTruthy();
   });
 });

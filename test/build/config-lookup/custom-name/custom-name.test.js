@@ -16,21 +16,13 @@ describe("custom config file", () => {
   });
 
   it("should work with esm format", async () => {
-    const { exitCode, stderr, stdout } = await run(
-      __dirname,
-      ["--config", resolve(__dirname, "config.webpack.mjs")],
-      {
-        env: { WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG: true },
-      },
-    );
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "--config",
+      resolve(__dirname, "config.webpack.mjs"),
+    ]);
 
-    if (/Error: Not supported/.test(stderr)) {
-      expect(exitCode).toBe(2);
-      expect(stdout).toBeFalsy();
-    } else {
-      expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
-      expect(stdout).toBeTruthy();
-    }
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toBeTruthy();
   });
 });
