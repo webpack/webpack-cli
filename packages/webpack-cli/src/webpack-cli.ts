@@ -1830,7 +1830,7 @@ class WebpackCLI implements IWebpackCLI {
     // Fallback logic when we can't use `import(...)`
     if (loadingError) {
       const { jsVariants, extensions } = await import("interpret");
-      const ext = path.extname(module).toLowerCase();
+      const ext = path.extname(configPath).toLowerCase();
 
       let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
 
