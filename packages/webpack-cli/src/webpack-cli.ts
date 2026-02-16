@@ -69,6 +69,11 @@ const WEBPACK_DEV_SERVER_PACKAGE = WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM
   : "webpack-dev-server";
 
 const EXIT_SIGNALS = ["SIGINT", "SIGTERM"];
+const DEFAULT_CONFIGURATION_FILES = [
+  "webpack.config",
+  ".webpack/webpack.config",
+  ".webpack/webpackfile",
+];
 
 interface Information {
   Binaries?: string[];
@@ -1278,7 +1283,7 @@ class WebpackCLI implements IWebpackCLI {
         let loadedCommand;
 
         try {
-          loadedCommand = (await import(pkg)) as Instantiable<() => void>;
+          loadedCommand = await this.tryRequireThenImport<Instantiable<() => void>>(pkg, false);
         } catch {
           // Ignore, command is not installed
 
@@ -1998,7 +2003,7 @@ class WebpackCLI implements IWebpackCLI {
       ]);
       // Order defines the priority, in decreasing order
       const defaultConfigFiles = new Set(
-        ["webpack.config", ".webpack/webpack.config", ".webpack/webpackfile"].flatMap((filename) =>
+        DEFAULT_CONFIGURATION_FILES.flatMap((filename) =>
           [...extensions].map((ext) => path.resolve(filename + ext)),
         ),
       );
