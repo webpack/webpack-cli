@@ -1306,7 +1306,7 @@ class WebpackCLI implements IWebpackCLI {
     };
 
     // Register own exit
-    this.program.exitOverride(async (error) => {
+    this.program.exitOverride((error) => {
       if (error.exitCode === 0) {
         process.exit(0);
       }
@@ -1344,7 +1344,7 @@ class WebpackCLI implements IWebpackCLI {
               process.exit(2);
             }
 
-            const { distance } = await import("fastest-levenshtein");
+            const { distance } = require("fastest-levenshtein");
 
             for (const option of (command as WebpackCLICommand).options) {
               if (!option.hidden && distance(name, option.long?.slice(2) as string) < 3) {
