@@ -1819,7 +1819,7 @@ class WebpackCLI implements IWebpackCLI {
 
     try {
       // eslint-disable-next-line no-eval
-      pkg = (await eval(`import("${configPath}")`)).default;
+      pkg = (await eval(`import("${pathToFileURL(configPath)}")`)).default;
     } catch (err) {
       if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
         throw err;
