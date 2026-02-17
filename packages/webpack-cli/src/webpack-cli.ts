@@ -1713,6 +1713,9 @@ class WebpackCLI implements IWebpackCLI {
     this.program.option("-h, --help [verbose]", "Display help for commands and options.");
 
     // Basic command for lazy loading other commands
+    // By default we don't load any commands and options, commands and options registration takes a lot of time instead we load them lazily
+    // That is why we need to set `allowUnknownOption` to `true`, otherwise commander will not work
+    this.program.allowUnknownOption(true);
     this.program.arguments("[cmd] [extra...]").action(async (_cmd, _extra, options) => {
       const { operands, unknown } = this.program.parseOptions(program.args);
       const defaultCommandNameToRun = WebpackCLI.#commands.build.rawName;
