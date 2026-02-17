@@ -6,6 +6,7 @@ class ConfigTestCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
     await cli.makeCommand(
       {
+        rawName: "configtest",
         name: "configtest [config-path]",
         alias: "t",
         description: "Validate a webpack configuration.",
