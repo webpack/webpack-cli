@@ -24,6 +24,7 @@ class ServeCommand {
 
     await cli.makeCommand(
       {
+        rawName: "serve",
         name: "serve [entries...]",
         alias: ["server", "s"],
         description: "Run the webpack dev server and watch for source file changes while serving.",

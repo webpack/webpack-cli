@@ -4,6 +4,7 @@ class InfoCommand {
   async apply(cli: IWebpackCLI): Promise<void> {
     await cli.makeCommand(
       {
+        rawName: "info",
         name: "info",
         alias: "i",
         description: "Outputs information about your system.",
