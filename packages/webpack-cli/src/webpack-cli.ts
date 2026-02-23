@@ -1233,12 +1233,19 @@ class WebpackCLI implements IWebpackCLI {
       this.makeCommand(WebpackCLI.#commands.help, [], () => {
         // Stub for the `help` command
       });
-    } else if (
-      this.#isCommand(commandName, WebpackCLI.#commands.version) ||
-      this.#isCommand(commandName, WebpackCLI.#commands.info)
-    ) {
+    } else if (this.#isCommand(commandName, WebpackCLI.#commands.version)) {
       this.makeCommand(
         WebpackCLI.#commands.version,
+        this.getInfoOptions(),
+        async (options: { output: string; additionalPackage: string[] }) => {
+          const info = await this.getInfoOutput(options);
+
+          this.logger.raw(info);
+        },
+      );
+    } else if (this.#isCommand(commandName, WebpackCLI.#commands.info)) {
+      this.makeCommand(
+        WebpackCLI.#commands.info,
         this.getInfoOptions(),
         async (options: { output: string; additionalPackage: string[] }) => {
           const info = await this.getInfoOutput(options);
