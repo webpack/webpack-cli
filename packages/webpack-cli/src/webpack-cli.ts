@@ -109,7 +109,7 @@ class WebpackCLI implements IWebpackCLI {
 
   isColorSupportChanged: boolean | undefined;
 
-  builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
+  #builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
 
   webpack!: typeof webpack;
 
@@ -896,8 +896,8 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   getBuiltInOptions(): WebpackCLIBuiltInOption[] {
-    if (this.builtInOptionsCache) {
-      return this.builtInOptionsCache;
+    if (this.#builtInOptionsCache) {
+      return this.#builtInOptionsCache;
     }
 
     const builtInFlags: WebpackCLIBuiltInFlag[] = [
@@ -1120,7 +1120,7 @@ class WebpackCLI implements IWebpackCLI {
       };
     }
 
-    this.builtInOptionsCache = options;
+    this.#builtInOptionsCache = options;
 
     return options;
   }
@@ -1620,10 +1620,10 @@ class WebpackCLI implements IWebpackCLI {
     process.exit(0);
   }
 
-  async run(args: Parameters<WebpackCLICommand["parseOptions"]>[0], parseOptions: ParseOptions) {
+  async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const cli: IWebpackCLI = this;
+    const self: IWebpackCLI = this;
 
     // Register own exit
     this.program.exitOverride((error) => {
@@ -1687,15 +1687,15 @@ class WebpackCLI implements IWebpackCLI {
     this.program.on("option:color", function color(this: WebpackCLICommand) {
       const { color } = this.opts();
 
-      cli.isColorSupportChanged = color;
-      cli.colors = cli.createColors(color);
+      self.isColorSupportChanged = color;
+      self.colors = self.createColors(color);
     });
     this.program.option("--no-color", "Disable colors on console.");
     this.program.on("option:no-color", function noColor(this: WebpackCLICommand) {
       const { color } = this.opts();
 
-      cli.isColorSupportChanged = color;
-      cli.colors = cli.createColors(color);
+      self.isColorSupportChanged = color;
+      self.colors = self.createColors(color);
     });
 
     this.program.option(
@@ -1716,7 +1716,7 @@ class WebpackCLI implements IWebpackCLI {
     // By default we don't load any commands and options, commands and options registration takes a lot of time instead we load them lazily
     // That is why we need to set `allowUnknownOption` to `true`, otherwise commander will not work
     this.program.allowUnknownOption(true);
-    this.program.arguments("[cmd] [extra...]").action(async (_cmd, _extra, options) => {
+    this.program.action(async (options) => {
       const { operands, unknown } = this.program.parseOptions(program.args);
       const defaultCommandNameToRun = WebpackCLI.#commands.build.rawName;
       const hasOperand = typeof operands[0] !== "undefined";
@@ -1814,7 +1814,7 @@ class WebpackCLI implements IWebpackCLI {
         );
       }
 
-      command.parse([...commandOperands, ...unknown], { from: "user" });
+      await command.parseAsync([...commandOperands, ...unknown], { from: "user" });
     });
 
     await this.program.parseAsync(args, parseOptions);

@@ -37,7 +37,6 @@ interface IWebpackCLI {
   logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;
   webpack: typeof webpack;
-  builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
   program: WebpackCLICommand;
   isMultipleCompiler(compiler: WebpackCompiler): compiler is MultiCompiler;
   isPromise<T>(value: Promise<T>): value is Promise<T>;
