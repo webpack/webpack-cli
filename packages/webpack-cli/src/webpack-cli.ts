@@ -1153,6 +1153,13 @@ class WebpackCLI implements IWebpackCLI {
       description:
         "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
     },
+    info: {
+      rawName: "info",
+      name: "info",
+      alias: "i",
+      usage: "[options]",
+      description: "Outputs information about your system.",
+    },
     help: {
       rawName: "help",
       name: "help [command] [option]",
@@ -1165,13 +1172,6 @@ class WebpackCLI implements IWebpackCLI {
       name: "serve [entries...]",
       alias: ["server", "s"],
       pkg: "@webpack-cli/serve",
-    },
-    info: {
-      rawName: "info",
-      external: true,
-      name: "info",
-      alias: "i",
-      pkg: "@webpack-cli/info",
     },
     configtest: {
       rawName: "configtest",
@@ -1236,6 +1236,16 @@ class WebpackCLI implements IWebpackCLI {
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.version)) {
       this.makeCommand(
         WebpackCLI.#commands.version,
+        this.getInfoOptions(),
+        async (options: { output: string; additionalPackage: string[] }) => {
+          const info = await this.getInfoOutput(options);
+
+          this.logger.raw(info);
+        },
+      );
+    } else if (this.#isCommand(commandName, WebpackCLI.#commands.info)) {
+      this.makeCommand(
+        WebpackCLI.#commands.info,
         this.getInfoOptions(),
         async (options: { output: string; additionalPackage: string[] }) => {
           const info = await this.getInfoOutput(options);

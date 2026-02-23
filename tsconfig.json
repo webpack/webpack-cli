@@ -22,9 +22,6 @@
   },
   "references": [
     {
-      "path": "packages/info"
-    },
-    {
       "path": "packages/serve"
     },
     {
