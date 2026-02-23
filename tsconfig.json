@@ -22,9 +22,6 @@
   },
   "references": [
     {
-      "path": "packages/configtest"
-    },
-    {
       "path": "packages/info"
     },
     {
