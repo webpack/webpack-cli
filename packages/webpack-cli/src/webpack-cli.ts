@@ -1246,7 +1246,7 @@ class WebpackCLI implements IWebpackCLI {
         });
       };
 
-      this.makeCommand(
+      await this.makeCommand(
         WebpackCLI.#commands.serve,
         async () => {
           let devServerFlags = [];
@@ -1287,16 +1287,14 @@ class WebpackCLI implements IWebpackCLI {
           for (const optionName in options) {
             const kebabedOption = this.toKebabCase(optionName);
             const isBuiltInOption = builtInOptions.find(
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (builtInOption: any) => builtInOption.name === kebabedOption,
+              (builtInOption) => builtInOption.name === kebabedOption,
             );
 
             if (isBuiltInOption) {
               webpackCLIOptions[optionName] = options[optionName];
             } else {
               const needToProcess = devServerFlags.find(
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (devServerOption: any) =>
+                (devServerOption) =>
                   devServerOption.name === kebabedOption && devServerOption.processor,
               );
 
@@ -1353,9 +1351,7 @@ class WebpackCLI implements IWebpackCLI {
           }
 
           const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
-          const possibleCompilers = compilers.filter(
-            (compiler: Compiler) => compiler.options.devServer,
-          );
+          const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
           const compilersForDevServer =
             possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
           const usedPorts: number[] = [];
@@ -1365,15 +1361,17 @@ class WebpackCLI implements IWebpackCLI {
               continue;
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const args = devServerFlags.reduce((accumulator: Record<string, any>, flag: any) => {
-              accumulator[flag.name] = flag;
+            const args = devServerFlags.reduce(
+              (accumulator, flag) => {
+                accumulator[flag.name] = flag;
 
-              return accumulator;
-            }, {});
-            const values = Object.keys(devServerCLIOptions).reduce(
+                return accumulator;
+              },
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (accumulator: Record<string, any>, name: string) => {
+              {} as Record<string, any>,
+            );
+            const values = Object.keys(devServerCLIOptions).reduce(
+              (accumulator, name) => {
                 const kebabName = this.toKebabCase(name);
 
                 if (args[kebabName]) {
@@ -1382,7 +1380,8 @@ class WebpackCLI implements IWebpackCLI {
 
                 return accumulator;
               },
-              {},
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              {} as Record<string, any>,
             );
             const result = { ...compilerForDevServer.options.devServer };
             const problems = this.webpack.cli.processArguments(args, result, values);
@@ -1392,13 +1391,16 @@ class WebpackCLI implements IWebpackCLI {
                 xs: Problem[],
                 key: K,
               ) =>
-                xs.reduce((rv: Record<string, Problem[]>, problem: Problem) => {
-                  const path = problem[key];
+                xs.reduce(
+                  (rv: Record<string, Problem[]>, problem: Problem) => {
+                    const path = problem[key];
 
-                  (rv[path] ||= []).push(problem);
+                    (rv[path] ||= []).push(problem);
 
-                  return rv;
-                }, {});
+                    return rv;
+                  },
+                  {} as Record<string, Problem[]>,
+                );
 
               const problemsByPath = groupBy<"path">(problems, "path");
 
