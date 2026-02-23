@@ -37,7 +37,6 @@ interface IWebpackCLI {
   logger: WebpackCLILogger;
   isColorSupportChanged: boolean | undefined;
   webpack: typeof webpack;
-  builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
   program: WebpackCLICommand;
   isMultipleCompiler(compiler: WebpackCompiler): compiler is MultiCompiler;
   isPromise<T>(value: Promise<T>): value is Promise<T>;
@@ -117,6 +116,7 @@ type WebpackCLIMainOption = Pick<
 };
 
 interface WebpackCLIOptions extends CommandOptions {
+  rawName: string;
   name: string;
   alias: string | string[];
   description?: string;
@@ -124,6 +124,7 @@ interface WebpackCLIOptions extends CommandOptions {
   dependencies?: string[];
   pkg?: string;
   argsDescription?: Record<string, string>;
+  external?: boolean;
 }
 
 type WebpackCLICommandOptions =
@@ -152,10 +153,6 @@ interface WebpackCLIBuiltInOption extends WebpackCLIBuiltInFlag {
   hidden?: boolean;
   group?: "core";
 }
-
-type WebpackCLIExternalCommandInfo = Pick<WebpackCLIOptions, "name" | "alias" | "description"> & {
-  pkg: string;
-};
 
 /**
  * Webpack dev server
@@ -332,7 +329,6 @@ export {
   type WebpackCLICommandOption,
   type WebpackCLICommandOptions,
   type WebpackCLIConfig,
-  type WebpackCLIExternalCommandInfo,
   type WebpackCLILogger,
   type WebpackCLIMainOption,
   type WebpackCLIOptions,
