@@ -22,9 +22,6 @@
   },
   "references": [
     {
-      "path": "packages/serve"
-    },
-    {
       "path": "packages/webpack-cli"
     },
     {

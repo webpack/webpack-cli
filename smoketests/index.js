@@ -2,7 +2,6 @@ const tests = [
   require("./missing-packages/webpack-dev-server.test"),
   require("./missing-packages/webpack.test"),
   require("./missing-packages/webpack-bundle-analyzer.test"),
-  require("./missing-command-packages/serve.test"),
 ];
 
 // eslint-disable-next-line unicorn/prefer-top-level-await
