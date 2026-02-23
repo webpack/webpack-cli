@@ -1175,10 +1175,10 @@ class WebpackCLI implements IWebpackCLI {
     },
     configtest: {
       rawName: "configtest",
-      external: true,
       name: "configtest [config-path]",
       alias: "t",
-      pkg: "@webpack-cli/configtest",
+      description: "Validate a webpack configuration.",
+      dependencies: [WEBPACK_PACKAGE],
     },
   };
 
@@ -1234,7 +1234,6 @@ class WebpackCLI implements IWebpackCLI {
         // Stub for the `help` command
       });
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.version)) {
-      // Stub for the `version` command
       this.makeCommand(
         WebpackCLI.#commands.version,
         this.getInfoOptions(),
@@ -1242,6 +1241,54 @@ class WebpackCLI implements IWebpackCLI {
           const info = await this.getInfoOutput(options);
 
           this.logger.raw(info);
+        },
+      );
+    } else if (this.#isCommand(commandName, WebpackCLI.#commands.configtest)) {
+      this.makeCommand(
+        WebpackCLI.#commands.configtest,
+        [],
+        async (configPath: string | undefined) => {
+          this.webpack = await this.loadWebpack();
+
+          const config = await this.loadConfig(configPath ? { config: [configPath] } : {});
+          const configPaths = new Set<string>();
+
+          if (Array.isArray(config.options)) {
+            for (const options of config.options) {
+              const loadedConfigPaths = config.path.get(options);
+
+              if (loadedConfigPaths) {
+                for (const path of loadedConfigPaths) configPaths.add(path);
+              }
+            }
+          } else if (config.path.get(config.options)) {
+            const loadedConfigPaths = config.path.get(config.options);
+
+            if (loadedConfigPaths) {
+              for (const path of loadedConfigPaths) configPaths.add(path);
+            }
+          }
+
+          if (configPaths.size === 0) {
+            this.logger.error("No configuration found.");
+            process.exit(2);
+          }
+
+          this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
+
+          try {
+            this.webpack.validate(config.options);
+          } catch (error) {
+            if (this.isValidationError(error as Error)) {
+              this.logger.error((error as Error).message);
+            } else {
+              this.logger.error(error);
+            }
+
+            process.exit(2);
+          }
+
+          this.logger.success("There are no validation errors in the given webpack configuration.");
         },
       );
     } else {
