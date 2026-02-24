@@ -1234,11 +1234,10 @@ class WebpackCLI implements IWebpackCLI {
       const loadDevServerOptions = () => {
         const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const options: Record<string, any> = this.webpack.cli.getArguments(devServer.schema);
+        const options: Record<string, WebpackCLIBuiltInOption> = this.webpack.cli.getArguments(
+          devServer.schema,
+        ) as unknown as Record<string, WebpackCLIBuiltInOption>;
 
-        // New options format
-        // { flag1: {}, flag2: {} }
         return Object.keys(options).map((key) => {
           options[key].name = key;
 
@@ -1249,12 +1248,12 @@ class WebpackCLI implements IWebpackCLI {
       await this.makeCommand(
         WebpackCLI.#commands.serve,
         async () => {
-          let devServerFlags = [];
-
           this.webpack = await this.loadWebpack();
 
+          let devServerOptions = [];
+
           try {
-            devServerFlags = loadDevServerOptions();
+            devServerOptions = loadDevServerOptions();
           } catch (error) {
             this.logger.error(
               `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
@@ -1262,13 +1261,13 @@ class WebpackCLI implements IWebpackCLI {
             process.exit(2);
           }
 
-          const builtInOptions = this.getBuiltInOptions();
+          const webpackOptions = this.getBuiltInOptions();
 
-          return [...builtInOptions, ...devServerFlags];
+          return [...webpackOptions, ...devServerOptions];
         },
         async (entries: string[], options) => {
           const builtInOptions = this.getBuiltInOptions();
-          let devServerFlags = [];
+          let devServerFlags: WebpackCLIBuiltInOption[] = [];
 
           try {
             devServerFlags = loadDevServerOptions();
@@ -1276,13 +1275,8 @@ class WebpackCLI implements IWebpackCLI {
             // Nothing, to prevent future updates
           }
 
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const webpackCLIOptions: Record<string, any> = {};
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const devServerCLIOptions: Record<string, any> = {};
-
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const processors: ((opts: Record<string, any>) => void)[] = [];
+          const webpackCLIOptions: Partial<WebpackDevServerOptions> = {};
+          const devServerCLIOptions: Record<string, WebpackCLIBuiltInOption> = {};
 
           for (const optionName in options) {
             const kebabedOption = this.toKebabCase(optionName);
@@ -1293,25 +1287,16 @@ class WebpackCLI implements IWebpackCLI {
             if (isBuiltInOption) {
               webpackCLIOptions[optionName] = options[optionName];
             } else {
-              const needToProcess = devServerFlags.find(
-                (devServerOption) =>
-                  devServerOption.name === kebabedOption && devServerOption.processor,
-              );
-
-              if (needToProcess) {
-                processors.push(needToProcess.processor);
-              }
-
               devServerCLIOptions[optionName] = options[optionName];
             }
           }
 
-          for (const processor of processors) {
-            processor(devServerCLIOptions);
-          }
-
           if (entries.length > 0) {
-            webpackCLIOptions.entry = [...entries, ...(webpackCLIOptions.entry || [])];
+            // @ts-expect-error Need investigate
+            webpackCLIOptions.entry = [
+              ...(entries as string[]),
+              ...((webpackCLIOptions.entry || []) as string[]),
+            ];
           }
 
           webpackCLIOptions.argv = {
@@ -1361,68 +1346,65 @@ class WebpackCLI implements IWebpackCLI {
               continue;
             }
 
-            const args = devServerFlags.reduce(
-              (accumulator, flag) => {
-                accumulator[flag.name] = flag;
-
-                return accumulator;
-              },
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              {} as Record<string, any>,
-            );
-            const values = Object.keys(devServerCLIOptions).reduce(
-              (accumulator, name) => {
-                const kebabName = this.toKebabCase(name);
-
-                if (args[kebabName]) {
-                  accumulator[kebabName] = options[name];
-                }
-
-                return accumulator;
-              },
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              {} as Record<string, any>,
-            );
             const result = { ...compilerForDevServer.options.devServer };
-            const problems = this.webpack.cli.processArguments(args, result, values);
 
-            if (problems) {
-              const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(
-                xs: Problem[],
-                key: K,
-              ) =>
-                xs.reduce(
-                  (rv: Record<string, Problem[]>, problem: Problem) => {
-                    const path = problem[key];
+            const args: Record<string, Argument> = {};
 
-                    (rv[path] ||= []).push(problem);
+            for (const flag of devServerFlags) {
+              args[flag.name] = flag as unknown as Argument;
+            }
 
-                    return rv;
-                  },
-                  {} as Record<string, Problem[]>,
-                );
+            const values: ProcessedArguments = {};
 
-              const problemsByPath = groupBy<"path">(problems, "path");
+            for (const name of Object.keys(options)) {
+              const kebabName = this.toKebabCase(name);
 
-              for (const path in problemsByPath) {
-                const problems = problemsByPath[path];
+              if (args[kebabName] !== undefined) {
+                values[kebabName] = options[name];
+              }
+            }
 
-                for (const problem of problems) {
-                  this.logger.error(
-                    `${this.capitalizeFirstLetter(problem.type.replace("-", " "))}${
-                      problem.value ? ` '${problem.value}'` : ""
-                    } for the '--${problem.argument}' option${
-                      problem.index ? ` by index '${problem.index}'` : ""
-                    }`,
+            if (Object.keys(values).length > 0) {
+              const problems = this.webpack.cli.processArguments(args, result, values);
+
+              if (problems) {
+                const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(
+                  xs: Problem[],
+                  key: K,
+                ) =>
+                  xs.reduce(
+                    (rv: Record<string, Problem[]>, problem: Problem) => {
+                      const path = problem[key];
+
+                      (rv[path] ||= []).push(problem);
+
+                      return rv;
+                    },
+                    {} as Record<string, Problem[]>,
                   );
 
-                  if (problem.expected) {
-                    this.logger.error(`Expected: '${problem.expected}'`);
+                const problemsByPath = groupBy<"path">(problems, "path");
+
+                for (const path in problemsByPath) {
+                  const problems = problemsByPath[path];
+
+                  for (const problem of problems) {
+                    this.logger.error(
+                      `${this.capitalizeFirstLetter(problem.type.replace("-", " "))}${
+                        problem.value ? ` '${problem.value}'` : ""
+                      } for the '--${problem.argument}' option${
+                        problem.index ? ` by index '${problem.index}'` : ""
+                      }`,
+                    );
+
+                    if (problem.expected) {
+                      this.logger.error(`Expected: '${problem.expected}'`);
+                    }
                   }
                 }
-              }
 
-              process.exit(2);
+                process.exit(2);
+              }
             }
 
             const devServerOptions: WebpackDevServerOptions = result as WebpackDevServerOptions;
@@ -2529,7 +2511,7 @@ class WebpackCLI implements IWebpackCLI {
       }
 
       if (Object.keys(values).length > 0) {
-        const problems: Problem[] | null = this.webpack.cli.processArguments(args, item, values);
+        const problems = this.webpack.cli.processArguments(args, item, values);
 
         if (problems) {
           const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(xs: Problem[], key: K) =>
