@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@inquirer/expand": "^4.0.3",
-    "@inquirer/select": "^4.0.3",
+    "@inquirer/select": "^5.1.0",
     "colorette": "^2.0.20",
     "commander": "^12.1.0",
     "cross-spawn": "^7.0.6",
