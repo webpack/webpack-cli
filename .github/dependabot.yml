@@ -9,17 +9,17 @@ updates:
       - dependencies
     versioning-strategy: widen
     groups:
+      dependencies-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
       dependencies:
         patterns:
           - "*"
         update-types:
           - "minor"
           - "patch"
-      dependencies-major:
-        patterns:
-          - "*"
-        update-types:
-          - "major"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
