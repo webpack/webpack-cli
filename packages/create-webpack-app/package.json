@@ -39,7 +39,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@inquirer/expand": "^4.0.3",
+    "@inquirer/expand": "^5.0.8",
     "@inquirer/select": "^4.0.3",
     "colorette": "^2.0.20",
     "commander": "^12.1.0",
