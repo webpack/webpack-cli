@@ -52,7 +52,7 @@
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^22.5.5",
+    "@types/node": "^25.3.0",
     "@types/rechoir": "^0.6.1",
     "coffeescript": "^2.7.0",
     "colorette": "^2.0.16",
