@@ -562,9 +562,9 @@ class WebpackCLI implements IWebpackCLI {
 
     defaultInformation.npmPackages = `{${defaultPackages.map((item) => `*${item}*`).join(",")}}`;
 
-    const { run } = await import("envinfo");
+    const envinfo = (await import("envinfo")).default;
 
-    let info = await run(defaultInformation, envinfoConfig);
+    let info = await envinfo.run(defaultInformation, envinfoConfig);
 
     info = info.replace("npmPackages", "Packages");
     info = info.replace("npmGlobalPackages", "Global Packages");
