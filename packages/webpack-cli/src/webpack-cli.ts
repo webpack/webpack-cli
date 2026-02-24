@@ -1295,7 +1295,7 @@ class WebpackCLI implements IWebpackCLI {
             // @ts-expect-error Need investigate
             webpackCLIOptions.entry = [
               ...(entries as string[]),
-              ...(webpackCLIOptions.entry as string[]),
+              ...((webpackCLIOptions.entry || []) as string[]),
             ];
           }
 
