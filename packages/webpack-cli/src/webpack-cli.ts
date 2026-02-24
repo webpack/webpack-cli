@@ -226,6 +226,7 @@ class WebpackCLI implements IWebpackCLI {
     return false;
   }
 
+  // TODO remove me
   getAvailablePackageManagers(): PackageManager[] {
     const { sync } = require("cross-spawn");
 
@@ -252,9 +253,10 @@ class WebpackCLI implements IWebpackCLI {
     return availableInstallers;
   }
 
-  getDefaultPackageManager(): PackageManager | undefined {
-    const { sync } = require("cross-spawn");
+  async getDefaultPackageManager(): Promise<PackageManager | undefined> {
+    const { sync } = await import("cross-spawn");
 
+    // TODO use async methods
     const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), "package-lock.json"));
 
     if (hasLocalNpm) {
@@ -307,7 +309,7 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   async doInstall(packageName: string, options: PackageInstallOptions = {}): Promise<string> {
-    const packageManager = this.getDefaultPackageManager();
+    const packageManager = await this.getDefaultPackageManager();
 
     if (!packageManager) {
       this.logger.error("Can't find package manager");
@@ -319,10 +321,10 @@ class WebpackCLI implements IWebpackCLI {
       options.preMessage();
     }
 
-    const prompt = ({ message, defaultResponse, stream }: PromptOptions) => {
-      const readline = require("node:readline");
+    const { createInterface } = await import("node:readline");
 
-      const rl = readline.createInterface({
+    const prompt = ({ message, defaultResponse, stream }: PromptOptions) => {
+      const rl = createInterface({
         input: process.stdin,
         output: stream,
       });
@@ -470,6 +472,7 @@ class WebpackCLI implements IWebpackCLI {
     return result || {};
   }
 
+  // TODO remove me
   loadJSONFile<T = unknown>(pathToFile: Path, handleError = true): T {
     let result;
 
@@ -1231,8 +1234,8 @@ class WebpackCLI implements IWebpackCLI {
         },
       );
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.serve)) {
-      const loadDevServerOptions = () => {
-        const devServer = require(WEBPACK_DEV_SERVER_PACKAGE);
+      const loadDevServerOptions = async () => {
+        const devServer = (await import(WEBPACK_DEV_SERVER_PACKAGE)).default;
 
         const options: Record<string, WebpackCLIBuiltInOption> = this.webpack.cli.getArguments(
           devServer.schema,
@@ -1253,7 +1256,7 @@ class WebpackCLI implements IWebpackCLI {
           let devServerOptions = [];
 
           try {
-            devServerOptions = loadDevServerOptions();
+            devServerOptions = await loadDevServerOptions();
           } catch (error) {
             this.logger.error(
               `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
@@ -1270,7 +1273,7 @@ class WebpackCLI implements IWebpackCLI {
           let devServerFlags: WebpackCLIBuiltInOption[] = [];
 
           try {
-            devServerFlags = loadDevServerOptions();
+            devServerFlags = await loadDevServerOptions();
           } catch {
             // Nothing, to prevent future updates
           }
@@ -1312,7 +1315,19 @@ class WebpackCLI implements IWebpackCLI {
             return;
           }
 
-          const servers: (typeof DevServer)[] = [];
+          type DevServerConstructor = typeof import("webpack-dev-server");
+          let DevServer: DevServerConstructor;
+
+          try {
+            DevServer = (await import(WEBPACK_DEV_SERVER_PACKAGE)).default;
+          } catch (err) {
+            this.logger.error(
+              `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
+            );
+            process.exit(2);
+          }
+
+          const servers: InstanceType<DevServerConstructor>[] = [];
 
           if (this.needWatchStdin(compiler)) {
             process.stdin.on("end", () => {
@@ -1321,18 +1336,6 @@ class WebpackCLI implements IWebpackCLI {
               });
             });
             process.stdin.resume();
-          }
-
-          const DevServer = require(WEBPACK_DEV_SERVER_PACKAGE);
-
-          try {
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            require(`${WEBPACK_DEV_SERVER_PACKAGE}/package.json`).version;
-          } catch (err) {
-            this.logger.error(
-              `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
-            );
-            process.exit(2);
           }
 
           const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
@@ -1426,7 +1429,7 @@ class WebpackCLI implements IWebpackCLI {
 
               await server.start();
 
-              servers.push(server);
+              servers.push(server as unknown as InstanceType<DevServerConstructor>);
             } catch (error) {
               if (this.isValidationError(error as Error)) {
                 this.logger.error((error as Error).message);
@@ -2483,7 +2486,7 @@ class WebpackCLI implements IWebpackCLI {
       process.exit(2);
     }
 
-    const CLIPlugin = (await import("./plugins/cli-plugin.js")).default;
+    const { default: CLIPlugin } = (await import("./plugins/cli-plugin.js")).default;
 
     const internalBuildConfig = (item: Configuration) => {
       const originalWatchValue = item.watch;

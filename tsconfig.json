@@ -2,17 +2,19 @@
   "exclude": ["node_modules", "lib", "__tests__"],
   "files": [],
   "compilerOptions": {
-    "skipLibCheck": true,
+    "lib": ["es2023"],
+    "module": "nodenext",
     "target": "ES2022",
-    "module": "commonjs",
-    "lib": ["ES2022"],
+
     "strict": true,
-    "rootDir": ".",
-    "outDir": "lib",
-    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+
+    "rootDir": ".",
+    "outDir": "lib",
     "baseUrl": ".",
     "paths": {
       "@webpack-cli/*": ["packages/*/src"]

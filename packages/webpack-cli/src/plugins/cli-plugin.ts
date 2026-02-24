@@ -11,7 +11,8 @@ export default class CLIPlugin {
   }
 
   async setupBundleAnalyzerPlugin(compiler: Compiler) {
-    const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+    // @ts-expect-error No types right now
+    const { BundleAnalyzerPlugin } = (await import("webpack-bundle-analyzer")).default;
 
     const bundleAnalyzerPlugin = compiler.options.plugins.some(
       (plugin) => plugin instanceof BundleAnalyzerPlugin,
@@ -25,7 +26,7 @@ export default class CLIPlugin {
   static #progressStates: [number, ...string[]][] = [];
 
   setupProgressPlugin(compiler: Compiler) {
-    const { ProgressPlugin } = compiler.webpack || require("webpack");
+    const { ProgressPlugin } = compiler.webpack;
     const progressPlugin = compiler.options.plugins.some(
       (plugin) => plugin instanceof ProgressPlugin,
     );

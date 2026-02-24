@@ -47,7 +47,7 @@ interface IWebpackCLI {
   capitalizeFirstLetter: StringFormatter;
   checkPackageExists(packageName: string): boolean;
   getAvailablePackageManagers(): PackageManager[];
-  getDefaultPackageManager(): PackageManager | undefined;
+  getDefaultPackageManager(): Promise<PackageManager | undefined>;
   doInstall(packageName: string, options?: PackageInstallOptions): Promise<string>;
   loadJSONFile<T = unknown>(path: Path, handleError: boolean): Promise<T>;
   tryRequireThenImport<T = unknown>(module: ModuleName, handleError: boolean): Promise<T>;
