@@ -226,33 +226,6 @@ class WebpackCLI implements IWebpackCLI {
     return false;
   }
 
-  // TODO remove me
-  getAvailablePackageManagers(): PackageManager[] {
-    const { sync } = require("cross-spawn");
-
-    const installers: PackageManager[] = ["npm", "yarn", "pnpm"];
-    const hasPackageManagerInstalled = (packageManager: PackageManager) => {
-      try {
-        sync(packageManager, ["--version"]);
-
-        return packageManager;
-      } catch {
-        return false;
-      }
-    };
-    const availableInstallers = installers.filter((installer) =>
-      hasPackageManagerInstalled(installer),
-    );
-
-    if (!availableInstallers.length) {
-      this.logger.error("No package manager found.");
-
-      process.exit(2);
-    }
-
-    return availableInstallers;
-  }
-
   async getDefaultPackageManager(): Promise<PackageManager | undefined> {
     const { sync } = await import("cross-spawn");
 
