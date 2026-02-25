@@ -159,23 +159,22 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   createColors(useColor?: boolean): WebpackCLIColors {
+    let cli: (typeof webpack)["cli"];
+
     try {
-      const { cli } = require("webpack");
-
-      if (typeof cli.createColors === "function") {
-        const { createColors, isColorSupported } = cli;
-        const shouldUseColor = useColor || isColorSupported();
-
-        return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
-      }
+      cli = require("webpack").cli;
     } catch {
-      // Nothing
+      // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
+      return new Proxy({} as WebpackCLIColors, {
+        get() {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return (...args: any[]) => [...args];
+        },
+      });
     }
 
-    // TODO remove `colorette` and set webpack@5.101.0 as the minimum supported version in the next major release
-    const { createColors, isColorSupported } = require("colorette");
-
-    const shouldUseColor = useColor || isColorSupported;
+    const { createColors, isColorSupported } = cli;
+    const shouldUseColor = useColor || isColorSupported();
 
     return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
   }
