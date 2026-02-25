@@ -5,7 +5,7 @@ const CLI = require("../../packages/webpack-cli/lib/webpack-cli");
 
 const readlineQuestionMock = jest.fn();
 
-jest.mock("node:readline", () => ({
+jest.unstable_mockModule("node:readline", () => ({
   createInterface: jest.fn().mockReturnValue({
     question: readlineQuestionMock,
     close: jest.fn().mockReturnValue(undefined),
@@ -34,7 +34,7 @@ describe("doInstall", () => {
 
   it("should prompt to install using npm if npm is package manager", async () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("y"));
-    getDefaultPackageManagerSpy.mockReturnValue("npm");
+    getDefaultPackageManagerSpy.mockResolvedValue("npm");
 
     const installResult = await cli.doInstall("test-package");
 
