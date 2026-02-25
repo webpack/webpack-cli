@@ -42,63 +42,63 @@ describe("getPackageManager", () => {
     syncMock.mockClear();
   });
 
-  it("should find yarn.lock", () => {
+  it("should find yarn.lock", async () => {
     cwdSpy.mockReturnValue(testYarnLockPath);
 
-    expect(cli.getDefaultPackageManager()).toBe("yarn");
+    expect(await cli.getDefaultPackageManager()).toBe("yarn");
     expect(syncMock).not.toHaveBeenCalled();
   });
 
-  it("should find package-lock.json", () => {
+  it("should find package-lock.json", async () => {
     cwdSpy.mockReturnValue(testNpmLockPath);
 
-    expect(cli.getDefaultPackageManager()).toBe("npm");
+    expect(await cli.getDefaultPackageManager()).toBe("npm");
     expect(syncMock).not.toHaveBeenCalled();
   });
 
-  it("should find pnpm-lock.yaml", () => {
+  it("should find pnpm-lock.yaml", async () => {
     cwdSpy.mockReturnValue(testPnpmLockPath);
 
-    expect(cli.getDefaultPackageManager()).toBe("pnpm");
+    expect(await cli.getDefaultPackageManager()).toBe("pnpm");
     expect(syncMock).not.toHaveBeenCalled();
   });
 
-  it("should prioritize npm over pnpm", () => {
+  it("should prioritize npm over pnpm", async () => {
     cwdSpy.mockReturnValue(testNpmAndPnpmPath);
 
-    expect(cli.getDefaultPackageManager()).toBe("npm");
+    expect(await cli.getDefaultPackageManager()).toBe("npm");
     expect(syncMock).not.toHaveBeenCalled();
   });
 
-  it("should prioritize npm over yarn", () => {
+  it("should prioritize npm over yarn", async () => {
     cwdSpy.mockReturnValue(testNpmAndYarnPath);
 
-    expect(cli.getDefaultPackageManager()).toBe("npm");
+    expect(await cli.getDefaultPackageManager()).toBe("npm");
     expect(syncMock).not.toHaveBeenCalled();
   });
 
-  it("should prioritize yarn over pnpm", () => {
+  it("should prioritize yarn over pnpm", async () => {
     cwdSpy.mockReturnValue(testYarnAndPnpmPath);
 
-    expect(cli.getDefaultPackageManager()).toBe("yarn");
+    expect(await cli.getDefaultPackageManager()).toBe("yarn");
     expect(syncMock).not.toHaveBeenCalled();
   });
 
-  it("should prioritize npm with many lock files", () => {
+  it("should prioritize npm with many lock files", async () => {
     cwdSpy.mockReturnValue(testAllPath);
 
-    expect(cli.getDefaultPackageManager()).toBe("npm");
+    expect(await cli.getDefaultPackageManager()).toBe("npm");
     expect(syncMock).not.toHaveBeenCalled();
   });
 
-  it("should prioritize global npm over other package managers", () => {
+  it("should prioritize global npm over other package managers", async () => {
     cwdSpy.mockReturnValue(noLockPath);
 
-    expect(cli.getDefaultPackageManager()).toBe("npm");
+    expect(await cli.getDefaultPackageManager()).toBe("npm");
     expect(syncMock).toHaveBeenCalledTimes(1);
   });
 
-  it("should throw error if no package manager is found", () => {
+  it("should throw error if no package manager is found", async () => {
     cwdSpy.mockReturnValue(noLockPath);
     syncMock.mockImplementation(() => {
       throw new Error("error");
@@ -107,7 +107,7 @@ describe("getPackageManager", () => {
     // Do not print warning in CI
     const consoleMock = jest.spyOn(console, "error").mockImplementation(() => {});
 
-    expect(cli.getDefaultPackageManager()).toBeFalsy();
+    expect(await cli.getDefaultPackageManager()).toBeFalsy();
     expect(mockExit).toHaveBeenCalledWith(2);
     expect(consoleMock).toHaveBeenCalledTimes(1);
     expect(syncMock).toHaveBeenCalledTimes(3); // 3 calls for npm, yarn and pnpm

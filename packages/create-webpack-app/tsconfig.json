@@ -3,10 +3,9 @@
   "exclude": ["src/utils/__tests__"],
   "compilerOptions": {
     "outDir": "lib",
-    "rootDir": "src",
-    "module": "esnext"
+    "rootDir": "src"
   },
-  "include": ["src"],
+  "include": ["./src"],
   "references": [
     {
       "path": "../webpack-cli"
