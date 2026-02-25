@@ -3,7 +3,7 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import expand from "@inquirer/expand";
 import { spawn, sync } from "cross-spawn";
-import * as ejs from "ejs";
+import ejs from "ejs";
 import { type NodePlopAPI } from "node-plop";
 import { type Answers } from "../types.js";
 import { logger } from "./logger.js";

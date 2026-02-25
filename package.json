@@ -69,7 +69,7 @@
     "lerna": "^9.0.3",
     "lint-staged": "^16.2.7",
     "mini-css-extract-plugin": "^2.6.1",
-    "nyc": "^17.1.0",
+    "nyc": "^18.0.0",
     "prettier": "^3.6.0",
     "readable-stream": "^4.5.2",
     "sass": "^1.54.9",
