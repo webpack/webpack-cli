@@ -24,7 +24,6 @@ import {
   type LoadableWebpackConfiguration,
   type PackageInstallOptions,
   type PackageManager,
-  type Path,
   type PotentialPromise,
   type Problem,
   type ProcessedArguments,
@@ -353,24 +352,6 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     process.exit(2);
-  }
-
-  // TODO remove me
-  loadJSONFile<T = unknown>(pathToFile: Path, handleError = true): T {
-    let result;
-
-    try {
-      result = require(pathToFile);
-    } catch (error) {
-      if (handleError) {
-        this.logger.error(error);
-        process.exit(2);
-      } else {
-        throw error;
-      }
-    }
-
-    return result;
   }
 
   getInfoOptions(): WebpackCLIBuiltInOption[] {
@@ -1093,7 +1074,7 @@ class WebpackCLI implements IWebpackCLI {
   }
 
   async loadWebpack(): Promise<typeof webpack> {
-    return require(WEBPACK_PACKAGE);
+    return (await import(WEBPACK_PACKAGE)).default;
   }
 
   async #loadCommandByName(commandName: WebpackCLIOptions["name"], allowToInstall = false) {

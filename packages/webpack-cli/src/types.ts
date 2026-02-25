@@ -48,7 +48,6 @@ interface IWebpackCLI {
   checkPackageExists(packageName: string): boolean;
   getDefaultPackageManager(): Promise<PackageManager | undefined>;
   doInstall(packageName: string, options?: PackageInstallOptions): Promise<string>;
-  loadJSONFile<T = unknown>(path: Path, handleError: boolean): Promise<T>;
   getInfoOptions(): WebpackCLIBuiltInOption[];
   getInfoOutput(options: { output: string; additionalPackage: string[] }): Promise<string>;
   makeCommand(
@@ -246,7 +245,6 @@ type Instantiable<
   ConstructorParameters extends unknown[] = unknown[],
 > = new (...args: ConstructorParameters) => InstanceType;
 type PotentialPromise<T> = T | Promise<T>;
-type Path = string;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type LogHandler = (value: any) => void;
 type StringFormatter = (value: string) => string;
@@ -303,7 +301,6 @@ export {
   type LoadableWebpackConfiguration,
   type PackageInstallOptions,
   type PackageManager,
-  type Path,
   type PotentialPromise,
   type ProcessedArguments,
   type PromptOptions,
