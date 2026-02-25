@@ -39,12 +39,12 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@inquirer/expand": "^4.0.3",
-    "@inquirer/select": "^4.0.3",
+    "@inquirer/expand": "^5.0.8",
+    "@inquirer/select": "^5.1.0",
     "colorette": "^2.0.20",
     "commander": "^12.1.0",
     "cross-spawn": "^7.0.6",
-    "ejs": "^3.1.10",
+    "ejs": "^4.0.1",
     "node-plop": "^0.32.0"
   },
   "devDependencies": {
