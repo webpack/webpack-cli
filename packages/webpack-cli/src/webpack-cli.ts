@@ -2721,6 +2721,3 @@ class WebpackCLI implements IWebpackCLI {
 }
 
 export default WebpackCLI;
-
-// TODO remove me in the next major release and use `default` export
-module.exports = WebpackCLI;
