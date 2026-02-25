@@ -17,14 +17,11 @@ import {
   type BasicPrimitive,
   type CallableWebpackConfiguration,
   type CommandAction,
-  type DynamicImport,
   type EnumValue,
   type FileSystemCacheOptions,
   type IWebpackCLI,
-  type ImportLoaderError,
   type Instantiable,
   type LoadableWebpackConfiguration,
-  type ModuleName,
   type PackageInstallOptions,
   type PackageManager,
   type Path,
@@ -356,93 +353,6 @@ class WebpackCLI implements IWebpackCLI {
     }
 
     process.exit(2);
-  }
-
-  // TODO remove me in the next major release
-  async tryRequireThenImport<T>(
-    module: ModuleName,
-    handleError = true,
-    moduleType: "unknown" | "commonjs" | "esm" = "unknown",
-  ): Promise<T> {
-    let result;
-
-    switch (moduleType) {
-      case "unknown": {
-        try {
-          result = require(module);
-        } catch (error) {
-          const dynamicImportLoader: null | DynamicImport<T> =
-            require("./utils/dynamic-import-loader")();
-
-          if (
-            ((error as ImportLoaderError).code === "ERR_REQUIRE_ESM" ||
-              (error as ImportLoaderError).code === "ERR_REQUIRE_ASYNC_MODULE" ||
-              process.env.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) &&
-            pathToFileURL &&
-            dynamicImportLoader
-          ) {
-            const urlForConfig = pathToFileURL(module);
-
-            result = await dynamicImportLoader(urlForConfig);
-            result = result.default;
-
-            return result;
-          }
-
-          if (handleError) {
-            this.logger.error(error);
-            process.exit(2);
-          } else {
-            throw error;
-          }
-        }
-        break;
-      }
-      case "commonjs": {
-        try {
-          result = require(module);
-        } catch (error) {
-          if (handleError) {
-            this.logger.error(error);
-            process.exit(2);
-          } else {
-            throw error;
-          }
-        }
-        break;
-      }
-      case "esm": {
-        try {
-          const dynamicImportLoader: null | DynamicImport<T> =
-            require("./utils/dynamic-import-loader")();
-
-          if (pathToFileURL && dynamicImportLoader) {
-            const urlForConfig = pathToFileURL(module);
-
-            result = await dynamicImportLoader(urlForConfig);
-            result = result.default;
-
-            return result;
-          }
-        } catch (error) {
-          if (handleError) {
-            this.logger.error(error);
-            process.exit(2);
-          } else {
-            throw error;
-          }
-        }
-
-        break;
-      }
-    }
-
-    // For babel and other, only commonjs
-    if (result && typeof result === "object" && "default" in result) {
-      result = result.default || {};
-    }
-
-    return result || {};
   }
 
   // TODO remove me
@@ -1525,13 +1435,12 @@ class WebpackCLI implements IWebpackCLI {
         });
       }
 
-      let loadedCommand;
+      let loadedCommand: Instantiable<() => void>;
 
       try {
-        loadedCommand = await this.tryRequireThenImport<Instantiable<() => void>>(pkg, false);
+        loadedCommand = (await import(pkg)).default;
       } catch {
         // Ignore, command is not installed
-
         return;
       }
 

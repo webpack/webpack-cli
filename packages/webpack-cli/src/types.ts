@@ -49,7 +49,6 @@ interface IWebpackCLI {
   getDefaultPackageManager(): Promise<PackageManager | undefined>;
   doInstall(packageName: string, options?: PackageInstallOptions): Promise<string>;
   loadJSONFile<T = unknown>(path: Path, handleError: boolean): Promise<T>;
-  tryRequireThenImport<T = unknown>(module: ModuleName, handleError: boolean): Promise<T>;
   getInfoOptions(): WebpackCLIBuiltInOption[];
   getInfoOutput(options: { output: string; additionalPackage: string[] }): Promise<string>;
   makeCommand(
@@ -247,7 +246,6 @@ type Instantiable<
   ConstructorParameters extends unknown[] = unknown[],
 > = new (...args: ConstructorParameters) => InstanceType;
 type PotentialPromise<T> = T | Promise<T>;
-type ModuleName = string;
 type Path = string;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type LogHandler = (value: any) => void;
@@ -265,12 +263,6 @@ interface Env {
   WEBPACK_SERVE?: boolean;
   WEBPACK_PACKAGE?: string;
   WEBPACK_DEV_SERVER_PACKAGE?: string;
-}
-
-type DynamicImport<T> = (url: string) => Promise<{ default: T }>;
-
-interface ImportLoaderError extends Error {
-  code?: string;
 }
 
 /**
@@ -304,14 +296,11 @@ export {
   type CallableWebpackConfiguration,
   type CommandAction,
   type CommanderOption,
-  type DynamicImport,
   type EnumValue,
   type FileSystemCacheOptions,
   type IWebpackCLI,
-  type ImportLoaderError,
   type Instantiable,
   type LoadableWebpackConfiguration,
-  type ModuleName,
   type PackageInstallOptions,
   type PackageManager,
   type Path,
