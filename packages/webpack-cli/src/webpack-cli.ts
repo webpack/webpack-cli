@@ -20,7 +20,6 @@ import {
   type CommandAction,
   type EnumValue,
   type FileSystemCacheOptions,
-  type IWebpackCLI,
   type Instantiable,
   type LoadableWebpackConfiguration,
   type PackageInstallOptions,
@@ -43,7 +42,6 @@ import {
   type WebpackCLIMainOption,
   type WebpackCLIOptions,
   type WebpackCallback,
-  type WebpackCompiler,
   type WebpackDevServerOptions,
   type WebpackRunOptions,
 } from "./types.js";
@@ -98,7 +96,7 @@ class ConfigurationLoadingError extends Error {
   }
 }
 
-class WebpackCLI implements IWebpackCLI {
+class WebpackCLI {
   colors: WebpackCLIColors;
 
   logger: WebpackCLILogger;
@@ -134,7 +132,7 @@ class WebpackCLI implements IWebpackCLI {
     return Array.isArray(config);
   }
 
-  isMultipleCompiler(compiler: WebpackCompiler): compiler is MultiCompiler {
+  isMultipleCompiler(compiler: Compiler | MultiCompiler): compiler is MultiCompiler {
     return (compiler as MultiCompiler).compilers as unknown as boolean;
   }
 
@@ -1768,7 +1766,7 @@ class WebpackCLI implements IWebpackCLI {
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const self: IWebpackCLI = this;
+    const self: WebpackCLI = this;
 
     // Register own exit
     this.program.exitOverride((error) => {
@@ -2543,7 +2541,7 @@ class WebpackCLI implements IWebpackCLI {
   async createCompiler(
     options: Partial<WebpackDevServerOptions>,
     callback?: WebpackCallback,
-  ): Promise<WebpackCompiler> {
+  ): Promise<Compiler | MultiCompiler> {
     if (typeof options.configNodeEnv === "string") {
       process.env.NODE_ENV = options.configNodeEnv;
     } else if (typeof options.nodeEnv === "string") {
@@ -2553,7 +2551,7 @@ class WebpackCLI implements IWebpackCLI {
     let config = await this.loadConfig(options);
     config = await this.buildConfig(config, options);
 
-    let compiler: WebpackCompiler;
+    let compiler: Compiler | MultiCompiler;
 
     try {
       compiler = callback
@@ -2677,7 +2675,7 @@ class WebpackCLI implements IWebpackCLI {
       return;
     }
 
-    const needGracefulShutdown = (compiler: WebpackCompiler): boolean =>
+    const needGracefulShutdown = (compiler: Compiler | MultiCompiler): boolean =>
       Boolean(
         this.isMultipleCompiler(compiler)
           ? compiler.compilers.some(

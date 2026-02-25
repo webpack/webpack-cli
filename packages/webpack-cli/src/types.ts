@@ -1,19 +1,15 @@
-import { type Command, type CommandOptions, type Option, type ParseOptions } from "commander";
+import { type Command, type CommandOptions, type Option } from "commander";
 import { type prepare } from "rechoir";
 import {
   type AssetEmittedInfo,
   type Colors,
-  type Compiler,
   type Configuration,
   type EntryOptions,
   type FileCacheOptions,
-  type MultiCompiler,
   type MultiConfiguration,
   type MultiStats,
   type Stats,
-  type WebpackError,
   type WebpackOptionsNormalized,
-  default as webpack,
 } from "webpack";
 
 import {
@@ -28,52 +24,6 @@ import {
 declare interface WebpackCallback {
   (err: null | Error, result?: Stats): void;
   (err: null | Error, result?: MultiStats): void;
-}
-
-// TODO remove me in the next major release, we don't need extra interface
-// TODO also revisit all methods - remove unused or make private
-interface IWebpackCLI {
-  colors: WebpackCLIColors;
-  logger: WebpackCLILogger;
-  isColorSupportChanged: boolean | undefined;
-  webpack: typeof webpack;
-  program: WebpackCLICommand;
-  isMultipleCompiler(compiler: WebpackCompiler): compiler is MultiCompiler;
-  isPromise<T>(value: Promise<T>): value is Promise<T>;
-  isFunction(value: unknown): value is CallableFunction;
-  getLogger(): WebpackCLILogger;
-  createColors(useColors?: boolean): WebpackCLIColors;
-  toKebabCase: StringFormatter;
-  capitalizeFirstLetter: StringFormatter;
-  checkPackageExists(packageName: string): boolean;
-  getDefaultPackageManager(): Promise<PackageManager | undefined>;
-  doInstall(packageName: string, options?: PackageInstallOptions): Promise<string>;
-  getInfoOptions(): WebpackCLIBuiltInOption[];
-  getInfoOutput(options: { output: string; additionalPackage: string[] }): Promise<string>;
-  makeCommand(
-    commandOptions: WebpackCLIOptions,
-    options: WebpackCLICommandOptions,
-    action: CommandAction,
-  ): Promise<WebpackCLICommand | undefined>;
-  makeOption(command: WebpackCLICommand, option: WebpackCLIBuiltInOption): void;
-  run(
-    args: Parameters<WebpackCLICommand["parseOptions"]>[0],
-    parseOptions?: ParseOptions,
-  ): Promise<void>;
-  getBuiltInOptions(): WebpackCLIBuiltInOption[];
-  loadWebpack(handleError?: boolean): Promise<typeof webpack>;
-  loadConfig(options: Partial<WebpackDevServerOptions>): Promise<WebpackCLIConfig>;
-  buildConfig(
-    config: WebpackCLIConfig,
-    options: WebpackDevServerOptions,
-  ): Promise<WebpackCLIConfig>;
-  isValidationError(error: Error): error is WebpackError;
-  createCompiler(
-    options: Partial<WebpackDevServerOptions>,
-    callback?: WebpackCallback,
-  ): Promise<WebpackCompiler>;
-  needWatchStdin(compiler: Compiler | MultiCompiler): boolean;
-  runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void>;
 }
 
 interface WebpackCLIColors extends Colors {
@@ -182,7 +132,6 @@ type WebpackDevServerOptions = DevServerConfig &
  */
 type LoadableWebpackConfiguration = PotentialPromise<Configuration | CallableWebpackConfiguration>;
 type CallableWebpackConfiguration = (env: Env | undefined, argv: Argv) => Configuration;
-type WebpackCompiler = Compiler | MultiCompiler;
 
 interface EnumValueObject {
   [key: string]: EnumValue;
@@ -247,7 +196,6 @@ type Instantiable<
 type PotentialPromise<T> = T | Promise<T>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type LogHandler = (value: any) => void;
-type StringFormatter = (value: string) => string;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Argv extends Record<string, any> {
@@ -296,7 +244,6 @@ export {
   type CommanderOption,
   type EnumValue,
   type FileSystemCacheOptions,
-  type IWebpackCLI,
   type Instantiable,
   type LoadableWebpackConfiguration,
   type PackageInstallOptions,
@@ -318,7 +265,6 @@ export {
   type WebpackCLIMainOption,
   type WebpackCLIOptions,
   type WebpackCallback,
-  type WebpackCompiler,
   type WebpackDevServerOptions,
   type WebpackRunOptions,
 };
