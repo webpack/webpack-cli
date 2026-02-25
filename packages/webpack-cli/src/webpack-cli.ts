@@ -1,14 +1,17 @@
 import { type Readable as ReadableType } from "node:stream";
 import { type stringifyChunked as stringifyChunkedType } from "@discoveryjs/json-ext";
-import { type Command, type CommandOptions, type Help, type ParseOptions } from "commander";
+import {
+  type Command,
+  type CommandOptions as CommanderCommandOptions,
+  type Help,
+  type ParseOptions,
+} from "commander";
 import { type prepare } from "rechoir";
 import {
   type Argument,
-  type AssetEmittedInfo,
-  type Colors,
+  type Colors as WebpackColors,
   type Compiler,
   type Configuration,
-  type EntryOptions,
   type FileCacheOptions,
   type MultiCompiler,
   type MultiConfiguration,
@@ -18,13 +21,9 @@ import {
   type Stats,
   type StatsOptions,
   type WebpackError,
-  type WebpackOptionsNormalized,
   default as webpack,
 } from "webpack";
-import {
-  type ClientConfiguration,
-  type Configuration as DevServerConfig,
-} from "webpack-dev-server";
+import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
 
 const fs = require("node:fs");
 const path = require("node:path");
@@ -70,36 +69,10 @@ type PackageManager = "pnpm" | "yarn" | "npm";
 
 type StringsKeys<T> = { [K in keyof T]: T[K] extends string ? K : never }[keyof T];
 
-// TODO simplify all types and avoid WebpackCLI prefix
-
-interface PromptOptions {
-  message: string;
-  defaultResponse: string;
-  stream: NodeJS.WritableStream;
-}
-
-interface PackageInstallOptions {
-  preMessage?: () => void;
-}
-
-interface WebpackCLIColors extends Colors {
-  isColorSupported: boolean;
-}
-
-type ProcessedArguments = Record<string, (BasicPrimitive | RegExp)[]>;
-
-interface WebpackCLICommand extends Command {
-  pkg: string | undefined;
-  forHelp: boolean | undefined;
-  _args: WebpackCLICommandOption[];
-}
-
-type CommandAction = Parameters<WebpackCLICommand["action"]>[0];
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type LogHandler = (value: any) => void;
 
-interface WebpackCLILogger {
+interface Logger {
   error: LogHandler;
   warn: LogHandler;
   info: LogHandler;
@@ -108,25 +81,11 @@ interface WebpackCLILogger {
   raw: LogHandler;
 }
 
-type FileSystemCacheOptions = Configuration & {
-  cache: FileCacheOptions & { defaultConfig: string[] };
-};
-
-interface WebpackCLIConfigurationObj {
-  options: Configuration | MultiConfiguration;
-  path: WeakMap<object, string[]>;
+interface Colors extends WebpackColors {
+  isColorSupported: boolean;
 }
 
-interface Env {
-  WEBPACK_BUNDLE?: boolean;
-  WEBPACK_BUILD?: boolean;
-  WEBPACK_WATCH?: boolean;
-  WEBPACK_SERVE?: boolean;
-  WEBPACK_PACKAGE?: string;
-  WEBPACK_DEV_SERVER_PACKAGE?: string;
-}
-
-interface WebpackCLIOptions extends CommandOptions {
+interface CommandOptions extends CommanderCommandOptions {
   rawName: string;
   name: string;
   alias: string | string[];
@@ -138,26 +97,13 @@ interface WebpackCLIOptions extends CommandOptions {
   external?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface Argv extends Record<string, any> {
-  env?: Env;
-}
-type CallableWebpackConfiguration = (env: Env | undefined, argv: Argv) => Configuration;
-// TODO wrong type here
-type PotentialPromise<T> = T | Promise<T>;
-type LoadableWebpackConfiguration = PotentialPromise<Configuration | CallableWebpackConfiguration>;
+type BasicPrimitive = string | boolean | number;
 
-declare interface WebpackCallback {
-  (err: null | Error, result?: Stats): void;
-  (err: null | Error, result?: MultiStats): void;
-}
+type EnumValue = string | number | boolean | EnumValueObject | EnumValue[] | null;
 
 interface EnumValueObject {
   [key: string]: EnumValue;
 }
-type BasicPrimitive = string | boolean | number;
-type EnumValueArray = EnumValue[];
-type EnumValue = string | number | boolean | EnumValueObject | EnumValueArray | null;
 
 interface ArgumentConfig {
   description?: string;
@@ -168,7 +114,7 @@ interface ArgumentConfig {
   values?: EnumValue[];
 }
 
-interface WebpackCLIBuiltInFlag {
+interface Option {
   name: string;
   alias?: string;
   type?: (
@@ -184,64 +130,63 @@ interface WebpackCLIBuiltInFlag {
   negatedDescription?: string;
   defaultValue?: string;
   helpLevel: "minimum" | "verbose";
-}
-
-interface WebpackCLIBuiltInOption extends WebpackCLIBuiltInFlag {
   hidden?: boolean;
   group?: "core";
 }
 
-interface WebpackRunOptions extends WebpackOptionsNormalized {
-  progress?: boolean | "profile";
-  json?: boolean;
-  argv?: Argv;
+interface Env {
+  WEBPACK_BUNDLE?: boolean;
+  WEBPACK_BUILD?: boolean;
+  WEBPACK_WATCH?: boolean;
+  WEBPACK_SERVE?: boolean;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface Argv extends Record<string, any> {
   env: Env;
-  failOnWarnings?: boolean;
+}
+
+type CallableWebpackConfiguration<T> = (env: Env, argv: Argv) => T;
+type PotentialPromise<T> = T | Promise<T>;
+type LoadableWebpackConfiguration = PotentialPromise<
+  | Configuration
+  | MultiConfiguration
+  | CallableWebpackConfiguration<Configuration | MultiConfiguration>
+  // TODO revisit this support in future
+  | CallableWebpackConfiguration<Configuration>[]
+>;
+
+interface ConfigurationsAndPaths {
+  options: Configuration | MultiConfiguration;
+  path: WeakMap<object, string[]>;
+}
+
+declare interface WebpackCallback {
+  (err: null | Error, result?: Stats): void;
+  (err: null | Error, result?: MultiStats): void;
+}
+
+type ProcessedArguments = Parameters<(typeof webpack)["cli"]["processArguments"]>[2];
+
+interface Options {
+  config?: string[];
+  argv?: Argv;
+  env?: Env;
+  nodeEnv?: string;
+  configNodeEnv?: string;
+  watchOptionsStdin?: boolean;
+  watch?: boolean;
   isWatchingLikeCommand?: boolean;
+  progress?: boolean | "profile";
+  analyze?: boolean;
+  prefetch?: string;
+  json?: boolean;
+  entry?: string | string[];
+  merge?: boolean;
+  configName?: string[];
+  disableInterpret?: boolean;
+  extends?: string[];
 }
-
-type OptionConstructor = new (flags: string, description?: string) => typeof Option;
-type CommanderOption = InstanceType<OptionConstructor>;
-
-interface WebpackCLICommandOption extends CommanderOption {
-  helpLevel?: "minimum" | "verbose";
-}
-
-type WebpackCLIMainOption = Pick<
-  WebpackCLIBuiltInOption,
-  "valueName" | "description" | "defaultValue" | "multiple"
-> & {
-  flags: string;
-  type: Set<BooleanConstructor | StringConstructor | NumberConstructor>;
-};
-
-type WebpackDevServerOptions = DevServerConfig &
-  Configuration &
-  ClientConfiguration &
-  AssetEmittedInfo &
-  WebpackOptionsNormalized &
-  FileCacheOptions &
-  Argv & {
-    nodeEnv?: string;
-    watchOptionsStdin?: boolean;
-    progress?: boolean | "profile";
-    analyze?: boolean;
-    prefetch?: string;
-    json?: boolean;
-    entry: EntryOptions;
-    merge?: boolean;
-    config: string[];
-    configName?: string[];
-    disableInterpret?: boolean;
-    extends?: string[];
-    argv: Argv;
-  };
-
-type WebpackCLICommandOptions =
-  | WebpackCLIBuiltInOption[]
-  | (() => Promise<WebpackCLIBuiltInOption[]>);
-
-type LoadConfigOption = PotentialPromise<Configuration>;
 
 class ConfigurationLoadingError extends Error {
   name = "ConfigurationLoadingError";
@@ -261,17 +206,17 @@ class ConfigurationLoadingError extends Error {
 }
 
 class WebpackCLI {
-  colors: WebpackCLIColors;
+  colors: Colors;
 
-  logger: WebpackCLILogger;
+  logger: Logger;
 
   isColorSupportChanged: boolean | undefined;
 
-  #builtInOptionsCache: WebpackCLIBuiltInOption[] | undefined;
+  #builtInOptionsCache: Option[] | undefined;
 
   webpack!: typeof webpack;
 
-  program: WebpackCLICommand;
+  program: Command;
 
   constructor() {
     this.colors = this.createColors();
@@ -320,14 +265,14 @@ class WebpackCLI {
     return str.replaceAll(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
   }
 
-  createColors(useColor?: boolean): WebpackCLIColors {
+  createColors(useColor?: boolean): Colors {
     let cli: (typeof webpack)["cli"];
 
     try {
       cli = require("webpack").cli;
     } catch {
       // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
-      return new Proxy({} as WebpackCLIColors, {
+      return new Proxy({} as Colors, {
         get() {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           return (...args: any[]) => [...args];
@@ -341,7 +286,7 @@ class WebpackCLI {
     return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
   }
 
-  getLogger(): WebpackCLILogger {
+  getLogger(): Logger {
     return {
       error: (val) => console.error(`[webpack-cli] ${this.colors.red(util.format(val))}`),
       warn: (val) => console.warn(`[webpack-cli] ${this.colors.yellow(val)}`),
@@ -446,7 +391,7 @@ class WebpackCLI {
     }
   }
 
-  async doInstall(packageName: string, options: PackageInstallOptions = {}): Promise<string> {
+  async doInstall(packageName: string, options: { preMessage?: () => void } = {}): Promise<string> {
     const packageManager = await this.getDefaultPackageManager();
 
     if (!packageManager) {
@@ -461,7 +406,15 @@ class WebpackCLI {
 
     const { createInterface } = await import("node:readline");
 
-    const prompt = ({ message, defaultResponse, stream }: PromptOptions) => {
+    const prompt = ({
+      message,
+      defaultResponse,
+      stream,
+    }: {
+      message: string;
+      defaultResponse: string;
+      stream: NodeJS.WritableStream;
+    }) => {
       const rl = createInterface({
         input: process.stdin,
         output: stream,
@@ -523,7 +476,7 @@ class WebpackCLI {
     process.exit(2);
   }
 
-  getInfoOptions(): WebpackCLIBuiltInOption[] {
+  getInfoOptions(): Option[] {
     return [
       {
         name: "output",
@@ -606,10 +559,10 @@ class WebpackCLI {
   }
 
   async makeCommand(
-    commandOptions: WebpackCLIOptions,
-    options: WebpackCLICommandOptions,
-    action: CommandAction,
-  ): Promise<WebpackCLICommand | undefined> {
+    commandOptions: CommandOptions,
+    options: Option[] | (() => Promise<Option[]>),
+    action: Parameters<Command["action"]>[0],
+  ): Promise<Command | undefined> {
     const alreadyLoaded = this.program.commands.find(
       (command) =>
         command.name() === commandOptions.name.split(" ")[0] ||
@@ -623,7 +576,7 @@ class WebpackCLI {
     const command = this.program.command(commandOptions.name, {
       hidden: commandOptions.hidden,
       isDefault: commandOptions.isDefault,
-    }) as WebpackCLICommand;
+    });
 
     if (commandOptions.description) {
       command.description(commandOptions.description, commandOptions.argsDescription!);
@@ -639,9 +592,11 @@ class WebpackCLI {
       command.alias(commandOptions.alias);
     }
 
-    command.pkg = commandOptions.pkg || "webpack-cli";
+    // TODO search API for this
+    (command as Command & { pkg: string }).pkg = commandOptions.pkg || "webpack-cli";
 
-    const { forHelp } = this.program;
+    // TODO search a new API for this
+    const { forHelp } = this.program as Command & { forHelp: boolean };
 
     let allDependenciesInstalled = true;
 
@@ -710,9 +665,19 @@ class WebpackCLI {
     return command;
   }
 
-  makeOption(command: WebpackCLICommand, option: WebpackCLIBuiltInOption) {
-    let mainOption: WebpackCLIMainOption;
-    let negativeOption;
+  makeOption(command: Command, option: Option) {
+    type MainOption = Pick<Option, "valueName" | "description" | "defaultValue" | "multiple"> & {
+      flags: string;
+      type: Set<BooleanConstructor | StringConstructor | NumberConstructor>;
+    };
+    type NegativeOption = Pick<
+      Option,
+      "valueName" | "description" | "defaultValue" | "multiple"
+    > & {
+      flags: string;
+    };
+    let mainOption: MainOption;
+    let negativeOption: NegativeOption | undefined;
     const flagsWithAlias = ["devtool", "output-path", "target", "watch", "extends"];
 
     if (flagsWithAlias.includes(option.name)) {
@@ -722,7 +687,7 @@ class WebpackCLI {
     if (option.configs) {
       let needNegativeOption = false;
       let negatedDescription;
-      const mainOptionType: WebpackCLIMainOption["type"] = new Set();
+      const mainOptionType: MainOption["type"] = new Set();
 
       for (const config of option.configs) {
         switch (config.type) {
@@ -925,12 +890,12 @@ class WebpackCLI {
     }
   }
 
-  getBuiltInOptions(): WebpackCLIBuiltInOption[] {
+  getBuiltInOptions(): Option[] {
     if (this.#builtInOptionsCache) {
       return this.#builtInOptionsCache;
     }
 
-    const builtInFlags: WebpackCLIBuiltInFlag[] = [
+    const builtInFlags: Option[] = [
       // For configs
       {
         name: "config",
@@ -1130,7 +1095,7 @@ class WebpackCLI {
     const minHelpSet = new Set(minimumHelpFlags);
     const coreArgs = this.webpack.cli.getArguments();
     // Take memory
-    const options: WebpackCLIBuiltInOption[] = Array.from({
+    const options: Option[] = Array.from({
       length: builtInFlags.length + Object.keys(coreArgs).length,
     });
 
@@ -1157,7 +1122,7 @@ class WebpackCLI {
 
   static #commands: Record<
     "build" | "watch" | "version" | "help" | "serve" | "info" | "configtest",
-    WebpackCLIOptions
+    CommandOptions
   > = {
     build: {
       rawName: "build",
@@ -1219,7 +1184,7 @@ class WebpackCLI {
     );
   }
 
-  #isCommand(input: string, commandOptions: WebpackCLIOptions) {
+  #isCommand(input: string, commandOptions: CommandOptions) {
     const longName = commandOptions.rawName;
 
     if (input === longName) {
@@ -1240,7 +1205,7 @@ class WebpackCLI {
     return (await import(WEBPACK_PACKAGE)).default;
   }
 
-  async #loadCommandByName(commandName: WebpackCLIOptions["name"], allowToInstall = false) {
+  async #loadCommandByName(commandName: string, allowToInstall = false) {
     const isBuildCommandUsed = this.#isCommand(commandName, WebpackCLI.#commands.build);
     const isWatchCommandUsed = this.#isCommand(commandName, WebpackCLI.#commands.watch);
 
@@ -1264,9 +1229,9 @@ class WebpackCLI {
       const loadDevServerOptions = async () => {
         const devServer = (await import(WEBPACK_DEV_SERVER_PACKAGE)).default;
 
-        const options: Record<string, WebpackCLIBuiltInOption> = this.webpack.cli.getArguments(
+        const options: Record<string, Option> = this.webpack.cli.getArguments(
           devServer.schema,
-        ) as unknown as Record<string, WebpackCLIBuiltInOption>;
+        ) as unknown as Record<string, Option>;
 
         return Object.keys(options).map((key) => {
           options[key].name = key;
@@ -1297,7 +1262,7 @@ class WebpackCLI {
         },
         async (entries: string[], options) => {
           const builtInOptions = this.getBuiltInOptions();
-          let devServerFlags: WebpackCLIBuiltInOption[] = [];
+          let devServerFlags: Option[] = [];
 
           try {
             devServerFlags = await loadDevServerOptions();
@@ -1305,8 +1270,8 @@ class WebpackCLI {
             // Nothing, to prevent future updates
           }
 
-          const webpackCLIOptions: Partial<WebpackDevServerOptions> = {};
-          const devServerCLIOptions: Record<string, WebpackCLIBuiltInOption> = {};
+          const webpackCLIOptions: Partial<Options> = {};
+          const devServerCLIOptions: Record<string, Option> = {};
 
           for (const optionName in options) {
             const kebabedOption = this.toKebabCase(optionName);
@@ -1315,18 +1280,14 @@ class WebpackCLI {
             );
 
             if (isBuiltInOption) {
-              webpackCLIOptions[optionName] = options[optionName];
+              webpackCLIOptions[optionName as keyof Options] = options[optionName];
             } else {
               devServerCLIOptions[optionName] = options[optionName];
             }
           }
 
           if (entries.length > 0) {
-            // @ts-expect-error Need investigate
-            webpackCLIOptions.entry = [
-              ...(entries as string[]),
-              ...((webpackCLIOptions.entry || []) as string[]),
-            ];
+            webpackCLIOptions.entry = [...entries, ...(options.entry || [])];
           }
 
           webpackCLIOptions.argv = {
@@ -1336,7 +1297,7 @@ class WebpackCLI {
 
           webpackCLIOptions.isWatchingLikeCommand = true;
 
-          const compiler = await this.createCompiler(webpackCLIOptions);
+          const compiler = await this.createCompiler(webpackCLIOptions as Options);
 
           if (!compiler) {
             return;
@@ -1376,7 +1337,9 @@ class WebpackCLI {
               continue;
             }
 
-            const result = { ...compilerForDevServer.options.devServer };
+            const devServerConfiguration: DevServerConfiguration = {
+              ...compilerForDevServer.options.devServer,
+            };
 
             const args: Record<string, Argument> = {};
 
@@ -1395,7 +1358,11 @@ class WebpackCLI {
             }
 
             if (Object.keys(values).length > 0) {
-              const problems = this.webpack.cli.processArguments(args, result, values);
+              const problems = this.webpack.cli.processArguments(
+                args,
+                devServerConfiguration,
+                values,
+              );
 
               if (problems) {
                 const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(
@@ -1403,7 +1370,7 @@ class WebpackCLI {
                   key: K,
                 ) =>
                   xs.reduce(
-                    (rv: Record<string, Problem[]>, problem: Problem) => {
+                    (rv, problem) => {
                       const path = problem[key];
 
                       (rv[path] ||= []).push(problem);
@@ -1437,10 +1404,8 @@ class WebpackCLI {
               }
             }
 
-            const devServerOptions: WebpackDevServerOptions = result as WebpackDevServerOptions;
-
-            if (devServerOptions.port) {
-              const portNumber = Number(devServerOptions.port);
+            if (devServerConfiguration.port) {
+              const portNumber = Number(devServerConfiguration.port);
 
               if (usedPorts.includes(portNumber)) {
                 throw new Error(
@@ -1452,7 +1417,7 @@ class WebpackCLI {
             }
 
             try {
-              const server = new DevServer(devServerOptions, compiler);
+              const server = new DevServer(devServerConfiguration, compiler);
 
               await server.start();
 
@@ -1505,7 +1470,11 @@ class WebpackCLI {
         async (configPath: string | undefined) => {
           this.webpack = await this.loadWebpack();
 
-          const config = await this.loadConfig(configPath ? { config: [configPath] } : {});
+          const env: Env = {};
+          const argv: Argv = { env };
+          const config = await this.loadConfig(
+            configPath ? { config: [configPath] } : { env, argv },
+          );
           const configPaths = new Set<string>();
 
           if (Array.isArray(config.options)) {
@@ -1560,7 +1529,7 @@ class WebpackCLI {
       let pkg: string;
 
       if (builtInExternalCommandInfo) {
-        ({ pkg } = builtInExternalCommandInfo as WebpackCLIOptions & { pkg: string });
+        ({ pkg } = builtInExternalCommandInfo as CommandOptions & { pkg: string });
       } else {
         pkg = commandName;
       }
@@ -1612,7 +1581,7 @@ class WebpackCLI {
     options: string[],
     isVerbose: boolean,
     isHelpCommandSyntax: boolean,
-    program: WebpackCLICommand,
+    program: Command,
   ) {
     const isOption = (value: string): boolean => value.startsWith("-");
     const isGlobalOption = (value: string) =>
@@ -1639,7 +1608,7 @@ class WebpackCLI {
       program.configureHelp({
         sortSubcommands: true,
         // Support multiple aliases
-        commandUsage: (command: WebpackCLICommand) => {
+        commandUsage: (command) => {
           let parentCmdNames = "";
 
           for (let parentCmd = command.parent; parentCmd; parentCmd = parentCmd.parent) {
@@ -1657,21 +1626,21 @@ class WebpackCLI {
             .join("|")} ${command.usage()}`;
         },
         // Support multiple aliases
-        subcommandTerm: (command: WebpackCLICommand) => {
-          const humanReadableArgumentName = (argument: WebpackCLICommandOption) => {
+        subcommandTerm: (command) => {
+          const humanReadableArgumentName = (argument: typeof Option) => {
             const nameOutput = argument.name() + (argument.variadic ? "..." : "");
 
             return argument.required ? `<${nameOutput}>` : `[${nameOutput}]`;
           };
-          const args = command._args
-            .map((arg: WebpackCLICommandOption) => humanReadableArgumentName(arg))
+          const args = command.registeredArguments
+            .map((arg) => humanReadableArgumentName(arg))
             .join(" ");
 
           return `${command.name()}|${command.aliases().join("|")}${args ? ` ${args}` : ""}${
             command.options.length > 0 ? " [options]" : ""
           }`;
         },
-        visibleOptions: function visibleOptions(command: WebpackCLICommand) {
+        visibleOptions: function visibleOptions(command) {
           return command.options.filter((option) => {
             if (option.hidden) {
               return false;
@@ -1685,7 +1654,7 @@ class WebpackCLI {
               return false;
             }
 
-            switch ((option as unknown as WebpackCLIBuiltInFlag).helpLevel) {
+            switch ((option as unknown as Option).helpLevel) {
               case "verbose":
                 return isVerbose;
               case "minimum":
@@ -1694,7 +1663,7 @@ class WebpackCLI {
             }
           });
         },
-        padWidth(command: WebpackCLICommand, helper: Help) {
+        padWidth(command, helper: Help) {
           return Math.max(
             helper.longestArgumentTermLength(command, helper),
             helper.longestOptionTermLength(command, helper),
@@ -1703,7 +1672,7 @@ class WebpackCLI {
             helper.longestSubcommandTermLength(isGlobalHelp ? program : command, helper),
           );
         },
-        formatHelp: (command: WebpackCLICommand, helper: Help) => {
+        formatHelp: (command, helper: Help) => {
           const termWidth = helper.padWidth(command, helper);
           const helpWidth =
             helper.helpWidth || (process.env.WEBPACK_CLI_HELP_WIDTH as unknown as number) || 80;
@@ -1847,7 +1816,7 @@ class WebpackCLI {
         process.exit(2);
       }
 
-      const option = (command as WebpackCLICommand).options.find(
+      const option = command.options.find(
         (option) => option.short === optionName || option.long === optionName,
       );
 
@@ -1968,7 +1937,7 @@ class WebpackCLI {
 
             const { distance } = require("fastest-levenshtein");
 
-            for (const option of (command as WebpackCLICommand).options) {
+            for (const option of command.options) {
               if (!option.hidden && distance(name, option.long?.slice(2) as string) < 3) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
@@ -1988,14 +1957,14 @@ class WebpackCLI {
     });
 
     this.program.option("--color", "Enable colors on console.");
-    this.program.on("option:color", function color(this: WebpackCLICommand) {
+    this.program.on("option:color", function color(this: Command) {
       const { color } = this.opts();
 
       self.isColorSupportChanged = color;
       self.colors = self.createColors(color);
     });
     this.program.option("--no-color", "Disable colors on console.");
-    this.program.on("option:no-color", function noColor(this: WebpackCLICommand) {
+    this.program.on("option:no-color", function noColor(this: Command) {
       const { color } = this.opts();
 
       self.isColorSupportChanged = color;
@@ -2040,7 +2009,7 @@ class WebpackCLI {
           isVerbose = true;
         }
 
-        this.program.forHelp = true;
+        (this.program as Command & { forHelp: boolean }).forHelp = true;
 
         const optionsForHelp = [
           ...(isHelpOption && hasOperand ? [operand] : []),
@@ -2127,8 +2096,8 @@ class WebpackCLI {
   async #loadConfigurationFile(
     configPath: string,
     disableInterpret = false,
-  ): Promise<LoadConfigOption | LoadConfigOption[] | undefined> {
-    let pkg: LoadConfigOption | LoadConfigOption[] | undefined;
+  ): Promise<LoadableWebpackConfiguration | undefined> {
+    let pkg: LoadableWebpackConfiguration | undefined;
 
     let loadingError;
 
@@ -2187,7 +2156,7 @@ class WebpackCLI {
 
     // To handle `babel`/`module.exports.default = {};`
     if (pkg && typeof pkg === "object" && "default" in pkg) {
-      pkg = pkg.default as LoadConfigOption | LoadConfigOption[] | undefined;
+      pkg = pkg.default as LoadableWebpackConfiguration | undefined;
     }
 
     if (!pkg) {
@@ -2199,15 +2168,15 @@ class WebpackCLI {
     return pkg || {};
   }
 
-  async loadConfig(options: Partial<WebpackDevServerOptions>) {
+  async loadConfig(options: Options) {
     const disableInterpret =
       typeof options.disableInterpret !== "undefined" && options.disableInterpret;
 
     const loadConfigByPath = async (
       configPath: string,
-      argv: Argv = {},
-    ): Promise<{ options: Configuration | Configuration[]; path: string }> => {
-      let options: LoadableWebpackConfiguration | LoadableWebpackConfiguration[] | undefined;
+      argv: Argv = { env: {} },
+    ): Promise<{ options: Configuration | MultiConfiguration; path: string }> => {
+      let options: LoadableWebpackConfiguration | undefined;
 
       try {
         options = await this.#loadConfigurationFile(configPath, disableInterpret);
@@ -2223,13 +2192,14 @@ class WebpackCLI {
       }
 
       if (Array.isArray(options)) {
-        // reassign the value to assert type
         const optionsArray: LoadableWebpackConfiguration[] = options;
         await Promise.all(
           optionsArray.map(async (_, i) => {
             if (
-              this.isPromise<Configuration | CallableWebpackConfiguration>(
-                optionsArray[i] as Promise<Configuration | CallableWebpackConfiguration>,
+              this.isPromise<Configuration | CallableWebpackConfiguration<Configuration>>(
+                optionsArray[i] as Promise<
+                  Configuration | CallableWebpackConfiguration<Configuration>
+                >,
               )
             ) {
               optionsArray[i] = await optionsArray[i];
@@ -2241,7 +2211,7 @@ class WebpackCLI {
             }
           }),
         );
-        options = optionsArray;
+        options = optionsArray as MultiConfiguration;
       } else {
         if (
           this.isPromise<LoadableWebpackConfiguration>(
@@ -2268,12 +2238,12 @@ class WebpackCLI {
       }
 
       return {
-        options: options as Configuration | Configuration[],
+        options: options as Configuration | MultiConfiguration,
         path: configPath,
       };
     };
 
-    const config: WebpackCLIConfigurationObj = {
+    const config: ConfigurationsAndPaths = {
       options: {},
       path: new WeakMap(),
     };
@@ -2364,7 +2334,7 @@ class WebpackCLI {
         }
 
         return found;
-      }) as Configuration[];
+      }) as MultiConfiguration;
 
       if (notFoundConfigNames.length > 0) {
         this.logger.error(
@@ -2378,7 +2348,7 @@ class WebpackCLI {
 
     const resolveExtends = async (
       config: Configuration,
-      configPaths: WebpackCLIConfigurationObj["path"],
+      configPaths: ConfigurationsAndPaths["path"],
       extendsPaths: string[],
     ): Promise<Configuration> => {
       delete config.extends;
@@ -2491,9 +2461,9 @@ class WebpackCLI {
   }
 
   async buildConfig(
-    config: WebpackCLIConfigurationObj,
-    options: Partial<WebpackDevServerOptions>,
-  ): Promise<WebpackCLIConfigurationObj> {
+    config: ConfigurationsAndPaths,
+    options: Options,
+  ): Promise<ConfigurationsAndPaths> {
     if (options.analyze && !this.checkPackageExists("webpack-bundle-analyzer")) {
       await this.doInstall("webpack-bundle-analyzer", {
         preMessage: () => {
@@ -2538,7 +2508,7 @@ class WebpackCLI {
         const kebabName = this.toKebabCase(name);
 
         if (args[kebabName] !== undefined) {
-          values[kebabName] = options[name];
+          values[kebabName] = options[name as keyof Options] as string[];
         }
       }
 
@@ -2547,13 +2517,16 @@ class WebpackCLI {
 
         if (problems) {
           const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(xs: Problem[], key: K) =>
-            xs.reduce((rv: Record<string, Problem[]>, problem: Problem) => {
-              const path = problem[key];
+            xs.reduce(
+              (rv, problem) => {
+                const path = problem[key];
 
-              (rv[path] ||= []).push(problem);
+                (rv[path] ||= []).push(problem);
 
-              return rv;
-            }, {});
+                return rv;
+              },
+              {} as Record<string, Problem[]>,
+            );
           const problemsByPath = groupBy(problems, "path");
 
           for (const path in problemsByPath) {
@@ -2599,8 +2572,12 @@ class WebpackCLI {
         }
       }
 
-      const isFileSystemCacheOptions = (config: Configuration): config is FileSystemCacheOptions =>
-        Boolean(config.cache) && (config as FileSystemCacheOptions).cache.type === "filesystem";
+      const isFileSystemCacheOptions = (
+        config: Configuration,
+      ): config is Configuration & { cache: FileCacheOptions } =>
+        typeof config.cache !== "undefined" &&
+        typeof config.cache !== "boolean" &&
+        config.cache.type === "filesystem";
 
       // Setup default cache options
       if (isFileSystemCacheOptions(item) && Object.isExtensible(item.cache)) {
@@ -2700,7 +2677,7 @@ class WebpackCLI {
   }
 
   async createCompiler(
-    options: Partial<WebpackDevServerOptions>,
+    options: Options,
     callback?: WebpackCallback,
   ): Promise<Compiler | MultiCompiler> {
     if (typeof options.configNodeEnv === "string") {
@@ -2748,7 +2725,7 @@ class WebpackCLI {
     return Boolean(compiler.options.watchOptions?.stdin);
   }
 
-  async runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void> {
+  async runWebpack(options: Options, isWatchCommand: boolean): Promise<void> {
     let compiler: Compiler | MultiCompiler;
     let stringifyChunked: typeof stringifyChunkedType;
     let Readable: typeof ReadableType;
@@ -2764,7 +2741,7 @@ class WebpackCLI {
         process.exit(2);
       }
 
-      if (stats && (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings()))) {
+      if (stats && stats.hasErrors()) {
         process.exitCode = 1;
       }
 
@@ -2783,7 +2760,7 @@ class WebpackCLI {
           : undefined;
 
       if (options.json) {
-        const handleWriteError = (error: WebpackError) => {
+        const handleWriteError = (error: Error) => {
           this.logger.error(error);
           process.exit(2);
         };
@@ -2830,7 +2807,7 @@ class WebpackCLI {
       options.isWatchingLikeCommand = true;
     }
 
-    compiler = await this.createCompiler(options as WebpackDevServerOptions, callback);
+    compiler = await this.createCompiler(options, callback);
 
     if (!compiler) {
       return;
