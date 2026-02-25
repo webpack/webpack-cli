@@ -3,7 +3,7 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import expand from "@inquirer/expand";
 import { spawn, sync } from "cross-spawn";
-import { render } from "ejs";
+import ejs from "ejs";
 import { type NodePlopAPI } from "node-plop";
 import { type Answers } from "../types.js";
 import { logger } from "./logger.js";
@@ -102,12 +102,12 @@ async function renderTemplate(
   data: Answers | undefined,
 ): Promise<Content> {
   if (template) {
-    return render(template, data || {}, { async: true });
+    return ejs.render(template, data || {}, { async: true });
   }
 
   if (templateFile) {
     const templateContent = await fs.readFile(templateFile, "utf8");
-    return render(templateContent, data || {}, { async: true });
+    return ejs.render(templateContent, data || {}, { async: true });
   }
 
   throw new Error("Template or templateFile is required");
