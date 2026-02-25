@@ -1,4 +1,5 @@
-import { type stringifyChunked } from "@discoveryjs/json-ext";
+import { type Readable as ReadableType } from "node:stream";
+import { type stringifyChunked as stringifyChunkedType } from "@discoveryjs/json-ext";
 import { type Help, type ParseOptions } from "commander";
 import {
   type Compiler,
@@ -49,7 +50,6 @@ import {
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { Readable } = require("node:stream");
 const { pathToFileURL } = require("node:url");
 const util = require("node:util");
 const { Option, program } = require("commander");
@@ -225,20 +225,28 @@ class WebpackCLI implements IWebpackCLI {
   async getDefaultPackageManager(): Promise<PackageManager | undefined> {
     const { sync } = await import("cross-spawn");
 
-    // TODO use async methods
-    const hasLocalNpm = fs.existsSync(path.resolve(process.cwd(), "package-lock.json"));
+    const hasLocalNpm = await fs.promises.access(
+      path.resolve(process.cwd(), "package-lock.json"),
+      fs.constants.F_OK,
+    );
 
     if (hasLocalNpm) {
       return "npm";
     }
 
-    const hasLocalYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
+    const hasLocalYarn = await fs.promises.access(
+      path.resolve(process.cwd(), "yarn.lock"),
+      fs.constants.F_OK,
+    );
 
     if (hasLocalYarn) {
       return "yarn";
     }
 
-    const hasLocalPnpm = fs.existsSync(path.resolve(process.cwd(), "pnpm-lock.yaml"));
+    const hasLocalPnpm = await fs.promises.access(
+      path.resolve(process.cwd(), "pnpm-lock.yaml"),
+      fs.constants.F_OK,
+    );
 
     if (hasLocalPnpm) {
       return "pnpm";
@@ -2584,12 +2592,12 @@ class WebpackCLI implements IWebpackCLI {
 
   async runWebpack(options: WebpackRunOptions, isWatchCommand: boolean): Promise<void> {
     let compiler: Compiler | MultiCompiler;
-    let createStringifyChunked: typeof stringifyChunked;
+    let stringifyChunked: typeof stringifyChunkedType;
+    let Readable: typeof ReadableType;
 
     if (options.json) {
-      const { stringifyChunked } = await import("@discoveryjs/json-ext");
-
-      createStringifyChunked = stringifyChunked;
+      ({ stringifyChunked } = await import("@discoveryjs/json-ext"));
+      ({ Readable } = await import("node:stream"));
     }
 
     const callback: WebpackCallback = (error, stats): void => {
@@ -2616,20 +2624,20 @@ class WebpackCLI implements IWebpackCLI {
           ? (compiler.options.stats as StatsOptions)
           : undefined;
 
-      if (options.json && createStringifyChunked) {
+      if (options.json) {
         const handleWriteError = (error: WebpackError) => {
           this.logger.error(error);
           process.exit(2);
         };
 
         if (options.json === true) {
-          Readable.from(createStringifyChunked(stats.toJson(statsOptions as StatsOptions)))
+          Readable.from(stringifyChunked(stats.toJson(statsOptions as StatsOptions)))
             .on("error", handleWriteError)
             .pipe(process.stdout)
             .on("error", handleWriteError)
             .on("close", () => process.stdout.write("\n"));
         } else {
-          Readable.from(createStringifyChunked(stats.toJson(statsOptions as StatsOptions)))
+          Readable.from(stringifyChunked(stats.toJson(statsOptions as StatsOptions)))
             .on("error", handleWriteError)
             .pipe(fs.createWriteStream(options.json))
             .on("error", handleWriteError)
