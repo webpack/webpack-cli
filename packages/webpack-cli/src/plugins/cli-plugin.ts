@@ -1,5 +1,14 @@
 import { type Compiler } from "webpack";
-import { type CLIPluginOptions } from "../types.js";
+
+interface CLIPluginOptions {
+  isMultiCompiler?: boolean;
+  configPath?: string[];
+  helpfulOutput: boolean;
+  hot?: boolean | "only";
+  progress?: boolean | "profile";
+  prefetch?: string;
+  analyze?: boolean;
+}
 
 export default class CLIPlugin {
   logger!: ReturnType<Compiler["getInfrastructureLogger"]>;

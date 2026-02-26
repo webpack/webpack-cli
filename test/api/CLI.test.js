@@ -1,4 +1,4 @@
-const CLI = require("../../packages/webpack-cli/lib/webpack-cli");
+const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
 
 describe("CLI API", () => {
   let cli;
@@ -1700,15 +1700,6 @@ describe("CLI API", () => {
     beforeEach(async () => {
       consoleSpy = jest.spyOn(globalThis.console, "log");
       exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
-
-      await new Promise((resolve, reject) => {
-        try {
-          cli.run(["help", "--mode"], { from: "user" });
-          resolve();
-        } catch (error) {
-          reject(error);
-        }
-      });
     });
 
     afterEach(async () => {
@@ -1716,7 +1707,13 @@ describe("CLI API", () => {
       exitSpy.mockRestore();
     });
 
-    it("should display help information", () => {
+    it("should display help information", async () => {
+      try {
+        await cli.run(["help", "--mode"], { from: "user" });
+      } catch {
+        // Nothing for tests
+      }
+
       expect(exitSpy).toHaveBeenCalledWith(0);
       expect(consoleSpy.mock.calls).toMatchSnapshot();
     });

@@ -19,6 +19,9 @@ describe("custom-webpack", () => {
       env: { WEBPACK_PACKAGE: resolve(__dirname, "./custom-webpack.js") },
     });
 
+    console.log(stderr);
+    console.log(stdout);
+
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
     expect(stdout).toContain("main.js");
