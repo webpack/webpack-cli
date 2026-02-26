@@ -598,9 +598,6 @@ class WebpackCLI {
     // TODO search API for this
     (command as Command & { pkg: string }).pkg = commandOptions.pkg || "webpack-cli";
 
-    // TODO search a new API for this
-    const { forHelp } = this.program as Command & { forHelp: boolean };
-
     let allDependenciesInstalled = true;
 
     if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
@@ -610,7 +607,7 @@ class WebpackCLI {
 
         if (isPkgExist) {
           continue;
-        } else if (!isPkgExist && forHelp) {
+        } else if (!isPkgExist) {
           allDependenciesInstalled = false;
           continue;
         }
@@ -645,7 +642,7 @@ class WebpackCLI {
 
     if (options) {
       if (typeof options === "function") {
-        if (forHelp && !allDependenciesInstalled && commandOptions.dependencies) {
+        if (!allDependenciesInstalled && commandOptions.dependencies) {
           command.description(
             `${
               commandOptions.description
@@ -2009,8 +2006,6 @@ class WebpackCLI {
 
           isVerbose = true;
         }
-
-        (this.program as Command & { forHelp: boolean }).forHelp = true;
 
         const optionsForHelp = [
           ...(isHelpOption && hasOperand ? [operand] : []),
