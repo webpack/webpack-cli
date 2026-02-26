@@ -622,6 +622,8 @@ class WebpackCLI {
 
     const { forHelp } = this.program as Command & { forHelp?: boolean };
 
+    let allDependenciesInstalled = true;
+
     if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
       for (const dependency of commandOptions.dependencies) {
         if (
@@ -635,7 +637,13 @@ class WebpackCLI {
 
         const isPkgExist = await this.checkPackageExists(dependency);
 
-        if (isPkgExist || forHelp) {
+        if (isPkgExist) {
+          continue;
+        }
+
+        allDependenciesInstalled = false;
+
+        if (forHelp) {
           continue;
         }
 
@@ -653,7 +661,12 @@ class WebpackCLI {
 
     if (options) {
       if (typeof options === "function") {
-        if (forHelp && commandOptions.dependencies && commandOptions.dependencies.length > 0) {
+        if (
+          forHelp &&
+          !allDependenciesInstalled &&
+          commandOptions.dependencies &&
+          commandOptions.dependencies.length > 0
+        ) {
           command.description(
             `${
               commandOptions.description
