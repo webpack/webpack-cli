@@ -637,10 +637,9 @@ class WebpackCLI {
 
         if (isPkgExist) {
           continue;
-        } else if (!isPkgExist) {
-          allDependenciesInstalled = false;
-          continue;
         }
+
+        allDependenciesInstalled = false;
 
         await this.doInstall(dependency, {
           preMessage: () => {
