@@ -590,7 +590,7 @@ class WebpackCLI {
   ): Promise<Command | undefined> {
     const alreadyLoaded = this.program.commands.find(
       (command) =>
-        command.name() === commandOptions.name.split(" ")[0] ||
+        command.name() === commandOptions.rawName ||
         command.aliases().includes(commandOptions.alias as string),
     );
 
@@ -620,7 +620,7 @@ class WebpackCLI {
     // TODO search API for this
     (command as Command & { pkg: string }).pkg = commandOptions.pkg || "webpack-cli";
 
-    let allDependenciesInstalled = true;
+    const { forHelp } = this.program as Command & { forHelp?: boolean };
 
     if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
       for (const dependency of commandOptions.dependencies) {
@@ -635,17 +635,15 @@ class WebpackCLI {
 
         const isPkgExist = await this.checkPackageExists(dependency);
 
-        if (isPkgExist) {
+        if (isPkgExist || forHelp) {
           continue;
         }
-
-        allDependenciesInstalled = false;
 
         await this.doInstall(dependency, {
           preMessage: () => {
             this.logger.error(
               `For using '${this.colors.green(
-                commandOptions.name.split(" ")[0],
+                commandOptions.rawName,
               )}' command you need to install: '${this.colors.green(dependency)}' package.`,
             );
           },
@@ -655,11 +653,7 @@ class WebpackCLI {
 
     if (options) {
       if (typeof options === "function") {
-        if (
-          !allDependenciesInstalled &&
-          commandOptions.dependencies &&
-          commandOptions.dependencies.length > 0
-        ) {
+        if (forHelp && commandOptions.dependencies && commandOptions.dependencies.length > 0) {
           command.description(
             `${
               commandOptions.description
@@ -2035,6 +2029,8 @@ class WebpackCLI {
 
           isVerbose = true;
         }
+
+        (this.program as Command & { forHelp?: boolean }).forHelp = true;
 
         const optionsForHelp = [
           ...(isHelpOption && hasOperand ? [operand] : []),
