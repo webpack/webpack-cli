@@ -1646,7 +1646,7 @@ class WebpackCLI {
         helpWidth:
           typeof process.env.WEBPACK_CLI_HELP_WIDTH !== "undefined"
             ? Number.parseInt(process.env.WEBPACK_CLI_HELP_WIDTH, 10)
-            : 80,
+            : 40,
         sortSubcommands: true,
         // Support multiple aliases
         commandUsage: (command) => {
@@ -1720,7 +1720,7 @@ class WebpackCLI {
             if (description) {
               return helper.formatItem(
                 term,
-                (helper.helpWidth || 80) - itemIndentWidth,
+                (helper.helpWidth || 80) - 1 - itemIndentWidth,
                 description,
                 helper,
               );
