@@ -174,7 +174,6 @@ interface Options {
   config?: string[];
   argv?: Argv;
   env?: Env;
-  nodeEnv?: string;
   configNodeEnv?: string;
   watchOptionsStdin?: boolean;
   watch?: boolean;
@@ -1014,18 +1013,6 @@ class WebpackCLI {
         multiple: true,
         description:
           'Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".',
-        helpLevel: "minimum",
-      },
-      {
-        name: "node-env",
-        configs: [
-          {
-            type: "string",
-          },
-        ],
-        multiple: false,
-        description:
-          "Sets process.env.NODE_ENV to the specified value for access within the configuration.(Deprecated: Use '--config-node-env' instead)",
         helpLevel: "minimum",
       },
       {
@@ -2717,10 +2704,6 @@ class WebpackCLI {
   ): Promise<Compiler | MultiCompiler> {
     if (typeof options.configNodeEnv === "string") {
       process.env.NODE_ENV = options.configNodeEnv;
-    }
-    // TODO remove in the next major release
-    else if (typeof options.nodeEnv === "string") {
-      process.env.NODE_ENV = options.nodeEnv;
     }
 
     let config = await this.loadConfig(options);

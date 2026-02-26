@@ -5,7 +5,7 @@
 
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     <% if (devServer) { %>
       "serve": "webpack serve",

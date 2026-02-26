@@ -13,7 +13,7 @@ exports[`create-webpack-app cli recognizes '-t' as an alias for '--template' and
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -35,7 +35,7 @@ exports[`create-webpack-app cli should ask question when wrong template is suppl
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -54,7 +54,7 @@ exports[`create-webpack-app cli should configure WDS as opted 1`] = `
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -91,7 +91,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -102,8 +102,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -123,7 +123,7 @@ exports[`create-webpack-app cli should configure html-webpack-plugin as opted 1`
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
@@ -160,7 +160,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
             {
                 test: /\\.html$/i,
                 use: ['html-loader'],
@@ -175,8 +175,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -197,7 +197,7 @@ exports[`create-webpack-app cli should configure workbox-webpack-plugin as opted
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
@@ -235,7 +235,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
             {
                 test: /\\.html$/i,
                 use: ['html-loader'],
@@ -250,10 +250,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -274,7 +274,7 @@ exports[`create-webpack-app cli should generate ES6 project correctly 1`] = `
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
@@ -310,7 +310,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -321,8 +321,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -344,7 +344,7 @@ exports[`create-webpack-app cli should generate default project when nothing is 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -387,7 +387,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
             {
                 test: /\\.html$/i,
                 use: ['html-loader'],
@@ -402,10 +402,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -427,7 +427,7 @@ exports[`create-webpack-app cli should generate folders if non existing generati
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -449,7 +449,7 @@ exports[`create-webpack-app cli should generate project when generationPath is s
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -484,7 +484,7 @@ exports[`create-webpack-app cli should generate react template with state and ro
   },
   "name": "my-webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -562,12 +562,12 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -599,7 +599,7 @@ exports[`create-webpack-app cli should generate svelte template with prompt answ
   },
   "name": "my-webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -688,12 +688,12 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -713,7 +713,7 @@ exports[`create-webpack-app cli should generate typescript project correctly 1`]
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
@@ -750,7 +750,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -764,8 +764,8 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -801,7 +801,7 @@ exports[`create-webpack-app cli should generate vue template with store and rout
   },
   "name": "my-webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -883,12 +883,12 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+
     } else {
         config.mode = 'development';
     }
@@ -914,7 +914,7 @@ exports[`create-webpack-app cli should use css preprocessor and css with postcss
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
@@ -959,7 +959,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -970,10 +970,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -999,7 +999,7 @@ exports[`create-webpack-app cli should use to use css preprocessor with postcss 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
@@ -1040,7 +1040,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: 'asset',
             },
-            
+
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1051,10 +1051,10 @@ const config = {
 module.exports = () => {
     if (isProduction) {
         config.mode = 'production';
-        
+
         config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+
+
     } else {
         config.mode = 'development';
     }
@@ -1076,7 +1076,7 @@ exports[`create-webpack-app cli should work with 'new' alias 1`] = `
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "serve": "webpack serve",
     "watch": "webpack --watch",
@@ -1094,7 +1094,7 @@ exports[`create-webpack-app cli uses yarn as the package manager when opted 1`] 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
+    "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
