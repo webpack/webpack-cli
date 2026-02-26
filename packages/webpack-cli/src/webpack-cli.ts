@@ -268,12 +268,16 @@ class WebpackCLI {
   }
 
   createColors(useColor?: boolean): Colors {
-    let cli: (typeof webpack)["cli"];
+    let pkg: typeof webpack | undefined;
 
     try {
-      cli = require(WEBPACK_PACKAGE).cli;
+      pkg = require(WEBPACK_PACKAGE);
     } catch {
-      // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
+      // Nothing
+    }
+
+    // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
+    if (!pkg || typeof pkg.cli.createColors === "undefined") {
       return new Proxy({} as Colors, {
         get() {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -282,7 +286,7 @@ class WebpackCLI {
       });
     }
 
-    const { createColors, isColorSupported } = cli;
+    const { createColors, isColorSupported } = pkg.cli;
     const shouldUseColor = useColor || isColorSupported();
 
     return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
