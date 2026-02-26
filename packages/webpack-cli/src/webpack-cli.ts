@@ -1714,23 +1714,15 @@ class WebpackCLI {
           );
         },
         formatHelp: (command, helper: Help) => {
-          const itemIndentWidth = 2;
-
           const formatItem = (term: string, description: string) => {
             if (description) {
-              return helper.formatItem(
-                term,
-                (helper.helpWidth || 80) - 1 - itemIndentWidth,
-                description,
-                helper,
-              );
+              return helper.formatItem(term, helper.padWidth(command, helper), description, helper);
             }
 
             return term;
           };
 
-          const formatList = (textArray: string[]) =>
-            textArray.join("\n").replaceAll(/^/gm, " ".repeat(itemIndentWidth));
+          const formatList = (textArray: string[]) => textArray.join("\n").replaceAll(/^/gm, "");
 
           // Usage
           let output = [`${bold("Usage:")} ${helper.commandUsage(command)}`, ""];
