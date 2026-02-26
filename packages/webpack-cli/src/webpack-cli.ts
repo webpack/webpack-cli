@@ -278,7 +278,7 @@ class WebpackCLI {
     }
 
     // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
-    if (!pkg || !pkg.cli || typeof pkg.cli.createColors === "undefined") {
+    if (!pkg || !pkg.cli || typeof pkg.cli.createColors !== "function") {
       return new Proxy({} as Colors, {
         get() {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -309,6 +309,14 @@ class WebpackCLI {
       return true;
     }
 
+    try {
+      require.resolve(packageName);
+      return true;
+    } catch {
+      // Nothing
+    }
+
+    // Fallback using fs
     let dir = __dirname;
 
     do {
@@ -323,20 +331,29 @@ class WebpackCLI {
       }
     } while (dir !== (dir = path.dirname(dir)));
 
+    // Extra fallback using fs and hidden API
     // @ts-expect-error No types, private API
     const { globalPaths } = await import("node:module");
 
     // https://github.com/nodejs/node/blob/v18.9.1/lib/internal/modules/cjs/loader.js#L1274
-    for (const internalPath of globalPaths) {
-      try {
-        const stats = await fs.promises.stat(path.join(internalPath, packageName));
+    const results = await Promise.all(
+      (globalPaths as string[]).map(async (internalPath) => {
+        try {
+          const stats = await fs.promises.stat(path.join(internalPath, packageName));
 
-        if (stats.isDirectory()) {
-          return true;
+          if (stats.isDirectory()) {
+            return true;
+          }
+        } catch {
+          // Nothing
         }
-      } catch {
-        // Nothing
-      }
+
+        return false;
+      }),
+    );
+
+    if (results.includes(true)) {
+      return true;
     }
 
     return false;
@@ -607,29 +624,21 @@ class WebpackCLI {
 
     if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
       for (const dependency of commandOptions.dependencies) {
-        // TODO do we really need this for webpack itself?
+        if (
+          // Allow to use `./path/to/webpack.js` outside `node_modules`
+          (dependency === WEBPACK_PACKAGE && WEBPACK_PACKAGE_IS_CUSTOM) ||
+          // Allow to use `./path/to/webpack-dev-server.js` outside `node_modules`
+          (dependency === WEBPACK_DEV_SERVER_PACKAGE && WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM)
+        ) {
+          continue;
+        }
+
         const isPkgExist = await this.checkPackageExists(dependency);
 
         if (isPkgExist) {
           continue;
         } else if (!isPkgExist) {
           allDependenciesInstalled = false;
-          continue;
-        }
-
-        let skipInstallation = false;
-
-        // Allow to use `./path/to/webpack.js` outside `node_modules`
-        if (dependency === WEBPACK_PACKAGE && WEBPACK_PACKAGE_IS_CUSTOM) {
-          skipInstallation = true;
-        }
-
-        // Allow to use `./path/to/webpack-dev-server.js` outside `node_modules`
-        if (dependency === WEBPACK_DEV_SERVER_PACKAGE && WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM) {
-          skipInstallation = true;
-        }
-
-        if (skipInstallation) {
           continue;
         }
 
@@ -647,7 +656,11 @@ class WebpackCLI {
 
     if (options) {
       if (typeof options === "function") {
-        if (!allDependenciesInstalled && commandOptions.dependencies) {
+        if (
+          !allDependenciesInstalled &&
+          commandOptions.dependencies &&
+          commandOptions.dependencies.length > 0
+        ) {
           command.description(
             `${
               commandOptions.description
