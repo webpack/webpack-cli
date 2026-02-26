@@ -1,6 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const CLI = require("../../packages/webpack-cli/lib/webpack-cli");
+const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
 
 const syncMock = jest.fn(() => ({
   stdout: "1.0.0",

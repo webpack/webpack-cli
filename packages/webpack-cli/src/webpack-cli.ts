@@ -1828,6 +1828,7 @@ class WebpackCLI {
         this.logger.error(`Unknown option '${optionName}'`);
         this.logger.error("Run 'webpack --help' to see available commands and options");
         process.exit(2);
+        return;
       }
 
       const nameOutput =

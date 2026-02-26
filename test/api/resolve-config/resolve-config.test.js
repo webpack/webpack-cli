@@ -1,5 +1,5 @@
 const { resolve } = require("node:path");
-const WebpackCLI = require("../../../packages/webpack-cli/lib/webpack-cli");
+const WebpackCLI = require("../../../packages/webpack-cli/lib/webpack-cli").default;
 const arrayConfig = require("./webpack.config.cjs");
 const config1 = require("./webpack.config1.cjs");
 const config2 = require("./webpack.config2.cjs");
