@@ -1643,6 +1643,10 @@ class WebpackCLI {
 
     if (isGlobalHelp || isCommandHelp) {
       program.configureHelp({
+        helpWidth:
+          typeof process.env.WEBPACK_CLI_HELP_WIDTH !== "undefined"
+            ? Number.parseInt(process.env.WEBPACK_CLI_HELP_WIDTH, 10)
+            : 40,
         sortSubcommands: true,
         // Support multiple aliases
         commandUsage: (command) => {
@@ -1710,28 +1714,15 @@ class WebpackCLI {
           );
         },
         formatHelp: (command, helper: Help) => {
-          const termWidth = helper.padWidth(command, helper);
-          const helpWidth =
-            helper.helpWidth || (process.env.WEBPACK_CLI_HELP_WIDTH as unknown as number) || 80;
-          const itemIndentWidth = 2;
-          const itemSeparatorWidth = 2; // between term and description
-
           const formatItem = (term: string, description: string) => {
             if (description) {
-              const fullText = `${term.padEnd(termWidth + itemSeparatorWidth)}${description}`;
-
-              return helper.wrap(
-                fullText,
-                helpWidth - itemIndentWidth,
-                termWidth + itemSeparatorWidth,
-              );
+              return helper.formatItem(term, helper.padWidth(command, helper), description, helper);
             }
 
             return term;
           };
 
-          const formatList = (textArray: string[]) =>
-            textArray.join("\n").replaceAll(/^/gm, " ".repeat(itemIndentWidth));
+          const formatList = (textArray: string[]) => textArray.join("\n").replaceAll(/^/gm, "");
 
           // Usage
           let output = [`${bold("Usage:")} ${helper.commandUsage(command)}`, ""];
@@ -2023,6 +2014,8 @@ class WebpackCLI {
     // By default we don't load any commands and options, commands and options registration takes a lot of time instead we load them lazily
     // That is why we need to set `allowUnknownOption` to `true`, otherwise commander will not work
     this.program.allowUnknownOption(true);
+    // For lazy loading other commands too
+    this.program.allowExcessArguments(true);
     this.program.action(async (options) => {
       const { operands, unknown } = this.program.parseOptions(this.program.args);
       const defaultCommandNameToRun = WebpackCLI.#commands.build.rawName;
