@@ -1720,11 +1720,7 @@ class WebpackCLI {
             if (description) {
               const fullText = `${term.padEnd(termWidth + itemSeparatorWidth)}${description}`;
 
-              return helper.wrap(
-                fullText,
-                helpWidth - itemIndentWidth,
-                termWidth + itemSeparatorWidth,
-              );
+              return helper.formatItem(term, helpWidth - itemIndentWidth, fullText, helper);
             }
 
             return term;
@@ -2023,6 +2019,8 @@ class WebpackCLI {
     // By default we don't load any commands and options, commands and options registration takes a lot of time instead we load them lazily
     // That is why we need to set `allowUnknownOption` to `true`, otherwise commander will not work
     this.program.allowUnknownOption(true);
+    // For lazy loading other commands too
+    this.program.allowExcessArguments(true);
     this.program.action(async (options) => {
       const { operands, unknown } = this.program.parseOptions(this.program.args);
       const defaultCommandNameToRun = WebpackCLI.#commands.build.rawName;
