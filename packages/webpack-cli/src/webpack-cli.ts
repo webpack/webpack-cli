@@ -1444,11 +1444,11 @@ class WebpackCLI {
         },
       );
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.help)) {
-      this.makeCommand(WebpackCLI.#commands.help, [], () => {
+      await this.makeCommand(WebpackCLI.#commands.help, [], () => {
         // Stub for the `help` command
       });
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.version)) {
-      this.makeCommand(
+      await this.makeCommand(
         WebpackCLI.#commands.version,
         this.getInfoOptions(),
         async (options: { output: string; additionalPackage: string[] }) => {
@@ -1458,7 +1458,7 @@ class WebpackCLI {
         },
       );
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.info)) {
-      this.makeCommand(
+      await this.makeCommand(
         WebpackCLI.#commands.info,
         this.getInfoOptions(),
         async (options: { output: string; additionalPackage: string[] }) => {
@@ -1468,7 +1468,7 @@ class WebpackCLI {
         },
       );
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.configtest)) {
-      this.makeCommand(
+      await this.makeCommand(
         WebpackCLI.#commands.configtest,
         [],
         async (configPath: string | undefined) => {
@@ -1915,6 +1915,40 @@ class WebpackCLI {
       if (isInfo) {
         process.exit(0);
         return;
+      }
+
+      if (error.code === "commander.unknownOption") {
+        let name = error.message.match(/'(.+)'/) as string | null;
+
+        if (name) {
+          name = name[1].slice(2);
+
+          if (name.includes("=")) {
+            [name] = name.split("=");
+          }
+
+          const { operands } = this.program.parseOptions(this.program.args);
+          const operand =
+            typeof operands[0] !== "undefined" ? operands[0] : WebpackCLI.#commands.build.rawName;
+
+          if (operand) {
+            const command = this.#findCommandByName(operand);
+
+            if (!command) {
+              this.logger.error(`Can't find and load command '${operand}'`);
+              this.logger.error("Run 'webpack --help' to see available commands and options");
+              process.exit(2);
+            }
+
+            const { distance } = require("fastest-levenshtein");
+
+            for (const option of (command as Command).options) {
+              if (!option.hidden && distance(name, option.long?.slice(2) as string) < 3) {
+                this.logger.error(`Did you mean '--${option.name()}'?`);
+              }
+            }
+          }
+        }
       }
 
       this.logger.error("Run 'webpack --help' to see available commands and options");
