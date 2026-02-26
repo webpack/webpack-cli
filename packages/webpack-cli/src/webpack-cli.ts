@@ -1643,6 +1643,10 @@ class WebpackCLI {
 
     if (isGlobalHelp || isCommandHelp) {
       program.configureHelp({
+        helpWidth:
+          typeof process.env.WEBPACK_CLI_HELP_WIDTH !== "undefined"
+            ? Number.parseInt(process.env.WEBPACK_CLI_HELP_WIDTH, 10)
+            : 80,
         sortSubcommands: true,
         // Support multiple aliases
         commandUsage: (command) => {
@@ -1710,17 +1714,16 @@ class WebpackCLI {
           );
         },
         formatHelp: (command, helper: Help) => {
-          const termWidth = helper.padWidth(command, helper);
-          const helpWidth =
-            helper.helpWidth || (process.env.WEBPACK_CLI_HELP_WIDTH as unknown as number) || 80;
           const itemIndentWidth = 2;
-          const itemSeparatorWidth = 2; // between term and description
 
           const formatItem = (term: string, description: string) => {
             if (description) {
-              const fullText = `${term.padEnd(termWidth + itemSeparatorWidth)}${description}`;
-
-              return helper.formatItem(term, helpWidth - itemIndentWidth, fullText, helper);
+              return helper.formatItem(
+                term,
+                (helper.helpWidth || 80) - itemIndentWidth,
+                description,
+                helper,
+              );
             }
 
             return term;
