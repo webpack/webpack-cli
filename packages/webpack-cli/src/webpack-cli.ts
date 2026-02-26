@@ -278,7 +278,7 @@ class WebpackCLI {
     }
 
     // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
-    if (!pkg || typeof pkg.cli.createColors === "undefined") {
+    if (!pkg || !pkg.cli || typeof pkg.cli.createColors === "undefined") {
       return new Proxy({} as Colors, {
         get() {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
