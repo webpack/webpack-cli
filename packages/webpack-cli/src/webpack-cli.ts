@@ -178,6 +178,7 @@ interface Options {
   configNodeEnv?: string;
   watchOptionsStdin?: boolean;
   watch?: boolean;
+  failOnWarnings?: boolean;
   isWatchingLikeCommand?: boolean;
   progress?: boolean | "profile";
   analyze?: boolean;
@@ -2751,7 +2752,7 @@ class WebpackCLI {
         process.exit(2);
       }
 
-      if (stats && stats.hasErrors()) {
+      if (stats && (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings()))) {
         process.exitCode = 1;
       }
 
