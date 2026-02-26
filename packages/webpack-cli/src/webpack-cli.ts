@@ -1218,8 +1218,19 @@ class WebpackCLI {
     return false;
   }
 
+  async #loadPackage<T>(pkg: string, isCustom: boolean): Promise<T> {
+    const importTarget =
+      isCustom && /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(pkg) ? pathToFileURL(pkg).toString() : pkg;
+
+    return (await import(importTarget)).default;
+  }
+
   async loadWebpack(): Promise<typeof webpack> {
-    return (await import(pathToFileURL(WEBPACK_PACKAGE).toString())).default;
+    return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
+  }
+
+  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server")> {
+    return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
   }
 
   async #loadCommandByName(commandName: string, allowToInstall = false) {
@@ -1244,9 +1255,9 @@ class WebpackCLI {
       );
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.serve)) {
       const loadDevServerOptions = async () => {
-        const devServer = (await import(pathToFileURL(WEBPACK_DEV_SERVER_PACKAGE).toString()))
-          .default;
+        const devServer = await this.loadWebpackDevServer();
 
+        // @ts-expect-error different schema types
         const options = this.webpack.cli.getArguments(devServer.schema) as unknown as Record<
           string,
           CommandOption
@@ -1326,7 +1337,7 @@ class WebpackCLI {
           let DevServer: DevServerConstructor;
 
           try {
-            DevServer = (await import(WEBPACK_DEV_SERVER_PACKAGE)).default;
+            DevServer = await this.loadWebpackDevServer();
           } catch (err) {
             this.logger.error(
               `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
