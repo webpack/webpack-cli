@@ -1219,7 +1219,7 @@ class WebpackCLI {
   }
 
   async loadWebpack(): Promise<typeof webpack> {
-    return (await import(WEBPACK_PACKAGE)).default;
+    return (await import(pathToFileURL(WEBPACK_PACKAGE).toString())).default;
   }
 
   async #loadCommandByName(commandName: string, allowToInstall = false) {
@@ -1244,7 +1244,8 @@ class WebpackCLI {
       );
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.serve)) {
       const loadDevServerOptions = async () => {
-        const devServer = (await import(WEBPACK_DEV_SERVER_PACKAGE)).default;
+        const devServer = (await import(pathToFileURL(WEBPACK_DEV_SERVER_PACKAGE).toString()))
+          .default;
 
         const options = this.webpack.cli.getArguments(devServer.schema) as unknown as Record<
           string,
