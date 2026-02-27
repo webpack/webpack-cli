@@ -1,5 +1,7 @@
 "use strict";
 
+const path = require("node:path");
+
 const { runTest, runTestStdout } = require("../helpers");
 
 const noCommand = () => {
@@ -39,7 +41,12 @@ const versionCommand = () => {
   const args = ["version"];
   const logMessage = "webpack:";
 
-  return runTestStdout({ packageName, cliArgs: args, logMessage });
+  return runTestStdout({
+    packageName,
+    cliArgs: args,
+    logMessage,
+    cwd: path.resolve(__dirname, "../../"),
+  });
 };
 
 const helpCommand = () => {
