@@ -20,11 +20,8 @@ Table of Contents
 - [Testing](#testing)
 - [Pull Requests](#pull-requests)
 - [Submitting a good Pull Request](#submitting-a-good-pull-request)
-- [Commit message](#commit-message)
-  - [Commit Message Format](#commit-message-format)
 - [Contributor License Agreement](#contributor-license-agreement)
 - [Documentation](#documentation)
-- [Releasing](#releasing)
 - [Join The Development](#join-the-development)
 
 ## Issues
@@ -80,26 +77,6 @@ In case you are suggesting a new feature, we will match your idea with our curre
   npm run test
   ```
 
-- Run CLI tests with:
-
-  ```bash
-  npm run test:cli
-  ```
-
-- Run tests of all packages:
-
-  ```bash
-  npm run test:packages
-  ```
-
-- Test a single CLI test case:
-
-  > Must run from root of the project
-
-  ```bash
-  jest path/to/my-test.js
-  ```
-
 - You can run the linters:
 
   ```bash
@@ -111,8 +88,6 @@ In case you are suggesting a new feature, we will match your idea with our curre
 The [.editorconfig](https://github.com/webpack/webpack-cli/blob/main/.editorconfig) in the root should ensure consistent formatting. Please make sure you've [installed the plugin](http://editorconfig.org/#download) if your text editor needs one.
 
 ## Dependencies
-
-This is a multi-package repository and dependencies are managed using [lerna](https://lerna.js.org/)
 
 To update dependencies, import each dependency and make sure the command line build passes. The dependency should support our minimal supported node version for webpack, found in `package.json`.
 
@@ -170,55 +145,6 @@ In case you've got a small change in most of the cases, your pull request would 
 - Make sure your PR's description contains GitHub's special keyword references that automatically close the related issue when the PR is merged. ([More info](https://github.com/blog/1506-closing-issues-via-pull-requests))
 - When you have lot of commits in your PR, it's good practice to squash all your commits in one single commit. ([Learn how to squash here](https://davidwalsh.name/squash-commits-git))
 
-## Commit message
-
-Our commit messages format follows the [angular.js commits format](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits).
-
-We don't use the scope. The template of a commit would look like this:
-
-### Commit Message Format
-
-Each commit message consists of a **header**, a **body** and a **footer**. The header has a special
-format that includes a **type** and a **subject**:
-
-```
-<type>: <subject>
-<BLANK LINE>
-<body>
-<BLANK LINE>
-<footer>
-```
-
-This is the list of _type_ of commits that we accept:
-
-- **build** : Changes that affect the build system or external dependencies (example scopes: typescript, webpack, npm).
-- **chore** : Updating deps, docs, linting, etc.
-- **ci** : Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
-- **docs** : Documentation only changes.
-- **feat** : A new feature.
-- **fix** : A bug fix.
-- **perf** : A code change that improves performance.
-- **refactor** : A code change that neither fixes a bug nor adds a feature.
-- **revert** : Reverts the previous commit.
-- **style** : Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
-- **test** : Adding missing tests or correcting existing tests.
-
-The **header** is mandatory.
-
-Any line of the commit message cannot be longer 100 characters. This allows the message to be easier
-to read on GitHub as well as in several git tools.
-
-For more information about what each part of the template mean, head up to the documentation in the
-[angular repo](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits)
-
-#### Example commit message
-
-```
-feat(webpack-cli): allow multiple values for --stats
-
-docs: update README.md
-```
-
 ## Contributor License Agreement
 
 When submitting your contribution, a CLA (Contributor License Agreement) bot will come by to verify that you signed the [CLA](https://easycla.lfx.linuxfoundation.org/#/?version=2). If you are submitting a PR for the first time, it will link you to the right place to sign it. If you have committed your contributions using an email that is not the same as your email used on GitHub, the CLA bot can't accept your contribution.
@@ -230,10 +156,6 @@ Run `git config user.email` to see your Git email, and verify it with [your GitH
 webpack is feature rich and documentation is a time sink. We
 greatly appreciate any time spent fixing typos or clarifying sections in the
 documentation.
-
-## Releasing
-
-Run `npm run publish:monorepo` to build all packages and bump versions, this will then get published on npm.
 
 ## Join the development
 

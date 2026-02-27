@@ -1,6 +1,6 @@
 import { type ActionType as ActionTypeBase, type CustomActionConfig } from "node-plop";
 
-export type Answers = { projectPath: string } & Record<string, unknown>;
+export type Answers = { projectPath?: string } & Record<string, unknown>;
 export type LoaderAnswers = { name: string; projectPath: string } & Record<string, unknown>;
 export type PluginAnswers = { name: string; projectPath: string } & Record<string, unknown>;
 

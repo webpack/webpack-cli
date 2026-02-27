@@ -34,9 +34,6 @@ yarn-error.log
 coverage
 .nyc_output
 
-# lerna log
-lerna-debug.log
-
 # Yeoman file
 .yo-rc.json
 

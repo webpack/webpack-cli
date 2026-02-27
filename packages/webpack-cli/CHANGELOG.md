@@ -1,8 +1,5 @@
 # Change Log
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
 ## [6.0.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@6.0.0...webpack-cli@6.0.1) (2024-12-20)
 
 ### Bug Fixes
@@ -17,6 +14,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - removed `init`, `loader` and `plugin` commands in favor [`create-webpack-app`](https://github.com/webpack/webpack-cli/tree/main/packages/create-webpack-app)
 - dropped support for `webpack-dev-server@v4`
 - minimum supported webpack version is `5.82.0`
+- the `--define-process-env-node-env` option was renamed to `--config-node-env`
 
 ### Bug Fixes
 

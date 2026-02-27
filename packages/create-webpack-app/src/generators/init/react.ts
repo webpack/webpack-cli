@@ -202,7 +202,7 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
       for (const file of files) {
         actions.push({
           type: "generate-files",
-          path: join(answers.projectPath, file.filePath),
+          path: join(answers.projectPath as string, file.filePath),
           templateFile: join(
             plop.getPlopfilePath(),
             "../templates/init/react",
