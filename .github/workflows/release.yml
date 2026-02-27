@@ -34,6 +34,7 @@ jobs:
         id: changesets
         uses: changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1.7.0
         with:
+          version: node ./node_modules/.bin/changeset version && node ./scripts/sync-changelogs.js
           publish: npm run build && node ./node_modules/.bin/changeset publish
           commit: "chore(release): new release"
           title: "chore(release): new release"
