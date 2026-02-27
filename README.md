@@ -48,7 +48,7 @@ Get to know what are the available commands and arguments [here](./packages/webp
 
 ## Packages
 
-We organize webpack CLI as a multi-package repository using [lerna](https://github.com/lerna/lerna). The main CLI logic using options, resides in [`packages/webpack-cli`](https://github.com/webpack/webpack-cli/tree/main/packages/webpack-cli), while commands supported by the CLI, has dedicated subfolders in the folder [`packages`](https://github.com/webpack/webpack-cli/tree/master/packages).
+The main CLI logic using options, resides in [`packages/webpack-cli`](https://github.com/webpack/webpack-cli/tree/main/packages/webpack-cli).
 
 A summary of supported commands is described below.
 
