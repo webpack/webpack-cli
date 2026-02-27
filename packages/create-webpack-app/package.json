@@ -15,7 +15,7 @@
   "bugs": "https://github.com/webpack/webpack-cli/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/webpack-cli/create-webpack-app.git"
+    "url": "https://github.com/webpack/webpack-cli.git"
   },
   "funding": {
     "type": "opencollective",
