@@ -1,8 +1,5 @@
 # Change Log
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
 ## [6.0.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@6.0.0...webpack-cli@6.0.1) (2024-12-20)
 
 ### Bug Fixes
