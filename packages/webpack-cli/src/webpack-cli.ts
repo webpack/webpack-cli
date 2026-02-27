@@ -13,6 +13,7 @@ import {
   type ParseOptions,
   program,
 } from "commander";
+import { type Config as EnvinfoConfig, type Options as EnvinfoOptions } from "envinfo";
 import { type prepare } from "rechoir";
 import {
   type Argument as WebpackArgument,
@@ -47,15 +48,6 @@ const DEFAULT_CONFIGURATION_FILES = [
   ".webpack/webpack.config",
   ".webpack/webpackfile",
 ];
-
-interface Information {
-  Binaries?: string[];
-  Browsers?: string[];
-  Monorepos?: string[];
-  System?: string[];
-  npmGlobalPackages?: string[];
-  npmPackages?: string | string[];
-}
 
 interface Rechoir {
   prepare: typeof prepare;
@@ -190,6 +182,8 @@ interface Options {
   extends?: string[];
 }
 
+const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
+
 class ConfigurationLoadingError extends Error {
   name = "ConfigurationLoadingError";
 
@@ -212,7 +206,7 @@ class WebpackCLI {
 
   logger: Logger;
 
-  isColorSupportChanged: boolean | undefined;
+  #isColorSupportChanged: boolean | undefined;
 
   #builtInOptionsCache: CommandOption[] | undefined;
 
@@ -221,7 +215,7 @@ class WebpackCLI {
   program: Command;
 
   constructor() {
-    this.colors = this.createColors();
+    this.colors = this.#createColors();
     this.logger = this.getLogger();
 
     // Initialize program
@@ -235,6 +229,31 @@ class WebpackCLI {
         write(`Error: ${this.capitalizeFirstLetter(str.replace(/^error:/, "").trim())}`);
       },
     });
+  }
+
+  #createColors(useColor?: boolean): Colors {
+    let pkg: typeof webpack | undefined;
+
+    try {
+      pkg = require(WEBPACK_PACKAGE);
+    } catch {
+      // Nothing
+    }
+
+    // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
+    if (!pkg || !pkg.cli || typeof pkg.cli.createColors !== "function") {
+      return new Proxy({} as Colors, {
+        get() {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return (...args: any[]) => [...args];
+        },
+      });
+    }
+
+    const { createColors, isColorSupported } = pkg.cli;
+    const shouldUseColor = useColor || isColorSupported();
+
+    return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
   }
 
   isMultipleConfiguration(
@@ -267,31 +286,6 @@ class WebpackCLI {
     return str.replaceAll(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
   }
 
-  createColors(useColor?: boolean): Colors {
-    let pkg: typeof webpack | undefined;
-
-    try {
-      pkg = require(WEBPACK_PACKAGE);
-    } catch {
-      // Nothing
-    }
-
-    // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
-    if (!pkg || !pkg.cli || typeof pkg.cli.createColors !== "function") {
-      return new Proxy({} as Colors, {
-        get() {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          return (...args: any[]) => [...args];
-        },
-      });
-    }
-
-    const { createColors, isColorSupported } = pkg.cli;
-    const shouldUseColor = useColor || isColorSupported();
-
-    return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
-  }
-
   getLogger(): Logger {
     return {
       error: (val) => console.error(`[webpack-cli] ${this.colors.red(util.format(val))}`),
@@ -303,7 +297,7 @@ class WebpackCLI {
     };
   }
 
-  async checkPackageExists(packageName: string): Promise<boolean> {
+  async isPackageInstalled(packageName: string): Promise<boolean> {
     if (process.versions.pnp) {
       return true;
     }
@@ -415,7 +409,10 @@ class WebpackCLI {
     }
   }
 
-  async doInstall(packageName: string, options: { preMessage?: () => void } = {}): Promise<string> {
+  async installPackage(
+    packageName: string,
+    options: { preMessage?: () => void } = {},
+  ): Promise<string> {
     const packageManager = await this.getDefaultPackageManager();
 
     if (!packageManager) {
@@ -500,91 +497,9 @@ class WebpackCLI {
     process.exit(2);
   }
 
-  getInfoOptions(): CommandOption[] {
-    return [
-      {
-        name: "output",
-        alias: "o",
-        configs: [
-          {
-            type: "string",
-          },
-        ],
-        description: "To get the output in a specified format ( accept json or markdown )",
-        helpLevel: "minimum",
-      },
-      {
-        name: "additional-package",
-        alias: "a",
-        configs: [{ type: "string" }],
-        multiple: true,
-        description: "Adds additional packages to the output",
-        helpLevel: "minimum",
-      },
-    ];
-  }
-
-  async getInfoOutput(options: { output: string; additionalPackage: string[] }): Promise<string> {
-    let { output } = options;
-    const envinfoConfig: Record<string, boolean> = {};
-
-    if (output) {
-      // Remove quotes if exist
-      output = output.replaceAll(/['"]+/g, "");
-
-      switch (output) {
-        case "markdown":
-          envinfoConfig.markdown = true;
-          break;
-        case "json":
-          envinfoConfig.json = true;
-          break;
-        default:
-          this.logger.error(`'${output}' is not a valid value for output`);
-          process.exit(2);
-      }
-    }
-
-    const defaultInformation: Information = {
-      Binaries: ["Node", "Yarn", "npm", "pnpm"],
-      Browsers: [
-        "Brave Browser",
-        "Chrome",
-        "Chrome Canary",
-        "Edge",
-        "Firefox",
-        "Firefox Developer Edition",
-        "Firefox Nightly",
-        "Internet Explorer",
-        "Safari",
-        "Safari Technology Preview",
-      ],
-      Monorepos: ["Yarn Workspaces", "Lerna"],
-      System: ["OS", "CPU", "Memory"],
-      npmGlobalPackages: ["webpack", "webpack-cli", "webpack-dev-server"],
-    };
-
-    let defaultPackages: string[] = ["webpack", "loader", "@webpack-cli/"];
-
-    if (typeof options.additionalPackage !== "undefined") {
-      defaultPackages = [...defaultPackages, ...options.additionalPackage];
-    }
-
-    defaultInformation.npmPackages = `{${defaultPackages.map((item) => `*${item}*`).join(",")}}`;
-
-    const envinfo = (await import("envinfo")).default;
-
-    let info = await envinfo.run(defaultInformation, envinfoConfig);
-
-    info = info.replace("npmPackages", "Packages");
-    info = info.replace("npmGlobalPackages", "Global Packages");
-
-    return info;
-  }
-
   async makeCommand(
     commandOptions: CommandOptions,
-    options: CommandOption[] | (() => Promise<CommandOption[]>),
+    options: CommandOption[] | (() => CommandOption[]) | (() => Promise<CommandOption[]>),
     action: Parameters<Command["action"]>[0],
   ): Promise<Command | undefined> {
     const alreadyLoaded = this.program.commands.find(
@@ -634,7 +549,7 @@ class WebpackCLI {
           continue;
         }
 
-        const isPkgExist = await this.checkPackageExists(dependency);
+        const isPkgExist = await this.isPackageInstalled(dependency);
 
         if (isPkgExist) {
           continue;
@@ -646,7 +561,7 @@ class WebpackCLI {
           continue;
         }
 
-        await this.doInstall(dependency, {
+        await this.installPackage(dependency, {
           preMessage: () => {
             this.logger.error(
               `For using '${this.colors.green(
@@ -1165,7 +1080,7 @@ class WebpackCLI {
       alias: "v",
       usage: "[options]",
       description:
-        "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
+        "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.",
     },
     info: {
       rawName: "info",
@@ -1188,418 +1103,6 @@ class WebpackCLI {
       dependencies: [WEBPACK_PACKAGE],
     },
   };
-
-  #findCommandByName(name: string) {
-    return this.program.commands.find(
-      (command) => name === command.name() || command.aliases().includes(name),
-    );
-  }
-
-  #isCommand(input: string, commandOptions: CommandOptions) {
-    const longName = commandOptions.rawName;
-
-    if (input === longName) {
-      return true;
-    }
-
-    if (commandOptions.alias) {
-      if (Array.isArray(commandOptions.alias)) {
-        return commandOptions.alias.includes(input);
-      }
-      return commandOptions.alias === input;
-    }
-
-    return false;
-  }
-
-  async #loadPackage<T>(pkg: string, isCustom: boolean): Promise<T> {
-    const importTarget =
-      isCustom && /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(pkg) ? pathToFileURL(pkg).toString() : pkg;
-
-    return (await import(importTarget)).default;
-  }
-
-  async loadWebpack(): Promise<typeof webpack> {
-    return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
-  }
-
-  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server")> {
-    return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
-  }
-
-  async #loadCommandByName(commandName: string, allowToInstall = false) {
-    const isBuildCommandUsed = this.#isCommand(commandName, WebpackCLI.#commands.build);
-    const isWatchCommandUsed = this.#isCommand(commandName, WebpackCLI.#commands.watch);
-
-    if (isBuildCommandUsed || isWatchCommandUsed) {
-      await this.makeCommand(
-        isBuildCommandUsed ? WebpackCLI.#commands.build : WebpackCLI.#commands.watch,
-        async () => {
-          this.webpack = await this.loadWebpack();
-
-          return this.getBuiltInOptions();
-        },
-        async (entries, options) => {
-          if (entries.length > 0) {
-            options.entry = [...entries, ...(options.entry || [])];
-          }
-
-          await this.runWebpack(options, isWatchCommandUsed);
-        },
-      );
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.serve)) {
-      const loadDevServerOptions = async () => {
-        const devServer = await this.loadWebpackDevServer();
-
-        // @ts-expect-error different schema types
-        const options = this.webpack.cli.getArguments(devServer.schema) as unknown as Record<
-          string,
-          CommandOption
-        >;
-
-        return Object.keys(options).map((key) => {
-          options[key].name = key;
-
-          return options[key];
-        });
-      };
-
-      await this.makeCommand(
-        WebpackCLI.#commands.serve,
-        async () => {
-          this.webpack = await this.loadWebpack();
-
-          let devServerOptions = [];
-
-          try {
-            devServerOptions = await loadDevServerOptions();
-          } catch (error) {
-            this.logger.error(
-              `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
-            );
-            process.exit(2);
-          }
-
-          const webpackOptions = this.getBuiltInOptions();
-
-          return [...webpackOptions, ...devServerOptions];
-        },
-        async (entries: string[], options) => {
-          const builtInOptions = this.getBuiltInOptions();
-          let devServerFlags: CommandOption[] = [];
-
-          try {
-            devServerFlags = await loadDevServerOptions();
-          } catch {
-            // Nothing, to prevent future updates
-          }
-
-          const webpackCLIOptions: Partial<Options> = {};
-          const devServerCLIOptions: Record<string, CommandOption> = {};
-
-          for (const optionName in options) {
-            const kebabedOption = this.toKebabCase(optionName);
-            const isBuiltInOption = builtInOptions.find(
-              (builtInOption) => builtInOption.name === kebabedOption,
-            );
-
-            if (isBuiltInOption) {
-              webpackCLIOptions[optionName as keyof Options] = options[optionName];
-            } else {
-              devServerCLIOptions[optionName] = options[optionName];
-            }
-          }
-
-          if (entries.length > 0) {
-            webpackCLIOptions.entry = [...entries, ...(options.entry || [])];
-          }
-
-          webpackCLIOptions.argv = {
-            ...options,
-            env: { WEBPACK_SERVE: true, ...options.env },
-          };
-
-          webpackCLIOptions.isWatchingLikeCommand = true;
-
-          const compiler = await this.createCompiler(webpackCLIOptions as Options);
-
-          if (!compiler) {
-            return;
-          }
-
-          type DevServerConstructor = typeof import("webpack-dev-server");
-          let DevServer: DevServerConstructor;
-
-          try {
-            DevServer = await this.loadWebpackDevServer();
-          } catch (err) {
-            this.logger.error(
-              `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
-            );
-            process.exit(2);
-          }
-
-          const servers: InstanceType<DevServerConstructor>[] = [];
-
-          if (this.needWatchStdin(compiler)) {
-            process.stdin.on("end", () => {
-              Promise.all(servers.map((server) => server.stop())).then(() => {
-                process.exit(0);
-              });
-            });
-            process.stdin.resume();
-          }
-
-          const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
-          const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
-          const compilersForDevServer =
-            possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
-          const usedPorts: number[] = [];
-
-          for (const compilerForDevServer of compilersForDevServer) {
-            if (compilerForDevServer.options.devServer === false) {
-              continue;
-            }
-
-            const devServerConfiguration: DevServerConfiguration = {
-              ...compilerForDevServer.options.devServer,
-            };
-
-            const args: Record<string, WebpackArgument> = {};
-
-            for (const flag of devServerFlags) {
-              args[flag.name] = flag as unknown as WebpackArgument;
-            }
-
-            const values: ProcessedArguments = {};
-
-            for (const name of Object.keys(options)) {
-              const kebabName = this.toKebabCase(name);
-
-              if (args[kebabName] !== undefined) {
-                values[kebabName] = options[name];
-              }
-            }
-
-            if (Object.keys(values).length > 0) {
-              const problems = this.webpack.cli.processArguments(
-                args,
-                devServerConfiguration,
-                values,
-              );
-
-              if (problems) {
-                const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(
-                  xs: Problem[],
-                  key: K,
-                ) =>
-                  xs.reduce(
-                    (rv, problem) => {
-                      const path = problem[key];
-
-                      (rv[path] ||= []).push(problem);
-
-                      return rv;
-                    },
-                    {} as Record<string, Problem[]>,
-                  );
-
-                const problemsByPath = groupBy<"path">(problems, "path");
-
-                for (const path in problemsByPath) {
-                  const problems = problemsByPath[path];
-
-                  for (const problem of problems) {
-                    this.logger.error(
-                      `${this.capitalizeFirstLetter(problem.type.replace("-", " "))}${
-                        problem.value ? ` '${problem.value}'` : ""
-                      } for the '--${problem.argument}' option${
-                        problem.index ? ` by index '${problem.index}'` : ""
-                      }`,
-                    );
-
-                    if (problem.expected) {
-                      this.logger.error(`Expected: '${problem.expected}'`);
-                    }
-                  }
-                }
-
-                process.exit(2);
-              }
-            }
-
-            if (devServerConfiguration.port) {
-              const portNumber = Number(devServerConfiguration.port);
-
-              if (usedPorts.includes(portNumber)) {
-                throw new Error(
-                  "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
-                );
-              }
-
-              usedPorts.push(portNumber);
-            }
-
-            try {
-              const server = new DevServer(devServerConfiguration, compiler);
-
-              await server.start();
-
-              servers.push(server as unknown as InstanceType<DevServerConstructor>);
-            } catch (error) {
-              if (this.isValidationError(error as Error)) {
-                this.logger.error((error as Error).message);
-              } else {
-                this.logger.error(error);
-              }
-
-              process.exit(2);
-            }
-          }
-
-          if (servers.length === 0) {
-            this.logger.error("No dev server configurations to run");
-            process.exit(2);
-          }
-        },
-      );
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.help)) {
-      await this.makeCommand(WebpackCLI.#commands.help, [], () => {
-        // Stub for the `help` command
-      });
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.version)) {
-      await this.makeCommand(
-        WebpackCLI.#commands.version,
-        this.getInfoOptions(),
-        async (options: { output: string; additionalPackage: string[] }) => {
-          const info = await this.getInfoOutput(options);
-
-          this.logger.raw(info);
-        },
-      );
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.info)) {
-      await this.makeCommand(
-        WebpackCLI.#commands.info,
-        this.getInfoOptions(),
-        async (options: { output: string; additionalPackage: string[] }) => {
-          const info = await this.getInfoOutput(options);
-
-          this.logger.raw(info);
-        },
-      );
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.configtest)) {
-      await this.makeCommand(
-        WebpackCLI.#commands.configtest,
-        [],
-        async (configPath: string | undefined) => {
-          this.webpack = await this.loadWebpack();
-
-          const env: Env = {};
-          const argv: Argv = { env };
-          const config = await this.loadConfig(
-            configPath ? { config: [configPath] } : { env, argv },
-          );
-          const configPaths = new Set<string>();
-
-          if (Array.isArray(config.options)) {
-            for (const options of config.options) {
-              const loadedConfigPaths = config.path.get(options);
-
-              if (loadedConfigPaths) {
-                for (const path of loadedConfigPaths) configPaths.add(path);
-              }
-            }
-          } else if (config.path.get(config.options)) {
-            const loadedConfigPaths = config.path.get(config.options);
-
-            if (loadedConfigPaths) {
-              for (const path of loadedConfigPaths) configPaths.add(path);
-            }
-          }
-
-          if (configPaths.size === 0) {
-            this.logger.error("No configuration found.");
-            process.exit(2);
-          }
-
-          this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
-
-          try {
-            this.webpack.validate(config.options);
-          } catch (error) {
-            if (this.isValidationError(error as Error)) {
-              this.logger.error((error as Error).message);
-            } else {
-              this.logger.error(error);
-            }
-
-            process.exit(2);
-          }
-
-          this.logger.success("There are no validation errors in the given webpack configuration.");
-        },
-      );
-    } else {
-      const builtInExternalCommandInfo = Object.values(WebpackCLI.#commands)
-        .filter((item) => item.external)
-        .find(
-          (externalBuiltInCommandInfo) =>
-            externalBuiltInCommandInfo.rawName === commandName ||
-            (Array.isArray(externalBuiltInCommandInfo.alias)
-              ? externalBuiltInCommandInfo.alias.includes(commandName)
-              : externalBuiltInCommandInfo.alias === commandName),
-        );
-
-      let pkg: string;
-
-      if (builtInExternalCommandInfo) {
-        ({ pkg } = builtInExternalCommandInfo as CommandOptions & { pkg: string });
-      } else {
-        pkg = commandName;
-      }
-
-      if (pkg !== "webpack-cli" && !(await this.checkPackageExists(pkg))) {
-        if (!allowToInstall) {
-          return;
-        }
-
-        pkg = await this.doInstall(pkg, {
-          preMessage: () => {
-            this.logger.error(
-              `For using this command you need to install: '${this.colors.green(pkg)}' package.`,
-            );
-          },
-        });
-      }
-
-      type Instantiable<
-        InstanceType = unknown,
-        ConstructorParameters extends unknown[] = unknown[],
-      > = new (...args: ConstructorParameters) => InstanceType;
-
-      let loadedCommand: Instantiable<() => void>;
-
-      try {
-        loadedCommand = (await import(pkg)).default;
-      } catch {
-        // Ignore, command is not installed
-        return;
-      }
-
-      let command;
-
-      try {
-        // eslint-disable-next-line new-cap
-        command = new loadedCommand();
-
-        await command.apply(this);
-      } catch (error) {
-        this.logger.error(`Unable to load '${pkg}' command`);
-        this.logger.error(error);
-        process.exit(2);
-      }
-    }
-  }
 
   async #outputHelp(
     options: string[],
@@ -1909,6 +1412,526 @@ class WebpackCLI {
     process.exit(0);
   }
 
+  async #getInfoOutput(options: {
+    output?: string;
+    additionalPackage?: string[];
+    information?: EnvinfoConfig;
+  }): Promise<string> {
+    let { output } = options;
+    const envinfoConfig: EnvinfoOptions = {};
+
+    if (output) {
+      // Remove quotes if exist
+      output = output.replaceAll(/['"]+/g, "");
+
+      switch (output) {
+        case "markdown":
+          envinfoConfig.markdown = true;
+          break;
+        case "json":
+          envinfoConfig.json = true;
+          break;
+        default:
+          this.logger.error(`'${output}' is not a valid value for output`);
+          process.exit(2);
+      }
+    }
+
+    let envinfoOptions: EnvinfoConfig;
+
+    if (options.information) {
+      envinfoOptions = options.information;
+    } else {
+      const defaultInformation: EnvinfoConfig = {
+        Binaries: ["Node", "Yarn", "npm", "pnpm"],
+        Browsers: [
+          "Brave Browser",
+          "Chrome",
+          "Chrome Canary",
+          "Edge",
+          "Firefox",
+          "Firefox Developer Edition",
+          "Firefox Nightly",
+          "Internet Explorer",
+          "Safari",
+          "Safari Technology Preview",
+        ],
+        // @ts-expect-error No in types
+        Monorepos: ["Yarn Workspaces", "Lerna"],
+        System: ["OS", "CPU", "Memory"],
+        npmGlobalPackages: ["webpack", "webpack-cli", "webpack-dev-server"],
+      };
+
+      const npmPackages = [...DEFAULT_WEBPACK_PACKAGES, ...(options.additionalPackage || [])];
+
+      defaultInformation.npmPackages = `{${npmPackages.map((item) => `*${item}*`).join(",")}}`;
+
+      envinfoOptions = defaultInformation;
+    }
+
+    const envinfo = (await import("envinfo")).default;
+
+    let info = await envinfo.run(envinfoOptions, envinfoConfig);
+
+    info = info.replace("npmPackages", "Packages");
+    info = info.replace("npmGlobalPackages", "Global Packages");
+
+    return info;
+  }
+
+  #findCommandByName(name: string) {
+    return this.program.commands.find(
+      (command) => name === command.name() || command.aliases().includes(name),
+    );
+  }
+
+  #isCommand(input: string, commandOptions: CommandOptions) {
+    const longName = commandOptions.rawName;
+
+    if (input === longName) {
+      return true;
+    }
+
+    if (commandOptions.alias) {
+      if (Array.isArray(commandOptions.alias)) {
+        return commandOptions.alias.includes(input);
+      }
+      return commandOptions.alias === input;
+    }
+
+    return false;
+  }
+
+  async #loadPackage<T>(pkg: string, isCustom: boolean): Promise<T> {
+    const importTarget =
+      isCustom && /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(pkg) ? pathToFileURL(pkg).toString() : pkg;
+
+    return (await import(importTarget)).default;
+  }
+
+  async loadWebpack(): Promise<typeof webpack> {
+    return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
+  }
+
+  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server")> {
+    return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
+  }
+
+  async #loadCommandByName(commandName: string, allowToInstall = false) {
+    const isBuildCommandUsed = this.#isCommand(commandName, WebpackCLI.#commands.build);
+    const isWatchCommandUsed = this.#isCommand(commandName, WebpackCLI.#commands.watch);
+
+    if (isBuildCommandUsed || isWatchCommandUsed) {
+      await this.makeCommand(
+        isBuildCommandUsed ? WebpackCLI.#commands.build : WebpackCLI.#commands.watch,
+        async () => {
+          this.webpack = await this.loadWebpack();
+
+          return this.getBuiltInOptions();
+        },
+        async (entries, options) => {
+          if (entries.length > 0) {
+            options.entry = [...entries, ...(options.entry || [])];
+          }
+
+          await this.runWebpack(options, isWatchCommandUsed);
+        },
+      );
+    } else if (this.#isCommand(commandName, WebpackCLI.#commands.serve)) {
+      const loadDevServerOptions = async () => {
+        const devServer = await this.loadWebpackDevServer();
+
+        // @ts-expect-error different schema types
+        const options = this.webpack.cli.getArguments(devServer.schema) as unknown as Record<
+          string,
+          CommandOption
+        >;
+
+        return Object.keys(options).map((key) => {
+          options[key].name = key;
+
+          return options[key];
+        });
+      };
+
+      await this.makeCommand(
+        WebpackCLI.#commands.serve,
+        async () => {
+          this.webpack = await this.loadWebpack();
+
+          let devServerOptions = [];
+
+          try {
+            devServerOptions = await loadDevServerOptions();
+          } catch (error) {
+            this.logger.error(
+              `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
+            );
+            process.exit(2);
+          }
+
+          const webpackOptions = this.getBuiltInOptions();
+
+          return [...webpackOptions, ...devServerOptions];
+        },
+        async (entries: string[], options) => {
+          const builtInOptions = this.getBuiltInOptions();
+          let devServerFlags: CommandOption[] = [];
+
+          try {
+            devServerFlags = await loadDevServerOptions();
+          } catch {
+            // Nothing, to prevent future updates
+          }
+
+          const webpackCLIOptions: Partial<Options> = {};
+          const devServerCLIOptions: Record<string, CommandOption> = {};
+
+          for (const optionName in options) {
+            const kebabedOption = this.toKebabCase(optionName);
+            const isBuiltInOption = builtInOptions.find(
+              (builtInOption) => builtInOption.name === kebabedOption,
+            );
+
+            if (isBuiltInOption) {
+              webpackCLIOptions[optionName as keyof Options] = options[optionName];
+            } else {
+              devServerCLIOptions[optionName] = options[optionName];
+            }
+          }
+
+          if (entries.length > 0) {
+            webpackCLIOptions.entry = [...entries, ...(options.entry || [])];
+          }
+
+          webpackCLIOptions.argv = {
+            ...options,
+            env: { WEBPACK_SERVE: true, ...options.env },
+          };
+
+          webpackCLIOptions.isWatchingLikeCommand = true;
+
+          const compiler = await this.createCompiler(webpackCLIOptions as Options);
+
+          if (!compiler) {
+            return;
+          }
+
+          type DevServerConstructor = typeof import("webpack-dev-server");
+          let DevServer: DevServerConstructor;
+
+          try {
+            DevServer = await this.loadWebpackDevServer();
+          } catch (err) {
+            this.logger.error(
+              `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
+            );
+            process.exit(2);
+          }
+
+          const servers: InstanceType<DevServerConstructor>[] = [];
+
+          if (this.needWatchStdin(compiler)) {
+            process.stdin.on("end", () => {
+              Promise.all(servers.map((server) => server.stop())).then(() => {
+                process.exit(0);
+              });
+            });
+            process.stdin.resume();
+          }
+
+          const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
+          const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
+          const compilersForDevServer =
+            possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
+          const usedPorts: number[] = [];
+
+          for (const compilerForDevServer of compilersForDevServer) {
+            if (compilerForDevServer.options.devServer === false) {
+              continue;
+            }
+
+            const devServerConfiguration: DevServerConfiguration = {
+              ...compilerForDevServer.options.devServer,
+            };
+
+            const args: Record<string, WebpackArgument> = {};
+
+            for (const flag of devServerFlags) {
+              args[flag.name] = flag as unknown as WebpackArgument;
+            }
+
+            const values: ProcessedArguments = {};
+
+            for (const name of Object.keys(options)) {
+              const kebabName = this.toKebabCase(name);
+
+              if (args[kebabName] !== undefined) {
+                values[kebabName] = options[name];
+              }
+            }
+
+            if (Object.keys(values).length > 0) {
+              const problems = this.webpack.cli.processArguments(
+                args,
+                devServerConfiguration,
+                values,
+              );
+
+              if (problems) {
+                const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(
+                  xs: Problem[],
+                  key: K,
+                ) =>
+                  xs.reduce(
+                    (rv, problem) => {
+                      const path = problem[key];
+
+                      (rv[path] ||= []).push(problem);
+
+                      return rv;
+                    },
+                    {} as Record<string, Problem[]>,
+                  );
+
+                const problemsByPath = groupBy<"path">(problems, "path");
+
+                for (const path in problemsByPath) {
+                  const problems = problemsByPath[path];
+
+                  for (const problem of problems) {
+                    this.logger.error(
+                      `${this.capitalizeFirstLetter(problem.type.replace("-", " "))}${
+                        problem.value ? ` '${problem.value}'` : ""
+                      } for the '--${problem.argument}' option${
+                        problem.index ? ` by index '${problem.index}'` : ""
+                      }`,
+                    );
+
+                    if (problem.expected) {
+                      this.logger.error(`Expected: '${problem.expected}'`);
+                    }
+                  }
+                }
+
+                process.exit(2);
+              }
+            }
+
+            if (devServerConfiguration.port) {
+              const portNumber = Number(devServerConfiguration.port);
+
+              if (usedPorts.includes(portNumber)) {
+                throw new Error(
+                  "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
+                );
+              }
+
+              usedPorts.push(portNumber);
+            }
+
+            try {
+              const server = new DevServer(devServerConfiguration, compiler);
+
+              await server.start();
+
+              servers.push(server as unknown as InstanceType<DevServerConstructor>);
+            } catch (error) {
+              if (this.isValidationError(error as Error)) {
+                this.logger.error((error as Error).message);
+              } else {
+                this.logger.error(error);
+              }
+
+              process.exit(2);
+            }
+          }
+
+          if (servers.length === 0) {
+            this.logger.error("No dev server configurations to run");
+            process.exit(2);
+          }
+        },
+      );
+    } else if (this.#isCommand(commandName, WebpackCLI.#commands.help)) {
+      await this.makeCommand(WebpackCLI.#commands.help, [], () => {
+        // Stub for the `help` command
+      });
+    } else if (this.#isCommand(commandName, WebpackCLI.#commands.version)) {
+      await this.makeCommand(
+        WebpackCLI.#commands.version,
+        () => [
+          {
+            name: "output",
+            alias: "o",
+            configs: [
+              {
+                type: "string",
+              },
+            ],
+            description: "To get the output in a specified format (accept json or markdown)",
+            helpLevel: "minimum",
+          },
+        ],
+        async (options: { output?: string }) => {
+          let info = await this.#getInfoOutput({
+            ...options,
+            information: {
+              npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
+            },
+          });
+
+          if (typeof options.output === "undefined") {
+            info = info.replace("Packages:", "").replaceAll(/^\s+/gm, "").trim();
+          }
+
+          this.logger.raw(info);
+        },
+      );
+    } else if (this.#isCommand(commandName, WebpackCLI.#commands.info)) {
+      await this.makeCommand(
+        WebpackCLI.#commands.info,
+        () => [
+          {
+            name: "output",
+            alias: "o",
+            configs: [
+              {
+                type: "string",
+              },
+            ],
+            description: "To get the output in a specified format (accept json or markdown)",
+            helpLevel: "minimum",
+          },
+          {
+            name: "additional-package",
+            alias: "a",
+            configs: [{ type: "string" }],
+            multiple: true,
+            description: "Adds additional packages to the output",
+            helpLevel: "minimum",
+          },
+        ],
+        async (options: { output?: string; additionalPackage?: string[] }) => {
+          const info = await this.#getInfoOutput(options);
+
+          this.logger.raw(info);
+        },
+      );
+    } else if (this.#isCommand(commandName, WebpackCLI.#commands.configtest)) {
+      await this.makeCommand(
+        WebpackCLI.#commands.configtest,
+        [],
+        async (configPath: string | undefined) => {
+          this.webpack = await this.loadWebpack();
+
+          const env: Env = {};
+          const argv: Argv = { env };
+          const config = await this.loadConfig(
+            configPath ? { config: [configPath] } : { env, argv },
+          );
+          const configPaths = new Set<string>();
+
+          if (Array.isArray(config.options)) {
+            for (const options of config.options) {
+              const loadedConfigPaths = config.path.get(options);
+
+              if (loadedConfigPaths) {
+                for (const path of loadedConfigPaths) configPaths.add(path);
+              }
+            }
+          } else if (config.path.get(config.options)) {
+            const loadedConfigPaths = config.path.get(config.options);
+
+            if (loadedConfigPaths) {
+              for (const path of loadedConfigPaths) configPaths.add(path);
+            }
+          }
+
+          if (configPaths.size === 0) {
+            this.logger.error("No configuration found.");
+            process.exit(2);
+          }
+
+          this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
+
+          try {
+            this.webpack.validate(config.options);
+          } catch (error) {
+            if (this.isValidationError(error as Error)) {
+              this.logger.error((error as Error).message);
+            } else {
+              this.logger.error(error);
+            }
+
+            process.exit(2);
+          }
+
+          this.logger.success("There are no validation errors in the given webpack configuration.");
+        },
+      );
+    } else {
+      const builtInExternalCommandInfo = Object.values(WebpackCLI.#commands)
+        .filter((item) => item.external)
+        .find(
+          (externalBuiltInCommandInfo) =>
+            externalBuiltInCommandInfo.rawName === commandName ||
+            (Array.isArray(externalBuiltInCommandInfo.alias)
+              ? externalBuiltInCommandInfo.alias.includes(commandName)
+              : externalBuiltInCommandInfo.alias === commandName),
+        );
+
+      let pkg: string;
+
+      if (builtInExternalCommandInfo) {
+        ({ pkg } = builtInExternalCommandInfo as CommandOptions & { pkg: string });
+      } else {
+        pkg = commandName;
+      }
+
+      if (pkg !== "webpack-cli" && !(await this.isPackageInstalled(pkg))) {
+        if (!allowToInstall) {
+          return;
+        }
+
+        pkg = await this.installPackage(pkg, {
+          preMessage: () => {
+            this.logger.error(
+              `For using this command you need to install: '${this.colors.green(pkg)}' package.`,
+            );
+          },
+        });
+      }
+
+      type Instantiable<
+        InstanceType = unknown,
+        ConstructorParameters extends unknown[] = unknown[],
+      > = new (...args: ConstructorParameters) => InstanceType;
+
+      let loadedCommand: Instantiable<() => void>;
+
+      try {
+        loadedCommand = (await import(pkg)).default;
+      } catch {
+        // Ignore, command is not installed
+        return;
+      }
+
+      let command;
+
+      try {
+        // eslint-disable-next-line new-cap
+        command = new loadedCommand();
+
+        await command.apply(this);
+      } catch (error) {
+        this.logger.error(`Unable to load '${pkg}' command`);
+        this.logger.error(error);
+        process.exit(2);
+      }
+    }
+  }
+
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
     // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -1972,20 +1995,20 @@ class WebpackCLI {
     this.program.on("option:color", function color(this: Command) {
       const { color } = this.opts();
 
-      self.isColorSupportChanged = color;
-      self.colors = self.createColors(color);
+      self.#isColorSupportChanged = color;
+      self.colors = self.#createColors(color);
     });
     this.program.option("--no-color", "Disable colors on console.");
     this.program.on("option:no-color", function noColor(this: Command) {
       const { color } = this.opts();
 
-      self.isColorSupportChanged = color;
-      self.colors = self.createColors(color);
+      self.#isColorSupportChanged = color;
+      self.colors = self.#createColors(color);
     });
 
     this.program.option(
       "-v, --version",
-      "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.",
+      "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.",
     );
 
     // webpack-cli has it's own logic for showing suggestions
@@ -2041,7 +2064,16 @@ class WebpackCLI {
       const isVersionOption = typeof options.version !== "undefined";
 
       if (isVersionOption) {
-        const info = await this.getInfoOutput({ output: "", additionalPackage: [] });
+        const info = (
+          await this.#getInfoOutput({
+            information: {
+              npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
+            },
+          })
+        )
+          .replace("Packages:", "")
+          .replaceAll(/^\s+/gm, "")
+          .trim();
         this.logger.raw(info);
         process.exit(0);
       }
@@ -2486,8 +2518,8 @@ class WebpackCLI {
     config: ConfigurationsAndPaths,
     options: Options,
   ): Promise<ConfigurationsAndPaths> {
-    if (options.analyze && !(await this.checkPackageExists("webpack-bundle-analyzer"))) {
-      await this.doInstall("webpack-bundle-analyzer", {
+    if (options.analyze && !(await this.isPackageInstalled("webpack-bundle-analyzer"))) {
+      await this.installPackage("webpack-bundle-analyzer", {
         preMessage: () => {
           this.logger.error(
             `It looks like ${this.colors.yellow("webpack-bundle-analyzer")} is not installed.`,
@@ -2647,8 +2679,8 @@ class WebpackCLI {
       let colors;
 
       // From arguments
-      if (typeof this.isColorSupportChanged !== "undefined") {
-        colors = Boolean(this.isColorSupportChanged);
+      if (typeof this.#isColorSupportChanged !== "undefined") {
+        colors = Boolean(this.#isColorSupportChanged);
       }
       // From stats
       else if (typeof item.stats.colors !== "undefined") {

@@ -83,14 +83,14 @@ const runTest = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage =
   });
 };
 
-const runTestStdout = async ({ packageName, cliArgs, logMessage, isSubPackage } = {}) => {
+const runTestStdout = async ({ packageName, cliArgs, logMessage, isSubPackage, cwd } = {}) => {
   // Simulate package missing
   swapPkgName(packageName, isSubPackage);
 
   const { execa } = await import("execa");
   const abortController = new AbortController();
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
-    cwd: __dirname,
+    cwd: cwd || __dirname,
     reject: false,
     cancelSignal: abortController.signal,
   });

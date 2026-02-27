@@ -16,7 +16,7 @@ const spawnMock = jest.fn();
 
 jest.mock("cross-spawn", () => ({ sync: spawnMock }));
 
-describe("doInstall", () => {
+describe("installPackage", () => {
   let cli;
   let getDefaultPackageManagerSpy;
 
@@ -36,7 +36,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("y"));
     getDefaultPackageManagerSpy.mockResolvedValue("npm");
 
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBe("test-package");
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
@@ -54,7 +54,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("y"));
     getDefaultPackageManagerSpy.mockReturnValue("yarn");
 
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBe("test-package");
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
@@ -72,7 +72,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("y"));
     getDefaultPackageManagerSpy.mockReturnValue("pnpm");
 
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBe("test-package");
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
@@ -91,7 +91,7 @@ describe("doInstall", () => {
     getDefaultPackageManagerSpy.mockReturnValue("npm");
 
     const preMessage = jest.fn();
-    const installResult = await cli.doInstall("test-package", { preMessage });
+    const installResult = await cli.installPackage("test-package", { preMessage });
 
     expect(installResult).toBe("test-package");
     expect(preMessage).toHaveBeenCalledTimes(1);
@@ -110,7 +110,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("y"));
     getDefaultPackageManagerSpy.mockReturnValue("npm");
 
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBe("test-package");
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
@@ -128,7 +128,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("yes"));
     getDefaultPackageManagerSpy.mockReturnValue("npm");
 
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBe("test-package");
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
@@ -146,7 +146,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("yEs"));
     getDefaultPackageManagerSpy.mockReturnValue("npm");
 
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBe("test-package");
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
@@ -164,7 +164,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("n"));
 
     const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBeUndefined();
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
@@ -179,7 +179,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("n"));
 
     const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBeUndefined();
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
@@ -194,7 +194,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("no"));
 
     const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBeUndefined();
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
@@ -209,7 +209,7 @@ describe("doInstall", () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("No"));
 
     const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
-    const installResult = await cli.doInstall("test-package");
+    const installResult = await cli.installPackage("test-package");
 
     expect(installResult).toBeUndefined();
     expect(readlineQuestionMock).toHaveBeenCalledTimes(1);
