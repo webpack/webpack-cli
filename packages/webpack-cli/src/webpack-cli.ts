@@ -1080,7 +1080,7 @@ class WebpackCLI {
       alias: "v",
       usage: "[options]",
       description:
-        "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and packages.",
+        "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.",
     },
     info: {
       rawName: "info",
