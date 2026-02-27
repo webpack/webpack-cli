@@ -81,7 +81,6 @@ Options:
   -m, --merge                            Merge two or more configurations using 'webpack-merge'.
   --disable-interpret                    Disable interpret for loading the config file.
   --env <value...>                       Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".
-  --node-env <value>                     Sets process.env.NODE_ENV to the specified value for access within the configuration.(Deprecated: Use '--config-node-env' instead)
   --config-node-env <value>              Sets process.env.NODE_ENV to the specified value for access within the configuration.
   --analyze                              It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                     Print compilation progress during build.
