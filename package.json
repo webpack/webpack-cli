@@ -42,6 +42,8 @@
     "test:smoketests": "nyc node smoketests",
     "test:coverage": "nyc --no-clean npm run test:base -- --coverage",
     "update:docs": "node ./scripts/update-docs",
+    "version": "node ./node_modules/.bin/changeset version && node ./scripts/sync-changelogs.js",
+    "release": "npm run build && node ./node_modules/.bin/changeset publish",
     "prepare": "husky"
   },
   "devDependencies": {
