@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.0
+
+### Major Changes
+
+- The minimum supported version of Node.js is `20.9.0`. (by [@alexander-akait](https://github.com/alexander-akait) in [#4677](https://github.com/webpack/webpack-cli/pull/4677))
+
 # 1.1.1 (2025-03-27)
 
 ### Bug Fixes

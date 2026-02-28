@@ -1,5 +1,27 @@
 # Change Log
 
+## 7.0.0
+
+### Major Changes
+
+- The minimum supported version of Node.js is `20.9.0`. (by [@alexander-akait](https://github.com/alexander-akait) in [#4677](https://github.com/webpack/webpack-cli/pull/4677))
+
+- Use dynamic import to load `webpack.config.js`, fallback to interpret only when configuration can't be load by dynamic import. Using dynamic imports allows you to take advantage of Node.js's built-in TypeScript support. (by [@alexander-akait](https://github.com/alexander-akait) in [#4677](https://github.com/webpack/webpack-cli/pull/4677))
+
+- Removed the `--node-env` argument in favor of the `--config-node-env` argument. (by [@alexander-akait](https://github.com/alexander-akait) in [#4677](https://github.com/webpack/webpack-cli/pull/4677))
+
+- The `version` command only output versions right now. (by [@alexander-akait](https://github.com/alexander-akait) in [#4677](https://github.com/webpack/webpack-cli/pull/4677))
+
+- Removed deprecated API, no action required unless you use `import cli from "webpack-cli";`/`const cli = require("webpack-cli");`. (by [@alexander-akait](https://github.com/alexander-akait) in [#4677](https://github.com/webpack/webpack-cli/pull/4677))
+
+### Patch Changes
+
+- Allow configuration freezing. (by [@alexander-akait](https://github.com/alexander-akait) in [#4677](https://github.com/webpack/webpack-cli/pull/4677))
+
+- Use graceful shutdown when file system cache is enabled. (by [@alexander-akait](https://github.com/alexander-akait) in [#4677](https://github.com/webpack/webpack-cli/pull/4677))
+
+- Performance improved. (by [@alexander-akait](https://github.com/alexander-akait) in [#4677](https://github.com/webpack/webpack-cli/pull/4677))
+
 ## [6.0.1](https://github.com/webpack/webpack-cli/compare/webpack-cli@6.0.0...webpack-cli@6.0.1) (2024-12-20)
 
 ### Bug Fixes
