@@ -1975,7 +1975,10 @@ class WebpackCLI {
             const { distance } = require("fastest-levenshtein");
 
             for (const option of (command as Command).options) {
-              if (!option.hidden && distance(name, option.long?.slice(2) as string) < 3) {
+              if (
+                !(option as Option & { internal?: boolean }).internal &&
+                distance(name, option.long?.slice(2) as string) < 3
+              ) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
             }
