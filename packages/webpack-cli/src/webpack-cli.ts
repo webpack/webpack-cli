@@ -14,6 +14,7 @@ import {
   program,
 } from "commander";
 import { type Config as EnvinfoConfig, type Options as EnvinfoOptions } from "envinfo";
+import { distance } from "fastest-levenshtein";
 import { type prepare } from "rechoir";
 import {
   type Argument as WebpackArgument,
@@ -1942,17 +1943,43 @@ class WebpackCLI {
         return;
       }
 
-      const isInfo = ["commander.helpDisplayed", "commander.version"].includes(error.code);
+      if (error.code === "commander.unknownOption") {
+        let name = error.message.match(/'(.+)'/) as string | null;
 
-      if (isInfo) {
-        process.exit(0);
-        return;
+        if (name) {
+          name = name[1].slice(2);
+
+          if (name.includes("=")) {
+            [name] = name.split("=");
+          }
+
+          const { operands } = this.program.parseOptions(this.program.args);
+          const operand =
+            typeof operands[0] !== "undefined" ? operands[0] : WebpackCLI.#commands.build.rawName;
+
+          if (operand) {
+            const command = this.#findCommandByName(operand);
+
+            if (!command) {
+              this.logger.error(`Can't find and load command '${operand}'`);
+              this.logger.error("Run 'webpack --help' to see available commands and options");
+              process.exit(2);
+            }
+
+            for (const option of command.options) {
+              if (
+                !(option as Option & { internal?: boolean }).internal &&
+                distance(name, option.long?.slice(2) as string) < 3
+              ) {
+                this.logger.error(`Did you mean '--${option.name()}'?`);
+              }
+            }
+          }
+        }
       }
 
       this.logger.error("Run 'webpack --help' to see available commands and options");
       process.exit(2);
-
-      throw error;
     });
 
     this.program.option("--color", "Enable colors on console.");
@@ -2078,8 +2105,6 @@ class WebpackCLI {
           await this.#loadCommandByName(commandNameToRun);
         } else {
           this.logger.error(`Unknown command or entry '${operand}'`);
-
-          const { distance } = await import("fastest-levenshtein");
 
           const found = Object.values(WebpackCLI.#commands).find(
             (commandOptions) => distance(operand, commandOptions.rawName) < 3,
