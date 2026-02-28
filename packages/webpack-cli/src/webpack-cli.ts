@@ -122,8 +122,6 @@ interface CommandOption {
   describe?: string;
   negatedDescription?: string;
   defaultValue?: string;
-  // TODO search API
-  helpLevel: "minimum" | "verbose";
   hidden?: boolean;
   group?: "core";
 }
@@ -743,7 +741,7 @@ class WebpackCLI {
           })
           .default(mainOption.defaultValue);
 
-        (optionForCommand as Option & { helpLevel: string }).helpLevel = option.helpLevel;
+        optionForCommand.hidden = option.hidden || false;
 
         command.addOption(optionForCommand);
       } else if (mainOption.type.has(String)) {
@@ -760,7 +758,7 @@ class WebpackCLI {
           })
           .default(mainOption.defaultValue);
 
-        (optionForCommand as Option & { helpLevel: string }).helpLevel = option.helpLevel;
+        optionForCommand.hidden = option.hidden || false;
 
         command.addOption(optionForCommand);
       } else if (mainOption.type.has(Boolean)) {
@@ -768,7 +766,7 @@ class WebpackCLI {
           mainOption.defaultValue,
         );
 
-        (optionForCommand as Option & { helpLevel: string }).helpLevel = option.helpLevel;
+        optionForCommand.hidden = option.hidden || false;
 
         command.addOption(optionForCommand);
       } else {
@@ -776,7 +774,7 @@ class WebpackCLI {
           .argParser([...mainOption.type][0] as (value: string, previous: unknown) => unknown)
           .default(mainOption.defaultValue);
 
-        (optionForCommand as Option & { helpLevel: string }).helpLevel = option.helpLevel;
+        optionForCommand.hidden = option.hidden || false;
 
         command.addOption(optionForCommand);
       }
@@ -806,23 +804,25 @@ class WebpackCLI {
         })
         .default(mainOption.defaultValue);
 
-      (optionForCommand as Option & { helpLevel: string }).helpLevel = option.helpLevel;
+      optionForCommand.hidden = option.hidden || false;
 
       command.addOption(optionForCommand);
     } else if (mainOption.type.size === 0 && negativeOption) {
       const optionForCommand = new Option(mainOption.flags, mainOption.description);
 
       // Hide stub option
-      optionForCommand.hideHelp();
-      (optionForCommand as Option & { helpLevel: string }).helpLevel = option.helpLevel;
+      optionForCommand.hidden = option.hidden || false;
+      (optionForCommand as Option & { internal?: boolean }).internal = true;
 
       command.addOption(optionForCommand);
     }
 
     if (negativeOption) {
-      const optionForCommand = new Option(negativeOption.flags, negativeOption.description);
+      const optionForCommand = new Option(negativeOption.flags, negativeOption.description).default(
+        false,
+      );
 
-      (optionForCommand as Option & { helpLevel: string }).helpLevel = option.helpLevel;
+      optionForCommand.hidden = option.hidden || false;
 
       command.addOption(optionForCommand);
     }
@@ -847,7 +847,7 @@ class WebpackCLI {
         valueName: "pathToConfigFile",
         description:
           'Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".',
-        helpLevel: "minimum",
+        hidden: false,
       },
       {
         name: "config-name",
@@ -860,7 +860,7 @@ class WebpackCLI {
         valueName: "name",
         description:
           "Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.",
-        helpLevel: "minimum",
+        hidden: false,
       },
       {
         name: "merge",
@@ -872,18 +872,7 @@ class WebpackCLI {
           },
         ],
         description: "Merge two or more configurations using 'webpack-merge'.",
-        helpLevel: "minimum",
-      },
-      {
-        name: "disable-interpret",
-        configs: [
-          {
-            type: "enum",
-            values: [true],
-          },
-        ],
-        description: "Disable interpret for loading the config file.",
-        helpLevel: "minimum",
+        hidden: false,
       },
       // Complex configs
       {
@@ -928,7 +917,7 @@ class WebpackCLI {
         multiple: true,
         description:
           'Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".',
-        helpLevel: "minimum",
+        hidden: false,
       },
       {
         name: "config-node-env",
@@ -940,7 +929,7 @@ class WebpackCLI {
         multiple: false,
         description:
           "Sets process.env.NODE_ENV to the specified value for access within the configuration.",
-        helpLevel: "minimum",
+        hidden: false,
       },
 
       // Adding more plugins
@@ -954,7 +943,7 @@ class WebpackCLI {
         ],
         multiple: false,
         description: "It invokes webpack-bundle-analyzer plugin to get bundle information.",
-        helpLevel: "minimum",
+        hidden: false,
       },
       {
         name: "progress",
@@ -968,7 +957,7 @@ class WebpackCLI {
           },
         ],
         description: "Print compilation progress during build.",
-        helpLevel: "minimum",
+        hidden: false,
       },
 
       // Output options
@@ -986,7 +975,7 @@ class WebpackCLI {
         alias: "j",
         valueName: "pathToJsonFile",
         description: "Prints result as JSON or store it in a file.",
-        helpLevel: "minimum",
+        hidden: false,
       },
       {
         name: "fail-on-warnings",
@@ -997,7 +986,18 @@ class WebpackCLI {
           },
         ],
         description: "Stop webpack-cli process with non-zero exit code on warnings from webpack.",
-        helpLevel: "minimum",
+        hidden: false,
+      },
+      {
+        name: "disable-interpret",
+        configs: [
+          {
+            type: "enum",
+            values: [true],
+          },
+        ],
+        description: "Disable interpret for loading the config file.",
+        hidden: false,
       },
     ];
 
@@ -1037,7 +1037,7 @@ class WebpackCLI {
         name,
         description: meta.description,
         group: "core",
-        helpLevel: minHelpSet.has(name) ? "minimum" : "verbose",
+        hidden: !minHelpSet.has(name),
       };
     }
 
@@ -1173,7 +1173,7 @@ class WebpackCLI {
         },
         visibleOptions: function visibleOptions(command) {
           return command.options.filter((option) => {
-            if (option.hidden) {
+            if ((option as Option & { internal?: boolean }).internal) {
               return false;
             }
 
@@ -1185,13 +1185,11 @@ class WebpackCLI {
               return false;
             }
 
-            switch ((option as unknown as CommandOption).helpLevel) {
-              case "verbose":
-                return isVerbose;
-              case "minimum":
-              default:
-                return true;
+            if (option.hidden) {
+              return isVerbose;
             }
+
+            return true;
           });
         },
         padWidth(command, helper: Help) {
@@ -1760,7 +1758,7 @@ class WebpackCLI {
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.version)) {
       await this.makeCommand(
         WebpackCLI.#commands.version,
-        () => [
+        [
           {
             name: "output",
             alias: "o",
@@ -1770,7 +1768,7 @@ class WebpackCLI {
               },
             ],
             description: "To get the output in a specified format (accept json or markdown)",
-            helpLevel: "minimum",
+            hidden: false,
           },
         ],
         async (options: { output?: string }) => {
@@ -1791,7 +1789,7 @@ class WebpackCLI {
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.info)) {
       await this.makeCommand(
         WebpackCLI.#commands.info,
-        () => [
+        [
           {
             name: "output",
             alias: "o",
@@ -1801,7 +1799,7 @@ class WebpackCLI {
               },
             ],
             description: "To get the output in a specified format (accept json or markdown)",
-            helpLevel: "minimum",
+            hidden: false,
           },
           {
             name: "additional-package",
@@ -1809,7 +1807,7 @@ class WebpackCLI {
             configs: [{ type: "string" }],
             multiple: true,
             description: "Adds additional packages to the output",
-            helpLevel: "minimum",
+            hidden: false,
           },
         ],
         async (options: { output?: string; additionalPackage?: string[] }) => {
@@ -1977,7 +1975,10 @@ class WebpackCLI {
             const { distance } = require("fastest-levenshtein");
 
             for (const option of (command as Command).options) {
-              if (!option.hidden && distance(name, option.long?.slice(2) as string) < 3) {
+              if (
+                !(option as Option & { internal?: boolean }).internal &&
+                distance(name, option.long?.slice(2) as string) < 3
+              ) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
             }
