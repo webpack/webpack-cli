@@ -6,7 +6,7 @@ import util from "node:util";
 import { type stringifyChunked as stringifyChunkedType } from "@discoveryjs/json-ext";
 import {
   type Argument,
-  type Command,
+  type Command as CommanderCommand,
   type CommandOptions as CommanderCommandOptions,
   type Help,
   Option,
@@ -78,6 +78,11 @@ interface Colors extends WebpackColors {
   isColorSupported: boolean;
 }
 
+interface Command extends CommanderCommand {
+  pkg?: string;
+  forHelp?: boolean;
+}
+
 interface CommandOptions extends CommanderCommandOptions {
   rawName: string;
   name: string;
@@ -86,7 +91,6 @@ interface CommandOptions extends CommanderCommandOptions {
   usage?: string;
   dependencies?: string[];
   pkg?: string;
-  argsDescription?: Record<string, string>;
   external?: boolean;
 }
 
@@ -501,9 +505,7 @@ class WebpackCLI {
     action: Parameters<Command["action"]>[0],
   ): Promise<Command | undefined> {
     const alreadyLoaded = this.program.commands.find(
-      (command) =>
-        command.name() === commandOptions.rawName ||
-        command.aliases().includes(commandOptions.alias as string),
+      (command) => command.name() === commandOptions.rawName,
     );
 
     if (alreadyLoaded) {
@@ -513,10 +515,10 @@ class WebpackCLI {
     const command = this.program.command(commandOptions.name, {
       hidden: commandOptions.hidden,
       isDefault: commandOptions.isDefault,
-    });
+    }) as Command;
 
     if (commandOptions.description) {
-      command.description(commandOptions.description, commandOptions.argsDescription!);
+      command.description(commandOptions.description);
     }
 
     if (commandOptions.usage) {
@@ -529,10 +531,9 @@ class WebpackCLI {
       command.alias(commandOptions.alias);
     }
 
-    // TODO search API for this
-    (command as Command & { pkg: string }).pkg = commandOptions.pkg || "webpack-cli";
+    command.pkg = commandOptions.pkg || "webpack-cli";
 
-    const { forHelp } = this.program as Command & { forHelp?: boolean };
+    const { forHelp } = this.program;
 
     let allDependenciesInstalled = true;
 
@@ -1609,7 +1610,7 @@ class WebpackCLI {
 
           webpackCLIOptions.isWatchingLikeCommand = true;
 
-          const compiler = await this.createCompiler(webpackCLIOptions as Options);
+          const compiler = await this.createCompiler(webpackCLIOptions);
 
           if (!compiler) {
             return;
@@ -1881,8 +1882,8 @@ class WebpackCLI {
 
       let pkg: string;
 
-      if (builtInExternalCommandInfo) {
-        ({ pkg } = builtInExternalCommandInfo as CommandOptions & { pkg: string });
+      if (builtInExternalCommandInfo && builtInExternalCommandInfo.pkg) {
+        ({ pkg } = builtInExternalCommandInfo);
       } else {
         pkg = commandName;
       }
@@ -1906,10 +1907,10 @@ class WebpackCLI {
         ConstructorParameters extends unknown[] = unknown[],
       > = new (...args: ConstructorParameters) => InstanceType;
 
-      let loadedCommand: Instantiable<() => void>;
+      let LoadedCommand: Instantiable<() => void>;
 
       try {
-        loadedCommand = (await import(pkg)).default;
+        LoadedCommand = (await import(pkg)).default;
       } catch {
         // Ignore, command is not installed
         return;
@@ -1918,8 +1919,7 @@ class WebpackCLI {
       let command;
 
       try {
-        // eslint-disable-next-line new-cap
-        command = new loadedCommand();
+        command = new LoadedCommand();
 
         await command.apply(this);
       } catch (error) {
@@ -1947,43 +1947,6 @@ class WebpackCLI {
       if (isInfo) {
         process.exit(0);
         return;
-      }
-
-      if (error.code === "commander.unknownOption") {
-        let name = error.message.match(/'(.+)'/) as string | null;
-
-        if (name) {
-          name = name[1].slice(2);
-
-          if (name.includes("=")) {
-            [name] = name.split("=");
-          }
-
-          const { operands } = this.program.parseOptions(this.program.args);
-          const operand =
-            typeof operands[0] !== "undefined" ? operands[0] : WebpackCLI.#commands.build.rawName;
-
-          if (operand) {
-            const command = this.#findCommandByName(operand);
-
-            if (!command) {
-              this.logger.error(`Can't find and load command '${operand}'`);
-              this.logger.error("Run 'webpack --help' to see available commands and options");
-              process.exit(2);
-            }
-
-            const { distance } = require("fastest-levenshtein");
-
-            for (const option of (command as Command).options) {
-              if (
-                !(option as Option & { internal?: boolean }).internal &&
-                distance(name, option.long?.slice(2) as string) < 3
-              ) {
-                this.logger.error(`Did you mean '--${option.name()}'?`);
-              }
-            }
-          }
-        }
       }
 
       this.logger.error("Run 'webpack --help' to see available commands and options");
@@ -2047,7 +2010,7 @@ class WebpackCLI {
           isVerbose = true;
         }
 
-        (this.program as Command & { forHelp?: boolean }).forHelp = true;
+        this.program.forHelp = true;
 
         const optionsForHelp = [
           ...(isHelpOption && hasOperand ? [operand] : []),
@@ -2839,6 +2802,7 @@ class WebpackCLI {
             });
         }
       } else {
+        // TODO bug on webpack side
         const printedStats = stats.toString(statsOptions as StatsOptions);
 
         // Avoid extra empty line when `stats: 'none'`
