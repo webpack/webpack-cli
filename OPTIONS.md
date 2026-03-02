@@ -8,14 +8,13 @@ Options:
   -c, --config <pathToConfigFile...>                                                 Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".
   --config-name <name...>                                                            Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
-  --disable-interpret                                                                Disable interpret for loading the config file.
   --env <value...>                                                                   Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".
-  --node-env <value>                                                                 Sets process.env.NODE_ENV to the specified value for access within the configuration.(Deprecated: Use '--config-node-env' instead)
   --config-node-env <value>                                                          Sets process.env.NODE_ENV to the specified value for access within the configuration.
   --analyze                                                                          It invokes webpack-bundle-analyzer plugin to get bundle information.
   --progress [value]                                                                 Print compilation progress during build.
   -j, --json [pathToJsonFile]                                                        Prints result as JSON or store it in a file.
   --fail-on-warnings                                                                 Stop webpack-cli process with non-zero exit code on warnings from webpack.
+  --disable-interpret                                                                Disable interpret for loading the config file.
   --no-amd                                                                           Negative 'amd' option.
   --bail                                                                             Report the first error as a hard error instead of tolerating it.
   --no-bail                                                                          Negative 'bail' option.
@@ -1342,7 +1341,7 @@ Options:
 Global options:
   --color                                                                            Enable colors on console.
   --no-color                                                                         Disable colors on console.
-  -v, --version                                                                      Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  -v, --version                                                                      Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.
   -h, --help [verbose]                                                               Display help for commands and options.
 
 Commands:
@@ -1351,7 +1350,7 @@ Commands:
   help|h [command] [option]                                                          Display help for commands and options.
   info|i [options]                                                                   Outputs information about your system.
   serve|server|s [entries...] [options]                                              Run the webpack dev server and watch for source file changes while serving.
-  version|v [options]                                                                Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and commands.
+  version|v [options]                                                                Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.
   watch|w [entries...] [options]                                                     Run webpack and watch for files changes.
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
