@@ -1,6 +1,7 @@
-import { fileURLToPath } from "url";
-import path from "path";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
+// eslint-disable-next-line unicorn/no-unnecessary-await
 const mode = await "development";
 
 export default {
