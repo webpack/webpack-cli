@@ -25,7 +25,6 @@ import {
   type MultiCompiler,
   type MultiConfiguration,
   type MultiStats,
-  type MultiStatsOptions,
   type Problem,
   type Stats,
   type StatsOptions,
@@ -94,6 +93,9 @@ interface CommandOptions extends CommanderCommandOptions {
   pkg?: string;
   external?: boolean;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type CommanderArgs = Record<string, any>;
 
 type BasicPrimitive = string | boolean | number;
 
@@ -165,7 +167,7 @@ declare interface WebpackCallback {
 
 type ProcessedArguments = Parameters<(typeof webpack)["cli"]["processArguments"]>[2];
 
-interface Options {
+interface KnownOptions {
   config?: string[];
   argv?: Argv;
   env?: Env;
@@ -176,7 +178,6 @@ interface Options {
   isWatchingLikeCommand?: boolean;
   progress?: boolean | "profile";
   analyze?: boolean;
-  prefetch?: string;
   json?: boolean;
   entry?: string | string[];
   merge?: boolean;
@@ -184,6 +185,12 @@ interface Options {
   disableInterpret?: boolean;
   extends?: string[];
 }
+
+type Options =
+  // Webpack CLI own options
+  KnownOptions &
+    // Webpack and webpack-dev-server options
+    Record<string, unknown>;
 
 const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
 
@@ -1529,7 +1536,7 @@ class WebpackCLI {
 
           return this.getBuiltInOptions();
         },
-        async (entries, options) => {
+        async (entries: string[], options: CommanderArgs) => {
           if (entries.length > 0) {
             options.entry = [...entries, ...(options.entry || [])];
           }
@@ -1574,7 +1581,7 @@ class WebpackCLI {
 
           return [...webpackOptions, ...devServerOptions];
         },
-        async (entries: string[], options) => {
+        async (entries: string[], options: CommanderArgs) => {
           const builtInOptions = this.getBuiltInOptions();
           let devServerFlags: CommandOption[] = [];
 
@@ -1585,7 +1592,7 @@ class WebpackCLI {
           }
 
           const webpackCLIOptions: Partial<Options> = {};
-          const devServerCLIOptions: Record<string, CommandOption> = {};
+          const devServerCLIOptions: CommanderArgs = {};
 
           for (const optionName in options) {
             const kebabedOption = this.toKebabCase(optionName);
@@ -1651,23 +1658,23 @@ class WebpackCLI {
               continue;
             }
 
-            const devServerConfiguration: DevServerConfiguration = {
-              ...compilerForDevServer.options.devServer,
-            };
+            const devServerConfiguration: DevServerConfiguration =
+              compilerForDevServer.options.devServer || {};
 
             const args: Record<string, WebpackArgument> = {};
-
-            for (const flag of devServerFlags) {
-              args[flag.name] = flag as unknown as WebpackArgument;
-            }
-
             const values: ProcessedArguments = {};
 
             for (const name of Object.keys(options)) {
-              const kebabName = this.toKebabCase(name);
+              if (name === "argv") continue;
 
-              if (args[kebabName] !== undefined) {
-                values[kebabName] = options[name];
+              const kebabName = this.toKebabCase(name);
+              const arg = devServerFlags.find((item) => item.name === kebabName);
+
+              if (arg) {
+                args[name] = arg as unknown as WebpackArgument;
+                // We really don't know what the value is
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                values[name] = options[name as keyof Options] as any;
               }
             }
 
@@ -1703,7 +1710,7 @@ class WebpackCLI {
                     this.logger.error(
                       `${this.capitalizeFirstLetter(problem.type.replace("-", " "))}${
                         problem.value ? ` '${problem.value}'` : ""
-                      } for the '--${problem.argument}' option${
+                      } for the '--${problem.argument.replaceAll(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}' option${
                         problem.index ? ` by index '${problem.index}'` : ""
                       }`,
                     );
@@ -2530,33 +2537,30 @@ class WebpackCLI {
 
     const { default: CLIPlugin } = (await import("./plugins/cli-plugin.js")).default;
 
-    const internalBuildConfig = (item: Configuration) => {
-      const originalWatchValue = item.watch;
+    const internalBuildConfig = (configuration: Configuration) => {
+      const originalWatchValue = configuration.watch;
 
       // Apply options
       const builtInOptions = this.getBuiltInOptions();
       const args: Record<string, WebpackArgument> = {};
-
-      for (const flag of builtInOptions) {
-        if (flag.group === "core") {
-          args[flag.name] = flag as unknown as WebpackArgument;
-        }
-      }
-
       const values: ProcessedArguments = {};
 
       for (const name of Object.keys(options)) {
         if (name === "argv") continue;
 
         const kebabName = this.toKebabCase(name);
+        const arg = builtInOptions.find((item) => item.group === "core" && item.name === kebabName);
 
-        if (args[kebabName] !== undefined) {
-          values[kebabName] = options[name as keyof Options] as string[];
+        if (arg) {
+          args[name] = arg as unknown as WebpackArgument;
+          // We really don't know what the value is
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          values[name] = options[name as keyof Options] as any;
         }
       }
 
       if (Object.keys(values).length > 0) {
-        const problems = this.webpack.cli.processArguments(args, item, values);
+        const problems = this.webpack.cli.processArguments(args, configuration, values);
 
         if (problems) {
           const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(xs: Problem[], key: K) =>
@@ -2579,7 +2583,7 @@ class WebpackCLI {
               this.logger.error(
                 `${this.capitalizeFirstLetter(problem.type.replaceAll("-", " "))}${
                   problem.value ? ` '${problem.value}'` : ""
-                } for the '--${problem.argument}' option${
+                } for the '--${problem.argument.replaceAll(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}' option${
                   problem.index ? ` by index '${problem.index}'` : ""
                 }`,
               );
@@ -2595,7 +2599,7 @@ class WebpackCLI {
       }
 
       // Output warnings
-      if (!Object.isExtensible(item)) {
+      if (!Object.isExtensible(configuration)) {
         return;
       }
 
@@ -2611,7 +2615,7 @@ class WebpackCLI {
         );
 
         if (options.argv.env.WEBPACK_SERVE) {
-          item.watch = false;
+          configuration.watch = false;
         }
       }
 
@@ -2623,46 +2627,46 @@ class WebpackCLI {
         config.cache.type === "filesystem";
 
       // Setup default cache options
-      if (isFileSystemCacheOptions(item) && Object.isExtensible(item.cache)) {
-        const configPath = config.path.get(item);
+      if (isFileSystemCacheOptions(configuration) && Object.isExtensible(configuration.cache)) {
+        const configPath = config.path.get(configuration);
 
         if (configPath) {
-          if (!item.cache.buildDependencies) {
-            item.cache.buildDependencies = {};
+          if (!configuration.cache.buildDependencies) {
+            configuration.cache.buildDependencies = {};
           }
 
-          if (!item.cache.buildDependencies.defaultConfig) {
-            item.cache.buildDependencies.defaultConfig = [];
+          if (!configuration.cache.buildDependencies.defaultConfig) {
+            configuration.cache.buildDependencies.defaultConfig = [];
           }
 
           if (Array.isArray(configPath)) {
             for (const oneOfConfigPath of configPath) {
-              item.cache.buildDependencies.defaultConfig.push(oneOfConfigPath);
+              configuration.cache.buildDependencies.defaultConfig.push(oneOfConfigPath);
             }
           } else {
-            item.cache.buildDependencies.defaultConfig.push(configPath);
+            configuration.cache.buildDependencies.defaultConfig.push(configPath);
           }
         }
       }
 
       // Respect `process.env.NODE_ENV`
       if (
-        !item.mode &&
+        !configuration.mode &&
         process.env?.NODE_ENV &&
         (process.env.NODE_ENV === "development" ||
           process.env.NODE_ENV === "production" ||
           process.env.NODE_ENV === "none")
       ) {
-        item.mode = process.env.NODE_ENV;
+        configuration.mode = process.env.NODE_ENV;
       }
 
       // Setup stats
-      if (typeof item.stats === "undefined") {
-        item.stats = { preset: "normal" };
-      } else if (typeof item.stats === "boolean") {
-        item.stats = item.stats ? { preset: "normal" } : { preset: "none" };
-      } else if (typeof item.stats === "string") {
-        item.stats = { preset: item.stats };
+      if (typeof configuration.stats === "undefined") {
+        configuration.stats = { preset: "normal" };
+      } else if (typeof configuration.stats === "boolean") {
+        configuration.stats = configuration.stats ? { preset: "normal" } : { preset: "none" };
+      } else if (typeof configuration.stats === "string") {
+        configuration.stats = { preset: configuration.stats };
       }
 
       let colors;
@@ -2672,27 +2676,27 @@ class WebpackCLI {
         colors = Boolean(this.#isColorSupportChanged);
       }
       // From stats
-      else if (typeof item.stats.colors !== "undefined") {
-        colors = item.stats.colors;
+      else if (typeof configuration.stats.colors !== "undefined") {
+        colors = configuration.stats.colors;
       }
       // Default
       else {
         colors = Boolean(this.colors.isColorSupported);
       }
 
-      if (Object.isExtensible(item.stats)) {
-        item.stats.colors = colors;
+      if (Object.isExtensible(configuration.stats)) {
+        configuration.stats.colors = colors;
       }
 
       // Apply CLI plugin
-      if (!item.plugins) {
-        item.plugins = [];
+      if (!configuration.plugins) {
+        configuration.plugins = [];
       }
 
-      if (Object.isExtensible(item.plugins)) {
-        item.plugins.unshift(
+      if (Object.isExtensible(configuration.plugins)) {
+        configuration.plugins.unshift(
           new CLIPlugin({
-            configPath: config.path.get(item),
+            configPath: config.path.get(configuration),
             helpfulOutput: !options.json,
             progress: options.progress,
             analyze: options.analyze,
@@ -2791,14 +2795,10 @@ class WebpackCLI {
       }
 
       const statsOptions = this.isMultipleCompiler(compiler)
-        ? ({
-            children: compiler.compilers.map((compiler) =>
-              compiler.options ? compiler.options.stats : undefined,
-            ),
-          } as MultiStatsOptions)
-        : compiler.options
-          ? (compiler.options.stats as StatsOptions)
-          : undefined;
+        ? {
+            children: compiler.compilers.map((compiler) => compiler.options.stats),
+          }
+        : compiler.options.stats;
 
       if (options.json) {
         const handleWriteError = (error: Error) => {
@@ -2827,8 +2827,7 @@ class WebpackCLI {
             });
         }
       } else {
-        // TODO bug on webpack side
-        const printedStats = stats.toString(statsOptions as StatsOptions);
+        const printedStats = stats.toString(statsOptions);
 
         // Avoid extra empty line when `stats: 'none'`
         if (printedStats) {

@@ -58,6 +58,17 @@ describe("invalid schema", () => {
     expect(stdout).toBeFalsy();
   });
 
+  it("should log error on invalid option #1", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--cache-type", "Yukihira"]);
+
+    expect(exitCode).toBe(2);
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--cache-type' option");
+    expect(stderr).toContain("Expected: 'memory'");
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--cache-type' option");
+    expect(stderr).toContain("Expected: 'filesystem'");
+    expect(stdout).toBeFalsy();
+  });
+
   it('should log error on invalid option using "build" command', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["build", "--mode", "Yukihira"]);
 
@@ -118,6 +129,43 @@ describe("invalid schema", () => {
     expect(exitCode).toBe(2);
     expect(stderr).toContain("Invalid value 'Yukihira' for the '--mode' option");
     expect(stderr).toContain("Expected: 'development | production | none'");
+    expect(stdout).toBeFalsy();
+  });
+
+  it('should log error on invalid option using "s" command #1', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["s", "--cache-type", "Yukihira"]);
+
+    expect(exitCode).toBe(2);
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--cache-type' option");
+    expect(stderr).toContain("Expected: 'memory'");
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--cache-type' option");
+    expect(stderr).toContain("Expected: 'filesystem'");
+    expect(stdout).toBeFalsy();
+  });
+
+  it('should log error on invalid option using "s" command #2', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["s", "--server-type", "Yukihira"]);
+
+    expect(exitCode).toBe(2);
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--server-type' option");
+    expect(stderr).toContain("Expected: 'http | https | spdy | http2'");
+    expect(stdout).toBeFalsy();
+  });
+
+  it('should log error on invalid option using "s" command #3', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "s",
+      "--cache-type",
+      "Yukihira",
+      "--server-type",
+      "Yukihira",
+    ]);
+
+    expect(exitCode).toBe(2);
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--cache-type' option");
+    expect(stderr).toContain("Expected: 'memory'");
+    expect(stderr).toContain("Invalid value 'Yukihira' for the '--cache-type' option");
+    expect(stderr).toContain("Expected: 'filesystem'");
     expect(stdout).toBeFalsy();
   });
 });
