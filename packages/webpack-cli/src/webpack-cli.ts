@@ -267,16 +267,6 @@ class WebpackCLI {
     return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
   }
 
-  isMultipleConfiguration(
-    config: Configuration | MultiConfiguration,
-  ): config is MultiConfiguration {
-    return Array.isArray(config);
-  }
-
-  isMultipleCompiler(compiler: Compiler | MultiCompiler): compiler is MultiCompiler {
-    return (compiler as MultiCompiler).compilers as unknown as boolean;
-  }
-
   isPromise<T>(value: Promise<T>): value is Promise<T> {
     return typeof (value as unknown as Promise<T>).then === "function";
   }
@@ -838,6 +828,16 @@ class WebpackCLI {
     }
   }
 
+  isMultipleConfiguration(
+    config: Configuration | MultiConfiguration,
+  ): config is MultiConfiguration {
+    return Array.isArray(config);
+  }
+
+  isMultipleCompiler(compiler: Compiler | MultiCompiler): compiler is MultiCompiler {
+    return (compiler as MultiCompiler).compilers as unknown as boolean;
+  }
+
   isValidationError(error: unknown): error is WebpackError {
     return (
       error instanceof this.webpack.ValidationError || (error as Error).name === "ValidationError"
@@ -1062,64 +1062,6 @@ class WebpackCLI {
 
     return options;
   }
-
-  static #commands: Record<
-    "build" | "watch" | "version" | "help" | "serve" | "info" | "configtest",
-    CommandOptions
-  > = {
-    build: {
-      rawName: "build",
-      name: "build [entries...]",
-      alias: ["bundle", "b"],
-      description: "Run webpack (default command, can be omitted).",
-      usage: "[entries...] [options]",
-      dependencies: [WEBPACK_PACKAGE],
-    },
-    watch: {
-      rawName: "watch",
-      name: "watch [entries...]",
-      alias: "w",
-      description: "Run webpack and watch for files changes.",
-      usage: "[entries...] [options]",
-      dependencies: [WEBPACK_PACKAGE],
-    },
-    serve: {
-      rawName: "serve",
-      name: "serve [entries...]",
-      alias: ["server", "s"],
-      description: "Run the webpack dev server and watch for source file changes while serving.",
-      usage: "[entries...] [options]",
-      dependencies: [WEBPACK_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE],
-    },
-    version: {
-      rawName: "version",
-      name: "version",
-      alias: "v",
-      usage: "[options]",
-      description:
-        "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.",
-    },
-    info: {
-      rawName: "info",
-      name: "info",
-      alias: "i",
-      usage: "[options]",
-      description: "Outputs information about your system.",
-    },
-    help: {
-      rawName: "help",
-      name: "help [command] [option]",
-      alias: "h",
-      description: "Display help for commands and options.",
-    },
-    configtest: {
-      rawName: "configtest",
-      name: "configtest [config-path]",
-      alias: "t",
-      description: "Validate a webpack configuration.",
-      dependencies: [WEBPACK_PACKAGE],
-    },
-  };
 
   async #outputHelp(
     options: string[],
@@ -1496,11 +1438,78 @@ class WebpackCLI {
     return info;
   }
 
-  #findCommandByName(name: string) {
-    return this.program.commands.find(
-      (command) => name === command.name() || command.aliases().includes(name),
-    );
+  async #loadPackage<T>(pkg: string, isCustom: boolean): Promise<T> {
+    const importTarget =
+      isCustom && /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(pkg) ? pathToFileURL(pkg).toString() : pkg;
+
+    return (await import(importTarget)).default;
   }
+
+  async loadWebpack(): Promise<typeof webpack> {
+    return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
+  }
+
+  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server")> {
+    return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
+  }
+
+  static #commands: Record<
+    "build" | "watch" | "version" | "help" | "serve" | "info" | "configtest",
+    CommandOptions
+  > = {
+    build: {
+      rawName: "build",
+      name: "build [entries...]",
+      alias: ["bundle", "b"],
+      description: "Run webpack (default command, can be omitted).",
+      usage: "[entries...] [options]",
+      dependencies: [WEBPACK_PACKAGE],
+    },
+    watch: {
+      rawName: "watch",
+      name: "watch [entries...]",
+      alias: "w",
+      description: "Run webpack and watch for files changes.",
+      usage: "[entries...] [options]",
+      dependencies: [WEBPACK_PACKAGE],
+    },
+    serve: {
+      rawName: "serve",
+      name: "serve [entries...]",
+      alias: ["server", "s"],
+      description: "Run the webpack dev server and watch for source file changes while serving.",
+      usage: "[entries...] [options]",
+      dependencies: [WEBPACK_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE],
+    },
+    version: {
+      rawName: "version",
+      name: "version",
+      alias: "v",
+      usage: "[options]",
+      description:
+        "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.",
+    },
+    info: {
+      rawName: "info",
+      name: "info",
+      alias: "i",
+      usage: "[options]",
+      description: "Outputs information about your system.",
+    },
+    help: {
+      rawName: "help",
+      name: "help [command] [option]",
+      alias: "h",
+      description: "Display help for commands and options.",
+    },
+    configtest: {
+      rawName: "configtest",
+      name: "configtest [config-path]",
+      alias: "t",
+      description: "Validate a webpack configuration.",
+      dependencies: [WEBPACK_PACKAGE],
+    },
+  };
 
   #isCommand(input: string, commandOptions: CommandOptions) {
     const longName = commandOptions.rawName;
@@ -1519,19 +1528,10 @@ class WebpackCLI {
     return false;
   }
 
-  async #loadPackage<T>(pkg: string, isCustom: boolean): Promise<T> {
-    const importTarget =
-      isCustom && /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(pkg) ? pathToFileURL(pkg).toString() : pkg;
-
-    return (await import(importTarget)).default;
-  }
-
-  async loadWebpack(): Promise<typeof webpack> {
-    return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
-  }
-
-  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server")> {
-    return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
+  #findCommandByName(name: string) {
+    return this.program.commands.find(
+      (command) => name === command.name() || command.aliases().includes(name),
+    );
   }
 
   async #loadCommandByName(commandName: string, allowToInstall = false) {
