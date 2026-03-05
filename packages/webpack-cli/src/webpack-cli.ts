@@ -298,61 +298,6 @@ class WebpackCLI {
     };
   }
 
-  async isPackageInstalled(packageName: string): Promise<boolean> {
-    if (process.versions.pnp) {
-      return true;
-    }
-
-    try {
-      require.resolve(packageName);
-      return true;
-    } catch {
-      // Nothing
-    }
-
-    // Fallback using fs
-    let dir = __dirname;
-
-    do {
-      try {
-        const stats = await fs.promises.stat(path.join(dir, "node_modules", packageName));
-
-        if (stats.isDirectory()) {
-          return true;
-        }
-      } catch {
-        // Nothing
-      }
-    } while (dir !== (dir = path.dirname(dir)));
-
-    // Extra fallback using fs and hidden API
-    // @ts-expect-error No types, private API
-    const { globalPaths } = await import("node:module");
-
-    // https://github.com/nodejs/node/blob/v18.9.1/lib/internal/modules/cjs/loader.js#L1274
-    const results = await Promise.all(
-      (globalPaths as string[]).map(async (internalPath) => {
-        try {
-          const stats = await fs.promises.stat(path.join(internalPath, packageName));
-
-          if (stats.isDirectory()) {
-            return true;
-          }
-        } catch {
-          // Nothing
-        }
-
-        return false;
-      }),
-    );
-
-    if (results.includes(true)) {
-      return true;
-    }
-
-    return false;
-  }
-
   async getDefaultPackageManager(): Promise<PackageManager | undefined> {
     const { sync } = await import("cross-spawn");
 
@@ -408,6 +353,61 @@ class WebpackCLI {
 
       process.exit(2);
     }
+  }
+
+  async isPackageInstalled(packageName: string): Promise<boolean> {
+    if (process.versions.pnp) {
+      return true;
+    }
+
+    try {
+      require.resolve(packageName);
+      return true;
+    } catch {
+      // Nothing
+    }
+
+    // Fallback using fs
+    let dir = __dirname;
+
+    do {
+      try {
+        const stats = await fs.promises.stat(path.join(dir, "node_modules", packageName));
+
+        if (stats.isDirectory()) {
+          return true;
+        }
+      } catch {
+        // Nothing
+      }
+    } while (dir !== (dir = path.dirname(dir)));
+
+    // Extra fallback using fs and hidden API
+    // @ts-expect-error No types, private API
+    const { globalPaths } = await import("node:module");
+
+    // https://github.com/nodejs/node/blob/v18.9.1/lib/internal/modules/cjs/loader.js#L1274
+    const results = await Promise.all(
+      (globalPaths as string[]).map(async (internalPath) => {
+        try {
+          const stats = await fs.promises.stat(path.join(internalPath, packageName));
+
+          if (stats.isDirectory()) {
+            return true;
+          }
+        } catch {
+          // Nothing
+        }
+
+        return false;
+      }),
+    );
+
+    if (results.includes(true)) {
+      return true;
+    }
+
+    return false;
   }
 
   async installPackage(
