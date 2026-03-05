@@ -1,10 +1,6 @@
 {
-  "all": true,
-  "extension": [".ts", ".js"],
-  "include": ["packages/*/src/**/*.ts", "packages/*/lib/**/*.js"],
-  "require": ["source-map-support/register"],
-  "reporter": ["text", "html", "lcov"],
-  "sourceMap": true,
-  "clean": false,
+  "include": ["packages/**"],
+  "reporter": ["html", "json", "cobertura"],
+  "source-map": true,
   "exclude-after-remap": false
 }
