@@ -838,6 +838,12 @@ class WebpackCLI {
     }
   }
 
+  isValidationError(error: unknown): error is WebpackError {
+    return (
+      error instanceof this.webpack.ValidationError || (error as Error).name === "ValidationError"
+    );
+  }
+
   async getBuiltInOptions(): Promise<CommandOption[]> {
     if (this.#builtInOptionsCache) {
       return this.#builtInOptionsCache;
@@ -2140,81 +2146,6 @@ class WebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
-  async #loadConfigurationFile(
-    configPath: string,
-    disableInterpret = false,
-  ): Promise<LoadableWebpackConfiguration | undefined> {
-    let pkg: LoadableWebpackConfiguration | undefined;
-
-    let loadingError;
-
-    try {
-      // eslint-disable-next-line no-eval
-      pkg = (await eval(`import("${pathToFileURL(configPath)}")`)).default;
-    } catch (err) {
-      if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
-        throw err;
-      }
-
-      loadingError = err;
-    }
-
-    // Fallback logic when we can't use `import(...)`
-    if (loadingError) {
-      const { jsVariants, extensions } = await import("interpret");
-      const ext = path.extname(configPath).toLowerCase();
-
-      let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
-
-      if (!interpreted && ext.endsWith(".cts")) {
-        interpreted = jsVariants[".ts"] as string;
-      }
-
-      if (interpreted && !disableInterpret) {
-        const rechoir: Rechoir = (await import("rechoir")).default;
-
-        try {
-          rechoir.prepare(extensions, configPath);
-        } catch (error) {
-          if ((error as RechoirError)?.failures) {
-            this.logger.error(`Unable load '${configPath}'`);
-            this.logger.error((error as RechoirError).message);
-            for (const failure of (error as RechoirError).failures) {
-              this.logger.error(failure.error.message);
-            }
-            this.logger.error("Please install one of them");
-            process.exit(2);
-          }
-          this.logger.error(error);
-          process.exit(2);
-        }
-      }
-
-      try {
-        pkg = require(configPath);
-      } catch (err) {
-        if (this.isValidationError(err)) {
-          throw err;
-        }
-
-        throw new ConfigurationLoadingError([loadingError, err]);
-      }
-    }
-
-    // To handle `babel`/`module.exports.default = {};`
-    if (pkg && typeof pkg === "object" && "default" in pkg) {
-      pkg = pkg.default as LoadableWebpackConfiguration | undefined;
-    }
-
-    if (!pkg) {
-      this.logger.warn(
-        `Default export is missing or nullish at (from ${configPath}). Webpack will run with an empty configuration. Please double-check that this is what you want. If you want to run webpack with an empty config, \`export {}\`/\`module.exports = {};\` to remove this warning.`,
-      );
-    }
-
-    return pkg || {};
-  }
-
   async loadConfig(options: Options) {
     const disableInterpret =
       typeof options.disableInterpret !== "undefined" && options.disableInterpret;
@@ -2226,7 +2157,73 @@ class WebpackCLI {
       let options: LoadableWebpackConfiguration | undefined;
 
       try {
-        options = await this.#loadConfigurationFile(configPath, disableInterpret);
+        let loadingError;
+
+        try {
+          // eslint-disable-next-line no-eval
+          options = (await eval(`import("${pathToFileURL(configPath)}")`)).default;
+        } catch (err) {
+          if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
+            throw err;
+          }
+
+          loadingError = err;
+        }
+
+        // Fallback logic when we can't use `import(...)`
+        if (loadingError) {
+          const { jsVariants, extensions } = await import("interpret");
+          const ext = path.extname(configPath).toLowerCase();
+
+          let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
+
+          if (!interpreted && ext.endsWith(".cts")) {
+            interpreted = jsVariants[".ts"] as string;
+          }
+
+          if (interpreted && !disableInterpret) {
+            const rechoir: Rechoir = (await import("rechoir")).default;
+
+            try {
+              rechoir.prepare(extensions, configPath);
+            } catch (error) {
+              if ((error as RechoirError)?.failures) {
+                this.logger.error(`Unable load '${configPath}'`);
+                this.logger.error((error as RechoirError).message);
+                for (const failure of (error as RechoirError).failures) {
+                  this.logger.error(failure.error.message);
+                }
+                this.logger.error("Please install one of them");
+                process.exit(2);
+              }
+              this.logger.error(error);
+              process.exit(2);
+            }
+          }
+
+          try {
+            options = require(configPath);
+          } catch (err) {
+            if (this.isValidationError(err)) {
+              throw err;
+            }
+
+            throw new ConfigurationLoadingError([loadingError, err]);
+          }
+        }
+
+        // To handle `babel`/`module.exports.default = {};`
+        if (options && typeof options === "object" && "default" in options) {
+          options = options.default as LoadableWebpackConfiguration | undefined;
+        }
+
+        if (!options) {
+          this.logger.warn(
+            `Default export is missing or nullish at (from ${configPath}). Webpack will run with an empty configuration. Please double-check that this is what you want. If you want to run webpack with an empty config, \`export {}\`/\`module.exports = {};\` to remove this warning.`,
+          );
+
+          options = {};
+        }
       } catch (error) {
         if (error instanceof ConfigurationLoadingError) {
           this.logger.error(`Failed to load '${configPath}' config\n${error.message}`);
@@ -2706,12 +2703,6 @@ class WebpackCLI {
     }
 
     return config;
-  }
-
-  isValidationError(error: unknown): error is WebpackError {
-    return (
-      error instanceof this.webpack.ValidationError || (error as Error).name === "ValidationError"
-    );
   }
 
   async createCompiler(
