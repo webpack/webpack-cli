@@ -2199,6 +2199,11 @@ class WebpackCLI {
           throw err;
         }
 
+        if (process.env.WEBPACK_DEBUG_CONFIGURATION_LOADING) {
+          this.logger.error(loadingError);
+          this.logger.error(err);
+        }
+
         throw new ConfigurationLoadingError([loadingError, err]);
       }
     }

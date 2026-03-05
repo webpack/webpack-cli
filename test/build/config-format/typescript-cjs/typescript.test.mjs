@@ -76,9 +76,12 @@ describe("typescript commonjs configuration", () => {
     expect(existsSync(resolve(__dirname, "dist/foo.bundle.js"))).toBeTruthy();
   });
 
-  it("should support typescript commonjs configuration (using `interpret`)", async () => {
+  it.only("should support typescript commonjs configuration (using `interpret`)", async () => {
     const [major] = process.versions.node.split(".").map(Number);
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
+      env: {
+        WEBPACK_DEBUG_CONFIGURATION_LOADING: true,
+      },
       nodeOptions: [
         // Disable typescript strip types for tests
         ...(major >= 22 ? ["--no-experimental-strip-types"] : []),
