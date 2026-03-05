@@ -1638,7 +1638,7 @@ class WebpackCLI {
 
           const servers: InstanceType<DevServerConstructor>[] = [];
 
-          if (this.needWatchStdin(compiler)) {
+          if (this.#needWatchStdin(compiler)) {
             process.stdin.on("end", () => {
               Promise.all(servers.map((server) => server.stop())).then(() => {
                 process.exit(0);
@@ -2760,7 +2760,7 @@ class WebpackCLI {
     return compiler;
   }
 
-  needWatchStdin(compiler: Compiler | MultiCompiler): boolean {
+  #needWatchStdin(compiler: Compiler | MultiCompiler): boolean {
     if (this.isMultipleCompiler(compiler)) {
       return Boolean(
         compiler.compilers.some((compiler: Compiler) => compiler.options.watchOptions?.stdin),
@@ -2894,7 +2894,7 @@ class WebpackCLI {
         process.on(signal, listener);
       }
 
-      if (this.needWatchStdin(compiler)) {
+      if (this.#needWatchStdin(compiler)) {
         process.stdin.on("end", () => {
           process.exit(0);
         });
