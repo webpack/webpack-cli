@@ -2505,13 +2505,6 @@ class WebpackCLI {
       config.path.set(config.options, mergedConfigPaths);
     }
 
-    return config;
-  }
-
-  async buildConfig(
-    config: ConfigurationsAndPaths,
-    options: Options,
-  ): Promise<ConfigurationsAndPaths> {
     if (options.analyze && !(await this.isPackageInstalled("webpack-bundle-analyzer"))) {
       await this.installPackage("webpack-bundle-analyzer", {
         preMessage: () => {
@@ -2729,9 +2722,7 @@ class WebpackCLI {
       process.env.NODE_ENV = options.configNodeEnv;
     }
 
-    let config = await this.loadConfig(options);
-    config = await this.buildConfig(config, options);
-
+    const config = await this.loadConfig(options);
     let compiler: Compiler | MultiCompiler;
 
     try {
