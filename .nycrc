@@ -2,5 +2,6 @@
   "include": ["packages/**"],
   "reporter": ["html", "json", "cobertura"],
   "source-map": true,
+  "hook-require": false,
   "exclude-after-remap": false
 }

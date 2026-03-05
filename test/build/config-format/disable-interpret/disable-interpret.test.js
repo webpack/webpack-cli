@@ -21,7 +21,13 @@ describe("webpack cli", () => {
   });
 
   it("should log error without transpilation", async () => {
-    const { exitCode, stderr, stdout } = await run(__dirname, ["--disable-interpret"]);
+    const [major] = process.versions.node.split(".").map(Number);
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--disable-interpret"], {
+      nodeOptions: [
+        // Disable typescript strip types for tests
+        ...(major >= 24 ? ["--no-experimental-strip-types"] : []),
+      ],
+    });
 
     expect(exitCode).toBe(2);
     expect(stderr).toContain(`Failed to load '${resolve(__dirname, "webpack.config.ts")}' config`);
