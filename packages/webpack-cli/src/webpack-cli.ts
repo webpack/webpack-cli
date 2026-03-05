@@ -838,10 +838,12 @@ class WebpackCLI {
     }
   }
 
-  getBuiltInOptions(): CommandOption[] {
+  async getBuiltInOptions(): Promise<CommandOption[]> {
     if (this.#builtInOptionsCache) {
       return this.#builtInOptionsCache;
     }
+
+    this.webpack = await this.loadWebpack();
 
     const builtInFlags: CommandOption[] = [
       // For configs
@@ -1379,7 +1381,9 @@ class WebpackCLI {
         this.logger.raw(`${bold("Default value:")} ${JSON.stringify(option.defaultValue)}`);
       }
 
-      const flag = this.getBuiltInOptions().find((flag) => option.long === `--${flag.name}`);
+      const flag = (await this.getBuiltInOptions()).find(
+        (flag) => option.long === `--${flag.name}`,
+      );
 
       if (flag?.configs) {
         const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
@@ -1531,11 +1535,7 @@ class WebpackCLI {
     if (isBuildCommandUsed || isWatchCommandUsed) {
       await this.makeCommand(
         isBuildCommandUsed ? WebpackCLI.#commands.build : WebpackCLI.#commands.watch,
-        async () => {
-          this.webpack = await this.loadWebpack();
-
-          return this.getBuiltInOptions();
-        },
+        async () => this.getBuiltInOptions(),
         async (entries: string[], options: CommanderArgs) => {
           if (entries.length > 0) {
             options.entry = [...entries, ...(options.entry || [])];
@@ -1564,8 +1564,6 @@ class WebpackCLI {
       await this.makeCommand(
         WebpackCLI.#commands.serve,
         async () => {
-          this.webpack = await this.loadWebpack();
-
           let devServerOptions = [];
 
           try {
@@ -1577,12 +1575,12 @@ class WebpackCLI {
             process.exit(2);
           }
 
-          const webpackOptions = this.getBuiltInOptions();
+          const webpackOptions = await this.getBuiltInOptions();
 
           return [...webpackOptions, ...devServerOptions];
         },
         async (entries: string[], options: CommanderArgs) => {
-          const builtInOptions = this.getBuiltInOptions();
+          const builtInOptions = await this.getBuiltInOptions();
           let devServerFlags: CommandOption[] = [];
 
           try {
@@ -2537,11 +2535,11 @@ class WebpackCLI {
 
     const { default: CLIPlugin } = (await import("./plugins/cli-plugin.js")).default;
 
+    const builtInOptions = await this.getBuiltInOptions();
     const internalBuildConfig = (configuration: Configuration) => {
       const originalWatchValue = configuration.watch;
 
       // Apply options
-      const builtInOptions = this.getBuiltInOptions();
       const args: Record<string, WebpackArgument> = {};
       const values: ProcessedArguments = {};
 
