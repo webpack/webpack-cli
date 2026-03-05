@@ -88,6 +88,9 @@ describe("typescript commonjs configuration", () => {
       ],
     });
 
+    console.log(stderr);
+    console.log(stdout);
+
     expect(stderr).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
