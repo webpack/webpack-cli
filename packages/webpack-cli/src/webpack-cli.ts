@@ -5,7 +5,6 @@ import { pathToFileURL } from "node:url";
 import util from "node:util";
 import { type stringifyChunked as stringifyChunkedType } from "@discoveryjs/json-ext";
 import {
-  type Argument,
   type Command as CommanderCommand,
   type CommandOptions as CommanderCommandOptions,
   type Help,
@@ -981,18 +980,8 @@ class WebpackCLI {
         },
         // Support multiple aliases
         subcommandTerm: (command) => {
-          const humanReadableArgumentName = (argument: Argument) => {
-            const nameOutput = argument.name() + (argument.variadic ? "..." : "");
-
-            return argument.required ? `<${nameOutput}>` : `[${nameOutput}]`;
-          };
-          const args = command.registeredArguments
-            .map((arg) => humanReadableArgumentName(arg))
-            .join(" ");
-
-          return `${command.name()}|${command.aliases().join("|")}${args ? ` ${args}` : ""}${
-            command.options.length > 0 ? " [options]" : ""
-          }`;
+          const usage = command.usage();
+          return `${command.name()}|${command.aliases().join("|")}${usage.length > 0 ? ` ${usage}` : ""}`;
         },
         visibleOptions: function visibleOptions(command) {
           return command.options.filter((option) => {
