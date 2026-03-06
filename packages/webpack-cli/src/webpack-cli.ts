@@ -624,7 +624,7 @@ class WebpackCLI {
     }
 
     if (options.options) {
-      let commandOptions: CommandOption[] = [];
+      let commandOptions: CommandOption[];
 
       if (typeof options.options === "function") {
         if (
@@ -644,6 +644,8 @@ class WebpackCLI {
         } else {
           commandOptions = await options.options(command);
         }
+      } else {
+        commandOptions = options.options;
       }
 
       for (const option of commandOptions) {
