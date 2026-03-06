@@ -1551,6 +1551,7 @@ class WebpackCLI {
         },
       );
     } else if (this.#isCommand(commandName, WebpackCLI.#commands.serve)) {
+      const webpackOptions = await this.getBuiltInOptions();
       const loadDevServerOptions = async () => {
         const devServer = await this.loadWebpackDevServer();
 
@@ -1567,40 +1568,27 @@ class WebpackCLI {
         });
       };
 
+      let devServerOptions = [];
+
+      try {
+        devServerOptions = await loadDevServerOptions();
+      } catch (error) {
+        this.logger.error(
+          `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
+        );
+        process.exit(2);
+      }
+
       await this.makeCommand(
         WebpackCLI.#commands.serve,
-        async () => {
-          let devServerOptions = [];
-
-          try {
-            devServerOptions = await loadDevServerOptions();
-          } catch (error) {
-            this.logger.error(
-              `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
-            );
-            process.exit(2);
-          }
-
-          const webpackOptions = await this.getBuiltInOptions();
-
-          return [...webpackOptions, ...devServerOptions];
-        },
+        async () => [...webpackOptions, ...devServerOptions],
         async (entries: string[], options: CommanderArgs) => {
-          const builtInOptions = await this.getBuiltInOptions();
-          let devServerFlags: CommandOption[] = [];
-
-          try {
-            devServerFlags = await loadDevServerOptions();
-          } catch {
-            // Nothing, to prevent future updates
-          }
-
           const webpackCLIOptions: Partial<Options> = {};
           const devServerCLIOptions: CommanderArgs = {};
 
           for (const optionName in options) {
             const kebabedOption = this.toKebabCase(optionName);
-            const isBuiltInOption = builtInOptions.find(
+            const isBuiltInOption = webpackOptions.find(
               (builtInOption) => builtInOption.name === kebabedOption,
             );
 
@@ -1672,7 +1660,7 @@ class WebpackCLI {
               if (name === "argv") continue;
 
               const kebabName = this.toKebabCase(name);
-              const arg = devServerFlags.find((item) => item.name === kebabName);
+              const arg = devServerOptions.find((item) => item.name === kebabName);
 
               if (arg) {
                 args[name] = arg as unknown as WebpackArgument;
