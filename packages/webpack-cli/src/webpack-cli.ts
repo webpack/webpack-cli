@@ -902,11 +902,12 @@ class WebpackCLI {
     webpackMod: typeof webpack,
     schema: Schema = undefined,
     additionalOptions: CommandOption[] = [],
+    override: Partial<CommandOption> = {},
   ): CommandOption[] {
-    const coreArgs = webpackMod.cli.getArguments(schema);
+    const args = webpackMod.cli.getArguments(schema);
     // Take memory
     const options: CommandOption[] = Array.from({
-      length: additionalOptions.length + Object.keys(coreArgs).length,
+      length: additionalOptions.length + Object.keys(args).length,
     });
 
     let i = 0;
@@ -914,14 +915,15 @@ class WebpackCLI {
     for (; i < additionalOptions.length; i++) options[i] = additionalOptions[i];
 
     // Adding core options
-    for (const name in coreArgs) {
-      const meta = coreArgs[name];
+    for (const name in args) {
+      const meta = args[name];
       options[i++] = {
         ...meta,
         name,
         description: meta.description,
         hidden: !this.#minimumHelpOptions.has(name),
         negativeHidden: !this.#minimumNegativeHelpOptions.has(name),
+        ...override,
       };
     }
 
@@ -1556,7 +1558,10 @@ class WebpackCLI {
         const webpackOptions = this.schemaToOptions(webpack, undefined, this.#CLIOptions);
         const devServer = await this.loadWebpackDevServer();
         // @ts-expect-error different versions of the `Schema` type
-        const devServerOptions = this.schemaToOptions(webpack, devServer.schema);
+        const devServerOptions = this.schemaToOptions(webpack, devServer.schema, undefined, {
+          hidden: false,
+          negativeHidden: false,
+        });
 
         return { webpack, webpackOptions, devServer, devServerOptions };
       },
