@@ -1,6 +1,6 @@
 module.exports = () => ({
   output: {
-    filename: "./dist-single.js",
+    filename: "./single.js",
   },
   name: "single",
   mode: "development",

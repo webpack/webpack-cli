@@ -1,20 +1,20 @@
-module.exports = () => [
-  {
+module.exports = [
+  () => ({
     output: {
-      filename: "./multi-first.js",
+      filename: "./function-each-first.js",
     },
     name: "first",
     entry: "./src/first.js",
     mode: "development",
     stats: "minimal",
-  },
-  {
+  }),
+  async () => ({
     output: {
-      filename: "./multi-second.js",
+      filename: "./function-each-second.js",
     },
     name: "second",
     entry: "./src/second.js",
     mode: "development",
     stats: "minimal",
-  },
+  }),
 ];
