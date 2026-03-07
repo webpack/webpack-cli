@@ -81,14 +81,12 @@ describe("CLI API", () => {
       const command = await cli.makeCommand({
         name: "command",
         options: [
-          [
-            {
-              name: "boolean",
-              type: Boolean,
-              description: "description",
-              negative: true,
-            },
-          ],
+          {
+            name: "boolean",
+            type: Boolean,
+            description: "description",
+            negative: true,
+          },
         ],
         action: (options) => {
           expect(options).toEqual({ boolean: false });
@@ -694,7 +692,7 @@ describe("CLI API", () => {
 
       const command = await cli.makeCommand({
         name: "command",
-        option: [
+        options: [
           {
             name: "number",
             multiple: true,
