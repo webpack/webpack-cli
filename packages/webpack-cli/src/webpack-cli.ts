@@ -5,7 +5,6 @@ import { pathToFileURL } from "node:url";
 import util from "node:util";
 import { type stringifyChunked as stringifyChunkedType } from "@discoveryjs/json-ext";
 import {
-  type Argument,
   type Command as CommanderCommand,
   type CommandOptions as CommanderCommandOptions,
   type Help,
@@ -49,6 +48,9 @@ const DEFAULT_CONFIGURATION_FILES = [
   ".webpack/webpackfile",
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type RecordAny = Record<string, any>;
+
 interface Rechoir {
   prepare: typeof prepare;
 }
@@ -78,12 +80,19 @@ interface Colors extends WebpackColors {
   isColorSupported: boolean;
 }
 
+type Context = RecordAny;
+
 interface Command extends CommanderCommand {
   pkg?: string;
   forHelp?: boolean;
+  context: Context;
 }
 
-interface CommandOptions extends CommanderCommandOptions {
+interface CommandOptions<
+  A = void,
+  O extends CommanderArgs = CommanderArgs,
+  C extends Context = Context,
+> extends CommanderCommandOptions {
   rawName: string;
   name: string;
   alias: string | string[];
@@ -92,6 +101,48 @@ interface CommandOptions extends CommanderCommandOptions {
   dependencies?: string[];
   pkg?: string;
   external?: boolean;
+  preload?: () => Promise<C>;
+  options?:
+    | CommandOption[]
+    | ((command: Command & { context: C }) => CommandOption[])
+    | ((command: Command & { context: C }) => Promise<CommandOption[]>);
+  action: A extends void
+    ? (options: O, cmd: Command & { context: C }) => void | Promise<void>
+    : (args: A, options: O, cmd: Command & { context: C }) => void | Promise<void>;
+}
+
+interface WebpackContext {
+  webpack: typeof webpack;
+}
+
+interface WebpackOptionsContext {
+  webpackOptions: CommandOption[];
+}
+
+interface WebpackDevServerContext {
+  devServer: typeof import("webpack-dev-server");
+}
+
+interface WebpackDevServerOptionsContext {
+  devServerOptions: CommandOption[];
+}
+
+interface KnownWebpackCLICommands {
+  build: CommandOptions<string[], CommanderArgs, WebpackContext & Context>;
+  serve: CommandOptions<
+    string[],
+    CommanderArgs,
+    WebpackContext &
+      WebpackOptionsContext &
+      WebpackDevServerContext &
+      WebpackDevServerOptionsContext &
+      Context
+  >;
+  watch: CommandOptions<string[], CommanderArgs, WebpackContext & Context>;
+  version: CommandOptions<void, CommanderArgs, Context>;
+  help: CommandOptions<void, CommanderArgs, Context>;
+  info: CommandOptions<void, CommanderArgs, Context>;
+  configtest: CommandOptions<string | undefined, CommanderArgs, WebpackContext & Context>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -131,7 +182,6 @@ interface CommandOption {
   defaultValue?: string;
   hidden?: boolean;
   negativeHidden?: boolean;
-  group?: "core";
 }
 
 interface Env {
@@ -141,8 +191,7 @@ interface Env {
   WEBPACK_SERVE?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface Argv extends Record<string, any> {
+interface Argv extends RecordAny {
   env: Env;
 }
 
@@ -167,6 +216,7 @@ declare interface WebpackCallback {
 }
 
 type ProcessedArguments = Parameters<(typeof webpack)["cli"]["processArguments"]>[2];
+type Schema = Parameters<(typeof webpack)["cli"]["getArguments"]>[0];
 
 interface KnownOptions {
   config?: string[];
@@ -185,13 +235,14 @@ interface KnownOptions {
   configName?: string[];
   disableInterpret?: boolean;
   extends?: string[];
+  webpack: typeof webpack;
 }
 
 type Options =
   // Webpack CLI own options
   KnownOptions &
     // Webpack and webpack-dev-server options
-    Record<string, unknown>;
+    RecordAny;
 
 const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
 
@@ -219,10 +270,6 @@ class WebpackCLI {
 
   #isColorSupportChanged: boolean | undefined;
 
-  #builtInOptionsCache: CommandOption[] | undefined;
-
-  webpack!: typeof webpack;
-
   program: Command;
 
   constructor() {
@@ -230,7 +277,7 @@ class WebpackCLI {
     this.logger = this.getLogger();
 
     // Initialize program
-    this.program = program;
+    this.program = program as Command;
     this.program.name("webpack");
     this.program.configureOutput({
       writeErr: (str) => {
@@ -267,16 +314,6 @@ class WebpackCLI {
     return { ...createColors({ useColor: shouldUseColor }), isColorSupported: shouldUseColor };
   }
 
-  isMultipleConfiguration(
-    config: Configuration | MultiConfiguration,
-  ): config is MultiConfiguration {
-    return Array.isArray(config);
-  }
-
-  isMultipleCompiler(compiler: Compiler | MultiCompiler): compiler is MultiCompiler {
-    return (compiler as MultiCompiler).compilers as unknown as boolean;
-  }
-
   isPromise<T>(value: Promise<T>): value is Promise<T> {
     return typeof (value as unknown as Promise<T>).then === "function";
   }
@@ -306,61 +343,6 @@ class WebpackCLI {
       log: (val) => console.log(`[webpack-cli] ${val}`),
       raw: (val) => console.log(val),
     };
-  }
-
-  async isPackageInstalled(packageName: string): Promise<boolean> {
-    if (process.versions.pnp) {
-      return true;
-    }
-
-    try {
-      require.resolve(packageName);
-      return true;
-    } catch {
-      // Nothing
-    }
-
-    // Fallback using fs
-    let dir = __dirname;
-
-    do {
-      try {
-        const stats = await fs.promises.stat(path.join(dir, "node_modules", packageName));
-
-        if (stats.isDirectory()) {
-          return true;
-        }
-      } catch {
-        // Nothing
-      }
-    } while (dir !== (dir = path.dirname(dir)));
-
-    // Extra fallback using fs and hidden API
-    // @ts-expect-error No types, private API
-    const { globalPaths } = await import("node:module");
-
-    // https://github.com/nodejs/node/blob/v18.9.1/lib/internal/modules/cjs/loader.js#L1274
-    const results = await Promise.all(
-      (globalPaths as string[]).map(async (internalPath) => {
-        try {
-          const stats = await fs.promises.stat(path.join(internalPath, packageName));
-
-          if (stats.isDirectory()) {
-            return true;
-          }
-        } catch {
-          // Nothing
-        }
-
-        return false;
-      }),
-    );
-
-    if (results.includes(true)) {
-      return true;
-    }
-
-    return false;
   }
 
   async getDefaultPackageManager(): Promise<PackageManager | undefined> {
@@ -418,6 +400,61 @@ class WebpackCLI {
 
       process.exit(2);
     }
+  }
+
+  async isPackageInstalled(packageName: string): Promise<boolean> {
+    if (process.versions.pnp) {
+      return true;
+    }
+
+    try {
+      require.resolve(packageName);
+      return true;
+    } catch {
+      // Nothing
+    }
+
+    // Fallback using fs
+    let dir = __dirname;
+
+    do {
+      try {
+        const stats = await fs.promises.stat(path.join(dir, "node_modules", packageName));
+
+        if (stats.isDirectory()) {
+          return true;
+        }
+      } catch {
+        // Nothing
+      }
+    } while (dir !== (dir = path.dirname(dir)));
+
+    // Extra fallback using fs and hidden API
+    // @ts-expect-error No types, private API
+    const { globalPaths } = await import("node:module");
+
+    // https://github.com/nodejs/node/blob/v18.9.1/lib/internal/modules/cjs/loader.js#L1274
+    const results = await Promise.all(
+      (globalPaths as string[]).map(async (internalPath) => {
+        try {
+          const stats = await fs.promises.stat(path.join(internalPath, packageName));
+
+          if (stats.isDirectory()) {
+            return true;
+          }
+        } catch {
+          // Nothing
+        }
+
+        return false;
+      }),
+    );
+
+    if (results.includes(true)) {
+      return true;
+    }
+
+    return false;
   }
 
   async installPackage(
@@ -508,46 +545,44 @@ class WebpackCLI {
     process.exit(2);
   }
 
-  async makeCommand(
-    commandOptions: CommandOptions,
-    options: CommandOption[] | (() => CommandOption[]) | (() => Promise<CommandOption[]>),
-    action: Parameters<Command["action"]>[0],
+  async makeCommand<A = void, O extends CommanderArgs = CommanderArgs, C extends Context = Context>(
+    options: CommandOptions<A, O, C>,
   ): Promise<Command | undefined> {
     const alreadyLoaded = this.program.commands.find(
-      (command) => command.name() === commandOptions.rawName,
+      (command) => command.name() === options.rawName,
     );
 
     if (alreadyLoaded) {
       return;
     }
 
-    const command = this.program.command(commandOptions.name, {
-      hidden: commandOptions.hidden,
-      isDefault: commandOptions.isDefault,
-    }) as Command;
+    const command = this.program.command(options.name, {
+      hidden: options.hidden,
+      isDefault: options.isDefault,
+    }) as Command & { context: C };
 
-    if (commandOptions.description) {
-      command.description(commandOptions.description);
+    if (options.description) {
+      command.description(options.description);
     }
 
-    if (commandOptions.usage) {
-      command.usage(commandOptions.usage);
+    if (options.usage) {
+      command.usage(options.usage);
     }
 
-    if (Array.isArray(commandOptions.alias)) {
-      command.aliases(commandOptions.alias);
+    if (Array.isArray(options.alias)) {
+      command.aliases(options.alias);
     } else {
-      command.alias(commandOptions.alias);
+      command.alias(options.alias);
     }
 
-    command.pkg = commandOptions.pkg || "webpack-cli";
+    command.pkg = options.pkg || "webpack-cli";
 
     const { forHelp } = this.program;
 
     let allDependenciesInstalled = true;
 
-    if (commandOptions.dependencies && commandOptions.dependencies.length > 0) {
-      for (const dependency of commandOptions.dependencies) {
+    if (options.dependencies && options.dependencies.length > 0) {
+      for (const dependency of options.dependencies) {
         if (
           // Allow to use `./path/to/webpack.js` outside `node_modules`
           (dependency === WEBPACK_PACKAGE && WEBPACK_PACKAGE_IS_CUSTOM) ||
@@ -566,6 +601,13 @@ class WebpackCLI {
         allDependenciesInstalled = false;
 
         if (forHelp) {
+          command.description(
+            `${
+              options.description
+            } To see all available options you need to install ${options.dependencies
+              .map((dependency) => `'${dependency}'`)
+              .join(", ")}.`,
+          );
           continue;
         }
 
@@ -573,7 +615,7 @@ class WebpackCLI {
           preMessage: () => {
             this.logger.error(
               `For using '${this.colors.green(
-                commandOptions.rawName,
+                options.rawName,
               )}' command you need to install: '${this.colors.green(dependency)}' package.`,
             );
           },
@@ -581,33 +623,44 @@ class WebpackCLI {
       }
     }
 
-    if (options) {
-      if (typeof options === "function") {
-        if (
-          forHelp &&
-          !allDependenciesInstalled &&
-          commandOptions.dependencies &&
-          commandOptions.dependencies.length > 0
-        ) {
-          command.description(
-            `${
-              commandOptions.description
-            } To see all available options you need to install ${commandOptions.dependencies
-              .map((dependency) => `'${dependency}'`)
-              .join(", ")}.`,
-          );
-          options = [];
-        } else {
-          options = await options();
+    command.context = {} as C;
+
+    if (typeof options.preload === "function") {
+      let data;
+
+      try {
+        data = await options.preload();
+      } catch (err) {
+        if (!forHelp) {
+          throw err;
         }
       }
 
-      for (const option of options) {
+      command.context = { ...command.context, ...data };
+    }
+
+    if (options.options) {
+      let commandOptions: CommandOption[];
+
+      if (
+        forHelp &&
+        !allDependenciesInstalled &&
+        options.dependencies &&
+        options.dependencies.length > 0
+      ) {
+        commandOptions = [];
+      } else if (typeof options.options === "function") {
+        commandOptions = await options.options(command);
+      } else {
+        commandOptions = options.options;
+      }
+
+      for (const option of commandOptions) {
         this.makeOption(command, option);
       }
     }
 
-    command.action(action);
+    command.action(options.action);
 
     return command;
   }
@@ -615,7 +668,7 @@ class WebpackCLI {
   makeOption(command: Command, option: CommandOption) {
     type MainOption = Pick<
       CommandOption,
-      "valueName" | "description" | "defaultValue" | "multiple"
+      "valueName" | "description" | "defaultValue" | "multiple" | "configs"
     > & {
       flags: string;
       type: Set<BooleanConstructor | StringConstructor | NumberConstructor>;
@@ -697,6 +750,7 @@ class WebpackCLI {
         type: mainOptionType,
         multiple: option.multiple,
         defaultValue: option.defaultValue,
+        configs: option.configs,
       };
 
       if (needNegativeOption) {
@@ -770,6 +824,10 @@ class WebpackCLI {
 
         optionForCommand.hidden = option.hidden || false;
 
+        if (option.configs) {
+          (optionForCommand as Option & { configs: ArgumentConfig[] }).configs = option.configs;
+        }
+
         command.addOption(optionForCommand);
       } else if (mainOption.type.has(Boolean)) {
         const optionForCommand = new Option(mainOption.flags, mainOption.description).default(
@@ -785,6 +843,10 @@ class WebpackCLI {
           .default(mainOption.defaultValue);
 
         optionForCommand.hidden = option.hidden || false;
+
+        if (option.configs) {
+          (optionForCommand as Option & { configs: ArgumentConfig[] }).configs = option.configs;
+        }
 
         command.addOption(optionForCommand);
       }
@@ -816,6 +878,10 @@ class WebpackCLI {
 
       optionForCommand.hidden = option.hidden || false;
 
+      if (option.configs) {
+        (optionForCommand as Option & { configs: ArgumentConfig[] }).configs = option.configs;
+      }
+
       command.addOption(optionForCommand);
     } else if (mainOption.type.size === 0 && negativeOption) {
       const optionForCommand = new Option(mainOption.flags, mainOption.description);
@@ -838,280 +904,99 @@ class WebpackCLI {
     }
   }
 
-  getBuiltInOptions(): CommandOption[] {
-    if (this.#builtInOptionsCache) {
-      return this.#builtInOptionsCache;
-    }
+  isMultipleConfiguration(
+    config: Configuration | MultiConfiguration,
+  ): config is MultiConfiguration {
+    return Array.isArray(config);
+  }
 
-    const builtInFlags: CommandOption[] = [
-      // For configs
-      {
-        name: "config",
-        alias: "c",
-        configs: [
-          {
-            type: "string",
-          },
-        ],
-        multiple: true,
-        valueName: "pathToConfigFile",
-        description:
-          'Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".',
-        hidden: false,
-      },
-      {
-        name: "config-name",
-        configs: [
-          {
-            type: "string",
-          },
-        ],
-        multiple: true,
-        valueName: "name",
-        description:
-          "Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.",
-        hidden: false,
-      },
-      {
-        name: "merge",
-        alias: "m",
-        configs: [
-          {
-            type: "enum",
-            values: [true],
-          },
-        ],
-        description: "Merge two or more configurations using 'webpack-merge'.",
-        hidden: false,
-      },
-      // Complex configs
-      {
-        name: "env",
-        type: (
-          value: string,
-          previous: Record<string, BasicPrimitive | object> = {},
-        ): Record<string, BasicPrimitive | object> => {
-          // This ensures we're only splitting by the first `=`
-          const [allKeys, val] = value.split(/[=](.+)/, 2);
-          const splitKeys = allKeys.split(/\.(?!$)/);
+  isMultipleCompiler(compiler: Compiler | MultiCompiler): compiler is MultiCompiler {
+    return (compiler as MultiCompiler).compilers as unknown as boolean;
+  }
 
-          let prevRef = previous;
+  isValidationError(error: unknown): error is WebpackError {
+    return (error as Error).name === "ValidationError";
+  }
 
-          for (let [index, someKey] of splitKeys.entries()) {
-            // https://github.com/webpack/webpack-cli/issues/3284
-            if (someKey.endsWith("=")) {
-              // remove '=' from key
-              someKey = someKey.slice(0, -1);
-              // @ts-expect-error we explicitly want to set it to undefined
-              prevRef[someKey] = undefined;
-              continue;
-            }
-
-            if (!prevRef[someKey]) {
-              prevRef[someKey] = {};
-            }
-
-            if (typeof prevRef[someKey] === "string") {
-              prevRef[someKey] = {};
-            }
-
-            if (index === splitKeys.length - 1) {
-              prevRef[someKey] = typeof val === "string" ? val : true;
-            }
-
-            prevRef = prevRef[someKey] as Record<string, string | object | boolean>;
-          }
-
-          return previous;
-        },
-        multiple: true,
-        description:
-          'Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".',
-        hidden: false,
-      },
-      {
-        name: "config-node-env",
-        configs: [
-          {
-            type: "string",
-          },
-        ],
-        multiple: false,
-        description:
-          "Sets process.env.NODE_ENV to the specified value for access within the configuration.",
-        hidden: false,
-      },
-
-      // Adding more plugins
-      {
-        name: "analyze",
-        configs: [
-          {
-            type: "enum",
-            values: [true],
-          },
-        ],
-        multiple: false,
-        description: "It invokes webpack-bundle-analyzer plugin to get bundle information.",
-        hidden: false,
-      },
-      {
-        name: "progress",
-        configs: [
-          {
-            type: "string",
-          },
-          {
-            type: "enum",
-            values: [true],
-          },
-        ],
-        description: "Print compilation progress during build.",
-        hidden: false,
-      },
-
-      // Output options
-      {
-        name: "json",
-        configs: [
-          {
-            type: "string",
-          },
-          {
-            type: "enum",
-            values: [true],
-          },
-        ],
-        alias: "j",
-        valueName: "pathToJsonFile",
-        description: "Prints result as JSON or store it in a file.",
-        hidden: false,
-      },
-      {
-        name: "fail-on-warnings",
-        configs: [
-          {
-            type: "enum",
-            values: [true],
-          },
-        ],
-        description: "Stop webpack-cli process with non-zero exit code on warnings from webpack.",
-        hidden: false,
-      },
-      {
-        name: "disable-interpret",
-        configs: [
-          {
-            type: "enum",
-            values: [true],
-          },
-        ],
-        description: "Disable interpret for loading the config file.",
-        hidden: false,
-      },
-    ];
-
-    // Extract all the flags being exported from core.
-    // A list of cli flags generated by core can be found here https://github.com/webpack/webpack/blob/main/test/__snapshots__/Cli.basictest.js.snap
-    // Fast search, `includes` is slow
-    const minHelpSet = new Set([
-      "mode",
-      "watch",
-      "watch-options-stdin",
-      "stats",
-      "devtool",
-      "entry",
-      "target",
-      "name",
-      "output-path",
-      "extends",
-    ]);
-    const minimumNegativeHelpFlags = new Set(["devtool"]);
-    const coreArgs = this.webpack.cli.getArguments();
+  schemaToOptions(
+    webpackMod: typeof webpack,
+    schema: Schema = undefined,
+    additionalOptions: CommandOption[] = [],
+    override: Partial<CommandOption> = {},
+  ): CommandOption[] {
+    const args = webpackMod.cli.getArguments(schema);
     // Take memory
     const options: CommandOption[] = Array.from({
-      length: builtInFlags.length + Object.keys(coreArgs).length,
+      length: additionalOptions.length + Object.keys(args).length,
     });
 
     let i = 0;
     // Adding own options
-    for (; i < builtInFlags.length; i++) options[i] = builtInFlags[i];
+    for (; i < additionalOptions.length; i++) options[i] = additionalOptions[i];
 
     // Adding core options
-    for (const name in coreArgs) {
-      const meta = coreArgs[name];
+    for (const name in args) {
+      const meta = args[name];
       options[i++] = {
         ...meta,
         name,
         description: meta.description,
-        group: "core",
-        hidden: !minHelpSet.has(name),
-        negativeHidden: !minimumNegativeHelpFlags.has(name),
+        hidden: !this.#minimumHelpOptions.has(name),
+        negativeHidden: !this.#minimumNegativeHelpOptions.has(name),
+        ...override,
       };
     }
-
-    this.#builtInOptionsCache = options;
 
     return options;
   }
 
-  static #commands: Record<
-    "build" | "watch" | "version" | "help" | "serve" | "info" | "configtest",
-    CommandOptions
-  > = {
-    build: {
-      rawName: "build",
-      name: "build [entries...]",
-      alias: ["bundle", "b"],
-      description: "Run webpack (default command, can be omitted).",
-      usage: "[entries...] [options]",
-      dependencies: [WEBPACK_PACKAGE],
-    },
-    watch: {
-      rawName: "watch",
-      name: "watch [entries...]",
-      alias: "w",
-      description: "Run webpack and watch for files changes.",
-      usage: "[entries...] [options]",
-      dependencies: [WEBPACK_PACKAGE],
-    },
-    serve: {
-      rawName: "serve",
-      name: "serve [entries...]",
-      alias: ["server", "s"],
-      description: "Run the webpack dev server and watch for source file changes while serving.",
-      usage: "[entries...] [options]",
-      dependencies: [WEBPACK_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE],
-    },
-    version: {
-      rawName: "version",
-      name: "version",
-      alias: "v",
-      usage: "[options]",
-      description:
-        "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.",
-    },
-    info: {
-      rawName: "info",
-      name: "info",
-      alias: "i",
-      usage: "[options]",
-      description: "Outputs information about your system.",
-    },
-    help: {
-      rawName: "help",
-      name: "help [command] [option]",
-      alias: "h",
-      description: "Display help for commands and options.",
-    },
-    configtest: {
-      rawName: "configtest",
-      name: "configtest [config-path]",
-      alias: "t",
-      description: "Validate a webpack configuration.",
-      dependencies: [WEBPACK_PACKAGE],
-    },
-  };
+  #processArguments(
+    webpackMod: typeof webpack,
+    args: Record<string, WebpackArgument>,
+    configuration: RecordAny,
+    values: ProcessedArguments,
+  ) {
+    const problems = webpackMod.cli.processArguments(args, configuration, values);
+
+    if (problems) {
+      const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(xs: Problem[], key: K) =>
+        xs.reduce(
+          (rv, problem) => {
+            const path = problem[key];
+
+            (rv[path] ||= []).push(problem);
+
+            return rv;
+          },
+          {} as Record<string, Problem[]>,
+        );
+      const problemsByPath = groupBy<"path">(problems, "path");
+
+      for (const path in problemsByPath) {
+        const problems = problemsByPath[path];
+
+        for (const problem of problems) {
+          this.logger.error(
+            `${this.capitalizeFirstLetter(problem.type.replaceAll("-", " "))}${
+              problem.value ? ` '${problem.value}'` : ""
+            } for the '--${problem.argument.replaceAll(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}' option${
+              problem.index ? ` by index '${problem.index}'` : ""
+            }`,
+          );
+
+          if (problem.expected) {
+            if (problem.expected === "true | false") {
+              this.logger.error("Expected: without value or negative option");
+            } else {
+              this.logger.error(`Expected: '${problem.expected}'`);
+            }
+          }
+        }
+      }
+
+      process.exit(2);
+    }
+  }
 
   async #outputHelp(
     options: string[],
@@ -1167,18 +1052,8 @@ class WebpackCLI {
         },
         // Support multiple aliases
         subcommandTerm: (command) => {
-          const humanReadableArgumentName = (argument: Argument) => {
-            const nameOutput = argument.name() + (argument.variadic ? "..." : "");
-
-            return argument.required ? `<${nameOutput}>` : `[${nameOutput}]`;
-          };
-          const args = command.registeredArguments
-            .map((arg) => humanReadableArgumentName(arg))
-            .join(" ");
-
-          return `${command.name()}|${command.aliases().join("|")}${args ? ` ${args}` : ""}${
-            command.options.length > 0 ? " [options]" : ""
-          }`;
+          const usage = command.usage();
+          return `${command.name()}|${command.aliases().join("|")}${usage.length > 0 ? ` ${usage}` : ""}`;
         },
         visibleOptions: function visibleOptions(command) {
           return command.options.filter((option) => {
@@ -1279,12 +1154,12 @@ class WebpackCLI {
 
       if (isGlobalHelp) {
         await Promise.all(
-          Object.values(WebpackCLI.#commands).map((knownCommand) =>
+          Object.values(this.#commands).map((knownCommand) =>
             this.#loadCommandByName(knownCommand.rawName),
           ),
         );
 
-        const buildCommand = this.#findCommandByName(WebpackCLI.#commands.build.rawName);
+        const buildCommand = this.#findCommandByName(this.#commands.build.rawName);
 
         if (buildCommand) {
           this.logger.raw(buildCommand.helpInformation());
@@ -1297,7 +1172,7 @@ class WebpackCLI {
         const command = this.#findCommandByName(name);
 
         if (!command) {
-          const builtInCommandUsed = Object.values(WebpackCLI.#commands).find(
+          const builtInCommandUsed = Object.values(this.#commands).find(
             (command) => command.name.includes(name) || name === command.alias,
           );
           if (typeof builtInCommandUsed !== "undefined") {
@@ -1315,7 +1190,7 @@ class WebpackCLI {
       }
     } else if (isHelpCommandSyntax) {
       let isCommandSpecified = false;
-      let commandName = WebpackCLI.#commands.build.rawName;
+      let commandName = this.#commands.build.rawName;
       let optionName = "";
 
       if (options.length === 1) {
@@ -1379,10 +1254,10 @@ class WebpackCLI {
         this.logger.raw(`${bold("Default value:")} ${JSON.stringify(option.defaultValue)}`);
       }
 
-      const flag = this.getBuiltInOptions().find((flag) => option.long === `--${flag.name}`);
+      const { configs } = option as Option & { configs?: ArgumentConfig[] };
 
-      if (flag?.configs) {
-        const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
+      if (configs) {
+        const possibleValues = configs.reduce((accumulator, currentValue) => {
           if (currentValue.values) {
             return [...accumulator, ...currentValue.values];
           }
@@ -1486,13 +1361,537 @@ class WebpackCLI {
     return info;
   }
 
-  #findCommandByName(name: string) {
-    return this.program.commands.find(
-      (command) => name === command.name() || command.aliases().includes(name),
-    );
+  async #loadPackage<T>(pkg: string, isCustom: boolean): Promise<T> {
+    const importTarget =
+      isCustom && /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(pkg) ? pathToFileURL(pkg).toString() : pkg;
+
+    return (await import(importTarget)).default;
   }
 
-  #isCommand(input: string, commandOptions: CommandOptions) {
+  async loadWebpack(): Promise<typeof webpack> {
+    return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
+  }
+
+  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server")> {
+    return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
+  }
+
+  #minimumHelpOptions = new Set([
+    "mode",
+    "watch",
+    "watch-options-stdin",
+    "stats",
+    "devtool",
+    "entry",
+    "target",
+    "name",
+    "output-path",
+    "extends",
+  ]);
+
+  #minimumNegativeHelpOptions = new Set(["devtool"]);
+
+  #CLIOptions: CommandOption[] = [
+    // For configs
+    {
+      name: "config",
+      alias: "c",
+      configs: [
+        {
+          type: "string",
+        },
+      ],
+      multiple: true,
+      valueName: "pathToConfigFile",
+      description:
+        'Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".',
+      hidden: false,
+    },
+    {
+      name: "config-name",
+      configs: [
+        {
+          type: "string",
+        },
+      ],
+      multiple: true,
+      valueName: "name",
+      description:
+        "Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.",
+      hidden: false,
+    },
+    {
+      name: "merge",
+      alias: "m",
+      configs: [
+        {
+          type: "enum",
+          values: [true],
+        },
+      ],
+      description: "Merge two or more configurations using 'webpack-merge'.",
+      hidden: false,
+    },
+    // Complex configs
+    {
+      name: "env",
+      type: (
+        value: string,
+        previous: Record<string, BasicPrimitive | object> = {},
+      ): Record<string, BasicPrimitive | object> => {
+        // This ensures we're only splitting by the first `=`
+        const [allKeys, val] = value.split(/[=](.+)/, 2);
+        const splitKeys = allKeys.split(/\.(?!$)/);
+
+        let prevRef = previous;
+
+        for (let [index, someKey] of splitKeys.entries()) {
+          // https://github.com/webpack/webpack-cli/issues/3284
+          if (someKey.endsWith("=")) {
+            // remove '=' from key
+            someKey = someKey.slice(0, -1);
+            // @ts-expect-error we explicitly want to set it to undefined
+            prevRef[someKey] = undefined;
+            continue;
+          }
+
+          if (!prevRef[someKey]) {
+            prevRef[someKey] = {};
+          }
+
+          if (typeof prevRef[someKey] === "string") {
+            prevRef[someKey] = {};
+          }
+
+          if (index === splitKeys.length - 1) {
+            prevRef[someKey] = typeof val === "string" ? val : true;
+          }
+
+          prevRef = prevRef[someKey] as Record<string, string | object | boolean>;
+        }
+
+        return previous;
+      },
+      multiple: true,
+      description:
+        'Environment variables passed to the configuration when it is a function, e.g. "myvar" or "myvar=myval".',
+      hidden: false,
+    },
+    {
+      name: "config-node-env",
+      configs: [
+        {
+          type: "string",
+        },
+      ],
+      multiple: false,
+      description:
+        "Sets process.env.NODE_ENV to the specified value for access within the configuration.",
+      hidden: false,
+    },
+
+    // Adding more plugins
+    {
+      name: "analyze",
+      configs: [
+        {
+          type: "enum",
+          values: [true],
+        },
+      ],
+      multiple: false,
+      description: "It invokes webpack-bundle-analyzer plugin to get bundle information.",
+      hidden: false,
+    },
+    {
+      name: "progress",
+      configs: [
+        {
+          type: "string",
+        },
+        {
+          type: "enum",
+          values: [true],
+        },
+      ],
+      description: "Print compilation progress during build.",
+      hidden: false,
+    },
+
+    // Output options
+    {
+      name: "json",
+      configs: [
+        {
+          type: "string",
+        },
+        {
+          type: "enum",
+          values: [true],
+        },
+      ],
+      alias: "j",
+      valueName: "pathToJsonFile",
+      description: "Prints result as JSON or store it in a file.",
+      hidden: false,
+    },
+    {
+      name: "fail-on-warnings",
+      configs: [
+        {
+          type: "enum",
+          values: [true],
+        },
+      ],
+      description: "Stop webpack-cli process with non-zero exit code on warnings from webpack.",
+      hidden: false,
+    },
+    {
+      name: "disable-interpret",
+      configs: [
+        {
+          type: "enum",
+          values: [true],
+        },
+      ],
+      description: "Disable interpret for loading the config file.",
+      hidden: false,
+    },
+  ];
+
+  #commands: KnownWebpackCLICommands = {
+    build: {
+      rawName: "build",
+      name: "build [entries...]",
+      alias: ["bundle", "b"],
+      description: "Run webpack (default command, can be omitted).",
+      usage: "[entries...] [options]",
+      dependencies: [WEBPACK_PACKAGE],
+      preload: async () => {
+        const webpack = await this.loadWebpack();
+        return { webpack };
+      },
+      options: async (cmd) =>
+        this.schemaToOptions(cmd.context.webpack, undefined, this.#CLIOptions),
+      action: async (entries, options, cmd) => {
+        const { webpack } = cmd.context;
+
+        if (entries.length > 0) {
+          options.entry = [...entries, ...(options.entry || [])];
+        }
+
+        options.webpack = webpack;
+
+        await this.runWebpack(options as Options, false);
+      },
+    },
+    watch: {
+      rawName: "watch",
+      name: "watch [entries...]",
+      alias: "w",
+      description: "Run webpack and watch for files changes.",
+      usage: "[entries...] [options]",
+      dependencies: [WEBPACK_PACKAGE],
+      preload: async () => {
+        const webpack = await this.loadWebpack();
+        return { webpack };
+      },
+      options: async (cmd) =>
+        this.schemaToOptions(cmd.context.webpack, undefined, this.#CLIOptions),
+      action: async (entries, options, cmd) => {
+        const { webpack } = cmd.context;
+
+        if (entries.length > 0) {
+          options.entry = [...entries, ...(options.entry || [])];
+        }
+
+        options.webpack = webpack;
+
+        await this.runWebpack(options as Options, true);
+      },
+    },
+    serve: {
+      rawName: "serve",
+      name: "serve [entries...]",
+      alias: ["server", "s"],
+      description: "Run the webpack dev server and watch for source file changes while serving.",
+      usage: "[entries...] [options]",
+      dependencies: [WEBPACK_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE],
+      preload: async () => {
+        const webpack = await this.loadWebpack();
+        const webpackOptions = this.schemaToOptions(webpack, undefined, this.#CLIOptions);
+        const devServer = await this.loadWebpackDevServer();
+        // @ts-expect-error different versions of the `Schema` type
+        const devServerOptions = this.schemaToOptions(webpack, devServer.schema, undefined, {
+          hidden: false,
+          negativeHidden: false,
+        });
+
+        return { webpack, webpackOptions, devServer, devServerOptions };
+      },
+      options: (cmd) => {
+        const { webpackOptions, devServerOptions } = cmd.context;
+
+        return [...webpackOptions, ...devServerOptions];
+      },
+      action: async (entries: string[], options: CommanderArgs, cmd) => {
+        const { webpack, webpackOptions, devServerOptions } = cmd.context;
+        const webpackCLIOptions: Options = { webpack, isWatchingLikeCommand: true };
+        const devServerCLIOptions: CommanderArgs = {};
+
+        for (const optionName in options) {
+          const kebabedOption = this.toKebabCase(optionName);
+          const isBuiltInOption = webpackOptions.find(
+            (builtInOption) => builtInOption.name === kebabedOption,
+          );
+
+          if (isBuiltInOption) {
+            webpackCLIOptions[optionName as keyof Options] = options[optionName];
+          } else {
+            devServerCLIOptions[optionName] = options[optionName];
+          }
+        }
+
+        if (entries.length > 0) {
+          webpackCLIOptions.entry = [...entries, ...(options.entry || [])];
+        }
+
+        webpackCLIOptions.argv = {
+          ...options,
+          env: { WEBPACK_SERVE: true, ...options.env },
+        };
+
+        const compiler = await this.createCompiler(webpackCLIOptions);
+
+        if (!compiler) {
+          return;
+        }
+
+        type DevServerConstructor = typeof import("webpack-dev-server");
+
+        const DevServer: DevServerConstructor = cmd.context.devServer;
+        const servers: InstanceType<DevServerConstructor>[] = [];
+
+        if (this.#needWatchStdin(compiler)) {
+          process.stdin.on("end", () => {
+            Promise.all(servers.map((server) => server.stop())).then(() => {
+              process.exit(0);
+            });
+          });
+          process.stdin.resume();
+        }
+
+        const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
+        const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
+        const compilersForDevServer =
+          possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
+        const usedPorts: number[] = [];
+
+        for (const compilerForDevServer of compilersForDevServer) {
+          if (compilerForDevServer.options.devServer === false) {
+            continue;
+          }
+
+          const devServerConfiguration: DevServerConfiguration =
+            compilerForDevServer.options.devServer || {};
+
+          const args: Record<string, WebpackArgument> = {};
+          const values: ProcessedArguments = {};
+
+          for (const name of Object.keys(options)) {
+            if (name === "argv") continue;
+
+            const kebabName = this.toKebabCase(name);
+            const arg = devServerOptions.find((item) => item.name === kebabName);
+
+            if (arg) {
+              args[name] = arg as unknown as WebpackArgument;
+              // We really don't know what the value is
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              values[name] = options[name as keyof Options] as any;
+            }
+          }
+
+          if (Object.keys(values).length > 0) {
+            this.#processArguments(webpack, args, devServerConfiguration, values);
+          }
+
+          if (devServerConfiguration.port) {
+            const portNumber = Number(devServerConfiguration.port);
+
+            if (usedPorts.includes(portNumber)) {
+              throw new Error(
+                "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
+              );
+            }
+
+            usedPorts.push(portNumber);
+          }
+
+          try {
+            const server = new DevServer(devServerConfiguration, compiler);
+
+            await server.start();
+
+            servers.push(server as unknown as InstanceType<DevServerConstructor>);
+          } catch (error) {
+            if (this.isValidationError(error as Error)) {
+              this.logger.error((error as Error).message);
+            } else {
+              this.logger.error(error);
+            }
+
+            process.exit(2);
+          }
+        }
+
+        if (servers.length === 0) {
+          this.logger.error("No dev server configurations to run");
+          process.exit(2);
+        }
+      },
+    },
+    help: {
+      rawName: "help",
+      name: "help [command] [option]",
+      alias: "h",
+      description: "Display help for commands and options.",
+      action: () => {
+        // Nothing, just stub
+      },
+    },
+    version: {
+      rawName: "version",
+      name: "version",
+      alias: "v",
+      usage: "[options]",
+      description:
+        "Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.",
+      options: [
+        {
+          name: "output",
+          alias: "o",
+          configs: [
+            {
+              type: "string",
+            },
+          ],
+          description: "To get the output in a specified format (accept json or markdown)",
+          hidden: false,
+        },
+      ],
+      action: async (options: { output?: string }) => {
+        let info = await this.#getInfoOutput({
+          ...options,
+          information: {
+            npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
+          },
+        });
+
+        if (typeof options.output === "undefined") {
+          info = info.replace("Packages:", "").replaceAll(/^\s+/gm, "").trim();
+        }
+
+        this.logger.raw(info);
+      },
+    },
+    info: {
+      rawName: "info",
+      name: "info",
+      alias: "i",
+      usage: "[options]",
+      description: "Outputs information about your system.",
+      options: [
+        {
+          name: "output",
+          alias: "o",
+          configs: [
+            {
+              type: "string",
+            },
+          ],
+          description: "To get the output in a specified format (accept json or markdown)",
+          hidden: false,
+        },
+        {
+          name: "additional-package",
+          alias: "a",
+          configs: [{ type: "string" }],
+          multiple: true,
+          description: "Adds additional packages to the output",
+          hidden: false,
+        },
+      ],
+      action: async (options: { output?: string; additionalPackage?: string[] }) => {
+        const info = await this.#getInfoOutput(options);
+
+        this.logger.raw(info);
+      },
+    },
+    configtest: {
+      rawName: "configtest",
+      name: "configtest [config-path]",
+      alias: "t",
+      description: "Validate a webpack configuration.",
+      dependencies: [WEBPACK_PACKAGE],
+      options: [],
+      preload: async () => {
+        const webpack = await this.loadWebpack();
+        return { webpack };
+      },
+      action: async (configPath: string | undefined, _options: CommanderArgs, cmd) => {
+        const { webpack } = cmd.context;
+        const env: Env = {};
+        const argv: Argv = { env };
+        const config = await this.loadConfig(
+          configPath ? { env, argv, webpack, config: [configPath] } : { env, argv, webpack },
+        );
+        const configPaths = new Set<string>();
+
+        if (Array.isArray(config.options)) {
+          for (const options of config.options) {
+            const loadedConfigPaths = config.path.get(options);
+
+            if (loadedConfigPaths) {
+              for (const path of loadedConfigPaths) configPaths.add(path);
+            }
+          }
+        } else if (config.path.get(config.options)) {
+          const loadedConfigPaths = config.path.get(config.options);
+
+          if (loadedConfigPaths) {
+            for (const path of loadedConfigPaths) configPaths.add(path);
+          }
+        }
+
+        if (configPaths.size === 0) {
+          this.logger.error("No configuration found.");
+          process.exit(2);
+        }
+
+        this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
+
+        try {
+          cmd.context.webpack.validate(config.options);
+        } catch (error) {
+          if (this.isValidationError(error as Error)) {
+            this.logger.error((error as Error).message);
+          } else {
+            this.logger.error(error);
+          }
+
+          process.exit(2);
+        }
+
+        this.logger.success("There are no validation errors in the given webpack configuration.");
+      },
+    },
+  };
+
+  #isCommand<A = void, O extends CommanderArgs = CommanderArgs, C extends Context = Context>(
+    input: string,
+    commandOptions: CommandOptions<A, O, C>,
+  ) {
     const longName = commandOptions.rawName;
 
     if (input === longName) {
@@ -1509,376 +1908,30 @@ class WebpackCLI {
     return false;
   }
 
-  async #loadPackage<T>(pkg: string, isCustom: boolean): Promise<T> {
-    const importTarget =
-      isCustom && /^(?:[A-Za-z]:(\\|\/)|\\\\|\/)/.test(pkg) ? pathToFileURL(pkg).toString() : pkg;
-
-    return (await import(importTarget)).default;
-  }
-
-  async loadWebpack(): Promise<typeof webpack> {
-    return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
-  }
-
-  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server")> {
-    return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
+  #findCommandByName(name: string) {
+    return this.program.commands.find(
+      (command) => name === command.name() || command.aliases().includes(name),
+    );
   }
 
   async #loadCommandByName(commandName: string, allowToInstall = false) {
-    const isBuildCommandUsed = this.#isCommand(commandName, WebpackCLI.#commands.build);
-    const isWatchCommandUsed = this.#isCommand(commandName, WebpackCLI.#commands.watch);
-
-    if (isBuildCommandUsed || isWatchCommandUsed) {
-      await this.makeCommand(
-        isBuildCommandUsed ? WebpackCLI.#commands.build : WebpackCLI.#commands.watch,
-        async () => {
-          this.webpack = await this.loadWebpack();
-
-          return this.getBuiltInOptions();
-        },
-        async (entries: string[], options: CommanderArgs) => {
-          if (entries.length > 0) {
-            options.entry = [...entries, ...(options.entry || [])];
-          }
-
-          await this.runWebpack(options, isWatchCommandUsed);
-        },
-      );
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.serve)) {
-      const loadDevServerOptions = async () => {
-        const devServer = await this.loadWebpackDevServer();
-
-        // @ts-expect-error different schema types
-        const options = this.webpack.cli.getArguments(devServer.schema) as unknown as Record<
-          string,
-          CommandOption
-        >;
-
-        return Object.keys(options).map((key) => {
-          options[key].name = key;
-
-          return options[key];
-        });
-      };
-
-      await this.makeCommand(
-        WebpackCLI.#commands.serve,
-        async () => {
-          this.webpack = await this.loadWebpack();
-
-          let devServerOptions = [];
-
-          try {
-            devServerOptions = await loadDevServerOptions();
-          } catch (error) {
-            this.logger.error(
-              `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${error}`,
-            );
-            process.exit(2);
-          }
-
-          const webpackOptions = this.getBuiltInOptions();
-
-          return [...webpackOptions, ...devServerOptions];
-        },
-        async (entries: string[], options: CommanderArgs) => {
-          const builtInOptions = this.getBuiltInOptions();
-          let devServerFlags: CommandOption[] = [];
-
-          try {
-            devServerFlags = await loadDevServerOptions();
-          } catch {
-            // Nothing, to prevent future updates
-          }
-
-          const webpackCLIOptions: Partial<Options> = {};
-          const devServerCLIOptions: CommanderArgs = {};
-
-          for (const optionName in options) {
-            const kebabedOption = this.toKebabCase(optionName);
-            const isBuiltInOption = builtInOptions.find(
-              (builtInOption) => builtInOption.name === kebabedOption,
-            );
-
-            if (isBuiltInOption) {
-              webpackCLIOptions[optionName as keyof Options] = options[optionName];
-            } else {
-              devServerCLIOptions[optionName] = options[optionName];
-            }
-          }
-
-          if (entries.length > 0) {
-            webpackCLIOptions.entry = [...entries, ...(options.entry || [])];
-          }
-
-          webpackCLIOptions.argv = {
-            ...options,
-            env: { WEBPACK_SERVE: true, ...options.env },
-          };
-
-          webpackCLIOptions.isWatchingLikeCommand = true;
-
-          const compiler = await this.createCompiler(webpackCLIOptions);
-
-          if (!compiler) {
-            return;
-          }
-
-          type DevServerConstructor = typeof import("webpack-dev-server");
-          let DevServer: DevServerConstructor;
-
-          try {
-            DevServer = await this.loadWebpackDevServer();
-          } catch (err) {
-            this.logger.error(
-              `You need to install 'webpack-dev-server' for running 'webpack serve'.\n${err}`,
-            );
-            process.exit(2);
-          }
-
-          const servers: InstanceType<DevServerConstructor>[] = [];
-
-          if (this.needWatchStdin(compiler)) {
-            process.stdin.on("end", () => {
-              Promise.all(servers.map((server) => server.stop())).then(() => {
-                process.exit(0);
-              });
-            });
-            process.stdin.resume();
-          }
-
-          const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
-          const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
-          const compilersForDevServer =
-            possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
-          const usedPorts: number[] = [];
-
-          for (const compilerForDevServer of compilersForDevServer) {
-            if (compilerForDevServer.options.devServer === false) {
-              continue;
-            }
-
-            const devServerConfiguration: DevServerConfiguration =
-              compilerForDevServer.options.devServer || {};
-
-            const args: Record<string, WebpackArgument> = {};
-            const values: ProcessedArguments = {};
-
-            for (const name of Object.keys(options)) {
-              if (name === "argv") continue;
-
-              const kebabName = this.toKebabCase(name);
-              const arg = devServerFlags.find((item) => item.name === kebabName);
-
-              if (arg) {
-                args[name] = arg as unknown as WebpackArgument;
-                // We really don't know what the value is
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                values[name] = options[name as keyof Options] as any;
-              }
-            }
-
-            if (Object.keys(values).length > 0) {
-              const problems = this.webpack.cli.processArguments(
-                args,
-                devServerConfiguration,
-                values,
-              );
-
-              if (problems) {
-                const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(
-                  xs: Problem[],
-                  key: K,
-                ) =>
-                  xs.reduce(
-                    (rv, problem) => {
-                      const path = problem[key];
-
-                      (rv[path] ||= []).push(problem);
-
-                      return rv;
-                    },
-                    {} as Record<string, Problem[]>,
-                  );
-
-                const problemsByPath = groupBy<"path">(problems, "path");
-
-                for (const path in problemsByPath) {
-                  const problems = problemsByPath[path];
-
-                  for (const problem of problems) {
-                    this.logger.error(
-                      `${this.capitalizeFirstLetter(problem.type.replace("-", " "))}${
-                        problem.value ? ` '${problem.value}'` : ""
-                      } for the '--${problem.argument.replaceAll(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}' option${
-                        problem.index ? ` by index '${problem.index}'` : ""
-                      }`,
-                    );
-
-                    if (problem.expected) {
-                      this.logger.error(`Expected: '${problem.expected}'`);
-                    }
-                  }
-                }
-
-                process.exit(2);
-              }
-            }
-
-            if (devServerConfiguration.port) {
-              const portNumber = Number(devServerConfiguration.port);
-
-              if (usedPorts.includes(portNumber)) {
-                throw new Error(
-                  "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
-                );
-              }
-
-              usedPorts.push(portNumber);
-            }
-
-            try {
-              const server = new DevServer(devServerConfiguration, compiler);
-
-              await server.start();
-
-              servers.push(server as unknown as InstanceType<DevServerConstructor>);
-            } catch (error) {
-              if (this.isValidationError(error as Error)) {
-                this.logger.error((error as Error).message);
-              } else {
-                this.logger.error(error);
-              }
-
-              process.exit(2);
-            }
-          }
-
-          if (servers.length === 0) {
-            this.logger.error("No dev server configurations to run");
-            process.exit(2);
-          }
-        },
-      );
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.help)) {
-      await this.makeCommand(WebpackCLI.#commands.help, [], () => {
-        // Stub for the `help` command
-      });
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.version)) {
-      await this.makeCommand(
-        WebpackCLI.#commands.version,
-        [
-          {
-            name: "output",
-            alias: "o",
-            configs: [
-              {
-                type: "string",
-              },
-            ],
-            description: "To get the output in a specified format (accept json or markdown)",
-            hidden: false,
-          },
-        ],
-        async (options: { output?: string }) => {
-          let info = await this.#getInfoOutput({
-            ...options,
-            information: {
-              npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
-            },
-          });
-
-          if (typeof options.output === "undefined") {
-            info = info.replace("Packages:", "").replaceAll(/^\s+/gm, "").trim();
-          }
-
-          this.logger.raw(info);
-        },
-      );
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.info)) {
-      await this.makeCommand(
-        WebpackCLI.#commands.info,
-        [
-          {
-            name: "output",
-            alias: "o",
-            configs: [
-              {
-                type: "string",
-              },
-            ],
-            description: "To get the output in a specified format (accept json or markdown)",
-            hidden: false,
-          },
-          {
-            name: "additional-package",
-            alias: "a",
-            configs: [{ type: "string" }],
-            multiple: true,
-            description: "Adds additional packages to the output",
-            hidden: false,
-          },
-        ],
-        async (options: { output?: string; additionalPackage?: string[] }) => {
-          const info = await this.#getInfoOutput(options);
-
-          this.logger.raw(info);
-        },
-      );
-    } else if (this.#isCommand(commandName, WebpackCLI.#commands.configtest)) {
-      await this.makeCommand(
-        WebpackCLI.#commands.configtest,
-        [],
-        async (configPath: string | undefined) => {
-          this.webpack = await this.loadWebpack();
-
-          const env: Env = {};
-          const argv: Argv = { env };
-          const config = await this.loadConfig(
-            configPath ? { config: [configPath] } : { env, argv },
-          );
-          const configPaths = new Set<string>();
-
-          if (Array.isArray(config.options)) {
-            for (const options of config.options) {
-              const loadedConfigPaths = config.path.get(options);
-
-              if (loadedConfigPaths) {
-                for (const path of loadedConfigPaths) configPaths.add(path);
-              }
-            }
-          } else if (config.path.get(config.options)) {
-            const loadedConfigPaths = config.path.get(config.options);
-
-            if (loadedConfigPaths) {
-              for (const path of loadedConfigPaths) configPaths.add(path);
-            }
-          }
-
-          if (configPaths.size === 0) {
-            this.logger.error("No configuration found.");
-            process.exit(2);
-          }
-
-          this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
-
-          try {
-            this.webpack.validate(config.options);
-          } catch (error) {
-            if (this.isValidationError(error as Error)) {
-              this.logger.error((error as Error).message);
-            } else {
-              this.logger.error(error);
-            }
-
-            process.exit(2);
-          }
-
-          this.logger.success("There are no validation errors in the given webpack configuration.");
-        },
-      );
+    if (this.#isCommand(commandName, this.#commands.build)) {
+      await this.makeCommand(this.#commands.build);
+    } else if (this.#isCommand(commandName, this.#commands.serve)) {
+      await this.makeCommand(this.#commands.serve);
+    } else if (this.#isCommand(commandName, this.#commands.watch)) {
+      await this.makeCommand(this.#commands.watch);
+    } else if (this.#isCommand(commandName, this.#commands.help)) {
+      // Stub for the `help` command
+      await this.makeCommand(this.#commands.help);
+    } else if (this.#isCommand(commandName, this.#commands.version)) {
+      await this.makeCommand(this.#commands.version);
+    } else if (this.#isCommand(commandName, this.#commands.info)) {
+      await this.makeCommand(this.#commands.info);
+    } else if (this.#isCommand(commandName, this.#commands.configtest)) {
+      await this.makeCommand(this.#commands.configtest);
     } else {
-      const builtInExternalCommandInfo = Object.values(WebpackCLI.#commands)
+      const builtInExternalCommandInfo = Object.values(this.#commands)
         .filter((item) => item.external)
         .find(
           (externalBuiltInCommandInfo) =>
@@ -1962,7 +2015,7 @@ class WebpackCLI {
 
           const { operands } = this.program.parseOptions(this.program.args);
           const operand =
-            typeof operands[0] !== "undefined" ? operands[0] : WebpackCLI.#commands.build.rawName;
+            typeof operands[0] !== "undefined" ? operands[0] : this.#commands.build.rawName;
 
           if (operand) {
             const command = this.#findCommandByName(operand);
@@ -2026,11 +2079,11 @@ class WebpackCLI {
     this.program.allowExcessArguments(true);
     this.program.action(async (options) => {
       const { operands, unknown } = this.program.parseOptions(this.program.args);
-      const defaultCommandNameToRun = WebpackCLI.#commands.build.rawName;
+      const defaultCommandNameToRun = this.#commands.build.rawName;
       const hasOperand = typeof operands[0] !== "undefined";
       const operand = hasOperand ? operands[0] : defaultCommandNameToRun;
       const isHelpOption = typeof options.help !== "undefined";
-      const isHelpCommandSyntax = this.#isCommand(operand, WebpackCLI.#commands.help);
+      const isHelpCommandSyntax = this.#isCommand(operand, this.#commands.help);
 
       if (isHelpOption || isHelpCommandSyntax) {
         let isVerbose = false;
@@ -2081,7 +2134,7 @@ class WebpackCLI {
 
       let isKnownCommand = false;
 
-      for (const command of Object.values(WebpackCLI.#commands)) {
+      for (const command of Object.values(this.#commands)) {
         if (
           command.rawName === commandNameToRun ||
           (Array.isArray(command.alias)
@@ -2113,7 +2166,7 @@ class WebpackCLI {
         } else {
           this.logger.error(`Unknown command or entry '${operand}'`);
 
-          const found = Object.values(WebpackCLI.#commands).find(
+          const found = Object.values(this.#commands).find(
             (commandOptions) => distance(operand, commandOptions.rawName) < 3,
           );
 
@@ -2142,81 +2195,6 @@ class WebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
-  async #loadConfigurationFile(
-    configPath: string,
-    disableInterpret = false,
-  ): Promise<LoadableWebpackConfiguration | undefined> {
-    let pkg: LoadableWebpackConfiguration | undefined;
-
-    let loadingError;
-
-    try {
-      // eslint-disable-next-line no-eval
-      pkg = (await eval(`import("${pathToFileURL(configPath)}")`)).default;
-    } catch (err) {
-      if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
-        throw err;
-      }
-
-      loadingError = err;
-    }
-
-    // Fallback logic when we can't use `import(...)`
-    if (loadingError) {
-      const { jsVariants, extensions } = await import("interpret");
-      const ext = path.extname(configPath).toLowerCase();
-
-      let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
-
-      if (!interpreted && ext.endsWith(".cts")) {
-        interpreted = jsVariants[".ts"] as string;
-      }
-
-      if (interpreted && !disableInterpret) {
-        const rechoir: Rechoir = (await import("rechoir")).default;
-
-        try {
-          rechoir.prepare(extensions, configPath);
-        } catch (error) {
-          if ((error as RechoirError)?.failures) {
-            this.logger.error(`Unable load '${configPath}'`);
-            this.logger.error((error as RechoirError).message);
-            for (const failure of (error as RechoirError).failures) {
-              this.logger.error(failure.error.message);
-            }
-            this.logger.error("Please install one of them");
-            process.exit(2);
-          }
-          this.logger.error(error);
-          process.exit(2);
-        }
-      }
-
-      try {
-        pkg = require(configPath);
-      } catch (err) {
-        if (this.isValidationError(err)) {
-          throw err;
-        }
-
-        throw new ConfigurationLoadingError([loadingError, err]);
-      }
-    }
-
-    // To handle `babel`/`module.exports.default = {};`
-    if (pkg && typeof pkg === "object" && "default" in pkg) {
-      pkg = pkg.default as LoadableWebpackConfiguration | undefined;
-    }
-
-    if (!pkg) {
-      this.logger.warn(
-        `Default export is missing or nullish at (from ${configPath}). Webpack will run with an empty configuration. Please double-check that this is what you want. If you want to run webpack with an empty config, \`export {}\`/\`module.exports = {};\` to remove this warning.`,
-      );
-    }
-
-    return pkg || {};
-  }
-
   async loadConfig(options: Options) {
     const disableInterpret =
       typeof options.disableInterpret !== "undefined" && options.disableInterpret;
@@ -2228,7 +2206,73 @@ class WebpackCLI {
       let options: LoadableWebpackConfiguration | undefined;
 
       try {
-        options = await this.#loadConfigurationFile(configPath, disableInterpret);
+        let loadingError;
+
+        try {
+          // eslint-disable-next-line no-eval
+          options = (await eval(`import("${pathToFileURL(configPath)}")`)).default;
+        } catch (err) {
+          if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
+            throw err;
+          }
+
+          loadingError = err;
+        }
+
+        // Fallback logic when we can't use `import(...)`
+        if (loadingError) {
+          const { jsVariants, extensions } = await import("interpret");
+          const ext = path.extname(configPath).toLowerCase();
+
+          let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
+
+          if (!interpreted && ext.endsWith(".cts")) {
+            interpreted = jsVariants[".ts"] as string;
+          }
+
+          if (interpreted && !disableInterpret) {
+            const rechoir: Rechoir = (await import("rechoir")).default;
+
+            try {
+              rechoir.prepare(extensions, configPath);
+            } catch (error) {
+              if ((error as RechoirError)?.failures) {
+                this.logger.error(`Unable load '${configPath}'`);
+                this.logger.error((error as RechoirError).message);
+                for (const failure of (error as RechoirError).failures) {
+                  this.logger.error(failure.error.message);
+                }
+                this.logger.error("Please install one of them");
+                process.exit(2);
+              }
+              this.logger.error(error);
+              process.exit(2);
+            }
+          }
+
+          try {
+            options = require(configPath);
+          } catch (err) {
+            if (this.isValidationError(err)) {
+              throw err;
+            }
+
+            throw new ConfigurationLoadingError([loadingError, err]);
+          }
+        }
+
+        // To handle `babel`/`module.exports.default = {};`
+        if (options && typeof options === "object" && "default" in options) {
+          options = options.default as LoadableWebpackConfiguration | undefined;
+        }
+
+        if (!options) {
+          this.logger.warn(
+            `Default export is missing or nullish at (from ${configPath}). Webpack will run with an empty configuration. Please double-check that this is what you want. If you want to run webpack with an empty config, \`export {}\`/\`module.exports = {};\` to remove this warning.`,
+          );
+
+          options = {};
+        }
       } catch (error) {
         if (error instanceof ConfigurationLoadingError) {
           this.logger.error(`Failed to load '${configPath}' config\n${error.message}`);
@@ -2507,13 +2551,6 @@ class WebpackCLI {
       config.path.set(config.options, mergedConfigPaths);
     }
 
-    return config;
-  }
-
-  async buildConfig(
-    config: ConfigurationsAndPaths,
-    options: Options,
-  ): Promise<ConfigurationsAndPaths> {
     if (options.analyze && !(await this.isPackageInstalled("webpack-bundle-analyzer"))) {
       await this.installPackage("webpack-bundle-analyzer", {
         preMessage: () => {
@@ -2537,11 +2574,11 @@ class WebpackCLI {
 
     const { default: CLIPlugin } = (await import("./plugins/cli-plugin.js")).default;
 
+    const builtInOptions = this.schemaToOptions(options.webpack);
     const internalBuildConfig = (configuration: Configuration) => {
       const originalWatchValue = configuration.watch;
 
       // Apply options
-      const builtInOptions = this.getBuiltInOptions();
       const args: Record<string, WebpackArgument> = {};
       const values: ProcessedArguments = {};
 
@@ -2549,7 +2586,7 @@ class WebpackCLI {
         if (name === "argv") continue;
 
         const kebabName = this.toKebabCase(name);
-        const arg = builtInOptions.find((item) => item.group === "core" && item.name === kebabName);
+        const arg = builtInOptions.find((item) => item.name === kebabName);
 
         if (arg) {
           args[name] = arg as unknown as WebpackArgument;
@@ -2560,42 +2597,7 @@ class WebpackCLI {
       }
 
       if (Object.keys(values).length > 0) {
-        const problems = this.webpack.cli.processArguments(args, configuration, values);
-
-        if (problems) {
-          const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(xs: Problem[], key: K) =>
-            xs.reduce(
-              (rv, problem) => {
-                const path = problem[key];
-
-                (rv[path] ||= []).push(problem);
-
-                return rv;
-              },
-              {} as Record<string, Problem[]>,
-            );
-          const problemsByPath = groupBy(problems, "path");
-
-          for (const path in problemsByPath) {
-            const problems = problemsByPath[path];
-
-            for (const problem of problems) {
-              this.logger.error(
-                `${this.capitalizeFirstLetter(problem.type.replaceAll("-", " "))}${
-                  problem.value ? ` '${problem.value}'` : ""
-                } for the '--${problem.argument.replaceAll(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}' option${
-                  problem.index ? ` by index '${problem.index}'` : ""
-                }`,
-              );
-
-              if (problem.expected) {
-                this.logger.error(`Expected: '${problem.expected}'`);
-              }
-            }
-          }
-
-          process.exit(2);
-        }
+        this.#processArguments(options.webpack, args, configuration, values);
       }
 
       // Output warnings
@@ -2717,28 +2719,22 @@ class WebpackCLI {
     return config;
   }
 
-  isValidationError(error: unknown): error is WebpackError {
-    return (
-      error instanceof this.webpack.ValidationError || (error as Error).name === "ValidationError"
-    );
-  }
-
   async createCompiler(
     options: Options,
     callback?: WebpackCallback,
   ): Promise<Compiler | MultiCompiler> {
+    const { webpack } = options;
+
     if (typeof options.configNodeEnv === "string") {
       process.env.NODE_ENV = options.configNodeEnv;
     }
 
-    let config = await this.loadConfig(options);
-    config = await this.buildConfig(config, options);
-
+    const config = await this.loadConfig(options);
     let compiler: Compiler | MultiCompiler;
 
     try {
       compiler = callback
-        ? this.webpack(config.options, (error, stats) => {
+        ? webpack(config.options, (error, stats) => {
             if (error && this.isValidationError(error)) {
               this.logger.error(error.message);
               process.exit(2);
@@ -2746,7 +2742,7 @@ class WebpackCLI {
 
             callback(error as Error | null, stats);
           })!
-        : this.webpack(config.options);
+        : webpack(config.options);
     } catch (error) {
       if (this.isValidationError(error)) {
         this.logger.error(error.message);
@@ -2760,7 +2756,7 @@ class WebpackCLI {
     return compiler;
   }
 
-  needWatchStdin(compiler: Compiler | MultiCompiler): boolean {
+  #needWatchStdin(compiler: Compiler | MultiCompiler): boolean {
     if (this.isMultipleCompiler(compiler)) {
       return Boolean(
         compiler.compilers.some((compiler: Compiler) => compiler.options.watchOptions?.stdin),
@@ -2894,7 +2890,7 @@ class WebpackCLI {
         process.on(signal, listener);
       }
 
-      if (this.needWatchStdin(compiler)) {
+      if (this.#needWatchStdin(compiler)) {
         process.stdin.on("end", () => {
           process.exit(0);
         });

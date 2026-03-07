@@ -19,8 +19,12 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand({ name: "command" }, [], (options) => {
-        expect(options).toEqual({});
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [],
+        action: (options) => {
+          expect(options).toEqual({});
+        },
       });
 
       command.parseAsync([], { from: "user" });
@@ -31,20 +35,18 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean",
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ boolean: true });
         },
-      );
+      });
 
       command.parseAsync(["--boolean"], { from: "user" });
     });
@@ -54,21 +56,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean",
             type: Boolean,
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ boolean: true });
         },
-      );
+      });
 
       command.parseAsync(["--boolean"], { from: "user" });
     });
@@ -78,11 +78,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean",
             type: Boolean,
@@ -90,10 +88,10 @@ describe("CLI API", () => {
             negative: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ boolean: false });
         },
-      );
+      });
 
       command.parseAsync(["--no-boolean"], { from: "user" });
     });
@@ -103,11 +101,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "configs-boolean",
             configs: [
@@ -118,10 +114,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ configsBoolean: false });
         },
-      );
+      });
 
       command.parseAsync(["--no-configs-boolean"], { from: "user" });
     });
@@ -131,11 +127,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "configs-number",
             configs: [
@@ -146,10 +140,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ configsNumber: 42 });
         },
-      );
+      });
 
       command.parseAsync(["--configs-number", "42"], { from: "user" });
     });
@@ -159,11 +153,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "configs-string",
             configs: [
@@ -174,10 +166,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ configsString: "foo" });
         },
-      );
+      });
 
       command.parseAsync(["--configs-string", "foo"], { from: "user" });
     });
@@ -187,11 +179,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "configs-path",
             configs: [
@@ -202,10 +192,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ configsPath: "/root/foo" });
         },
-      );
+      });
 
       command.parseAsync(["--configs-path", "/root/foo"], {
         from: "user",
@@ -217,11 +207,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "configs-regexp",
             configs: [
@@ -232,10 +220,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ configsRegexp: "\\w+" });
         },
-      );
+      });
 
       command.parseAsync(["--configs-regexp", "\\w+"], { from: "user" });
     });
@@ -245,11 +233,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "enum-string",
             configs: [
@@ -261,10 +247,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ enumString: "foo" });
         },
-      );
+      });
 
       command.parseAsync(["--enum-string", "foo"], { from: "user" });
     });
@@ -274,11 +260,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "enum-number",
             configs: [
@@ -290,10 +274,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ enumNumber: 42 });
         },
-      );
+      });
 
       command.parseAsync(["--enum-number", "42"], { from: "user" });
     });
@@ -303,11 +287,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "enum-boolean",
             configs: [
@@ -319,10 +301,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ enumBoolean: false });
         },
-      );
+      });
 
       command.parseAsync(["--no-enum-boolean"], { from: "user" });
     });
@@ -332,11 +314,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean",
             type: Boolean,
@@ -344,10 +324,10 @@ describe("CLI API", () => {
             negative: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ boolean: false });
         },
-      );
+      });
 
       command.parseAsync(["--boolean", "--no-boolean"], { from: "user" });
     });
@@ -357,11 +337,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean",
             type: Boolean,
@@ -369,10 +347,10 @@ describe("CLI API", () => {
             negative: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ boolean: true });
         },
-      );
+      });
 
       command.parseAsync(["--no-boolean", "--boolean"], { from: "user" });
     });
@@ -382,11 +360,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean",
             type: Boolean,
@@ -394,10 +370,10 @@ describe("CLI API", () => {
             defaultValue: false,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ boolean: false });
         },
-      );
+      });
 
       command.parseAsync([], { from: "user" });
     });
@@ -407,21 +383,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "string",
             type: String,
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ string: "bar" });
         },
-      );
+      });
 
       command.parseAsync(["--string", "bar"], { from: "user" });
     });
@@ -431,11 +405,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "string",
             alias: "s",
@@ -443,10 +415,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ string: "foo" });
         },
-      );
+      });
 
       command.parseAsync(["-s", "foo"], { from: "user" });
     });
@@ -456,11 +428,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "string",
             type: String,
@@ -468,10 +438,10 @@ describe("CLI API", () => {
             defaultValue: "default-value",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ string: "default-value" });
         },
-      );
+      });
 
       command.parseAsync([], { from: "user" });
     });
@@ -481,11 +451,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "string",
             type: String,
@@ -493,10 +461,10 @@ describe("CLI API", () => {
             defaultValue: "default-value",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ string: "foo" });
         },
-      );
+      });
 
       command.parseAsync(["--string", "foo"], { from: "user" });
     });
@@ -506,21 +474,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "string",
             type: String,
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ string: "bar" });
         },
-      );
+      });
 
       command.parseAsync(["--string=bar"], { from: "user" });
     });
@@ -530,11 +496,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "string",
             multiple: true,
@@ -542,10 +506,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ string: ["foo", "bar"] });
         },
-      );
+      });
 
       command.parseAsync(["--string", "foo", "bar"], { from: "user" });
     });
@@ -555,11 +519,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "string",
             multiple: true,
@@ -568,10 +530,10 @@ describe("CLI API", () => {
             defaultValue: "string",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ string: "string" });
         },
-      );
+      });
 
       command.parseAsync([], { from: "user" });
     });
@@ -581,11 +543,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "string",
             multiple: true,
@@ -594,10 +554,10 @@ describe("CLI API", () => {
             defaultValue: "string",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ string: ["foo", "bar"] });
         },
-      );
+      });
 
       command.parseAsync(["--string", "foo", "--string", "bar"], {
         from: "user",
@@ -609,11 +569,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "string",
             multiple: true,
@@ -621,10 +579,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ string: ["foo", "bar"] });
         },
-      );
+      });
 
       command.parseAsync(["--string", "foo", "--string", "bar"], {
         from: "user",
@@ -636,21 +594,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "number",
             type: Number,
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ number: 12 });
         },
-      );
+      });
 
       command.parseAsync(["--number", "12"], { from: "user" });
     });
@@ -660,11 +616,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "number",
             type: Number,
@@ -672,10 +626,10 @@ describe("CLI API", () => {
             defaultValue: 20,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ number: 20 });
         },
-      );
+      });
 
       command.parseAsync([], { from: "user" });
     });
@@ -685,11 +639,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "number",
             multiple: true,
@@ -697,10 +649,10 @@ describe("CLI API", () => {
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ number: [1, 2] });
         },
-      );
+      });
 
       command.parseAsync(["--number", "1", "--number", "2"], {
         from: "user",
@@ -712,11 +664,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "number",
             multiple: true,
@@ -725,10 +675,10 @@ describe("CLI API", () => {
             defaultValue: 50,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ number: [1, 2] });
         },
-      );
+      });
 
       command.parseAsync(["--number", "1", "--number", "2"], {
         from: "user",
@@ -740,11 +690,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "number",
             multiple: true,
@@ -753,10 +701,10 @@ describe("CLI API", () => {
             defaultValue: 50,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ number: 50 });
         },
-      );
+      });
 
       command.parseAsync([], { from: "user" });
     });
@@ -766,21 +714,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "custom",
             type: () => "function",
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ custom: "function" });
         },
-      );
+      });
 
       command.parseAsync(["--custom", "value"], { from: "user" });
     });
@@ -790,11 +736,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "custom",
             type: () => "function",
@@ -802,10 +746,10 @@ describe("CLI API", () => {
             defaultValue: "default",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ custom: "default" });
         },
-      );
+      });
 
       command.parseAsync([], { from: "user" });
     });
@@ -815,11 +759,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "custom",
             type: (value, previous = []) => [...previous, value],
@@ -827,10 +769,10 @@ describe("CLI API", () => {
             multiple: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ custom: ["value", "other"] });
         },
-      );
+      });
 
       command.parseAsync(["--custom", "value", "--custom", "other"], {
         from: "user",
@@ -842,11 +784,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "custom",
             type: (value, previous = []) => [...previous, value],
@@ -855,10 +795,10 @@ describe("CLI API", () => {
             defaultValue: 50,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ custom: 50 });
         },
-      );
+      });
 
       command.parseAsync([], { from: "user" });
     });
@@ -870,11 +810,9 @@ describe("CLI API", () => {
 
       let skipDefault = true;
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "custom",
             type: (value, previous = []) => {
@@ -890,10 +828,10 @@ describe("CLI API", () => {
             defaultValue: 50,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ custom: ["foo"] });
         },
-      );
+      });
 
       command.parseAsync(["--custom", "foo"], { from: "user" });
     });
@@ -903,21 +841,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-string",
             type: [Boolean, String],
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndString: true });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-string"], { from: "user" });
     });
@@ -927,21 +863,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-string",
             type: [Boolean, String],
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndString: "value" });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-string", "value"], {
         from: "user",
@@ -953,11 +887,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-string",
             type: [Boolean, String],
@@ -965,10 +897,10 @@ describe("CLI API", () => {
             multiple: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndString: true });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-string"], { from: "user" });
     });
@@ -978,11 +910,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-string",
             type: [Boolean, String],
@@ -990,12 +920,12 @@ describe("CLI API", () => {
             multiple: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndString: ["bar", "baz"],
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-string", "bar", "--boolean-and-string", "baz"], {
         from: "user",
@@ -1007,11 +937,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-string",
             type: [Boolean, String],
@@ -1019,10 +947,10 @@ describe("CLI API", () => {
             negative: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndString: true });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-string"], { from: "user" });
     });
@@ -1032,11 +960,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-string",
             type: [Boolean, String],
@@ -1044,10 +970,10 @@ describe("CLI API", () => {
             negative: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndString: "foo" });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-string", "foo"], {
         from: "user",
@@ -1059,11 +985,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-string",
             type: [Boolean, String],
@@ -1071,10 +995,10 @@ describe("CLI API", () => {
             negative: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndString: false });
         },
-      );
+      });
 
       command.parseAsync(["--no-boolean-and-string"], { from: "user" });
     });
@@ -1084,21 +1008,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number",
             type: [Boolean, Number],
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndNumber: true });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number"], { from: "user" });
     });
@@ -1108,21 +1030,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number",
             type: [Boolean, Number],
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndNumber: 12 });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number", "12"], {
         from: "user",
@@ -1134,21 +1054,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean",
             type: [Boolean],
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ boolean: true });
         },
-      );
+      });
 
       command.parseAsync(["--boolean"], { from: "user" });
     });
@@ -1158,23 +1076,21 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: true,
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string"], {
         from: "user",
@@ -1186,21 +1102,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndNumberAndString: 12 });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string", "12"], {
         from: "user",
@@ -1212,23 +1126,21 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: "bar",
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string", "bar"], {
         from: "user",
@@ -1240,11 +1152,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1252,12 +1162,12 @@ describe("CLI API", () => {
             defaultValue: "default",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: "default",
           });
         },
-      );
+      });
 
       command.parseAsync([], { from: "user" });
     });
@@ -1267,11 +1177,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1279,12 +1187,12 @@ describe("CLI API", () => {
             defaultValue: "default",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: "foo",
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string", "foo"], {
         from: "user",
@@ -1296,11 +1204,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1308,10 +1214,10 @@ describe("CLI API", () => {
             defaultValue: "default",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ booleanAndNumberAndString: 12 });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string", "12"], {
         from: "user",
@@ -1323,11 +1229,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1335,12 +1239,12 @@ describe("CLI API", () => {
             defaultValue: "default",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: true,
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string"], {
         from: "user",
@@ -1352,11 +1256,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1364,12 +1266,12 @@ describe("CLI API", () => {
             multiple: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: true,
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string"], {
         from: "user",
@@ -1381,11 +1283,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1393,12 +1293,12 @@ describe("CLI API", () => {
             multiple: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: ["foo"],
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string", "foo"], {
         from: "user",
@@ -1410,11 +1310,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1422,12 +1320,12 @@ describe("CLI API", () => {
             multiple: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: [12],
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string", "12"], {
         from: "user",
@@ -1439,11 +1337,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1451,12 +1347,12 @@ describe("CLI API", () => {
             multiple: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: ["foo", "bar"],
           });
         },
-      );
+      });
 
       command.parseAsync(
         ["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "bar"],
@@ -1469,11 +1365,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1481,12 +1375,12 @@ describe("CLI API", () => {
             multiple: true,
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: ["foo", 12],
           });
         },
-      );
+      });
 
       command.parseAsync(
         ["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "12"],
@@ -1499,11 +1393,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1512,12 +1404,12 @@ describe("CLI API", () => {
             defaultValue: "default",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: "default",
           });
         },
-      );
+      });
 
       command.parseAsync([], { from: "user" });
     });
@@ -1527,11 +1419,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1540,12 +1430,12 @@ describe("CLI API", () => {
             defaultValue: "default",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: ["foo"],
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string", "foo"], {
         from: "user",
@@ -1557,11 +1447,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1570,12 +1458,12 @@ describe("CLI API", () => {
             defaultValue: "default",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: [12],
           });
         },
-      );
+      });
 
       command.parseAsync(["--boolean-and-number-and-string", "12"], {
         from: "user",
@@ -1587,11 +1475,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean-and-number-and-string",
             type: [Boolean, Number, String],
@@ -1600,12 +1486,12 @@ describe("CLI API", () => {
             defaultValue: "default",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({
             booleanAndNumberAndString: ["foo", 12],
           });
         },
-      );
+      });
 
       command.parseAsync(
         ["--boolean-and-number-and-string", "foo", "--boolean-and-number-and-string", "12"],
@@ -1618,21 +1504,19 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "unknown",
             type: [Boolean, Symbol],
             description: "description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ unknown: "foo" });
         },
-      );
+      });
 
       command.parseAsync(["--unknown", "foo"], { from: "user" });
     });
@@ -1642,11 +1526,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean",
             type: Boolean,
@@ -1654,10 +1536,10 @@ describe("CLI API", () => {
             negatedDescription: "Negated description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ boolean: true });
         },
-      );
+      });
 
       command.parseAsync(["--boolean"], { from: "user" });
 
@@ -1669,11 +1551,9 @@ describe("CLI API", () => {
 
       cli.program.commands = [];
 
-      const command = await cli.makeCommand(
-        {
-          name: "command",
-        },
-        [
+      const command = await cli.makeCommand({
+        name: "command",
+        options: [
           {
             name: "boolean",
             type: Boolean,
@@ -1682,10 +1562,10 @@ describe("CLI API", () => {
             negatedDescription: "Negated description",
           },
         ],
-        (options) => {
+        action: (options) => {
           expect(options).toEqual({ boolean: false });
         },
-      );
+      });
 
       command.parseAsync(["--no-boolean"], { from: "user" });
 
