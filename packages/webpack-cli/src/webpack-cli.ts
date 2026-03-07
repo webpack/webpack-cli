@@ -667,7 +667,7 @@ class WebpackCLI {
   makeOption(command: Command, option: CommandOption) {
     type MainOption = Pick<
       CommandOption,
-      "valueName" | "description" | "defaultValue" | "multiple"
+      "valueName" | "description" | "defaultValue" | "multiple" | "configs"
     > & {
       flags: string;
       type: Set<BooleanConstructor | StringConstructor | NumberConstructor>;
@@ -749,6 +749,7 @@ class WebpackCLI {
         type: mainOptionType,
         multiple: option.multiple,
         defaultValue: option.defaultValue,
+        configs: option.configs,
       };
 
       if (needNegativeOption) {
@@ -822,6 +823,10 @@ class WebpackCLI {
 
         optionForCommand.hidden = option.hidden || false;
 
+        if (option.configs) {
+          (optionForCommand as Option & { configs: ArgumentConfig[] }).configs = option.configs;
+        }
+
         command.addOption(optionForCommand);
       } else if (mainOption.type.has(Boolean)) {
         const optionForCommand = new Option(mainOption.flags, mainOption.description).default(
@@ -837,6 +842,10 @@ class WebpackCLI {
           .default(mainOption.defaultValue);
 
         optionForCommand.hidden = option.hidden || false;
+
+        if (option.configs) {
+          (optionForCommand as Option & { configs: ArgumentConfig[] }).configs = option.configs;
+        }
 
         command.addOption(optionForCommand);
       }
@@ -867,6 +876,10 @@ class WebpackCLI {
         .default(mainOption.defaultValue);
 
       optionForCommand.hidden = option.hidden || false;
+
+      if (option.configs) {
+        (optionForCommand as Option & { configs: ArgumentConfig[] }).configs = option.configs;
+      }
 
       command.addOption(optionForCommand);
     } else if (mainOption.type.size === 0 && negativeOption) {
@@ -1192,14 +1205,10 @@ class WebpackCLI {
         this.logger.raw(`${bold("Default value:")} ${JSON.stringify(option.defaultValue)}`);
       }
 
-      // TODO maybe bug here
-      const webpack = await this.loadWebpack();
-      const flag = this.schemaToOptions(webpack, undefined, this.#CLIOptions).find(
-        (flag) => option.long === `--${flag.name}`,
-      );
+      const { configs } = option as Option & { configs?: ArgumentConfig[] };
 
-      if (flag?.configs) {
-        const possibleValues = flag.configs.reduce((accumulator, currentValue) => {
+      if (configs) {
+        const possibleValues = configs.reduce((accumulator, currentValue) => {
           if (currentValue.values) {
             return [...accumulator, ...currentValue.values];
           }
