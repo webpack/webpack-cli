@@ -1,6 +1,10 @@
 {
-  "include": ["packages/*/src/**/*.ts"],
+  "all": true,
+  "extension": [".ts", ".js"],
+  "include": ["packages/*/src/**/*.ts", "packages/*/lib/**/*.js"],
+  "require": ["source-map-support/register"],
   "reporter": ["text", "html", "lcov"],
-  "source-map": true,
+  "sourceMap": true,
+  "clean": false,
   "exclude-after-remap": false
 }

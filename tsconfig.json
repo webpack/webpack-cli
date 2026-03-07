@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules", "lib", "__tests__"],
+  "exclude": ["node_modules", "lib"],
   "files": [],
   "compilerOptions": {
     "lib": ["es2023"],
@@ -14,6 +14,7 @@
     "allowSyntheticDefaultImports": true,
 
     "rootDir": ".",
+    "sourceMap": true,
     "outDir": "lib",
     "baseUrl": ".",
     "paths": {
