@@ -600,6 +600,13 @@ class WebpackCLI {
         allDependenciesInstalled = false;
 
         if (forHelp) {
+          command.description(
+            `${
+              options.description
+            } To see all available options you need to install ${options.dependencies
+              .map((dependency) => `'${dependency}'`)
+              .join(", ")}.`,
+          );
           continue;
         }
 
@@ -618,7 +625,15 @@ class WebpackCLI {
     command.context = {} as C;
 
     if (typeof options.preload === "function") {
-      const data = await options.preload();
+      let data;
+
+      try {
+        data = await options.preload();
+      } catch (err) {
+        if (!forHelp) {
+          throw err;
+        }
+      }
 
       command.context = { ...command.context, ...data };
     }
@@ -626,24 +641,15 @@ class WebpackCLI {
     if (options.options) {
       let commandOptions: CommandOption[];
 
-      if (typeof options.options === "function") {
-        if (
-          forHelp &&
-          !allDependenciesInstalled &&
-          options.dependencies &&
-          options.dependencies.length > 0
-        ) {
-          command.description(
-            `${
-              options.description
-            } To see all available options you need to install ${options.dependencies
-              .map((dependency) => `'${dependency}'`)
-              .join(", ")}.`,
-          );
-          commandOptions = [];
-        } else {
-          commandOptions = await options.options(command);
-        }
+      if (
+        forHelp &&
+        !allDependenciesInstalled &&
+        options.dependencies &&
+        options.dependencies.length > 0
+      ) {
+        commandOptions = [];
+      } else if (typeof options.options === "function") {
+        commandOptions = await options.options(command);
       } else {
         commandOptions = options.options;
       }
