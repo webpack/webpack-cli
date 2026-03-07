@@ -48,6 +48,9 @@ const DEFAULT_CONFIGURATION_FILES = [
   ".webpack/webpackfile",
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type RecordAny = Record<string, any>;
+
 interface Rechoir {
   prepare: typeof prepare;
 }
@@ -77,8 +80,7 @@ interface Colors extends WebpackColors {
   isColorSupported: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Context = Record<string, any>;
+type Context = RecordAny;
 
 interface Command extends CommanderCommand {
   pkg?: string;
@@ -189,8 +191,7 @@ interface Env {
   WEBPACK_SERVE?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface Argv extends Record<string, any> {
+interface Argv extends RecordAny {
   env: Env;
 }
 
@@ -241,7 +242,7 @@ type Options =
   // Webpack CLI own options
   KnownOptions &
     // Webpack and webpack-dev-server options
-    Record<string, unknown>;
+    RecordAny;
 
 const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
 
@@ -947,6 +948,54 @@ class WebpackCLI {
     }
 
     return options;
+  }
+
+  #processArguments(
+    webpackMod: typeof webpack,
+    args: Record<string, WebpackArgument>,
+    configuration: RecordAny,
+    values: ProcessedArguments,
+  ) {
+    const problems = webpackMod.cli.processArguments(args, configuration, values);
+
+    if (problems) {
+      const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(xs: Problem[], key: K) =>
+        xs.reduce(
+          (rv, problem) => {
+            const path = problem[key];
+
+            (rv[path] ||= []).push(problem);
+
+            return rv;
+          },
+          {} as Record<string, Problem[]>,
+        );
+      const problemsByPath = groupBy<"path">(problems, "path");
+
+      for (const path in problemsByPath) {
+        const problems = problemsByPath[path];
+
+        for (const problem of problems) {
+          this.logger.error(
+            `${this.capitalizeFirstLetter(problem.type.replaceAll("-", " "))}${
+              problem.value ? ` '${problem.value}'` : ""
+            } for the '--${problem.argument.replaceAll(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}' option${
+              problem.index ? ` by index '${problem.index}'` : ""
+            }`,
+          );
+
+          if (problem.expected) {
+            if (problem.expected === "true | false") {
+              this.logger.error("Expected: without value or negative option");
+            } else {
+              this.logger.error(`Expected: '${problem.expected}'`);
+            }
+          }
+        }
+      }
+
+      process.exit(2);
+    }
   }
 
   async #outputHelp(
@@ -1664,46 +1713,7 @@ class WebpackCLI {
           }
 
           if (Object.keys(values).length > 0) {
-            const problems = webpack.cli.processArguments(args, devServerConfiguration, values);
-
-            if (problems) {
-              const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(
-                xs: Problem[],
-                key: K,
-              ) =>
-                xs.reduce(
-                  (rv, problem) => {
-                    const path = problem[key];
-
-                    (rv[path] ||= []).push(problem);
-
-                    return rv;
-                  },
-                  {} as Record<string, Problem[]>,
-                );
-
-              const problemsByPath = groupBy<"path">(problems, "path");
-
-              for (const path in problemsByPath) {
-                const problems = problemsByPath[path];
-
-                for (const problem of problems) {
-                  this.logger.error(
-                    `${this.capitalizeFirstLetter(problem.type.replace("-", " "))}${
-                      problem.value ? ` '${problem.value}'` : ""
-                    } for the '--${problem.argument.replaceAll(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}' option${
-                      problem.index ? ` by index '${problem.index}'` : ""
-                    }`,
-                  );
-
-                  if (problem.expected) {
-                    this.logger.error(`Expected: '${problem.expected}'`);
-                  }
-                }
-              }
-
-              process.exit(2);
-            }
+            this.#processArguments(webpack, args, devServerConfiguration, values);
           }
 
           if (devServerConfiguration.port) {
@@ -2587,42 +2597,7 @@ class WebpackCLI {
       }
 
       if (Object.keys(values).length > 0) {
-        const problems = options.webpack.cli.processArguments(args, configuration, values);
-
-        if (problems) {
-          const groupBy = <K extends keyof Problem & StringsKeys<Problem>>(xs: Problem[], key: K) =>
-            xs.reduce(
-              (rv, problem) => {
-                const path = problem[key];
-
-                (rv[path] ||= []).push(problem);
-
-                return rv;
-              },
-              {} as Record<string, Problem[]>,
-            );
-          const problemsByPath = groupBy(problems, "path");
-
-          for (const path in problemsByPath) {
-            const problems = problemsByPath[path];
-
-            for (const problem of problems) {
-              this.logger.error(
-                `${this.capitalizeFirstLetter(problem.type.replaceAll("-", " "))}${
-                  problem.value ? ` '${problem.value}'` : ""
-                } for the '--${problem.argument.replaceAll(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}' option${
-                  problem.index ? ` by index '${problem.index}'` : ""
-                }`,
-              );
-
-              if (problem.expected) {
-                this.logger.error(`Expected: '${problem.expected}'`);
-              }
-            }
-          }
-
-          process.exit(2);
-        }
+        this.#processArguments(webpack, args, configuration, values);
       }
 
       // Output warnings
