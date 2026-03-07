@@ -2597,7 +2597,7 @@ class WebpackCLI {
       }
 
       if (Object.keys(values).length > 0) {
-        this.#processArguments(webpack, args, configuration, values);
+        this.#processArguments(options.webpack, args, configuration, values);
       }
 
       // Output warnings
