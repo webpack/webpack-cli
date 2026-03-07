@@ -245,6 +245,22 @@ describe("help", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
+  it('should show help information using the "help --cache-type" option when using serve', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["help", "serve", "--cache-type"]);
+
+    expect(exitCode).toBe(0);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
+
+  it('should show help information using the "help --server-type" option when using serve', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["help", "serve", "--server-type"]);
+
+    expect(exitCode).toBe(0);
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
+
   it('should show help information using the "help --output-chunk-format" option', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["help", "--output-chunk-format"]);
 

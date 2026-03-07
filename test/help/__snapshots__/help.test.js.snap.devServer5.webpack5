@@ -2469,6 +2469,20 @@ CLI documentation: https://webpack.js.org/api/cli/.
 Made with ♥ by the webpack team."
 `;
 
+exports[`help should show help information using the "help --cache-type" option when using serve: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --cache-type" option when using serve: stdout 1`] = `
+"Usage: webpack serve --cache-type <value>
+Description: In memory caching. Filesystem caching.
+Possible values: 'memory' | 'filesystem'
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
 exports[`help should show help information using the "help --cache-type" option: stderr 1`] = `""`;
 
 exports[`help should show help information using the "help --cache-type" option: stdout 1`] = `
@@ -2542,6 +2556,20 @@ exports[`help should show help information using the "help --output-chunk-format
 "Usage: webpack --output-chunk-format <value>
 Description: The format of chunks (formats included by default are 'array-push' (web/WebWorker), 'commonjs' (node.js), 'module' (ESM), but others might be added by plugins).
 Possible values: 'array-push' | 'commonjs' | 'module' | false
+
+To see list of all supported commands and options run 'webpack --help=verbose'.
+
+Webpack documentation: https://webpack.js.org/.
+CLI documentation: https://webpack.js.org/api/cli/.
+Made with ♥ by the webpack team."
+`;
+
+exports[`help should show help information using the "help --server-type" option when using serve: stderr 1`] = `""`;
+
+exports[`help should show help information using the "help --server-type" option when using serve: stdout 1`] = `
+"Usage: webpack serve --server-type <value>
+Description: Allows to set server and options (by default 'http').
+Possible values: 'http' | 'https' | 'spdy' | 'http2'
 
 To see list of all supported commands and options run 'webpack --help=verbose'.
 
