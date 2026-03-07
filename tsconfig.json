@@ -19,6 +19,7 @@
     "paths": {
       "@webpack-cli/*": ["packages/*/src"]
     },
+    "isolatedModules": true,
     "composite": true,
     "declaration": true
   },

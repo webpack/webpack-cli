@@ -1,6 +1,6 @@
 {
-  "include": ["packages/**"],
-  "reporter": ["html", "json", "cobertura"],
+  "include": ["packages/*/src/**/*.ts"],
+  "reporter": ["text", "html", "lcov"],
   "source-map": true,
   "exclude-after-remap": false
 }
