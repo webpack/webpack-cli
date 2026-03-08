@@ -6,5 +6,6 @@
   "reporter": ["text", "html", "lcov"],
   "sourceMap": true,
   "clean": false,
+  "hook-require": false,
   "exclude-after-remap": false
 }
