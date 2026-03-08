@@ -1,11 +1,16 @@
 module.exports = {
   testEnvironment: "node",
-  collectCoverage: true,
-  coverageDirectory: ".nyc_output",
+  collectCoverageFrom: ["packages/*/src/**/*.ts"],
+  coverageDirectory: ".jest_coverage",
   coverageReporters: ["json"],
-  coveragePathIgnorePatterns: ["<rootDir>/test/"],
   transform: {
-    "^.+\\.(ts)?$": "ts-jest",
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        useESM: true,
+        tsconfig: "tsconfig.json",
+      },
+    ],
   },
   testRegex: ["/test/.*\\.(test.js|test.cjs|test.mjs|test.ts|test.cts|test.mts)$"],
   moduleFileExtensions: ["ts", "cts", "mts", "js", "cjs", "mjs", "json"],

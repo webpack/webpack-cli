@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules", "lib", "__tests__"],
+  "exclude": ["node_modules", "lib"],
   "files": [],
   "compilerOptions": {
     "lib": ["es2023"],
@@ -19,6 +19,7 @@
     "paths": {
       "@webpack-cli/*": ["packages/*/src"]
     },
+    "isolatedModules": true,
     "composite": true,
     "declaration": true
   },

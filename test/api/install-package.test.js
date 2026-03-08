@@ -1,7 +1,7 @@
 "use strict";
 
 const { stripVTControlCharacters } = require("node:util");
-const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
+const CLI = require("../../packages/webpack-cli/src/webpack-cli").default;
 
 const readlineQuestionMock = jest.fn();
 
