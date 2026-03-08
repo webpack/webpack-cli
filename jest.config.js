@@ -1,7 +1,7 @@
 module.exports = {
   testEnvironment: "node",
   collectCoverageFrom: ["packages/*/src/**/*.ts"],
-  coverageDirectory: ".nyc_output",
+  coverageDirectory: ".jest_coverage",
   coverageReporters: ["json"],
   transform: {
     "^.+\\.tsx?$": [

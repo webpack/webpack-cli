@@ -3,8 +3,9 @@
   "extension": [".ts", ".js"],
   "include": ["packages/*/src/**/*.ts", "packages/*/lib/**/*.js"],
   "require": ["source-map-support/register"],
-  "reporter": ["text", "html", "lcov"],
+  "reporter": ["lcov"],
   "sourceMap": true,
   "clean": false,
+  "temp-dir": "./.nyc_output",
   "exclude-after-remap": false
 }

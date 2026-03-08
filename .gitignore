@@ -33,6 +33,7 @@ yarn-error.log
 # Jest Coverage
 coverage
 .nyc_output
+.jest_coverage
 
 # Yeoman file
 .yo-rc.json
