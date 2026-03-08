@@ -129,20 +129,17 @@ export default class CLIPlugin {
       this.logger.log(`Changed time is ${date} (timestamp is ${changeTime})`);
     });
 
-    ((compiler as Partial<Compiler>).webpack ? compiler.hooks.afterDone : compiler.hooks.done).tap(
-      pluginName,
-      () => {
-        const name = getCompilationName();
+    compiler.hooks.afterDone.tap(pluginName, () => {
+      const name = getCompilationName();
 
-        logCompilation(`Compiler${name} finished`);
+      logCompilation(`Compiler${name} finished`);
 
-        process.nextTick(() => {
-          if (compiler.watchMode) {
-            this.logger.log(`Compiler${name} is watching files for updates...`);
-          }
-        });
-      },
-    );
+      process.nextTick(() => {
+        if (compiler.watchMode) {
+          this.logger.log(`Compiler${name} is watching files for updates...`);
+        }
+      });
+    });
   }
 
   apply(compiler: Compiler) {
