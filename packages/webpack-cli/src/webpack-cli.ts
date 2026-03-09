@@ -1127,7 +1127,7 @@ class WebpackCLI {
       value === "--version" ||
       value === "-h" ||
       value === "--help";
-    const { bold } = this.colors;
+    const { bold, dim, underline, yellow } = this.colors;
     const outputIncorrectUsageOfHelp = () => {
       this.logger.error("Incorrect use of help");
       this.logger.error(
@@ -1222,7 +1222,7 @@ class WebpackCLI {
             return `${" ".repeat(leftPadding)}${value}`;
           };
           const formatTabularItem = (term: string, description: string, padWidth: number) => {
-            const formattedTerm = isGlobalHelp ? bold(term) : term;
+            const formattedTerm = bold(term);
 
             if (description) {
               return helper.formatItem(formattedTerm, padWidth, description, helper);
@@ -1243,15 +1243,15 @@ class WebpackCLI {
 
           let output: string[] = [];
 
-          const bannerTitleText = `${this.colors.dim("○")}               ${this.colors.underline(
-            this.colors.dim("webpack"),
-          )}               ${this.colors.dim("○")}`;
+          const bannerTitleText = `${dim("○")}               ${underline(
+            dim("webpack"),
+          )}               ${dim("○")}`;
           const bannerTitle = centerBannerLine(bannerTitleText);
-          const bannerLinkText = this.colors.underline(this.colors.dim("https://webpack.js.org"));
+          const bannerLinkText = underline(dim("https://webpack.js.org"));
           const bannerLink = centerBannerLine(bannerLinkText);
           const descriptionLine = centerBannerLine("The build tool for modern web applications");
-          const usageLine = `${this.colors.bold("Usage:")} ${this.colors.yellow("`webpack [...options] | <command>`")}`;
-          const exampleLine = `${this.colors.bold("Example:")} ${this.colors.yellow("`webpack help --flag | <command>`")}`;
+          const usageLine = `${bold("Usage:")} ${yellow("`webpack [...options] | <command>`")}`;
+          const exampleLine = `${bold("Example:")} ${yellow("`webpack help --flag | <command>`")}`;
 
           output = [
             "",
