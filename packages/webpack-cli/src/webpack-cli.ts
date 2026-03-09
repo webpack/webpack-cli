@@ -1269,35 +1269,20 @@ class WebpackCLI {
             "`webpack help --flag | <command>`",
           )}`;
 
-          output = isGlobalHelp
-            ? [
-                "",
-                bannerTitle,
-                "",
-                bannerLink,
-                "",
-                descriptionLine,
-                "",
-                centerBannerLine(usageLine),
-                "",
-                centerBannerLine(exampleLine),
-                "",
-                "",
-              ]
-            : [
-                "",
-                bannerTitle,
-                "",
-                bannerLink,
-                "",
-                descriptionLine,
-                "",
-                centerBannerLine(usageLine),
-                "",
-                centerBannerLine(exampleLine),
-                "",
-                "",
-              ];
+          output = [
+            "",
+            bannerTitle,
+            "",
+            bannerLink,
+            "",
+            descriptionLine,
+            "",
+            centerBannerLine(usageLine),
+            "",
+            centerBannerLine(exampleLine),
+            "",
+            "",
+          ];
 
           // Description
           const commandDescription = isGlobalHelp ? "" : helper.commandDescription(command);
