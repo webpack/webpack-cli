@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { type Readable as ReadableType } from "node:stream";
 import { pathToFileURL } from "node:url";
-import util from "node:util";
+import util, { stripVTControlCharacters } from "node:util";
 import { type stringifyChunked as stringifyChunkedType } from "@discoveryjs/json-ext";
 import {
   type Argument,
@@ -100,6 +100,7 @@ type CommanderArgs = Record<string, any>;
 type BasicPrimitive = string | boolean | number;
 
 type EnumValue = string | number | boolean | EnumValueObject | EnumValue[] | null;
+type HelpColorFormatter = "dim" | "underline" | "yellow" | "bold";
 
 interface EnumValueObject {
   [key: string]: EnumValue;
@@ -1211,23 +1212,95 @@ class WebpackCLI {
           );
         },
         formatHelp: (command, helper: Help) => {
-          const formatItem = (term: string, description: string) => {
+          const renderText = (formatterName: HelpColorFormatter, value: string): string => {
+            const formatter = this.colors[formatterName];
+            return typeof formatter === "function" ? formatter(value) : value;
+          };
+
+          const underlineText = (value: string) =>
+            this.colors.isColorSupported ? `\u001B[4m${value}\u001B[24m` : value;
+
+          const columns = process.stdout.columns || 80;
+          const centerBannerLine = (value: string) => {
+            const visibleWidth = stripVTControlCharacters(value).length;
+            const leftPadding = Math.max(0, Math.floor((columns - visibleWidth) / 2));
+
+            return `${" ".repeat(leftPadding)}${value}`;
+          };
+          const formatTabularItem = (term: string, description: string, padWidth: number) => {
+            const formattedTerm = isGlobalHelp ? bold(term) : term;
+
             if (description) {
-              return helper.formatItem(term, helper.padWidth(command, helper), description, helper);
+              return helper.formatItem(formattedTerm, padWidth, description, helper);
             }
 
-            return term;
+            return formattedTerm;
           };
 
           const formatList = (textArray: string[]) => textArray.join("\n").replaceAll(/^/gm, "");
+          const formatSection = (title: string, textArray: string[]) => {
+            if (textArray.length === 0) {
+              return "";
+            }
 
-          // Usage
-          let output = [`${bold("Usage:")} ${helper.commandUsage(command)}`, ""];
+            return ["", underlineText(bold(title)), "", formatList(textArray), "", ""];
+          };
+          const padWidth = helper.padWidth(command, helper);
+
+          let output: string[] = [];
+
+          const bannerTitleText = `${renderText("dim", "○")}               ${renderText(
+            "underline",
+            renderText("dim", "webpack"),
+          )}               ${renderText("dim", "○")}`;
+          const bannerTitle = centerBannerLine(bannerTitleText);
+          const bannerLinkText = renderText(
+            "underline",
+            renderText("dim", "https://webpack.js.org"),
+          );
+          const bannerLink = centerBannerLine(bannerLinkText);
+          const descriptionLine = centerBannerLine("The build tool for modern web applications");
+          const usageLine = `${renderText("bold", "Usage:")} ${renderText(
+            "yellow",
+            "`webpack [...options] | <command>`",
+          )}`;
+          const exampleLine = `${renderText("bold", "Example:")} ${renderText(
+            "yellow",
+            "`webpack help --flag | <command>`",
+          )}`;
+
+          output = isGlobalHelp
+            ? [
+                "",
+                bannerTitle,
+                "",
+                bannerLink,
+                "",
+                descriptionLine,
+                "",
+                centerBannerLine(usageLine),
+                "",
+                centerBannerLine(exampleLine),
+                "",
+                "",
+              ]
+            : [
+                "",
+                bannerTitle,
+                "",
+                bannerLink,
+                "",
+                descriptionLine,
+                "",
+                centerBannerLine(usageLine),
+                "",
+                centerBannerLine(exampleLine),
+                "",
+                "",
+              ];
 
           // Description
-          const commandDescription = isGlobalHelp
-            ? "The build tool for modern web applications."
-            : helper.commandDescription(command);
+          const commandDescription = isGlobalHelp ? "" : helper.commandDescription(command);
 
           if (commandDescription.length > 0) {
             output = [...output, commandDescription, ""];
@@ -1236,41 +1309,53 @@ class WebpackCLI {
           // Arguments
           const argumentList = helper
             .visibleArguments(command)
-            .map((argument) => formatItem(argument.name(), argument.description));
+            .map((argument) => formatTabularItem(argument.name(), argument.description, padWidth));
 
           if (argumentList.length > 0) {
-            output = [...output, bold("Arguments:"), formatList(argumentList), ""];
+            output = [...output, ...formatSection("Arguments:", argumentList)];
           }
 
           // Options
           const optionList = helper
             .visibleOptions(command)
             .map((option) =>
-              formatItem(helper.optionTerm(option), helper.optionDescription(option)),
+              formatTabularItem(
+                helper.optionTerm(option),
+                helper.optionDescription(option),
+                padWidth,
+              ),
             );
 
           if (optionList.length > 0) {
-            output = [...output, bold("Options:"), formatList(optionList), ""];
+            output = [...output, ...formatSection("Options:", optionList)];
           }
 
           // Global options
           const globalOptionList = program.options.map((option) =>
-            formatItem(helper.optionTerm(option), helper.optionDescription(option)),
+            formatTabularItem(
+              helper.optionTerm(option),
+              helper.optionDescription(option),
+              padWidth,
+            ),
           );
 
           if (globalOptionList.length > 0) {
-            output = [...output, bold("Global options:"), formatList(globalOptionList), ""];
+            output = [...output, ...formatSection("Global options:", globalOptionList)];
           }
 
           // Commands
           const commandList = helper
             .visibleCommands(isGlobalHelp ? program : command)
             .map((command) =>
-              formatItem(helper.subcommandTerm(command), helper.subcommandDescription(command)),
+              formatTabularItem(
+                helper.subcommandTerm(command),
+                helper.subcommandDescription(command),
+                padWidth,
+              ),
             );
 
           if (commandList.length > 0) {
-            output = [...output, bold("Commands:"), formatList(commandList), ""];
+            output = [...output, ...formatSection("Commands:", commandList)];
           }
 
           return output.join("\n");

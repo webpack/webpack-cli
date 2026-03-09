@@ -5,8 +5,19 @@ const { pathToFileURL } = require("node:url");
 const { normalizeStderr, normalizeStdout, run } = require("../utils/test-utils");
 
 const nodeOptions = [`--import=${pathToFileURL(path.resolve(__dirname, "./set-blocking.js"))}`];
+const columns80NodeOptions = [
+  ...nodeOptions,
+  `--import=${pathToFileURL(path.resolve(__dirname, "./set-columns-80.js"))}`,
+];
+const columns120NodeOptions = [
+  ...nodeOptions,
+  `--import=${pathToFileURL(path.resolve(__dirname, "./set-columns-120.js"))}`,
+];
 
 describe("help", () => {
+  const getLeadingSpaces = (value) => value.length - value.trimStart().length;
+  const stripAnsi = (value) => value.replaceAll(/\u001B\[[0-9;]*m/g, "");
+
   it('should show help information using the "--help" option', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--help"]);
 
@@ -317,6 +328,37 @@ describe("help", () => {
     expect(exitCode).toBe(0);
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+  });
+
+  it("should center the branded help banner based on terminal width", async () => {
+    const { stdout: stdout80 } = await run(__dirname, ["--help"], {
+      nodeOptions: columns80NodeOptions,
+    });
+    const { stdout: stdout120 } = await run(__dirname, ["--help"], {
+      nodeOptions: columns120NodeOptions,
+    });
+
+    const titleLine80 = stdout80.split("\n").find((line) => line.includes("webpack"));
+    const titleLine120 = stdout120.split("\n").find((line) => line.includes("webpack"));
+    const linkLine80 = stdout80.split("\n").find((line) => line.includes("https://webpack.js.org"));
+    const linkLine120 = stdout120
+      .split("\n")
+      .find((line) => line.includes("https://webpack.js.org"));
+
+    expect(getLeadingSpaces(titleLine80)).toBe(
+      Math.max(0, Math.floor((80 - stripAnsi(titleLine80.trimStart()).length) / 2)),
+    );
+    expect(getLeadingSpaces(linkLine80)).toBe(
+      Math.max(0, Math.floor((80 - stripAnsi(linkLine80.trimStart()).length) / 2)),
+    );
+    expect(getLeadingSpaces(titleLine120)).toBe(
+      Math.max(0, Math.floor((120 - stripAnsi(titleLine120.trimStart()).length) / 2)),
+    );
+    expect(getLeadingSpaces(linkLine120)).toBe(
+      Math.max(0, Math.floor((120 - stripAnsi(linkLine120.trimStart()).length) / 2)),
+    );
+    expect(getLeadingSpaces(titleLine120)).toBeGreaterThan(getLeadingSpaces(titleLine80));
+    expect(getLeadingSpaces(linkLine120)).toBeGreaterThan(getLeadingSpaces(linkLine80));
   });
 
   it('should log error for invalid command using the "--help" option', async () => {
