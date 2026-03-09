@@ -100,7 +100,6 @@ type CommanderArgs = Record<string, any>;
 type BasicPrimitive = string | boolean | number;
 
 type EnumValue = string | number | boolean | EnumValueObject | EnumValue[] | null;
-type HelpColorFormatter = "dim" | "underline" | "yellow" | "bold";
 
 interface EnumValueObject {
   [key: string]: EnumValue;
@@ -1212,11 +1211,6 @@ class WebpackCLI {
           );
         },
         formatHelp: (command, helper: Help) => {
-          const renderText = (formatterName: HelpColorFormatter, value: string): string => {
-            const formatter = this.colors[formatterName];
-            return typeof formatter === "function" ? formatter(value) : value;
-          };
-
           const underlineText = (value: string) =>
             this.colors.isColorSupported ? `\u001B[4m${value}\u001B[24m` : value;
 
@@ -1249,25 +1243,15 @@ class WebpackCLI {
 
           let output: string[] = [];
 
-          const bannerTitleText = `${renderText("dim", "○")}               ${renderText(
-            "underline",
-            renderText("dim", "webpack"),
-          )}               ${renderText("dim", "○")}`;
+          const bannerTitleText = `${this.colors.dim("○")}               ${this.colors.underline(
+            this.colors.dim("webpack"),
+          )}               ${this.colors.dim("○")}`;
           const bannerTitle = centerBannerLine(bannerTitleText);
-          const bannerLinkText = renderText(
-            "underline",
-            renderText("dim", "https://webpack.js.org"),
-          );
+          const bannerLinkText = this.colors.underline(this.colors.dim("https://webpack.js.org"));
           const bannerLink = centerBannerLine(bannerLinkText);
           const descriptionLine = centerBannerLine("The build tool for modern web applications");
-          const usageLine = `${renderText("bold", "Usage:")} ${renderText(
-            "yellow",
-            "`webpack [...options] | <command>`",
-          )}`;
-          const exampleLine = `${renderText("bold", "Example:")} ${renderText(
-            "yellow",
-            "`webpack help --flag | <command>`",
-          )}`;
+          const usageLine = `${this.colors.bold("Usage:")} ${this.colors.yellow("`webpack [...options] | <command>`")}`;
+          const exampleLine = `${this.colors.bold("Example:")} ${this.colors.yellow("`webpack help --flag | <command>`")}`;
 
           output = [
             "",
