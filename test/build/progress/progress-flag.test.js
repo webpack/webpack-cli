@@ -45,7 +45,7 @@ describe("progress flag", () => {
     expect(stdout.match(/ProgressPlugin/g)).toHaveLength(1);
   });
 
-  it("should work with multiple compilers #2", async () => {
+  it("should work with multiple compilers", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "-c",
       "webpack.multiple.config.js",
@@ -59,7 +59,7 @@ describe("progress flag", () => {
     expect(stdout).toContain("main.js");
   });
 
-  it("should work with multiple compilers #2", async () => {
+  it("should work with multiple compilers and reuse existing if present", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "-c",
       "webpack.progress.multiple.config.js",
