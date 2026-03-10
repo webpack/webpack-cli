@@ -190,6 +190,7 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
           ),
           fileType: file.fileType,
           data: answers,
+          force: answers.force,
         });
       }
 

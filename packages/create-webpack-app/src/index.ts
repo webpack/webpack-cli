@@ -105,6 +105,7 @@ program
           {
             ...initValues[templateOption],
             projectPath,
+            force,
           },
           {
             onSuccess: onSuccessHandler,

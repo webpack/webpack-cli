@@ -210,6 +210,7 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
           ),
           fileType: file.fileType,
           data: answers,
+          force: answers.force,
         });
       }
 

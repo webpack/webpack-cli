@@ -197,6 +197,7 @@ export default async function svelteInitGenerator(plop: NodePlopAPI) {
           ),
           fileType: file.fileType,
           data: answers,
+          force: answers.force,
         });
       }
 
