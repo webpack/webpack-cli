@@ -76,29 +76,26 @@ describe("typescript commonjs configuration", () => {
     expect(existsSync(resolve(__dirname, "dist/foo.bundle.js"))).toBeTruthy();
   });
 
-  it("should support typescript commonjs configuration (using `interpret`)", async () => {
-    const [major] = process.versions.node.split(".").map(Number);
-    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
-      nodeOptions: [
-        // Disable typescript strip types for tests
-        ...(major >= 22
-          ? [
-              "--no-experimental-strip-types",
-              // avoid problems with nyc
-              "--import=ts-node/register",
-            ]
-          : [
-              // avoid problems with nyc
-              "--import=ts-node/register",
-            ]),
-      ],
-    });
+  const [major] = process.versions.node.split(".").map(Number);
 
-    console.log(stdout);
+  // Due to problems with nyc
+  (major >= 22 ? it : it.skip)(
+    "should support typescript commonjs configuration (using `interpret`)",
+    async () => {
+      const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
+        nodeOptions: [
+          "--no-experimental-strip-types",
+          // avoid problems with nyc
+          "--import=ts-node/register",
+        ],
+      });
 
-    expect(stderr).toBeFalsy();
-    expect(stdout).toBeTruthy();
-    expect(exitCode).toBe(0);
-    expect(existsSync(resolve(__dirname, "dist/foo.bundle.js"))).toBeTruthy();
-  });
+      /* eslint-disable jest/no-standalone-expect */
+      expect(stderr).toBeFalsy();
+      expect(stdout).toBeTruthy();
+      expect(exitCode).toBe(0);
+      expect(existsSync(resolve(__dirname, "dist/foo.bundle.js"))).toBeTruthy();
+      /* eslint-enable jest/no-standalone-expect */
+    },
+  );
 });
