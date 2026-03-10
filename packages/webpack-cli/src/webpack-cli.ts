@@ -322,11 +322,7 @@ class WebpackCLI {
     return typeof value === "function";
   }
 
-  capitalizeFirstLetter(str: string | unknown): string {
-    if (typeof str !== "string") {
-      return "";
-    }
-
+  capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 

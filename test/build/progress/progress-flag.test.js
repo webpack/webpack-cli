@@ -44,4 +44,32 @@ describe("progress flag", () => {
     expect(stdout).toContain("main.js");
     expect(stdout.match(/ProgressPlugin/g)).toHaveLength(1);
   });
+
+  it("should work with multiple compilers #2", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      "webpack.multiple.config.js",
+      "--progress",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).not.toMatch(/\[webpack\.Progress] \d+ ms setup/);
+    expect(stderr).toContain("[webpack.Progress] 100% [first]");
+    expect(stderr).toContain("[webpack.Progress] 100% [second]");
+    expect(stdout).toContain("main.js");
+  });
+
+  it("should work with multiple compilers #2", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      "webpack.progress.multiple.config.js",
+      "--progress",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).not.toMatch(/\[webpack\.Progress] \d+ ms setup/);
+    expect(stderr).toContain("[webpack.Progress] 100% [second]");
+    expect(stdout).toContain("main.js");
+    expect(stdout.match(/ProgressPlugin/g)).toHaveLength(1);
+  });
 });
