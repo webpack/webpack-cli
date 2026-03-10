@@ -1155,10 +1155,9 @@ class WebpackCLI {
             parentCmdNames = `${parentCmd.name()} ${parentCmdNames}`;
           }
 
+          // remove
           if (isGlobalHelp) {
-            return `${parentCmdNames}${command.usage()}\n${bold(
-              "Alternative usage to run commands:",
-            )} ${parentCmdNames}[command] [options]`;
+            return `${parentCmdNames}${command.usage()}`;
           }
 
           return `${parentCmdNames}${command.name()}|${command
@@ -1211,16 +1210,6 @@ class WebpackCLI {
           );
         },
         formatHelp: (command, helper: Help) => {
-          const underlineText = (value: string) =>
-            this.colors.isColorSupported ? `\u001B[4m${value}\u001B[24m` : value;
-
-          const columns = process.stdout.columns || 80;
-          const centerBannerLine = (value: string) => {
-            const visibleWidth = stripVTControlCharacters(value).length;
-            const leftPadding = Math.max(0, Math.floor((columns - visibleWidth) / 2));
-
-            return `${" ".repeat(leftPadding)}${value}`;
-          };
           const formatTabularItem = (term: string, description: string, padWidth: number) => {
             const formattedTerm = bold(term);
 
@@ -1231,16 +1220,24 @@ class WebpackCLI {
             return formattedTerm;
           };
 
+          const columns = process.stdout.columns || 80;
+          const centerBannerLine = (value: string) => {
+            const visibleWidth = stripVTControlCharacters(value).length;
+            const leftPadding = Math.max(0, Math.floor((columns - visibleWidth) / 2));
+
+            return `${" ".repeat(leftPadding)}${value}`;
+          };
+
           const formatList = (textArray: string[]) => textArray.join("\n").replaceAll(/^/gm, "");
           const formatSection = (title: string, textArray: string[]) => {
             if (textArray.length === 0) {
               return "";
             }
 
-            return ["", underlineText(bold(title)), "", formatList(textArray), "", ""];
+            return ["", underline(bold(title)), "", formatList(textArray), "", ""];
           };
-          const padWidth = helper.padWidth(command, helper);
 
+          const padWidth = helper.padWidth(command, helper);
           let output: string[] = [];
 
           const bannerTitleText = `${dim("○")}               ${underline(
@@ -1250,23 +1247,25 @@ class WebpackCLI {
           const bannerLinkText = underline(dim("https://webpack.js.org"));
           const bannerLink = centerBannerLine(bannerLinkText);
           const descriptionLine = centerBannerLine("The build tool for modern web applications");
-          const usageLine = `${bold("Usage:")} ${yellow("`webpack [...options] | <command>`")}`;
-          const exampleLine = `${bold("Example:")} ${yellow("`webpack help --flag | <command>`")}`;
+          const usageLine = `${bold("Usage:")} ${yellow(helper.commandUsage(command))}`;
+          const exampleLine = `${bold("Example:")} ${yellow("webpack help --flag | <command>")}`;
 
-          output = [
-            "",
-            bannerTitle,
-            "",
-            bannerLink,
-            "",
-            descriptionLine,
-            "",
-            centerBannerLine(usageLine),
-            "",
-            centerBannerLine(exampleLine),
-            "",
-            "",
-          ];
+          output = isGlobalHelp
+            ? [
+                "",
+                bannerTitle,
+                "",
+                bannerLink,
+                "",
+                descriptionLine,
+                "",
+                centerBannerLine(usageLine),
+                "",
+                centerBannerLine(exampleLine),
+                "",
+                "",
+              ]
+            : ["", bannerTitle, "", bannerLink, "", centerBannerLine(usageLine), "", ""];
 
           // Description
           const commandDescription = isGlobalHelp ? "" : helper.commandDescription(command);
