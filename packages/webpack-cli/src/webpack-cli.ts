@@ -1155,7 +1155,6 @@ class WebpackCLI {
             parentCmdNames = `${parentCmd.name()} ${parentCmdNames}`;
           }
 
-          // remove
           if (isGlobalHelp) {
             return `${parentCmdNames}${command.usage()}`;
           }
