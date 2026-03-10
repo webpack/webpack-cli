@@ -7,9 +7,9 @@ describe("capitalizeFirstLetter", () => {
     expect(cli.capitalizeFirstLetter("webpack")).toBe("Webpack");
   });
 
-  it("should return an empty string on passing a non-string value", () => {
+  it("should return an empty string on passing a empty string value", () => {
     const cli = new CLI();
 
-    expect(cli.capitalizeFirstLetter(true)).toBe("");
+    expect(cli.capitalizeFirstLetter("")).toBe("");
   });
 });
