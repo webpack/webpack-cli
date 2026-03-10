@@ -1,4 +1,4 @@
-import * as path from "node:path";
+const path = require("node:path");
 
 /* eslint-disable no-useless-concat */
 
@@ -8,9 +8,9 @@ const config = {
   mode,
   entry: "./main.ts",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve("dist"),
     filename: "foo.bundle.js",
   },
 };
 
-export = config;
+module.exports = config;
