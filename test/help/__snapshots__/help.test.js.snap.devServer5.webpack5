@@ -95,9 +95,9 @@ exports[`help should show help information and respect the "--color" flag using 
 
                    The build tool for modern web applications
 
-                   Usage: \`webpack [...options] | <command>\`
+                     Usage: webpack [entries...] [options]
 
-                   Example: \`webpack help --flag | <command>\`
+                    Example: webpack help --flag | <command>
 
 
 
@@ -164,9 +164,9 @@ exports[`help should show help information and respect the "--no-color" flag usi
 
                    The build tool for modern web applications
 
-                   Usage: \`webpack [...options] | <command>\`
+                     Usage: webpack [entries...] [options]
 
-                   Example: \`webpack help --flag | <command>\`
+                    Example: webpack help --flag | <command>
 
 
 
@@ -233,9 +233,9 @@ exports[`help should show help information and taking precedence when "--help" a
 
                    The build tool for modern web applications
 
-                   Usage: \`webpack [...options] | <command>\`
+                     Usage: webpack [entries...] [options]
 
-                   Example: \`webpack help --flag | <command>\`
+                    Example: webpack help --flag | <command>
 
 
 
@@ -300,11 +300,7 @@ exports[`help should show help information for 'b' command using command syntax:
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack build|bundle|b [entries...] [options]
 
 
 Run webpack (default command, can be omitted).
@@ -359,11 +355,7 @@ exports[`help should show help information for 'b' command using the "--help ver
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack build|bundle|b [entries...] [options]
 
 
 Run webpack (default command, can be omitted).
@@ -420,11 +412,7 @@ exports[`help should show help information for 'b' command using the "--help" op
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack build|bundle|b [entries...] [options]
 
 
 Run webpack (default command, can be omitted).
@@ -479,11 +467,7 @@ exports[`help should show help information for 'build' and respect the "--color"
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack build|bundle|b [entries...] [options]
 
 
 Run webpack (default command, can be omitted).
@@ -538,11 +522,7 @@ exports[`help should show help information for 'build' and respect the "--no-col
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack build|bundle|b [entries...] [options]
 
 
 Run webpack (default command, can be omitted).
@@ -597,11 +577,7 @@ exports[`help should show help information for 'build' command using command syn
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack build|bundle|b [entries...] [options]
 
 
 Run webpack (default command, can be omitted).
@@ -656,11 +632,7 @@ exports[`help should show help information for 'build' command using the "--help
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack build|bundle|b [entries...] [options]
 
 
 Run webpack (default command, can be omitted).
@@ -717,11 +689,7 @@ exports[`help should show help information for 'build' command using the "--help
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack build|bundle|b [entries...] [options]
 
 
 Run webpack (default command, can be omitted).
@@ -776,11 +744,7 @@ exports[`help should show help information for 'configtest' and respect the "--c
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                   Usage: webpack configtest|t [config-path]
 
 
 Validate a webpack configuration.
@@ -809,11 +773,7 @@ exports[`help should show help information for 'configtest' and respect the "--n
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                   Usage: webpack configtest|t [config-path]
 
 
 Validate a webpack configuration.
@@ -842,11 +802,7 @@ exports[`help should show help information for 'configtest' command using comman
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                   Usage: webpack configtest|t [config-path]
 
 
 Validate a webpack configuration.
@@ -875,11 +831,7 @@ exports[`help should show help information for 'configtest' command using the "-
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                   Usage: webpack configtest|t [config-path]
 
 
 Validate a webpack configuration.
@@ -908,11 +860,7 @@ exports[`help should show help information for 'configtest' command using the "-
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                   Usage: webpack configtest|t [config-path]
 
 
 Validate a webpack configuration.
@@ -941,11 +889,7 @@ exports[`help should show help information for 'i' command using command syntax:
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                        Usage: webpack info|i [options]
 
 
 Outputs information about your system.
@@ -981,11 +925,7 @@ exports[`help should show help information for 'i' command using the "--help ver
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                        Usage: webpack info|i [options]
 
 
 Outputs information about your system.
@@ -1021,11 +961,7 @@ exports[`help should show help information for 'i' command using the "--help" op
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                        Usage: webpack info|i [options]
 
 
 Outputs information about your system.
@@ -1061,11 +997,7 @@ exports[`help should show help information for 'info' and respect the "--color" 
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                        Usage: webpack info|i [options]
 
 
 Outputs information about your system.
@@ -1101,11 +1033,7 @@ exports[`help should show help information for 'info' and respect the "--no-colo
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                        Usage: webpack info|i [options]
 
 
 Outputs information about your system.
@@ -1141,11 +1069,7 @@ exports[`help should show help information for 'info' command using command synt
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                        Usage: webpack info|i [options]
 
 
 Outputs information about your system.
@@ -1181,11 +1105,7 @@ exports[`help should show help information for 'info' command using the "--help 
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                        Usage: webpack info|i [options]
 
 
 Outputs information about your system.
@@ -1221,11 +1141,7 @@ exports[`help should show help information for 'info' command using the "--help"
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                        Usage: webpack info|i [options]
 
 
 Outputs information about your system.
@@ -1261,11 +1177,7 @@ exports[`help should show help information for 's' command using command syntax:
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -1393,11 +1305,7 @@ exports[`help should show help information for 's' command using the "--help ver
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -1450,11 +1358,7 @@ exports[`help should show help information for 's' command using the "--help" op
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -1582,11 +1486,7 @@ exports[`help should show help information for 'serve' and respect the "--color"
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -1714,11 +1614,7 @@ exports[`help should show help information for 'serve' and respect the "--no-col
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -1846,11 +1742,7 @@ exports[`help should show help information for 'serve' command using command syn
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -1978,11 +1870,7 @@ exports[`help should show help information for 'serve' command using the "--help
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -2035,11 +1923,7 @@ exports[`help should show help information for 'serve' command using the "--help
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -2167,11 +2051,7 @@ exports[`help should show help information for 'server' command using command sy
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -2299,11 +2179,7 @@ exports[`help should show help information for 'server' command using the "--hel
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -2356,11 +2232,7 @@ exports[`help should show help information for 'server' command using the "--hel
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+              Usage: webpack serve|server|s [entries...] [options]
 
 
 Run the webpack dev server and watch for source file changes while serving.
@@ -2488,11 +2360,7 @@ exports[`help should show help information for 't' command using command syntax:
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                   Usage: webpack configtest|t [config-path]
 
 
 Validate a webpack configuration.
@@ -2521,11 +2389,7 @@ exports[`help should show help information for 't' command using the "--help ver
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                   Usage: webpack configtest|t [config-path]
 
 
 Validate a webpack configuration.
@@ -2554,11 +2418,7 @@ exports[`help should show help information for 't' command using the "--help" op
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                   Usage: webpack configtest|t [config-path]
 
 
 Validate a webpack configuration.
@@ -2587,11 +2447,7 @@ exports[`help should show help information for 'w' command using command syntax:
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                 Usage: webpack watch|w [entries...] [options]
 
 
 Run webpack and watch for files changes.
@@ -2645,11 +2501,7 @@ exports[`help should show help information for 'w' command using the "--help ver
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                 Usage: webpack watch|w [entries...] [options]
 
 
 Run webpack and watch for files changes.
@@ -2706,11 +2558,7 @@ exports[`help should show help information for 'w' command using the "--help" op
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                 Usage: webpack watch|w [entries...] [options]
 
 
 Run webpack and watch for files changes.
@@ -2764,11 +2612,7 @@ exports[`help should show help information for 'watch' and respect the "--color"
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                 Usage: webpack watch|w [entries...] [options]
 
 
 Run webpack and watch for files changes.
@@ -2822,11 +2666,7 @@ exports[`help should show help information for 'watch' and respect the "--no-col
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                 Usage: webpack watch|w [entries...] [options]
 
 
 Run webpack and watch for files changes.
@@ -2880,11 +2720,7 @@ exports[`help should show help information for 'watch' command using command syn
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                 Usage: webpack watch|w [entries...] [options]
 
 
 Run webpack and watch for files changes.
@@ -2938,11 +2774,7 @@ exports[`help should show help information for 'watch' command using the "--help
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                 Usage: webpack watch|w [entries...] [options]
 
 
 Run webpack and watch for files changes.
@@ -2999,11 +2831,7 @@ exports[`help should show help information for 'watch' command using the "--help
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                 Usage: webpack watch|w [entries...] [options]
 
 
 Run webpack and watch for files changes.
@@ -3059,9 +2887,9 @@ exports[`help should show help information using command syntax: stdout 1`] = `
 
                    The build tool for modern web applications
 
-                   Usage: \`webpack [...options] | <command>\`
+                     Usage: webpack [entries...] [options]
 
-                   Example: \`webpack help --flag | <command>\`
+                    Example: webpack help --flag | <command>
 
 
 
@@ -3158,9 +2986,9 @@ exports[`help should show help information using the "--help" option: stdout 1`]
 
                    The build tool for modern web applications
 
-                   Usage: \`webpack [...options] | <command>\`
+                     Usage: webpack [entries...] [options]
 
-                   Example: \`webpack help --flag | <command>\`
+                    Example: webpack help --flag | <command>
 
 
 
@@ -3403,11 +3231,7 @@ exports[`help should show help information with options for sub commands: stdout
 
                              https://webpack.js.org
 
-                   The build tool for modern web applications
-
-                   Usage: \`webpack [...options] | <command>\`
-
-                   Example: \`webpack help --flag | <command>\`
+                        Usage: webpack info|i [options]
 
 
 Outputs information about your system.
@@ -3447,9 +3271,9 @@ exports[`help should show the same information using the "--help" option and com
 
                    The build tool for modern web applications
 
-                   Usage: \`webpack [...options] | <command>\`
+                     Usage: webpack [entries...] [options]
 
-                   Example: \`webpack help --flag | <command>\`
+                    Example: webpack help --flag | <command>
 
 
 
@@ -3514,9 +3338,9 @@ exports[`help should show the same information using the "--help" option and com
 
                    The build tool for modern web applications
 
-                   Usage: \`webpack [...options] | <command>\`
+                     Usage: webpack [entries...] [options]
 
-                   Example: \`webpack help --flag | <command>\`
+                    Example: webpack help --flag | <command>
 
 
 
