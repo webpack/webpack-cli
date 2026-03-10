@@ -1294,6 +1294,21 @@ class WebpackCLI {
     process.exit(0);
   }
 
+  async #renderVersion(options: { output?: string } = {}): Promise<string> {
+    let info = await this.#getInfoOutput({
+      ...options,
+      information: {
+        npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
+      },
+    });
+
+    if (typeof options.output === "undefined") {
+      info = info.replace("Packages:", "").replaceAll(/^\s+/gm, "").trim();
+    }
+
+    return info;
+  }
+
   async #getInfoOutput(options: {
     output?: string;
     additionalPackage?: string[];
@@ -1781,16 +1796,7 @@ class WebpackCLI {
         },
       ],
       action: async (options: { output?: string }) => {
-        let info = await this.#getInfoOutput({
-          ...options,
-          information: {
-            npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
-          },
-        });
-
-        if (typeof options.output === "undefined") {
-          info = info.replace("Packages:", "").replaceAll(/^\s+/gm, "").trim();
-        }
+        const info = await this.#renderVersion(options);
 
         this.logger.raw(info);
       },
@@ -2115,16 +2121,8 @@ class WebpackCLI {
       const isVersionOption = typeof options.version !== "undefined";
 
       if (isVersionOption) {
-        const info = (
-          await this.#getInfoOutput({
-            information: {
-              npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
-            },
-          })
-        )
-          .replace("Packages:", "")
-          .replaceAll(/^\s+/gm, "")
-          .trim();
+        const info = await this.#renderVersion();
+
         this.logger.raw(info);
         process.exit(0);
       }
