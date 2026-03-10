@@ -81,9 +81,20 @@ describe("typescript commonjs configuration", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
       nodeOptions: [
         // Disable typescript strip types for tests
-        ...(major >= 22 ? ["--no-experimental-strip-types"] : []),
+        ...(major >= 22
+          ? [
+              "--no-experimental-strip-types",
+              // avoid problems with nyc
+              "--import=ts-node/register",
+            ]
+          : [
+              // avoid problems with nyc
+              "--import=ts-node/register",
+            ]),
       ],
     });
+
+    console.log(stdout);
 
     expect(stderr).toBeFalsy();
     expect(stdout).toBeTruthy();
