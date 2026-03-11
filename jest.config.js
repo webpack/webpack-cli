@@ -1,5 +1,7 @@
 module.exports = {
   testEnvironment: "node",
+  coverageProvider: "v8",
+  collectCoverage: false,
   collectCoverageFrom: ["packages/*/src/**/*.ts"],
   coverageDirectory: ".jest_coverage",
   coverageReporters: ["json"],
@@ -18,8 +20,4 @@ module.exports = {
   setupFilesAfterEnv: ["<rootDir>/scripts/setup-test.js"],
   globalTeardown: "<rootDir>/scripts/cleanup-test.js",
   globalSetup: "<rootDir>/scripts/global-setup.js",
-  modulePathIgnorePatterns: [
-    "<rootDir>/test/loader/test-loader",
-    "<rootDir>/test/plugin/test-plugin",
-  ],
 };

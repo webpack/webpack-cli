@@ -219,6 +219,7 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
           ),
           fileType: file.fileType,
           data: answers,
+          force: answers.force,
         });
       }
 
