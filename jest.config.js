@@ -1,5 +1,7 @@
 module.exports = {
   testEnvironment: "node",
+  coverageProvider: "v8",
+  collectCoverage: false,
   collectCoverageFrom: ["packages/*/src/**/*.ts"],
   coverageDirectory: ".jest_coverage",
   coverageReporters: ["json"],

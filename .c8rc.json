@@ -1,0 +1,8 @@
+{
+  "all": true,
+  "clean": false,
+  "root": ".",
+  "include": ["packages/*/src/**/*.ts"],
+  "reporter": ["text", "html", "lcov"],
+  "exclude-after-remap": true
+}
