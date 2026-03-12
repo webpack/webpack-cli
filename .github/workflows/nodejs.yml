@@ -95,7 +95,6 @@ jobs:
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          verbose: true
 
   smoketests:
     name: Smoketests
@@ -131,3 +130,8 @@ jobs:
 
       - name: Run smoketests
         run: npm run test:smoketests
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
