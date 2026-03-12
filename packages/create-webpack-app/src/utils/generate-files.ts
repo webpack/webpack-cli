@@ -162,10 +162,6 @@ async function checkAndPrepareContent(config: AddConfig, isTemplate: boolean): P
       return { status: "identical", content: existingFileContent };
     }
 
-    // Prompt for conflict resolution
-    const tempFilePath = path.join("/tmp", `temp_${path.basename(config.path)}`);
-    await fs.writeFile(tempFilePath, newContent || "");
-
     let userChoice: Result | undefined;
     while (!userChoice) {
       const action = await expand({
@@ -194,7 +190,14 @@ async function checkAndPrepareContent(config: AddConfig, isTemplate: boolean): P
         case "overwrite_all":
           globalConfig.overwriteAll = true;
           return { status: "overwrite", content: newContent };
-        case "diff":
+        case "diff": {
+          // Prompt for conflict resolution
+          const tempFilePath = path.join(
+            config.data!.projectPath as string,
+            `.temp_${path.basename(config.path)}`,
+          );
+          await fs.writeFile(tempFilePath, newContent || "");
+
           if (!isTemplate && Buffer.isBuffer(existingFileContent)) {
             const existingStats = await fs.stat(config.path);
             const newStats = await fs.stat(tempFilePath);
@@ -219,16 +222,17 @@ async function checkAndPrepareContent(config: AddConfig, isTemplate: boolean): P
           } else {
             await getDiff(config.path, tempFilePath);
           }
+
+          await fs.unlink(tempFilePath).catch(() => {
+            logger.warn(`Failed to delete temporary file: ${tempFilePath}`);
+          });
           break;
+        }
         case "abort":
           logger.error("Aborting process...");
           process.exit(1);
       }
     }
-
-    await fs.unlink(tempFilePath).catch(() => {
-      logger.warn(`Failed to delete temporary file: ${tempFilePath}`);
-    });
 
     return userChoice;
   }
