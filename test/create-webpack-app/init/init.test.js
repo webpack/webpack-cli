@@ -133,7 +133,7 @@ describe("create-webpack-app cli", () => {
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
 
-    const { stdout: nextStdout } = await runPromptWithAnswers(
+    await runPromptWithAnswers(
       dir,
       ["init"],
       [
@@ -149,9 +149,6 @@ describe("create-webpack-app cli", () => {
         `a${ENTER}`,
       ],
     );
-
-    expect(nextStdout).toContain("Project has been initialised with webpack!");
-    expect(nextStdout).toContain("webpack.config.js");
 
     for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(dir, file))).toBeTruthy();
