@@ -31,7 +31,7 @@
     "!**/*__tests__"
   ],
   "dependencies": {
-    "@discoveryjs/json-ext": "^0.6.1",
+    "@discoveryjs/json-ext": "^1.0.0",
     "commander": "^14.0.3",
     "cross-spawn": "^7.0.6",
     "envinfo": "^7.14.0",
