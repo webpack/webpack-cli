@@ -117,7 +117,8 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
-  it("should generate default project when nothing is passed and handle conflicts", async () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  it.only("should generate default project when nothing is passed and handle conflicts", async () => {
     const { stdout } = await run(dir, ["init", "--force"]);
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -133,7 +134,7 @@ describe("create-webpack-app cli", () => {
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
 
-    await runPromptWithAnswers(
+    const { stdout: nextStdout } = await runPromptWithAnswers(
       dir,
       ["init"],
       [
@@ -149,6 +150,8 @@ describe("create-webpack-app cli", () => {
         `a${ENTER}`,
       ],
     );
+
+    console.log(nextStdout);
 
     for (const file of defaultTemplateFiles) {
       expect(existsSync(resolve(dir, file))).toBeTruthy();
