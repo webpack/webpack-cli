@@ -30,6 +30,7 @@ const runTest = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage =
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
     reject: false,
+    gracefulCancel: true,
     cancelSignal: abortController.signal,
   });
 
@@ -92,6 +93,7 @@ const runTestStdout = async ({ packageName, cliArgs, logMessage, isSubPackage, c
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: cwd || __dirname,
     reject: false,
+    gracefulCancel: true,
     cancelSignal: abortController.signal,
   });
 
@@ -150,6 +152,7 @@ const runTestStdoutWithInput = async ({
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
     reject: false,
+    gracefulCancel: true,
     cancelSignal: abortController.signal,
   });
 
@@ -207,6 +210,7 @@ const runTestWithHelp = async (pkg, cliArgs = [], logMessage = undefined, isSubP
   const proc = execa(CLI_ENTRY_PATH, cliArgs, {
     cwd: __dirname,
     reject: false,
+    gracefulCancel: true,
     cancelSignal: abortController.signal,
   });
 

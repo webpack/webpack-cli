@@ -23,7 +23,7 @@
     "./packages/*"
   ],
   "scripts": {
-    "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/*/lib/!(*.tpl)\" \"**/.yo-rc.json\"",
+    "clean": "del-cli \"*.tsbuildinfo\" \"packages/**/*.tsbuildinfo\" \"packages/*/lib/!(*.tpl)\"",
     "prebuild": "npm run clean",
     "prebuild:ci": "npm run clean && node ./scripts/setup-build.js",
     "build": "tsc --build",
@@ -39,7 +39,7 @@
     "pretest": "npm run build && npm run lint",
     "test": "npm run test:base",
     "test:base": "node --experimental-vm-modules --enable-source-maps ./node_modules/jest-cli/bin/jest",
-    "test:smoketests": "c8 node smoketests",
+    "test:smoketests": "c8 node --enable-source-maps smoketests/index.js",
     "test:coverage": "c8 npm run test:base",
     "update:docs": "node ./scripts/update-docs",
     "version": "node ./node_modules/.bin/changeset version && node ./scripts/sync-changelogs.js",
