@@ -16,6 +16,7 @@
 # Node dependencies
 node_modules
 test/**/node_modules
+!test/external-command/node_modules
 
 # Lock files
 yarn.lock
