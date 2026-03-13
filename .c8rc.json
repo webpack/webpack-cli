@@ -1,6 +1,6 @@
 {
   "all": true,
-  "clean": false,
+  "clean": true,
   "root": ".",
   "include": ["packages/*/src/**/*.ts"],
   "exclude": ["packages/*/src/**/types.ts"],
