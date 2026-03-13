@@ -776,11 +776,11 @@ class WebpackCLI {
     }
 
     if (mainOption.type.size > 1 && mainOption.type.has(Boolean)) {
-      mainOption.flags = `${mainOption.flags} [${mainOption.valueName || "value"}${
+      mainOption.flags = `${mainOption.flags} [${mainOption.valueName}${
         mainOption.multiple ? "..." : ""
       }]`;
     } else if (mainOption.type.size > 0 && !mainOption.type.has(Boolean)) {
-      mainOption.flags = `${mainOption.flags} <${mainOption.valueName || "value"}${
+      mainOption.flags = `${mainOption.flags} <${mainOption.valueName}${
         mainOption.multiple ? "..." : ""
       }>`;
     }
@@ -838,10 +838,6 @@ class WebpackCLI {
           .default(mainOption.defaultValue);
 
         optionForCommand.hidden = option.hidden || false;
-
-        if (option.configs) {
-          (optionForCommand as Option & { configs: ArgumentConfig[] }).configs = option.configs;
-        }
 
         command.addOption(optionForCommand);
       }
@@ -1165,17 +1161,8 @@ class WebpackCLI {
         const command = await this.#loadCommandByName(name);
 
         if (!command) {
-          const builtInCommandUsed = Object.values(this.#commands).find(
-            (command) => command.name.includes(name) || name === command.alias,
-          );
-          if (typeof builtInCommandUsed !== "undefined") {
-            this.logger.error(
-              `For using '${name}' command you need to install '${builtInCommandUsed.pkg}' package.`,
-            );
-          } else {
-            this.logger.error(`Can't find and load command '${name}'`);
-            this.logger.error("Run 'webpack --help' to see available commands and options.");
-          }
+          this.logger.error(`Can't find and load command '${name}'`);
+          this.logger.error("Run 'webpack --help' to see available commands and options.");
           process.exit(2);
         }
 
@@ -1241,10 +1228,6 @@ class WebpackCLI {
 
       if (option.description) {
         this.logger.raw(`${bold("Description:")} ${option.description}`);
-      }
-
-      if (!option.negate && option.defaultValue) {
-        this.logger.raw(`${bold("Default value:")} ${JSON.stringify(option.defaultValue)}`);
       }
 
       const { configs } = option as Option & { configs?: ArgumentConfig[] };
