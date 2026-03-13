@@ -443,4 +443,12 @@ describe("help", () => {
     expect(stderr).toMatchSnapshot();
     expect(stdout).toBeFalsy();
   });
+
+  it('should log error for invalid flag with the "--help" option #4', async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["help", "unknown", "--unknown"]);
+
+    expect(exitCode).toBe(2);
+    expect(stderr).toMatchSnapshot();
+    expect(stdout).toBeFalsy();
+  });
 });

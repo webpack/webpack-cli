@@ -100,7 +100,6 @@ interface CommandOptions<
   usage?: string;
   dependencies?: string[];
   pkg?: string;
-  external?: boolean;
   preload?: () => Promise<C>;
   options?:
     | CommandOption[]
@@ -543,13 +542,13 @@ class WebpackCLI {
 
   async makeCommand<A = void, O extends CommanderArgs = CommanderArgs, C extends Context = Context>(
     options: CommandOptions<A, O, C>,
-  ): Promise<Command | undefined> {
+  ): Promise<Command> {
     const alreadyLoaded = this.program.commands.find(
       (command) => command.name() === options.rawName,
     );
 
     if (alreadyLoaded) {
-      return;
+      return alreadyLoaded as Command;
     }
 
     const command = this.program.command(options.name, {
@@ -777,11 +776,11 @@ class WebpackCLI {
     }
 
     if (mainOption.type.size > 1 && mainOption.type.has(Boolean)) {
-      mainOption.flags = `${mainOption.flags} [${mainOption.valueName || "value"}${
+      mainOption.flags = `${mainOption.flags} [${mainOption.valueName}${
         mainOption.multiple ? "..." : ""
       }]`;
     } else if (mainOption.type.size > 0 && !mainOption.type.has(Boolean)) {
-      mainOption.flags = `${mainOption.flags} <${mainOption.valueName || "value"}${
+      mainOption.flags = `${mainOption.flags} <${mainOption.valueName}${
         mainOption.multiple ? "..." : ""
       }>`;
     }
@@ -840,10 +839,6 @@ class WebpackCLI {
 
         optionForCommand.hidden = option.hidden || false;
 
-        if (option.configs) {
-          (optionForCommand as Option & { configs: ArgumentConfig[] }).configs = option.configs;
-        }
-
         command.addOption(optionForCommand);
       }
     } else if (mainOption.type.size > 1) {
@@ -883,7 +878,8 @@ class WebpackCLI {
       const optionForCommand = new Option(mainOption.flags, mainOption.description);
 
       // Hide stub option
-      optionForCommand.hidden = option.hidden || false;
+      // TODO find a solution to hide such options in the new commander version, for example `--performance` and `--no-performance` because we don't have `--performance` at all
+      optionForCommand.hidden = option.hidden || true;
       (optionForCommand as Option & { internal?: boolean }).internal = true;
 
       command.addOption(optionForCommand);
@@ -1163,22 +1159,11 @@ class WebpackCLI {
       } else {
         const [name] = options;
 
-        await this.#loadCommandByName(name);
-
-        const command = this.#findCommandByName(name);
+        const command = await this.#loadCommandByName(name);
 
         if (!command) {
-          const builtInCommandUsed = Object.values(this.#commands).find(
-            (command) => command.name.includes(name) || name === command.alias,
-          );
-          if (typeof builtInCommandUsed !== "undefined") {
-            this.logger.error(
-              `For using '${name}' command you need to install '${builtInCommandUsed.pkg}' package.`,
-            );
-          } else {
-            this.logger.error(`Can't find and load command '${name}'`);
-            this.logger.error("Run 'webpack --help' to see available commands and options.");
-          }
+          this.logger.error(`Can't find and load command '${name}'`);
+          this.logger.error("Run 'webpack --help' to see available commands and options.");
           process.exit(2);
         }
 
@@ -1202,9 +1187,9 @@ class WebpackCLI {
         outputIncorrectUsageOfHelp();
       }
 
-      await this.#loadCommandByName(commandName);
-
-      const command = isGlobalOption(optionName) ? program : this.#findCommandByName(commandName);
+      const command = isGlobalOption(optionName)
+        ? program
+        : await this.#loadCommandByName(commandName);
 
       if (!command) {
         this.logger.error(`Can't find and load command '${commandName}'`);
@@ -1244,10 +1229,6 @@ class WebpackCLI {
 
       if (option.description) {
         this.logger.raw(`${bold("Description:")} ${option.description}`);
-      }
-
-      if (!option.negate && option.defaultValue) {
-        this.logger.raw(`${bold("Default value:")} ${JSON.stringify(option.defaultValue)}`);
       }
 
       const { configs } = option as Option & { configs?: ArgumentConfig[] };
@@ -1916,81 +1897,58 @@ class WebpackCLI {
     );
   }
 
-  async #loadCommandByName(commandName: string, allowToInstall = false) {
+  async #loadCommandByName(commandName: string): Promise<Command | undefined> {
     if (this.#isCommand(commandName, this.#commands.build)) {
-      await this.makeCommand(this.#commands.build);
+      return await this.makeCommand(this.#commands.build);
     } else if (this.#isCommand(commandName, this.#commands.serve)) {
-      await this.makeCommand(this.#commands.serve);
+      return await this.makeCommand(this.#commands.serve);
     } else if (this.#isCommand(commandName, this.#commands.watch)) {
-      await this.makeCommand(this.#commands.watch);
+      return await this.makeCommand(this.#commands.watch);
     } else if (this.#isCommand(commandName, this.#commands.help)) {
       // Stub for the `help` command
-      await this.makeCommand(this.#commands.help);
+      return await this.makeCommand(this.#commands.help);
     } else if (this.#isCommand(commandName, this.#commands.version)) {
-      await this.makeCommand(this.#commands.version);
+      return await this.makeCommand(this.#commands.version);
     } else if (this.#isCommand(commandName, this.#commands.info)) {
-      await this.makeCommand(this.#commands.info);
+      return await this.makeCommand(this.#commands.info);
     } else if (this.#isCommand(commandName, this.#commands.configtest)) {
-      await this.makeCommand(this.#commands.configtest);
-    } else {
-      const builtInExternalCommandInfo = Object.values(this.#commands)
-        .filter((item) => item.external)
-        .find(
-          (externalBuiltInCommandInfo) =>
-            externalBuiltInCommandInfo.rawName === commandName ||
-            (Array.isArray(externalBuiltInCommandInfo.alias)
-              ? externalBuiltInCommandInfo.alias.includes(commandName)
-              : externalBuiltInCommandInfo.alias === commandName),
-        );
+      return await this.makeCommand(this.#commands.configtest);
+    }
 
-      let pkg: string;
+    const pkg: string = commandName;
 
-      if (builtInExternalCommandInfo && builtInExternalCommandInfo.pkg) {
-        ({ pkg } = builtInExternalCommandInfo);
-      } else {
-        pkg = commandName;
-      }
+    type Instantiable<
+      InstanceType = unknown,
+      ConstructorParameters extends unknown[] = unknown[],
+    > = new (...args: ConstructorParameters) => InstanceType & { apply(cli: WebpackCLI): Command };
 
-      if (pkg !== "webpack-cli" && !(await this.isPackageInstalled(pkg))) {
-        if (!allowToInstall) {
-          return;
-        }
+    let LoadedCommand: Instantiable<() => void>;
 
-        pkg = await this.installPackage(pkg, {
-          preMessage: () => {
-            this.logger.error(
-              `For using this command you need to install: '${this.colors.green(pkg)}' package.`,
-            );
-          },
-        });
-      }
-
-      type Instantiable<
-        InstanceType = unknown,
-        ConstructorParameters extends unknown[] = unknown[],
-      > = new (...args: ConstructorParameters) => InstanceType;
-
-      let LoadedCommand: Instantiable<() => void>;
-
-      try {
-        LoadedCommand = (await import(pkg)).default;
-      } catch {
-        // Ignore, command is not installed
-        return;
-      }
-
-      let command;
-
-      try {
-        command = new LoadedCommand();
-
-        await command.apply(this);
-      } catch (error) {
+    try {
+      LoadedCommand = (await import(pkg)).default;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ERR_MODULE_NOT_FOUND") {
         this.logger.error(`Unable to load '${pkg}' command`);
         this.logger.error(error);
         process.exit(2);
       }
+
+      return;
     }
+
+    let command;
+    let externalCommand: Command;
+
+    try {
+      command = new LoadedCommand();
+      externalCommand = await command.apply(this);
+    } catch (error) {
+      this.logger.error(`Unable to load '${pkg}' command`);
+      this.logger.error(error);
+      process.exit(2);
+    }
+
+    return externalCommand;
   }
 
   async run(args: readonly string[], parseOptions: ParseOptions) {
@@ -2123,25 +2081,25 @@ class WebpackCLI {
         process.exit(0);
       }
 
-      let commandNameToRun = operand;
-      let commandOperands = operands.slice(1);
-
       let isKnownCommand = false;
 
       for (const command of Object.values(this.#commands)) {
         if (
-          command.rawName === commandNameToRun ||
+          command.rawName === operand ||
           (Array.isArray(command.alias)
-            ? command.alias.includes(commandNameToRun)
-            : command.alias === commandNameToRun)
+            ? command.alias.includes(operand)
+            : command.alias === operand)
         ) {
           isKnownCommand = true;
           break;
         }
       }
 
+      let command: Command | undefined;
+      let commandOperands = operands.slice(1);
+
       if (isKnownCommand) {
-        await this.#loadCommandByName(commandNameToRun, true);
+        command = await this.#loadCommandByName(operand);
       } else {
         let isEntrySyntax: boolean;
 
@@ -2153,33 +2111,39 @@ class WebpackCLI {
         }
 
         if (isEntrySyntax) {
-          commandNameToRun = defaultCommandNameToRun;
           commandOperands = operands;
 
-          await this.#loadCommandByName(commandNameToRun);
+          command = await this.#loadCommandByName(defaultCommandNameToRun);
         } else {
-          this.logger.error(`Unknown command or entry '${operand}'`);
-
-          const found = Object.values(this.#commands).find(
-            (commandOptions) => distance(operand, commandOptions.rawName) < 3,
-          );
-
-          if (found) {
-            this.logger.error(
-              `Did you mean '${found.rawName}' (alias '${Array.isArray(found.alias) ? found.alias.join(", ") : found.alias}')?`,
-            );
+          // Try to load external command
+          try {
+            command = await this.#loadCommandByName(operand);
+          } catch {
+            // Nothing
           }
 
-          this.logger.error("Run 'webpack --help' to see available commands and options");
-          process.exit(2);
+          if (!command) {
+            this.logger.error(`Unknown command or entry '${operand}'`);
+
+            const found = Object.values(this.#commands).find(
+              (commandOptions) => distance(operand, commandOptions.rawName) < 3,
+            );
+
+            if (found) {
+              this.logger.error(
+                `Did you mean '${found.rawName}' (alias '${Array.isArray(found.alias) ? found.alias.join(", ") : found.alias}')?`,
+              );
+            }
+
+            this.logger.error("Run 'webpack --help' to see available commands and options");
+            process.exit(2);
+          }
         }
       }
 
-      const command = this.#findCommandByName(commandNameToRun);
-
       if (!command) {
         throw new Error(
-          `Internal error: Registered command "${commandNameToRun}" is missing an action handler.`,
+          `Internal error: Registered command "${operand}" is missing an action handler.`,
         );
       }
 

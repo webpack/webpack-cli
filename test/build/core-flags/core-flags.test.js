@@ -109,7 +109,6 @@ describe("core flags", () => {
 
       expect(exitCode).toBe(2);
       expect(stderr).toContain("Invalid value 'true' for the '--amd' option");
-      expect(stderr).toContain("Expected: 'false'");
       expect(stdout).toBeFalsy();
     });
 

@@ -163,13 +163,35 @@ describe("loader command", () => {
 
   it("should prompt on supplying an invalid template", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stderr } = await runPromptWithAnswers(assetsPath, [
-      "loader",
-      ".",
-      "--template=unknown",
-    ]);
+    const { defaultLoaderPath, defaultTemplateFiles } = dataForTests(assetsPath);
+    let { stdout, stderr } = await runPromptWithAnswers(
+      assetsPath,
+      ["loader", ".", "--template=unknown"],
+      [ENTER, ENTER, ENTER],
+    );
 
     expect(stderr).toContain("unknown is not a valid template");
+    expect(normalizeStdout(stdout)).toContain(firstPrompt);
+
+    // Skip test in case installation fails
+    if (!existsSync(resolve(defaultLoaderPath, "./package-lock.json"))) {
+      return;
+    }
+
+    // Check if the output directory exists with the appropriate loader name
+    expect(existsSync(defaultLoaderPath)).toBeTruthy();
+
+    // All test files are scaffolded
+    for (const file of defaultTemplateFiles) {
+      expect(existsSync(resolve(defaultLoaderPath, file))).toBeTruthy();
+    }
+
+    // Check if the generated loader works successfully
+    const path = resolve(assetsPath, "./my-loader/examples/simple/");
+
+    ({ stdout } = await run(path, []));
+
+    expect(stdout).toContain("my-loader");
   });
 
   it("recognizes '-t' as an alias for '--template'", async () => {

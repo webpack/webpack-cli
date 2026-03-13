@@ -164,9 +164,35 @@ describe("plugin command", () => {
 
   it("should prompt on supplying an invalid template", async () => {
     const assetsPath = await uniqueDirectoryForTest();
-    const { stderr } = await runPromptWithAnswers(assetsPath, ["plugin", "--template=unknown"]);
+    const { defaultPluginPath, defaultTemplateFiles } = dataForTests(assetsPath);
+    let { stdout, stderr } = await runPromptWithAnswers(
+      assetsPath,
+      ["plugin", "--template=unknown"],
+      [ENTER, ENTER, ENTER],
+    );
 
     expect(stderr).toContain("unknown is not a valid template");
+    expect(normalizeStdout(stdout)).toContain(firstPrompt);
+
+    // Check if the output directory exists with the appropriate plugin name
+    expect(existsSync(defaultPluginPath)).toBeTruthy();
+
+    // Skip test in case installation fails
+    if (!existsSync(resolve(defaultPluginPath, "./package-lock.json"))) {
+      return;
+    }
+
+    // Test regressively files are scaffolded
+    for (const file of defaultTemplateFiles) {
+      expect(existsSync(join(defaultPluginPath, file))).toBeTruthy();
+    }
+
+    // Check if the generated plugin works successfully
+    ({ stdout } = await run(defaultPluginPath, [
+      "--config",
+      "./examples/simple/webpack.config.js",
+    ]));
+    expect(normalizeStdout(stdout)).toContain("Hello World!");
   });
 
   it("recognizes '-t' as an alias for '--template'", async () => {

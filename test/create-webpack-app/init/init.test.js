@@ -117,6 +117,55 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
+  it("should generate default project when nothing is passed and handle conflicts", async () => {
+    const { stdout } = await run(dir, ["init", "--force"]);
+
+    expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stdout).toContain("webpack.config.js");
+
+    // Test files
+    for (const file of defaultTemplateFiles) {
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
+    }
+
+    // Check if the generated package.json file content matches the snapshot
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
+
+    // Check if the generated webpack configuration matches the snapshot
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
+
+    const { stdout: nextStdout } = await runPromptWithAnswers(
+      dir,
+      ["init"],
+      [
+        `${DOWN}${ENTER}`,
+        `n${ENTER}`,
+        `n${ENTER}`,
+        `n${ENTER}`,
+        `${UP}${ENTER}`,
+        ENTER,
+        // test for conflicts
+        `y${ENTER}`,
+        `n${ENTER}`,
+        `a${ENTER}`,
+      ],
+    );
+
+    expect(nextStdout).toContain("Project has been initialised with webpack!");
+    expect(nextStdout).toContain("webpack.config.js");
+
+    // Test files
+    for (const file of defaultTemplateFiles) {
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
+    }
+
+    // Check if the generated package.json file content matches the snapshot
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
+
+    // Check if the generated webpack configuration matches the snapshot
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
+  });
+
   it("should generate project when generationPath is supplied", async () => {
     const { stdout } = await run(__dirname, ["init", dir, "--force"]);
 
