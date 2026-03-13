@@ -878,7 +878,7 @@ class WebpackCLI {
       const optionForCommand = new Option(mainOption.flags, mainOption.description);
 
       // Hide stub option
-      optionForCommand.flags = "";
+      // TODO find a solution to hide such options in the new commander version, for example `--performance` and `--no-performance` because we don't have `--performance` at all
       optionForCommand.hidden = option.hidden || true;
       (optionForCommand as Option & { internal?: boolean }).internal = true;
 
