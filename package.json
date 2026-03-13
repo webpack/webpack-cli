@@ -69,7 +69,6 @@
     "get-port": "^7.1.0",
     "husky": "^9.1.4",
     "jest": "^30.2.0",
-    "leaked-handles": "^5.2.0",
     "lint-staged": "^16.3.2",
     "mini-css-extract-plugin": "^2.6.1",
     "prettier": "^3.6.0",
