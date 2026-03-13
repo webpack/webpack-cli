@@ -108,8 +108,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--amd"]);
 
       expect(exitCode).toBe(2);
-      expect(stderr).toContain("Invalid value 'true' for the '--amd' option");
-      expect(stderr).toContain("Expected: 'false'");
+      expect(stderr).toContain("Unknown option '--amd");
       expect(stdout).toBeFalsy();
     });
 
