@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/webpack/webpack-cli.git"
+    "url": "git+https://github.com/webpack/webpack-cli.git"
   },
   "funding": {
     "type": "opencollective",
@@ -89,5 +89,6 @@
   },
   "engines": {
     "node": ">=20.9.0"
-  }
+  },
+  "version": ""
 }
