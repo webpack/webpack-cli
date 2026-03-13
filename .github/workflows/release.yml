@@ -30,6 +30,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Verify Auth
+        run: npm whoami --registry=https://registry.npmjs.org
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1.7.0

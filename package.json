@@ -42,8 +42,8 @@
     "test:smoketests": "c8 node --enable-source-maps smoketests/index.js",
     "test:coverage": "c8 npm run test:base",
     "update:docs": "node ./scripts/update-docs",
-    "version": "node ./node_modules/.bin/changeset version && node ./scripts/sync-changelogs.js",
-    "release": "npm run build && node ./node_modules/.bin/changeset publish",
+    "version": "changeset version && node ./scripts/sync-changelogs.js",
+    "release": "npm run build && changeset publish",
     "prepare": "husky"
   },
   "devDependencies": {
