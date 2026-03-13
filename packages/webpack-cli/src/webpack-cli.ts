@@ -874,15 +874,10 @@ class WebpackCLI {
       }
 
       command.addOption(optionForCommand);
-    } else if (mainOption.type.size === 0 && negativeOption) {
-      const optionForCommand = new Option(mainOption.flags, mainOption.description);
-
-      // Hide stub option
-      optionForCommand.hidden = option.hidden || false;
-      (optionForCommand as Option & { internal?: boolean }).internal = true;
-
-      command.addOption(optionForCommand);
     }
+
+    // A situation arises when `mainOption.type.size === 0 && negativeOption`
+    // In this case, we don't create the option, since this means the option only has a negative value
 
     if (negativeOption) {
       const optionForCommand = new Option(negativeOption.flags, negativeOption.description).default(
@@ -1048,10 +1043,6 @@ class WebpackCLI {
         },
         visibleOptions: function visibleOptions(command) {
           return command.options.filter((option) => {
-            if ((option as Option & { internal?: boolean }).internal) {
-              return false;
-            }
-
             // Hide `--watch` option when developer use `webpack watch --help`
             if (
               (options[0] === "w" || options[0] === "watch") &&
@@ -1986,10 +1977,7 @@ class WebpackCLI {
             }
 
             for (const option of command.options) {
-              if (
-                !(option as Option & { internal?: boolean }).internal &&
-                distance(name, option.long?.slice(2) as string) < 3
-              ) {
+              if (distance(name, option.long?.slice(2) as string) < 3) {
                 this.logger.error(`Did you mean '--${option.name()}'?`);
               }
             }

@@ -196,6 +196,24 @@ describe("core flags", () => {
     });
   });
 
+  describe("only negative flags", () => {
+    it("should throw an error on set performance to true", async () => {
+      const { exitCode, stderr, stdout } = await run(__dirname, ["--performance"]);
+
+      expect(exitCode).toBe(2);
+      expect(stderr).toContain("Unknown option '--performance'");
+      expect(stdout).toBeFalsy();
+    });
+
+    it("should set performance to false", async () => {
+      const { exitCode, stderr, stdout } = await run(__dirname, ["--no-performance"]);
+
+      expect(exitCode).toBe(0);
+      expect(stderr).toBeFalsy();
+      expect(stdout).toContain("performance: false");
+    });
+  });
+
   describe("flags with multiple types", () => {
     it("should allow string value for `infrastructureLogging.debug`", async () => {
       const { exitCode, stderr, stdout } = await run(__dirname, [
