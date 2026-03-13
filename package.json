@@ -1,5 +1,6 @@
 {
   "name": "webpack-cli-monorepo",
+  "version": "",
   "private": true,
   "description": "CLI for webpack & friends",
   "keywords": [
@@ -89,6 +90,5 @@
   },
   "engines": {
     "node": ">=20.9.0"
-  },
-  "version": ""
+  }
 }
