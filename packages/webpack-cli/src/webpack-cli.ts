@@ -1678,6 +1678,7 @@ class WebpackCLI {
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const usedPorts: number[] = [];
+        const usedPublicPathsByPort = new Map<number, Set<string> | null>();
 
         for (const compilerForDevServer of compilersForDevServer) {
           if (compilerForDevServer.options.devServer === false) {
@@ -1710,11 +1711,37 @@ class WebpackCLI {
 
           if (devServerConfiguration.port) {
             const portNumber = Number(devServerConfiguration.port);
+            const devMiddlewarePublicPath = devServerConfiguration.devMiddleware?.publicPath;
+            const outputPublicPath = compilerForDevServer.options.output?.publicPath;
+            const currentPublicPath =
+              typeof devMiddlewarePublicPath === "string"
+                ? devMiddlewarePublicPath
+                : typeof outputPublicPath === "string"
+                  ? outputPublicPath
+                  : undefined;
 
             if (usedPorts.includes(portNumber)) {
-              throw new Error(
-                "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
-              );
+              const usedPublicPaths = usedPublicPathsByPort.get(portNumber);
+
+              if (
+                !currentPublicPath ||
+                !usedPublicPaths ||
+                usedPublicPaths.has(currentPublicPath)
+              ) {
+                throw new Error(
+                  "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, use unique devMiddleware.publicPath/output.publicPath values for configs sharing a port, or run only 1 devServer config using the --config-name flag to specify your desired config.",
+                );
+              }
+
+              usedPublicPaths.add(currentPublicPath);
+
+              continue;
+            }
+
+            if (currentPublicPath) {
+              usedPublicPathsByPort.set(portNumber, new Set([currentPublicPath]));
+            } else {
+              usedPublicPathsByPort.set(portNumber, null);
             }
 
             usedPorts.push(portNumber);

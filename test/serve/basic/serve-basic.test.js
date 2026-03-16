@@ -506,4 +506,16 @@ describe("basic serve usage", () => {
     // Due to racing logic, first dev server can be started and compiled, but then the second always fails
     // expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
+
+  it("should work when same ports in multicompiler with unique public paths", async () => {
+    const { stderr, stdout } = await runWatch(
+      __dirname,
+      ["serve", "--config", "same-ports-dev-server-unique-public-paths.config.js"],
+      normalStdKillOptions,
+    );
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stderr).not.toContain("Unique ports must be specified");
+    expect(stdout).toBeDefined();
+  });
 });

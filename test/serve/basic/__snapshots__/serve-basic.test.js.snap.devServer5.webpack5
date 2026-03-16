@@ -71,7 +71,7 @@ exports[`basic serve usage should throw error when same ports in multicompiler: 
 <i> [webpack-dev-server] On Your Network (IPv4): http://x.x.x.x:<port>/
 <i> [webpack-dev-server] On Your Network (IPv6): http://[x:x:x:x:x:x:x:x]:<port>/
 <i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory
-[webpack-cli] Error: Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.
+[webpack-cli] Error: Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, use unique devMiddleware.publicPath/output.publicPath values for configs sharing a port, or run only 1 devServer config using the --config-name flag to specify your desired config.
     at stack"
 `;
 
@@ -85,6 +85,14 @@ exports[`basic serve usage should work and log warning on the 'watch' option in 
 `;
 
 exports[`basic serve usage should work in multi compiler mode: stderr 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:<port>/, http://[::1]:<port>/
+<i> [webpack-dev-server] On Your Network (IPv4): http://x.x.x.x:<port>/
+<i> [webpack-dev-server] On Your Network (IPv6): http://[x:x:x:x:x:x:x:x]:<port>/
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work when same ports in multicompiler with unique public paths: stderr 1`] = `
 "<i> [webpack-dev-server] Project is running at:
 <i> [webpack-dev-server] Loopback: http://localhost:<port>/, http://[::1]:<port>/
 <i> [webpack-dev-server] On Your Network (IPv4): http://x.x.x.x:<port>/
