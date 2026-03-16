@@ -1,6 +1,6 @@
 {
   "name": "create-webpack-app",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "CLI for scaffolding webpack projects using default config, framework templates, loader or plugins templates",
   "keywords": [
     "webpack",
