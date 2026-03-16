@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { type Readable as ReadableType } from "node:stream";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import util from "node:util";
 import { type stringifyChunked as stringifyChunkedType } from "@discoveryjs/json-ext";
 import {
@@ -2163,12 +2163,14 @@ class WebpackCLI {
     ): Promise<{ options: Configuration | MultiConfiguration; path: string }> => {
       let options: LoadableWebpackConfiguration | undefined;
 
+      const isFileURL = configPath.startsWith("file://");
+
       try {
         let loadingError;
 
         try {
-          // eslint-disable-next-line no-eval
-          options = (await eval(`import("${pathToFileURL(configPath)}")`)).default;
+          options = // eslint-disable-next-line no-eval
+            (await eval(`import("${isFileURL ? configPath : pathToFileURL(configPath)}")`)).default;
         } catch (err) {
           if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
             throw err;
@@ -2209,7 +2211,7 @@ class WebpackCLI {
           }
 
           try {
-            options = require(configPath);
+            options = require(isFileURL ? fileURLToPath(configPath) : configPath);
           } catch (err) {
             if (this.isValidationError(err)) {
               throw err;
@@ -2301,9 +2303,7 @@ class WebpackCLI {
 
     if (options.config && options.config.length > 0) {
       const loadedConfigs = await Promise.all(
-        options.config.map((configPath: string) =>
-          loadConfigByPath(path.resolve(configPath), options.argv),
-        ),
+        options.config.map((configPath: string) => loadConfigByPath(configPath, options.argv)),
       );
 
       if (loadedConfigs.length === 1) {
@@ -2406,9 +2406,7 @@ class WebpackCLI {
       delete config.extends;
 
       const loadedConfigs = await Promise.all(
-        extendsPaths.map((extendsPath) =>
-          loadConfigByPath(path.resolve(extendsPath), options.argv),
-        ),
+        extendsPaths.map((extendsPath) => loadConfigByPath(extendsPath, options.argv)),
       );
 
       const { merge } = await import("webpack-merge");
