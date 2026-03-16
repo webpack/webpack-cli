@@ -227,8 +227,6 @@ describe("basic", () => {
   });
 
   it("should log supplied config with watch", async () => {
-    const configPath = resolve(__dirname, "./log.config.js");
-
     let stderr = "";
 
     await runWatch(__dirname, ["watch", "--config", "log.config.js"], {
@@ -240,7 +238,7 @@ describe("basic", () => {
 
           if (/Compiler finished/.test(data)) {
             expect(stderr).toContain("Compiler starting...");
-            expect(stderr).toContain(`Compiler is using config: '${configPath}'`);
+            expect(stderr).toContain("Compiler is using config: 'log.config.js'");
             expect(stderr).toContain("Compiler finished");
 
             processKill(proc);

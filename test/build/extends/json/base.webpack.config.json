@@ -1,0 +1,5 @@
+{
+  "name": "base_config",
+  "mode": "development",
+  "entry": "./src/index.js"
+}

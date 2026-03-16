@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("node:path");
+const { pathToFileURL } = require("node:url");
 const { run } = require("../../utils/test-utils");
 
 describe("extends property", () => {
@@ -10,6 +11,38 @@ describe("extends property", () => {
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
     expect(stdout).toContain("base.webpack.config.js");
+    expect(stdout).toContain("derived.webpack.config.js");
+    expect(stdout).toContain("name: 'base_config'");
+    expect(stdout).toContain("mode: 'development'");
+  });
+
+  it("extends a provided webpack config correctly using file protocol", async () => {
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./file-protocol"));
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain("base.webpack.config.js");
+    expect(stdout).toContain("derived.webpack.config.js");
+    expect(stdout).toContain("name: 'base_config'");
+    expect(stdout).toContain("mode: 'development'");
+  });
+
+  it("extends a provided webpack config correctly using `require.resolve`", async () => {
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./require-resolve"));
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain("base.webpack.config.js");
+    expect(stdout).toContain("derived.webpack.config.js");
+    expect(stdout).toContain("name: 'base_config'");
+    expect(stdout).toContain("mode: 'development'");
+  });
+
+  it("extends a provided webpack config correctly using `JSON` format", async () => {
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./json"));
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("name: 'base_config'");
     expect(stdout).toContain("mode: 'development'");
@@ -89,7 +122,7 @@ describe("extends property", () => {
       "--extends",
       "./base.webpack.config.js",
       "--extends",
-      "./other.config.js",
+      path.resolve(__dirname, "./multiple-configs1/other.config.js"),
     ]);
 
     expect(exitCode).toBe(0);
@@ -102,10 +135,24 @@ describe("extends property", () => {
     expect(stdout).toContain("topLevelAwait: true");
   });
 
-  it("cLI `extends` should override `extends` in a configuration", async () => {
+  it("`extends` should override `extends` in a configuration", async () => {
     const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./simple-case"), [
       "--extends",
       "./override.config.js",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain("override.config.js");
+    expect(stdout).toContain("derived.webpack.config.js");
+    expect(stdout).toContain("name: 'override_config'");
+    expect(stdout).toContain("mode: 'development'");
+  });
+
+  it("`extends` should override `extends` in a configuration using file protocol", async () => {
+    const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./simple-case"), [
+      "--extends",
+      pathToFileURL(path.resolve(__dirname, "./simple-case/override.config.js")).toString(),
     ]);
 
     expect(exitCode).toBe(0);

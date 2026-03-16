@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`'configtest' command with the configuration path option should throw error if configuration does not exist: stderr 1`] = `"[webpack-cli] Failed to load '<cwd>/test/configtest/with-config-path/a.js' config"`;
+exports[`'configtest' command with the configuration path option should throw error if configuration does not exist: stderr 1`] = `"[webpack-cli] Failed to load './a.js' config"`;
 
 exports[`'configtest' command with the configuration path option should throw error if configuration does not exist: stdout 1`] = `""`;
 
 exports[`'configtest' command with the configuration path option should throw syntax error: stderr 1`] = `
-"[webpack-cli] Failed to load '<cwd>/test/configtest/with-config-path/syntax-error.config.js' config
+"[webpack-cli] Failed to load './syntax-error.config.js' config
 ▶ ESM (\`import\`) failed:
   Unexpected token ';'
 
@@ -22,7 +22,7 @@ exports[`'configtest' command with the configuration path option should throw va
    -> Enable production optimizations or development hints."
 `;
 
-exports[`'configtest' command with the configuration path option should throw validation error: stdout 1`] = `"[webpack-cli] Validate '<cwd>/test/configtest/with-config-path/error.config.js'."`;
+exports[`'configtest' command with the configuration path option should throw validation error: stdout 1`] = `"[webpack-cli] Validate './error.config.js'."`;
 
 exports[`'configtest' command with the configuration path option should validate the config with alias 't': stderr 1`] = `
 "[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
@@ -31,11 +31,11 @@ exports[`'configtest' command with the configuration path option should validate
    -> Enable production optimizations or development hints."
 `;
 
-exports[`'configtest' command with the configuration path option should validate the config with alias 't': stdout 1`] = `"[webpack-cli] Validate '<cwd>/test/configtest/with-config-path/error.config.js'."`;
+exports[`'configtest' command with the configuration path option should validate the config with alias 't': stdout 1`] = `"[webpack-cli] Validate './error.config.js'."`;
 
 exports[`'configtest' command with the configuration path option should validate webpack config successfully: stderr 1`] = `""`;
 
 exports[`'configtest' command with the configuration path option should validate webpack config successfully: stdout 1`] = `
-"[webpack-cli] Validate '<cwd>/test/configtest/with-config-path/basic.config.js'.
+"[webpack-cli] Validate './basic.config.js'.
 [webpack-cli] There are no validation errors in the given webpack configuration."
 `;
