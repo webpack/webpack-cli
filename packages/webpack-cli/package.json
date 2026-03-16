@@ -1,6 +1,6 @@
 {
   "name": "webpack-cli",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "CLI for webpack & friends",
   "keywords": [
     "webpack",

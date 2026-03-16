@@ -1,5 +1,11 @@
 # Change Log
 
+## 7.0.1
+
+### Patch Changes
+
+- The `file` protocol for configuration options (`--config`/`--extends`) is supported. (by [@alexander-akait](https://github.com/alexander-akait) in [#4702](https://github.com/webpack/webpack-cli/pull/4702))
+
 ## 7.0.0
 
 ### Major Changes
