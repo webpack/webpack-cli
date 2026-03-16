@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.1
+
+### Patch Changes
+
+- Fix name of create-webpack-app package. (by [@alexander-akait](https://github.com/alexander-akait) in [#4704](https://github.com/webpack/webpack-cli/pull/4704))
+
 ## 2.0.0
 
 ### Major Changes
