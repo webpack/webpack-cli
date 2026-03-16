@@ -2211,7 +2211,7 @@ class WebpackCLI {
           }
 
           try {
-            options = require(isFileURL ? fileURLToPath(configPath) : configPath);
+            options = require(isFileURL ? fileURLToPath(configPath) : path.resolve(configPath));
           } catch (err) {
             if (this.isValidationError(err)) {
               throw err;

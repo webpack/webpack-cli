@@ -1,5 +1,3 @@
-const path = require("node:path");
-
 const { run } = require("../../../utils/test-utils");
 
 describe("failure", () => {
@@ -7,9 +5,7 @@ describe("failure", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "webpack.config.iced"]);
 
     expect(exitCode).toBe(2);
-    expect(stderr).toContain(
-      `Failed to load '${path.resolve(__dirname, "./webpack.config.iced")}'`,
-    );
+    expect(stderr).toContain("Failed to load 'webpack.config.iced'");
     expect(stdout).toBeFalsy();
   });
 });

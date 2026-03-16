@@ -1,6 +1,5 @@
 "use strict";
 
-const { resolve } = require("node:path");
 const { run } = require("../../utils/test-utils");
 
 describe("bundle command", () => {
@@ -181,11 +180,10 @@ describe("bundle command", () => {
 
   it("should log supplied config when logging level is log", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--config", "./log.config.js"]);
-    const configPath = resolve(__dirname, "./log.config.js");
 
     expect(exitCode).toBe(0);
     expect(stderr).toContain("Compiler starting...");
-    expect(stderr).toContain(`Compiler is using config: '${configPath}'`);
+    expect(stderr).toContain("Compiler is using config: './log.config.js'");
     expect(stderr).toContain("Compiler finished");
     expect(stdout).toBeTruthy();
   });
