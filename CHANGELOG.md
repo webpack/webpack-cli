@@ -1,5 +1,11 @@
 # Change Log
 
+## 7.0.2
+
+### Patch Changes
+
+- Resolve configuration path for cache build dependencies. (by [@alexander-akait](https://github.com/alexander-akait) in [#4707](https://github.com/webpack/webpack-cli/pull/4707))
+
 ## 7.0.1
 
 ### Patch Changes
