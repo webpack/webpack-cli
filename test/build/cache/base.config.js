@@ -1,0 +1,23 @@
+const path = require("node:path");
+
+module.exports = {
+  mode: "development",
+  cache: {
+    type: "filesystem",
+    buildDependencies: {
+      config: [__filename],
+    },
+  },
+  infrastructureLogging: {
+    debug: /cache/,
+  },
+  entry: {
+    app: "./src/main.js",
+  },
+  output: {
+    filename: "[name].bundle.js",
+    chunkFilename: "[name].bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
+  },
+};

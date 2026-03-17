@@ -2597,12 +2597,20 @@ class WebpackCLI {
             configuration.cache.buildDependencies.defaultConfig = [];
           }
 
+          const normalizeConfigPath = (configPath: string) =>
+            configPath.startsWith("file://") ? fileURLToPath(configPath) : path.resolve(configPath);
+
           if (Array.isArray(configPath)) {
             for (const oneOfConfigPath of configPath) {
-              configuration.cache.buildDependencies.defaultConfig.push(oneOfConfigPath);
+              configuration.cache.buildDependencies.defaultConfig.push(
+                normalizeConfigPath(oneOfConfigPath),
+              );
             }
           } else {
-            configuration.cache.buildDependencies.defaultConfig.push(configPath);
+            configuration.cache.buildDependencies.defaultConfig.push(
+              // TODO fix `file:` support on webpack side and remove it in the next major release
+              normalizeConfigPath(configPath),
+            );
           }
         }
       }

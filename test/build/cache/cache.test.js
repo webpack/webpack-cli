@@ -2,6 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const url = require("node:url");
 const { isWindows, processKill, run, runWatch } = require("../../utils/test-utils");
 
 describe("cache", () => {
@@ -210,6 +211,145 @@ describe("cache", () => {
     expect(stdout).toBeTruthy();
 
     ({ exitCode, stderr, stdout } = await run(__dirname, ["--name", "cache-test-autoloading"]));
+
+    expect(exitCode).toBe(0);
+    expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
+    expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
+    expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
+    expect(stderr).toBeTruthy();
+    expect(stdout).toBeTruthy();
+  });
+
+  it("should work with relative path to configuration without build dependencies", async () => {
+    fs.rmSync(
+      path.join(
+        __dirname,
+        "../../../node_modules/.cache/webpack/no-build-dependencies-development",
+      ),
+      { recursive: true, force: true },
+    );
+
+    let { exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      "./no-build-dependencies.config.js",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
+    expect(stderr.match(/Stored pack/g)).toHaveLength(1);
+    expect(stderr).toBeTruthy();
+    expect(stdout).toBeTruthy();
+
+    ({ exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      "./no-build-dependencies.config.js",
+    ]));
+
+    expect(exitCode).toBe(0);
+    expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
+    expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
+    expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
+    expect(stderr).toBeTruthy();
+    expect(stdout).toBeTruthy();
+  });
+
+  it("should work with file path to configuration without build dependencies", async () => {
+    fs.rmSync(
+      path.join(
+        __dirname,
+        "../../../node_modules/.cache/webpack/no-build-dependencies-file-development",
+      ),
+      { recursive: true, force: true },
+    );
+
+    let { exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      path.resolve(__dirname, "./no-build-dependencies-file.config.js"),
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
+    expect(stderr.match(/Stored pack/g)).toHaveLength(1);
+    expect(stderr).toBeTruthy();
+    expect(stdout).toBeTruthy();
+
+    ({ exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      path.resolve(__dirname, "./no-build-dependencies-file.config.js"),
+    ]));
+
+    expect(exitCode).toBe(0);
+    expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
+    expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
+    expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
+    expect(stderr).toBeTruthy();
+    expect(stdout).toBeTruthy();
+  });
+
+  it("should work with absolute path to configuration without build dependencies", async () => {
+    fs.rmSync(
+      path.join(
+        __dirname,
+        "../../../node_modules/.cache/webpack/no-build-dependencies-absolute-development",
+      ),
+      { recursive: true, force: true },
+    );
+
+    let { exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      url
+        .pathToFileURL(path.resolve(__dirname, "./no-build-dependencies-absolute.config.js"))
+        .toString(),
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
+    expect(stderr.match(/Stored pack/g)).toHaveLength(1);
+    expect(stderr).toBeTruthy();
+    expect(stdout).toBeTruthy();
+
+    ({ exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      url
+        .pathToFileURL(path.resolve(__dirname, "./no-build-dependencies-absolute.config.js"))
+        .toString(),
+    ]));
+
+    expect(exitCode).toBe(0);
+    expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
+    expect(stderr.match(/restore cache content metadata:/g)).toHaveLength(1);
+    expect(stderr.match(/restore cache content \d+ \(.+\):/g)).toHaveLength(1);
+    expect(stderr).toBeTruthy();
+    expect(stdout).toBeTruthy();
+  });
+
+  it("should work with multiple configuration and merge", async () => {
+    fs.rmSync(
+      path.join(__dirname, "../../../node_modules/.cache/webpack/base-override-development"),
+      { recursive: true, force: true },
+    );
+
+    let { exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      "./base.config.js",
+      "-c",
+      url.pathToFileURL(path.resolve(__dirname, "./base-override.config.js")).toString(),
+      "--merge",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr.match(/No pack exists at/g)).toHaveLength(1);
+    expect(stderr.match(/Stored pack/g)).toHaveLength(1);
+    expect(stderr).toBeTruthy();
+    expect(stdout).toBeTruthy();
+
+    ({ exitCode, stderr, stdout } = await run(__dirname, [
+      "-c",
+      "./base.config.js",
+      "-c",
+      url.pathToFileURL(path.resolve(__dirname, "./base-override.config.js")).toString(),
+      "--merge",
+    ]));
 
     expect(exitCode).toBe(0);
     expect(stderr.match(/restore cache container:/g)).toHaveLength(1);
