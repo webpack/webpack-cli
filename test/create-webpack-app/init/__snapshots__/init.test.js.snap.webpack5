@@ -66,8 +66,11 @@ exports[`create-webpack-app cli should configure WDS as opted 1`] = `
 exports[`create-webpack-app cli should configure WDS as opted 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -99,7 +102,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -134,9 +137,12 @@ exports[`create-webpack-app cli should configure html-webpack-plugin as opted 1`
 exports[`create-webpack-app cli should configure html-webpack-plugin as opted 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -172,7 +178,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -208,10 +214,13 @@ exports[`create-webpack-app cli should configure workbox-webpack-plugin as opted
 exports[`create-webpack-app cli should configure workbox-webpack-plugin as opted 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -247,7 +256,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -285,8 +294,11 @@ exports[`create-webpack-app cli should generate ES6 project correctly 1`] = `
 exports[`create-webpack-app cli should generate ES6 project correctly 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -318,7 +330,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -356,10 +368,13 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 exports[`create-webpack-app cli should generate default project when nothing is passed 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -399,7 +414,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -439,10 +454,13 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 exports[`create-webpack-app cli should generate default project when nothing is passed and handle conflicts 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -482,7 +500,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -520,10 +538,13 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 exports[`create-webpack-app cli should generate default project when nothing is passed and handle conflicts 4`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -563,7 +584,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -603,10 +624,13 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 exports[`create-webpack-app cli should generate default project when nothing is passed and override when content exist 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -646,7 +670,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -686,10 +710,13 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 exports[`create-webpack-app cli should generate default project when nothing is passed and override when content exist 4`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -729,7 +756,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -1054,8 +1081,11 @@ exports[`create-webpack-app cli should generate typescript project correctly 1`]
 exports[`create-webpack-app cli should generate typescript project correctly 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -1091,7 +1121,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -1255,9 +1285,12 @@ exports[`create-webpack-app cli should use css preprocessor and css with postcss
 exports[`create-webpack-app cli should use css preprocessor and css with postcss in project when selected 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -1297,7 +1330,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -1340,9 +1373,12 @@ exports[`create-webpack-app cli should use to use css preprocessor with postcss 
 exports[`create-webpack-app cli should use to use css preprocessor with postcss with mini-css-extract-plugin in project when selected 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -1378,7 +1414,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
