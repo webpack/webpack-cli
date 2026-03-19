@@ -74,18 +74,18 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     plugins: [
         // Add your plugins here
@@ -95,7 +95,7 @@ const config = {
         rules: [
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
 
@@ -107,11 +107,11 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -143,22 +143,22 @@ exports[`create-webpack-app cli should configure html-webpack-plugin as opted 2`
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 
         // Add your plugins here
@@ -168,12 +168,12 @@ const config = {
         rules: [
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
             {
                 test: /\\.html$/i,
-                use: ['html-loader'],
+                use: ["html-loader"],
             },
 
             // Add your rules for custom modules here
@@ -184,11 +184,11 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -221,23 +221,23 @@ exports[`create-webpack-app cli should configure workbox-webpack-plugin as opted
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 
         // Add your plugins here
@@ -247,12 +247,12 @@ const config = {
         rules: [
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
             {
                 test: /\\.html$/i,
-                use: ['html-loader'],
+                use: ["html-loader"],
             },
 
             // Add your rules for custom modules here
@@ -263,13 +263,13 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -305,14 +305,14 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     plugins: [
         // Add your plugins here
@@ -322,11 +322,11 @@ const config = {
         rules: [
             {
                 test: /\\.(js|jsx)$/i,
-                loader: 'babel-loader',
+                loader: "babel-loader",
             },
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
 
@@ -338,11 +338,11 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -377,27 +377,27 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 
         // Add your plugins here
@@ -407,12 +407,12 @@ const config = {
         rules: [
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
             {
                 test: /\\.html$/i,
-                use: ['html-loader'],
+                use: ["html-loader"],
             },
 
             // Add your rules for custom modules here
@@ -423,13 +423,13 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -464,27 +464,27 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 
         // Add your plugins here
@@ -494,12 +494,12 @@ const config = {
         rules: [
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
             {
                 test: /\\.html$/i,
-                use: ['html-loader'],
+                use: ["html-loader"],
             },
 
             // Add your rules for custom modules here
@@ -510,13 +510,13 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -549,27 +549,27 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 
         // Add your plugins here
@@ -579,12 +579,12 @@ const config = {
         rules: [
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
             {
                 test: /\\.html$/i,
-                use: ['html-loader'],
+                use: ["html-loader"],
             },
 
             // Add your rules for custom modules here
@@ -595,13 +595,13 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -636,27 +636,27 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 
         // Add your plugins here
@@ -666,12 +666,12 @@ const config = {
         rules: [
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
             {
                 test: /\\.html$/i,
-                use: ['html-loader'],
+                use: ["html-loader"],
             },
 
             // Add your rules for custom modules here
@@ -682,13 +682,13 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -723,27 +723,27 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 
         // Add your plugins here
@@ -753,12 +753,12 @@ const config = {
         rules: [
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
             {
                 test: /\\.html$/i,
-                use: ['html-loader'],
+                use: ["html-loader"],
             },
 
             // Add your rules for custom modules here
@@ -769,13 +769,13 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -869,32 +869,32 @@ exports[`create-webpack-app cli should generate react template with state and ro
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.jsx',
+    entry: "./src/index.jsx",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 
         // Add your plugins here
@@ -914,11 +914,11 @@ const config = {
             },
             {
                 test: /\\.css$/i,
-                use: [stylesHandler, 'css-loader', 'postcss-loader'],
+                use: [stylesHandler, "css-loader", "postcss-loader"],
             },
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
 
             // Add your rules for custom modules here
@@ -929,13 +929,13 @@ const config = {
         alias: {
             "@": path.resolve(__dirname, "./src/"),
         },
-        extensions: ['.jsx', '.js'],
+        extensions: [".jsx", ".js"],
     },
 };
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         config.plugins.push(new MiniCssExtractPlugin());
         
@@ -943,7 +943,7 @@ export default () => {
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -988,32 +988,32 @@ exports[`create-webpack-app cli should generate svelte template with prompt answ
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/main.js',
+    entry: "./src/main.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './index.html',
+            template: "./index.html",
         }),
 
         // Add your plugins here
@@ -1024,7 +1024,7 @@ const config = {
             {
                 test: /\\.svelte$/,
                 use: {
-                    loader: 'svelte-loader',
+                    loader: "svelte-loader",
                     options: {
                         emitCss: true,
                         hotReload: true
@@ -1043,11 +1043,11 @@ const config = {
             },
             {
                 test: /\\.css$/i,
-                use: [stylesHandler, 'css-loader', 'postcss-loader'],
+                use: [stylesHandler, "css-loader", "postcss-loader"],
             },
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1057,15 +1057,15 @@ const config = {
         alias: {
             "@": path.resolve(__dirname, "./src/"),
         },
-        extensions: ['.mjs', '.js', '.svelte'],
-        mainFields: ['svelte', 'browser', 'module', 'main'],
-        conditionNames: ['svelte', 'module', 'browser', 'main', 'default']
+        extensions: [".mjs", ".js", ".svelte"],
+        mainFields: ["svelte", "browser", "module", "main"],
+        conditionNames: ["svelte", "module", "browser", "main", "default"]
     },
 };
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         config.plugins.push(new MiniCssExtractPlugin());
         
@@ -1073,7 +1073,7 @@ export default () => {
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -1108,14 +1108,14 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.ts',
+    entry: "./src/index.ts",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     plugins: [
         // Add your plugins here
@@ -1125,12 +1125,12 @@ const config = {
         rules: [
             {
                 test: /\\.(ts|tsx)$/i,
-                loader: 'ts-loader',
-                exclude: ['/node_modules/'],
+                loader: "ts-loader",
+                exclude: ["/node_modules/"],
             },
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
 
@@ -1139,17 +1139,17 @@ const config = {
         ],
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
+        extensions: [".tsx", ".ts", ".jsx", ".js", "..."],
     },
 };
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -1196,36 +1196,36 @@ exports[`create-webpack-app cli should generate vue template with store and rout
 exports[`create-webpack-app cli should generate vue template with store and router support on prompt answers 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-import { VueLoaderPlugin } from 'vue-loader';
+import { VueLoaderPlugin } from "vue-loader";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'vue-style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "vue-style-loader";
 
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/main.js',
+    entry: "./src/main.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },
     plugins: [
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 
         // Add your plugins here
@@ -1235,7 +1235,7 @@ const config = {
         rules: [
             {
                 test: /\\.vue$/,
-                loader: 'vue-loader'
+                loader: "vue-loader"
             },
             {
                 test: /\\.js$/,
@@ -1249,11 +1249,11 @@ const config = {
             },
             {
                 test: /\\.css$/i,
-                use: [stylesHandler, 'css-loader', 'postcss-loader'],
+                use: [stylesHandler, "css-loader", "postcss-loader"],
             },
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -1268,7 +1268,7 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         config.plugins.push(new MiniCssExtractPlugin());
         
@@ -1276,7 +1276,7 @@ export default () => {
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -1314,22 +1314,22 @@ exports[`create-webpack-app cli should use css preprocessor and css with postcss
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     plugins: [
         // Add your plugins here
@@ -1339,15 +1339,15 @@ const config = {
         rules: [
             {
                 test: /\\.s[ac]ss$/i,
-                use: [stylesHandler, 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: [stylesHandler, "css-loader", "postcss-loader", "sass-loader"],
             },
             {
                 test: /\\.css$/i,
-                use: [stylesHandler, 'css-loader', 'postcss-loader'],
+                use: [stylesHandler, "css-loader", "postcss-loader"],
             },
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
 
@@ -1359,13 +1359,13 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         config.plugins.push(new MiniCssExtractPlugin());
         
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
@@ -1403,22 +1403,22 @@ exports[`create-webpack-app cli should use to use css preprocessor with postcss 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 
 
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: './src/index.js',
+    entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },
     plugins: [
         // Add your plugins here
@@ -1428,11 +1428,11 @@ const config = {
         rules: [
             {
                 test: /\\.s[ac]ss$/i,
-                use: [stylesHandler, 'css-loader', 'postcss-loader', 'sass-loader'],
+                use: [stylesHandler, "css-loader", "postcss-loader", "sass-loader"],
             },
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
             
 
@@ -1444,13 +1444,13 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         
         config.plugins.push(new MiniCssExtractPlugin());
         
         
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };

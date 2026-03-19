@@ -2,36 +2,36 @@
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";<% if (htmlWebpackPlugin) { %>
-import HtmlWebpackPlugin from 'html-webpack-plugin';<% } %><% if (extractPlugin !== 'No') { %>
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';<% } %><% if (workboxWebpackPlugin) { %>
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';<% } %>
+import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
+import MiniCssExtractPlugin from "mini-css-extract-plugin";<% } %><% if (workboxWebpackPlugin) { %>
+import WorkboxWebpackPlugin from "workbox-webpack-plugin";<% } %>
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === 'production';
-<% if (cssType !== 'none') { %>
+const isProduction = process.env.NODE_ENV === "production";
+<% if (cssType !== "none") { %>
 <% if (extractPlugin === "Yes") { %>
 const stylesHandler = MiniCssExtractPlugin.loader;
 <% } else if (extractPlugin === "Only for Production") { %>
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 <% } else { %>
-const stylesHandler = 'style-loader';
+const stylesHandler = "style-loader";
 <% } %>
 <% } %>
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: '<%= entry %>',
+    entry: "<%= entry %>",
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, "dist"),
     },<% if (devServer) { %>
     devServer: {
         open: true,
-        host: 'localhost',
+        host: "localhost",
     },<% } %>
     plugins: [<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: "index.html",
         }),
 <% } %><% if (extractPlugin === "Yes") { %>
         new MiniCssExtractPlugin(),
@@ -53,32 +53,32 @@ const config = {
             },<% } %><% if (langType == "Typescript") { %>
             {
                 test: /\.(ts|tsx)$/i,
-                loader: 'ts-loader',
-                exclude: ['/node_modules/'],
+                loader: "ts-loader",
+                exclude: ["/node_modules/"],
             },<% } %><%  if (isCSS && !isPostCSS) { %>
             {
                 test: /\.css$/i,
-                use: [stylesHandler,'css-loader'],
-            },<% } %><%  if (cssType == 'SASS') { %>
+                use: [stylesHandler,"css-loader"],
+            },<% } %><%  if (cssType == "SASS") { %>
             {
                 test: /\.s[ac]ss$/i,
-                use: [stylesHandler, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'sass-loader'],
-            },<% } %><%  if (cssType == 'LESS') { %>
+                use: [stylesHandler, "css-loader", <% if (isPostCSS) { %>"postcss-loader", <% } %>"sass-loader"],
+            },<% } %><%  if (cssType == "LESS") { %>
             {
                 test: /\.less$/i,
-                use: [stylesHandler, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'less-loader'],
-            },<% } %><%  if (cssType == 'Stylus') { %>
+                use: [stylesHandler, "css-loader", <% if (isPostCSS) { %>"postcss-loader", <% } %>"less-loader"],
+            },<% } %><%  if (cssType == "Stylus") { %>
             {
                 test: /\.styl$/i,
-                use: [stylesHandler, 'css-loader', <% if (isPostCSS) { %>'postcss-loader', <% } %>'stylus-loader'],
+                use: [stylesHandler, "css-loader", <% if (isPostCSS) { %>"postcss-loader", <% } %>"stylus-loader"],
             },<% } %><%  if (isPostCSS && isCSS) { %>
             {
                 test: /\.css$/i,
-                use: [stylesHandler, 'css-loader', 'postcss-loader'],
+                use: [stylesHandler, "css-loader", "postcss-loader"],
             },<% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset',
+                type: "asset",
             },
 
             // Add your rules for custom modules here
@@ -89,13 +89,13 @@ const config = {
         alias: {
             "@": path.resolve(__dirname, "./src/"),
         },
-        extensions: ['.jsx', '.js'<% if (langType === 'Typescript') { %>, '.tsx', '.ts'<% } %>],
+        extensions: [".jsx", ".js"<% if (langType === "Typescript") { %>, ".tsx", ".ts"<% } %>],
     },
 };
 
 export default () => {
     if (isProduction) {
-        config.mode = 'production';
+        config.mode = "production";
         <% if (extractPlugin === "Only for Production") { %>
         config.plugins.push(new MiniCssExtractPlugin());
         <% } %>
@@ -103,7 +103,7 @@ export default () => {
         config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
         <% } %>
     } else {
-        config.mode = 'development';
+        config.mode = "development";
     }
     return config;
 };
