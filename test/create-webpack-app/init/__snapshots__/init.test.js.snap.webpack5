@@ -18,6 +18,7 @@ exports[`create-webpack-app cli recognizes '-t' as an alias for '--template' and
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -40,6 +41,7 @@ exports[`create-webpack-app cli should ask question when wrong template is suppl
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -59,6 +61,7 @@ exports[`create-webpack-app cli should configure WDS as opted 1`] = `
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -130,6 +133,7 @@ exports[`create-webpack-app cli should configure html-webpack-plugin as opted 1`
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -207,6 +211,7 @@ exports[`create-webpack-app cli should configure workbox-webpack-plugin as opted
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -287,6 +292,7 @@ exports[`create-webpack-app cli should generate ES6 project correctly 1`] = `
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -361,6 +367,7 @@ exports[`create-webpack-app cli should generate default project when nothing is 
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -447,6 +454,7 @@ exports[`create-webpack-app cli should generate default project when nothing is 
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -531,6 +539,7 @@ exports[`create-webpack-app cli should generate default project when nothing is 
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -617,6 +626,7 @@ exports[`create-webpack-app cli should generate default project when nothing is 
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -703,6 +713,7 @@ exports[`create-webpack-app cli should generate default project when nothing is 
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -789,6 +800,7 @@ exports[`create-webpack-app cli should generate folders if non existing generati
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -811,6 +823,7 @@ exports[`create-webpack-app cli should generate project when generationPath is s
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -846,6 +859,7 @@ exports[`create-webpack-app cli should generate react template with state and ro
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -853,11 +867,14 @@ exports[`create-webpack-app cli should generate react template with state and ro
 exports[`create-webpack-app cli should generate react template with state and routing support with prompt answers 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -916,7 +933,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -961,6 +978,7 @@ exports[`create-webpack-app cli should generate svelte template with prompt answ
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -968,12 +986,15 @@ exports[`create-webpack-app cli should generate svelte template with prompt answ
 exports[`create-webpack-app cli should generate svelte template with prompt answers 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
-const isProduction = process.env.NODE_ENV === 'production';
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const isProduction = process.env.NODE_ENV === 'production';
 
 
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
@@ -1042,7 +1063,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -1074,6 +1095,7 @@ exports[`create-webpack-app cli should generate typescript project correctly 1`]
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -1166,6 +1188,7 @@ exports[`create-webpack-app cli should generate vue template with store and rout
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -1173,12 +1196,15 @@ exports[`create-webpack-app cli should generate vue template with store and rout
 exports[`create-webpack-app cli should generate vue template with store and router support on prompt answers 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');
-const { VueLoaderPlugin } = require('vue-loader');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+import { VueLoaderPlugin } from 'vue-loader';
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -1240,7 +1266,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         
@@ -1278,6 +1304,7 @@ exports[`create-webpack-app cli should use css preprocessor and css with postcss
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -1366,6 +1393,7 @@ exports[`create-webpack-app cli should use to use css preprocessor with postcss 
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -1447,6 +1475,7 @@ exports[`create-webpack-app cli should work with 'new' alias 1`] = `
     "serve": "webpack serve",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;
@@ -1464,6 +1493,7 @@ exports[`create-webpack-app cli uses yarn as the package manager when opted 1`] 
     "build:dev": "webpack --mode=development",
     "watch": "webpack --watch",
   },
+  "type": "module",
   "version": "1.0.0",
 }
 `;

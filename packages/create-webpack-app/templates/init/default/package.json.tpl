@@ -1,9 +1,8 @@
 {
   "version": "1.0.0",
-
   "description": "My webpack project",
-
   "name": "webpack-project",
+  "type": "module",
   "scripts": {
     "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",

@@ -1,11 +1,14 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require('path');<% if (htmlWebpackPlugin) { %>
-const HtmlWebpackPlugin = require('html-webpack-plugin');<% } %><% if (extractPlugin !== 'No') { %>
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');<% } %><% if (workboxWebpackPlugin) { %>
-const WorkboxWebpackPlugin = require('workbox-webpack-plugin');<% } %>
-const isProduction = process.env.NODE_ENV === 'production';
+import path from "node:path";
+import { fileURLToPath } from "node:url";<% if (htmlWebpackPlugin) { %>
+import HtmlWebpackPlugin from 'html-webpack-plugin';<% } %><% if (extractPlugin !== 'No') { %>
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';<% } %><% if (workboxWebpackPlugin) { %>
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';<% } %>
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const isProduction = process.env.NODE_ENV === 'production';
 <% if (cssType !== 'none') { %>
 <% if (extractPlugin === "Yes") { %>
 const stylesHandler = MiniCssExtractPlugin.loader;
@@ -104,7 +107,7 @@ const config = {
     },
 };
 
-module.exports = () => {
+export default () => {
     if (isProduction) {
         config.mode = 'production';
         <% if (extractPlugin === "Only for Production") { %>
