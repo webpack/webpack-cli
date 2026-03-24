@@ -6,18 +6,6 @@ import { fileURLToPath } from "node:url";<% if (htmlWebpackPlugin) { %>
 import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
 import MiniCssExtractPlugin from "mini-css-extract-plugin";<% } %><% if (workboxWebpackPlugin) { %>
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";<% } %>
-<% const { execFileSync } = await import("node:child_process")
-let host;
-try {
-    const family = execFileSync(process.execPath, [
-        "--input-type=module", 
-        "--eval",
-        `import dns from "node:dns/promises";
-        const { family } = await dns.lookup("localhost");
-        process.stdout.write(String(family));`
-    ], { encoding: "utf8", timeout: 3000 }).trim();
-    host = family === "6" ? "::1" : "127.0.0.1";
-} catch { host = null; } %>
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,8 +28,6 @@ const config = {
     },<% if (devServer) { %>
     devServer: {
         open: true,
-        host: "localhost",<% if (host) { %>
-        allowedHosts: ["<%= host %>"],<% } %>
     },<% } %>
     plugins: [
         new VueLoaderPlugin(),<% if (htmlWebpackPlugin) { %>
