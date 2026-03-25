@@ -27,7 +27,6 @@ const config = {
     },<% if (devServer) { %>
     devServer: {
         open: true,
-        host: "localhost",
     },<% } %>
     plugins: [<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({

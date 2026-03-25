@@ -85,7 +85,6 @@ const config = {
     },
     devServer: {
         open: true,
-        host: "localhost",
     },
     plugins: [
         // Add your plugins here
@@ -393,7 +392,6 @@ const config = {
     },
     devServer: {
         open: true,
-        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -480,7 +478,6 @@ const config = {
     },
     devServer: {
         open: true,
-        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -565,7 +562,6 @@ const config = {
     },
     devServer: {
         open: true,
-        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -652,7 +648,6 @@ const config = {
     },
     devServer: {
         open: true,
-        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -739,7 +734,6 @@ const config = {
     },
     devServer: {
         open: true,
-        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -890,7 +884,6 @@ const config = {
     },
     devServer: {
         open: true,
-        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -1009,7 +1002,6 @@ const config = {
     },
     devServer: {
         open: true,
-        host: "localhost",
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -1220,7 +1212,6 @@ const config = {
     },
     devServer: {
         open: true,
-        host: "localhost",
     },
     plugins: [
         new VueLoaderPlugin(),

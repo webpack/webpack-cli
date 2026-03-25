@@ -28,7 +28,6 @@ const config = {
     },<% if (devServer) { %>
     devServer: {
         open: true,
-        host: "localhost",
     },<% } %>
     plugins: [
         new VueLoaderPlugin(),<% if (htmlWebpackPlugin) { %>
