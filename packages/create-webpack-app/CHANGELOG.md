@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.1.0
+
+### Minor Changes
+
+- Covert templates to ECMA modules syntax. (by [@ThierryRakotomanana](https://github.com/ThierryRakotomanana) in [#4709](https://github.com/webpack/webpack-cli/pull/4709))
+
+### Patch Changes
+
+- Use default logic to determine the host for webpack-dev-server. (by [@ThierryRakotomanana](https://github.com/ThierryRakotomanana) in [#4715](https://github.com/webpack/webpack-cli/pull/4715))
+
 ## 2.0.1
 
 ### Patch Changes
