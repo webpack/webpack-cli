@@ -80,7 +80,7 @@
     "ts-jest": "^29.0.1",
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
+    "typescript": "^6.0.2",
     "webpack": "^5.105.4",
     "webpack-bundle-analyzer": "^5.1.0",
     "webpack-dev-server": "^5.1.0"
