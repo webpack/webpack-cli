@@ -1,8 +1,10 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 import path from "node:path";
-import { fileURLToPath } from "node:url";<% if (htmlWebpackPlugin) { %>
-import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
+import { fileURLToPath } from "node:url";
+<% if (langType === "Typescript") { %>import { Configuration } from "webpack"; 
+<% if (devServer) { %>import "webpack-dev-server";<% } %><% } %>
+<% if (htmlWebpackPlugin) { %>import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
 import MiniCssExtractPlugin from "mini-css-extract-plugin";<% } %><% if (workboxWebpackPlugin) { %>
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";<% } %>
 
@@ -15,12 +17,10 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 <% } else if (extractPlugin === "Only for Production") { %>
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 <% } else { %>
-const stylesHandler = "style-loader";
-<% } %>
-<% } %>
+const stylesHandler = "style-loader";<% } %><% } %>
 
 /** @type {import("webpack").Configuration} */
-const config = {
+const config <% if (langType === "Typescript") { %>: Configuration<% } %> = {
     entry: "<%= entryPoint %>",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -91,12 +91,8 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        <% if (extractPlugin === "Only for Production") { %>
-        config.plugins.push(new MiniCssExtractPlugin());
-        <% } %>
-        <% if (workboxWebpackPlugin) { %>
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        <% } %>
+        <% if (extractPlugin === "Only for Production") { %>config.plugins!.push(new MiniCssExtractPlugin());<% } %>
+        <% if (workboxWebpackPlugin) { %>config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());<% } %>
     } else {
         config.mode = "development";
     }
