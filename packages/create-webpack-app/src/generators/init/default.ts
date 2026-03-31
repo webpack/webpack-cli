@@ -189,7 +189,9 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
           templateFile: join(
             plop.getPlopfilePath(),
             "../templates/init/default",
-            `${file.filePath}.tpl`,
+            file.filePath.startsWith("webpack.config")
+              ? "webpack.config.tpl"
+              : `${file.filePath}.tpl`,
           ),
           fileType: file.fileType,
           data: answers,
