@@ -58,8 +58,9 @@ const readFromPkgJSON = (path) => {
   return { ...pkgJSON, devDependencies: devDeps };
 };
 
-// Helper to read from webpack.config.js in a given path
-const readFromWebpackConfig = (path) => readFileSync(join(path, "webpack.config.js"), "utf8");
+// Helper to read from webpack.config.js or webpack.config.ts in a given path
+const readFromWebpackConfig = (path, filename = "webpack.config.js") =>
+  readFileSync(join(path, filename), "utf8");
 
 describe("create-webpack-app cli", () => {
   let dir;
@@ -277,14 +278,17 @@ describe("create-webpack-app cli", () => {
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
+    expect(stdout).toContain("webpack.config.ts");
     expect(stdout).toContain("tsconfig.json");
 
     // Test files
     const files = [
-      ...defaultTemplateFiles.filter((file) => file !== "src/index.js"),
+      ...defaultTemplateFiles.filter(
+        (file) => file !== "src/index.js" && file !== "webpack.config.js",
+      ),
       "src/index.ts",
       "tsconfig.json",
+      "webpack.config.ts",
     ];
 
     for (const file of files) {
@@ -295,7 +299,7 @@ describe("create-webpack-app cli", () => {
     expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
     // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir, "webpack.config.ts")).toMatchSnapshot();
   });
 
   it("should generate ES6 project correctly", async () => {
