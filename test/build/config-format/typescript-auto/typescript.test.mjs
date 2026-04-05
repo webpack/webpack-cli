@@ -26,15 +26,8 @@ describe("typescript configuration", () => {
       });
 
       /* eslint-disable jest/no-standalone-expect */
-
-      if (major >= 22) {
-        // No `type` in `the package.json` but Node.js support `require` ECMA modules
-        expect(stderr).toContain(
-          "Reparsing as ES module because module syntax was detected. This incurs a performance overhead.",
-        );
-      } else {
-        expect(stderr).toBeFalsy();
-      }
+      // esbuild handles transpilation cleanly — no Node.js "Reparsing" warning.
+      expect(stderr).toBeFalsy();
 
       expect(stdout).toBeTruthy();
       expect(exitCode).toBe(0);
