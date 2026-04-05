@@ -45,11 +45,15 @@
     "@types/envinfo": "^7.8.1"
   },
   "peerDependencies": {
+    "esbuild": ">=0.17.0",
     "webpack": "^5.101.0",
     "webpack-bundle-analyzer": "^4.0.0 || ^5.0.0",
     "webpack-dev-server": "^5.0.0"
   },
   "peerDependenciesMeta": {
+    "esbuild": {
+      "optional": true
+    },
     "webpack-bundle-analyzer": {
       "optional": true
     },
