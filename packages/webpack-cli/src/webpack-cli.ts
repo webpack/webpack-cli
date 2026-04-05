@@ -1953,7 +1953,7 @@ class WebpackCLI {
 
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+
     const self: WebpackCLI = this;
 
     // Register own exit
@@ -2153,6 +2153,117 @@ class WebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
+  /**
+   * Returns `true` for TypeScript config file extensions that should be
+   * loaded via the esbuild programmatic API rather than through the standard
+   * eval-import or rechoir paths.
+   *
+   * | Extension | Handled by                    |
+   * |-----------|-------------------------------|
+   * | `.ts`     | esbuild (this path)           |
+   * | `.tsx`    | esbuild (this path)           |
+   * | `.mts`    | esbuild (this path)           |
+   * | `.cts`    | rechoir (unchanged, CJS-only) |
+   *
+   * @param configPath - Path to the webpack configuration file.
+   * @returns `true` if the file should be loaded via esbuild.
+   */
+  private isTypeScriptConfig(configPath: string): boolean {
+    const ext = path.extname(configPath).toLowerCase();
+    return ext === ".ts" || ext === ".tsx" || ext === ".mts";
+  }
+
+  /**
+   * Loads any TypeScript config file (CJS or ESM syntax) using esbuild as
+   * the programmatic TypeScript loader.
+   *
+   * esbuild is an optional peer dependency. If it is not installed, a clean
+   * actionable error is shown instead of a raw Node.js internal crash.
+   *
+   * @param configPath - Absolute or relative path to the TypeScript config file.
+   * @returns The module namespace object of the loaded config file.
+   * @throws {Error & { isMissingLoaderError: true }} When esbuild is not installed.
+   */
+
+  private async loadTypeScriptConfig(configPath: string): Promise<unknown> {
+    const resolvedPath = path.resolve(configPath);
+
+    let esbuild: typeof import("esbuild");
+
+    try {
+      esbuild = (await import("esbuild" as string)) as typeof import("esbuild");
+    } catch {
+      throw Object.assign(new Error("missing-esbuild"), { isMissingLoaderError: true });
+    }
+
+    const configDir = path.dirname(resolvedPath);
+
+    // A .ts or .tsx file in a CJS context should be compiled to CJS.
+    const isCJS = await this.#isCJSTypeScriptConfig(resolvedPath);
+    const tmpName = `.webpack.config.${Date.now()}.${Math.random().toString(36).slice(2)}.mjs`;
+    const tmpPath = path.join(configDir, tmpName);
+
+    try {
+      if (isCJS) {
+        // Compile to CJS first as a text bundle, then wrap it in an ESM
+        const result = await esbuild.build({
+          entryPoints: [resolvedPath],
+          write: false,
+          bundle: true,
+          format: "cjs",
+          platform: "node",
+          target: `node${process.versions.node.split(".")[0]}`,
+          sourcemap: false,
+          logLevel: "silent",
+          packages: "external",
+        });
+        const cjsCode = result.outputFiles[0].text;
+        const wrapped = ` import { createRequire } from "node:module";
+                          import { fileURLToPath as _fup } from "node:url";
+                          import _path from "node:path";
+
+                          const __filename = _fup(import.meta.url);
+                          const __dirname  = _path.dirname(__filename);
+                          const require    = createRequire(import.meta.url);
+
+                          const module  = { exports: {} };
+                          const exports = module.exports;
+
+                          ${cjsCode}
+
+                          export default module.exports;`;
+
+        await fs.promises.writeFile(tmpPath, wrapped, "utf8");
+      } else {
+        // Pure ESM TypeScript config, original path, unchanged.
+        await esbuild.build({
+          entryPoints: [resolvedPath],
+          outfile: tmpPath,
+          bundle: false,
+          format: "esm",
+          platform: "node",
+          target: `node${process.versions.node.split(".")[0]}`,
+          sourcemap: false,
+          logLevel: "silent",
+        });
+      }
+
+      return await import(pathToFileURL(tmpPath).toString());
+    } finally {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      fs.promises.unlink(tmpPath).catch(() => {});
+    }
+  }
+
+  async #isCJSTypeScriptConfig(configPath: string): Promise<boolean> {
+    try {
+      const src = await fs.promises.readFile(configPath, "utf8");
+      return /\brequire\s*\(|\bmodule\.exports\b/.test(src);
+    } catch {
+      return false;
+    }
+  }
+
   async loadConfig(options: Options) {
     const disableInterpret =
       typeof options.disableInterpret !== "undefined" && options.disableInterpret;
@@ -2164,6 +2275,7 @@ class WebpackCLI {
       let options: LoadableWebpackConfiguration | undefined;
 
       const isFileURL = configPath.startsWith("file://");
+      const normalizedPath = isFileURL ? fileURLToPath(configPath) : configPath;
 
       try {
         let loadingError;
@@ -2172,7 +2284,7 @@ class WebpackCLI {
           options = // eslint-disable-next-line no-eval
             (await eval(`import("${isFileURL ? configPath : pathToFileURL(configPath)}")`)).default;
         } catch (err) {
-          if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
+          if (this.isValidationError(err)) {
             throw err;
           }
 
@@ -2181,6 +2293,12 @@ class WebpackCLI {
 
         // Fallback logic when we can't use `import(...)`
         if (loadingError) {
+          if (process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
+            throw new ConfigurationLoadingError([
+              loadingError,
+              new Error("require() skipped: WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG is set"),
+            ]);
+          }
           const { jsVariants, extensions } = await import("interpret");
           const ext = path.extname(configPath).toLowerCase();
 
@@ -2197,6 +2315,17 @@ class WebpackCLI {
               rechoir.prepare(extensions, configPath);
             } catch (error) {
               if ((error as RechoirError)?.failures) {
+                if (this.isTypeScriptConfig(normalizedPath)) {
+                  // Re-throw so the outer catch can attempt the esbuild fallback.
+                  throw new ConfigurationLoadingError([
+                    loadingError!,
+                    new Error(
+                      `Unable to use specified module loaders for "${path.extname(normalizedPath)}".`,
+                    ),
+                  ]);
+                }
+
+                // Non-TypeScript file, original rechoir output unchanged.
                 this.logger.error(`Unable load '${configPath}'`);
                 this.logger.error((error as RechoirError).message);
                 for (const failure of (error as RechoirError).failures) {
@@ -2234,14 +2363,42 @@ class WebpackCLI {
           options = {};
         }
       } catch (error) {
-        if (error instanceof ConfigurationLoadingError) {
+        if (error instanceof ConfigurationLoadingError && this.isTypeScriptConfig(normalizedPath)) {
+          try {
+            const mod = await this.loadTypeScriptConfig(normalizedPath);
+            options =
+              (mod as { default?: LoadableWebpackConfiguration }).default ??
+              (mod as LoadableWebpackConfiguration);
+          } catch (err) {
+            if ((err as Error & { isMissingLoaderError?: boolean }).isMissingLoaderError) {
+              this.logger.error(
+                "Cannot load a TypeScript webpack config without a TypeScript loader.",
+              );
+              this.logger.error(this.colors.white("Please install esbuild in your project:"));
+              this.logger.error(this.colors.yellow(" npm install -D esbuild"));
+              this.logger.error(
+                this.colors.white("Or use another TypeScript loader via Node.js options."),
+              );
+              this.logger.error(
+                this.colors.blue(
+                  "  https://webpack.js.org/guides/typescript/#ways-to-use-typescript-in-webpackconfigts",
+                ),
+              );
+            } else {
+              // esbuild was found but the config itself has an error (syntax etc.)
+              this.logger.error(`Failed to load '${configPath}' config`);
+              this.logger.error(err);
+            }
+            process.exit(2);
+          }
+        } else if (error instanceof ConfigurationLoadingError) {
           this.logger.error(`Failed to load '${configPath}' config\n${error.message}`);
+          process.exit(2);
         } else {
           this.logger.error(`Failed to load '${configPath}' config`);
           this.logger.error(error);
+          process.exit(2);
         }
-
-        process.exit(2);
       }
 
       if (Array.isArray(options)) {
