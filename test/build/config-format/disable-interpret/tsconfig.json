@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs"
+    "types": ["node"],
+    "module": "CommonJS",
+    "target": "ES2022",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0"
   }
 }

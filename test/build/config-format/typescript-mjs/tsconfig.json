@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
+    "types": ["node"],
     "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,
-    "module": "esnext"
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "strict": true
   }
 }

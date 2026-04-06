@@ -2,6 +2,7 @@
   "exclude": ["node_modules", "lib"],
   "files": [],
   "compilerOptions": {
+    "types": ["node"],
     "lib": ["es2023"],
     "module": "nodenext",
     "target": "ES2022",
@@ -14,10 +15,9 @@
     "allowSyntheticDefaultImports": true,
 
     "rootDir": ".",
-    "outDir": "lib",
-    "baseUrl": ".",
+    "outDir": "./lib",
     "paths": {
-      "@webpack-cli/*": ["packages/*/src"]
+      "@webpack-cli/*": ["./packages/*/src"]
     },
     "isolatedModules": true,
     "composite": true,

@@ -6,10 +6,9 @@ const { run } = require("../../../utils/test-utils");
 describe("webpack cli", () => {
   it('should work with the "disable-interpret" option from flags', async () => {
     const configFileName = "webpack.config";
-    const configFilePath = resolve(__dirname, `${configFileName}.ts`);
     const { execa } = await import("execa");
-    const buildScripts = await execa("yarn", ["tsc", configFilePath]);
-    expect(buildScripts.stdout).toBeTruthy();
+
+    await execa("tsc", [], { cwd: __dirname });
 
     const { exitCode, stderr, stdout } = await run(__dirname, ["--disable-interpret"]);
     unlinkSync(resolve(__dirname, `${configFileName}.js`));

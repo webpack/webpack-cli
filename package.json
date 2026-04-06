@@ -65,7 +65,7 @@
     "css-loader": "^7.1.2",
     "del-cli": "^7.0.0",
     "eslint": "^9.29.0",
-    "eslint-config-webpack": "^4.5.0",
+    "eslint-config-webpack": "^4.9.5",
     "execa": "^9.6.1",
     "get-port": "^7.1.0",
     "husky": "^9.1.4",
@@ -80,7 +80,7 @@
     "ts-jest": "^29.0.1",
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
+    "typescript": "^6.0.2",
     "webpack": "^5.105.4",
     "webpack-bundle-analyzer": "^5.1.0",
     "webpack-dev-server": "^5.1.0"
