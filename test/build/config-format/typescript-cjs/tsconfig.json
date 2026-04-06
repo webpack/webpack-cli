@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
+    "types": ["node"],
     "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "rewriteRelativeImportExtensions": true,
-    "module": "commonjs"
+    "erasableSyntaxOnly": true,
+    "strict": true
   }
 }
