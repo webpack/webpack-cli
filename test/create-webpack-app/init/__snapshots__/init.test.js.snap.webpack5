@@ -13,10 +13,10 @@ exports[`create-webpack-app cli recognizes '-t' as an alias for '--template' and
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -36,10 +36,10 @@ exports[`create-webpack-app cli should ask question when wrong template is suppl
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -56,10 +56,10 @@ exports[`create-webpack-app cli should configure WDS as opted 1`] = `
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -80,7 +80,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -130,9 +130,9 @@ exports[`create-webpack-app cli should configure html-webpack-plugin as opted 1`
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -153,7 +153,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -209,9 +209,9 @@ exports[`create-webpack-app cli should configure workbox-webpack-plugin as opted
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -233,7 +233,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -289,9 +289,9 @@ exports[`create-webpack-app cli should generate ES6 project correctly 1`] = `
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -312,7 +312,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -365,10 +365,10 @@ exports[`create-webpack-app cli should generate default project when nothing is 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -390,7 +390,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -450,10 +450,10 @@ exports[`create-webpack-app cli should generate default project when nothing is 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -475,7 +475,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -534,9 +534,9 @@ exports[`create-webpack-app cli should generate default project when nothing is 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -558,7 +558,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -618,10 +618,10 @@ exports[`create-webpack-app cli should generate default project when nothing is 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -643,7 +643,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -703,10 +703,10 @@ exports[`create-webpack-app cli should generate default project when nothing is 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -728,7 +728,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -788,10 +788,10 @@ exports[`create-webpack-app cli should generate folders if non existing generati
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -811,10 +811,10 @@ exports[`create-webpack-app cli should generate project when generationPath is s
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -1083,9 +1083,9 @@ exports[`create-webpack-app cli should generate typescript project correctly 1`]
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --mode=production --config-node-env=production  -c ./webpack.config.ts",
-    "build:dev": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --mode=development  -c ./webpack.config.ts",
-    "watch": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' webpack --watch  -c ./webpack.config.ts",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -1107,7 +1107,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config : Configuration = {
+const config : Configuration= {
     entry: "./src/index.ts",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -1294,9 +1294,9 @@ exports[`create-webpack-app cli should use css preprocessor and css with postcss
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -1321,7 +1321,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -1382,9 +1382,9 @@ exports[`create-webpack-app cli should use to use css preprocessor with postcss 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -1409,7 +1409,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader
 
 
 /** @type {import("webpack").Configuration} */
-const config  = {
+const config = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -1462,10 +1462,10 @@ exports[`create-webpack-app cli should work with 'new' alias 1`] = `
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "serve": "webpack serve ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "serve": "webpack serve",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
@@ -1481,9 +1481,9 @@ exports[`create-webpack-app cli uses yarn as the package manager when opted 1`] 
   },
   "name": "webpack-project",
   "scripts": {
-    "build": "webpack --mode=production --config-node-env=production ",
-    "build:dev": "webpack --mode=development ",
-    "watch": "webpack --watch ",
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
   },
   "type": "module",
   "version": "1.0.0",
