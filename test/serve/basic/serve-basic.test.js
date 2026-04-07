@@ -92,9 +92,7 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("second-output/main.js");
   });
 
-  // TODO need fix in future, edge case
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip("should work in multi compiler mode with multiple dev servers", async () => {
+  it("should work in multi compiler mode with multiple dev servers", async () => {
     const { stderr, stdout } = await runWatch(
       __dirname,
       ["serve", "--config", "multi-dev-server.config.js"],
@@ -107,6 +105,19 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
     expect(stdout).toContain("second-output/main.js");
+  });
+
+  it("should work in multi compiler mode with shared devServer config", async () => {
+    const { stderr, stdout } = await runWatch(
+      __dirname,
+      ["serve", "--config", "multiple-dev-server.config.js", "--port", port],
+      normalStdKillOptions,
+    );
+
+    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
+    expect(stdout).toContain("one");
+    expect(stdout).toContain("first-output/main.js");
+    expect(stdout).toContain("two");
   });
 
   it('should work with the "--mode" option', async () => {
@@ -495,15 +506,17 @@ describe("basic serve usage", () => {
     expect(normalizeStdout(stdout)).toContain("compiled successfully");
   });
 
-  it("should throw error when same ports in multicompiler", async () => {
-    const { stderr } = await runWatch(__dirname, [
-      "serve",
-      "--config",
-      "same-ports-dev-server.config.js",
-    ]);
+  it("should work when same ports in multicompiler", async () => {
+    const { stderr, stdout } = await runWatch(
+      __dirname,
+      ["serve", "--config", "same-ports-dev-server.config.js"],
+      normalStdKillOptions,
+    );
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    // Due to racing logic, first dev server can be started and compiled, but then the second always fails
-    // expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+    expect(stdout).toContain("one");
+    expect(stdout).toContain("first-output/main.js");
+    expect(stdout).toContain("two");
+    expect(stdout).toContain("second-output/main.js");
   });
 });

@@ -65,16 +65,6 @@ exports[`basic serve usage should respect the "publicPath" option from configura
 <i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
 `;
 
-exports[`basic serve usage should throw error when same ports in multicompiler: stderr 1`] = `
-"<i> [webpack-dev-server] Project is running at:
-<i> [webpack-dev-server] Loopback: http://localhost:<port>/, http://[::1]:<port>/
-<i> [webpack-dev-server] On Your Network (IPv4): http://x.x.x.x:<port>/
-<i> [webpack-dev-server] On Your Network (IPv6): http://[x:x:x:x:x:x:x:x]:<port>/
-<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory
-[webpack-cli] Error: Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.
-    at stack"
-`;
-
 exports[`basic serve usage should work and log warning on the 'watch' option in a configuration: stderr 1`] = `
 "[webpack-cli] No need to use the 'serve' command together with '{ watch: true | false }' or '--watch'/'--no-watch' configuration, it does not make sense.
 <i> [webpack-dev-server] Project is running at:
@@ -84,7 +74,35 @@ exports[`basic serve usage should work and log warning on the 'watch' option in 
 <i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
 `;
 
+exports[`basic serve usage should work in multi compiler mode with multiple dev servers: stderr 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:<port>/, http://[::1]:<port>/
+<i> [webpack-dev-server] On Your Network (IPv4): http://x.x.x.x:<port>/
+<i> [webpack-dev-server] On Your Network (IPv6): http://[x:x:x:x:x:x:x:x]:<port>/
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory
+<e> [webpack-dev-middleware] ConcurrentCompilationError: You ran Webpack twice. Each instance only supports a single concurrent compilation
+    at stack: http://x.x.x.x:<port>/
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory
+<i> [webpack-dev-server] Gracefully shutting down. To force exit, press ^C again. Please wait..."
+`;
+
+exports[`basic serve usage should work in multi compiler mode with shared devServer config: stderr 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:<port>/, http://[::1]:<port>/
+<i> [webpack-dev-server] On Your Network (IPv4): http://x.x.x.x:<port>/
+<i> [webpack-dev-server] On Your Network (IPv6): http://[x:x:x:x:x:x:x:x]:<port>/
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
 exports[`basic serve usage should work in multi compiler mode: stderr 1`] = `
+"<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:<port>/, http://[::1]:<port>/
+<i> [webpack-dev-server] On Your Network (IPv4): http://x.x.x.x:<port>/
+<i> [webpack-dev-server] On Your Network (IPv6): http://[x:x:x:x:x:x:x:x]:<port>/
+<i> [webpack-dev-server] Content not from webpack is served from '<cwd>/test/serve/basic/public' directory"
+`;
+
+exports[`basic serve usage should work when same ports in multicompiler: stderr 1`] = `
 "<i> [webpack-dev-server] Project is running at:
 <i> [webpack-dev-server] Loopback: http://localhost:<port>/, http://[::1]:<port>/
 <i> [webpack-dev-server] On Your Network (IPv4): http://x.x.x.x:<port>/

@@ -1677,7 +1677,8 @@ class WebpackCLI {
         const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
-        const usedPorts: number[] = [];
+
+        const portGroups = new Map<string, DevServerConfiguration>();
 
         for (const compilerForDevServer of compilersForDevServer) {
           if (compilerForDevServer.options.devServer === false) {
@@ -1708,18 +1709,21 @@ class WebpackCLI {
             this.#processArguments(webpack, args, devServerConfiguration, values);
           }
 
-          if (devServerConfiguration.port) {
-            const portNumber = Number(devServerConfiguration.port);
+          // Use a string key to group by port; configs without a port
+          // share the "default" group and will be served together.
+          const portKey = devServerConfiguration.port
+            ? String(devServerConfiguration.port)
+            : "default";
 
-            if (usedPorts.includes(portNumber)) {
-              throw new Error(
-                "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
-              );
-            }
-
-            usedPorts.push(portNumber);
+          // Only use the first config's devServer options for each port group.
+          // Subsequent configs sharing the same port will be handled by the
+          // same dev server instance via the multi-compiler.
+          if (!portGroups.has(portKey)) {
+            portGroups.set(portKey, devServerConfiguration);
           }
+        }
 
+        for (const devServerConfiguration of portGroups.values()) {
           try {
             const server = new DevServer(devServerConfiguration, compiler);
 
@@ -1953,7 +1957,7 @@ class WebpackCLI {
 
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+
     const self: WebpackCLI = this;
 
     // Register own exit
