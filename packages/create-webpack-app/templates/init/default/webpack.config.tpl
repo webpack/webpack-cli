@@ -2,7 +2,7 @@
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";<% if (langType === "Typescript") { %>
-import { Configuration } from "webpack";<% if (devServer) { %>
+import { type Configuration } from "webpack";<% if (devServer) { %>
 import "webpack-dev-server";<% } %><% } %><% if (htmlWebpackPlugin) { %>
 import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
 import MiniCssExtractPlugin from "mini-css-extract-plugin";<% } %><% if (workboxWebpackPlugin) { %>
