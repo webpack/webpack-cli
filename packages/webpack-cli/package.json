@@ -21,6 +21,11 @@
     "url": "https://opencollective.com/webpack"
   },
   "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
   "main": "./lib/index.js",
   "bin": {
     "webpack-cli": "./bin/cli.js"
@@ -36,7 +41,6 @@
     "cross-spawn": "^7.0.6",
     "envinfo": "^7.14.0",
     "fastest-levenshtein": "^1.0.12",
-    "import-local": "^3.0.2",
     "interpret": "^3.1.1",
     "rechoir": "^0.8.0",
     "webpack-merge": "^6.0.1"

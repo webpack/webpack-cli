@@ -28,7 +28,7 @@ export default defineConfig([
     },
   },
   {
-    files: ["./packages/create-webpack-app/**/*"],
+    files: ["./packages/create-webpack-app/**/*", "./packages/webpack-cli/bin/**/*"],
     extends: [configs["recommended-module"]],
     rules: {
       // We are CLI, so using `console.log` is normal

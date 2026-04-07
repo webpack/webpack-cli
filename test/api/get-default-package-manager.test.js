@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
+
+let CLI;
 
 const syncMock = jest.fn(() => ({
   stdout: "1.0.0",
@@ -23,7 +24,9 @@ describe("getPackageManager", () => {
 
   const cwdSpy = jest.spyOn(process, "cwd");
 
-  beforeAll(() => {
+  beforeAll(async () => {
+    ({ default: CLI } = await import("../../packages/webpack-cli/lib/webpack-cli"));
+
     // package-lock.json is ignored by .gitignore, so we simply
     // write a lockfile here for testing
     if (!fs.existsSync(testNpmLockPath)) {

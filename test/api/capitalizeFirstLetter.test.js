@@ -1,6 +1,10 @@
-const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
+let CLI;
 
 describe("capitalizeFirstLetter", () => {
+  beforeAll(async () => {
+    ({ default: CLI } = await import("../../packages/webpack-cli/lib/webpack-cli"));
+  });
+
   it("should capitalize first letter", () => {
     const cli = new CLI();
 

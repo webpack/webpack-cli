@@ -1,6 +1,10 @@
-const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
+let CLI;
 
 describe("CLI API", () => {
+  beforeAll(async () => {
+    ({ default: CLI } = await import("../../packages/webpack-cli/lib/webpack-cli"));
+  });
+
   let cli;
 
   beforeEach(() => {

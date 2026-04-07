@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { type Readable as ReadableType } from "node:stream";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -31,6 +32,8 @@ import {
   default as webpack,
 } from "webpack";
 import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
+
+const require = createRequire(import.meta.url);
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -410,7 +413,7 @@ class WebpackCLI {
     }
 
     // Fallback using fs
-    let dir = __dirname;
+    let dir = path.dirname(fileURLToPath(import.meta.url));
 
     do {
       try {
@@ -1953,7 +1956,7 @@ class WebpackCLI {
 
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+
     const self: WebpackCLI = this;
 
     // Register own exit
@@ -2169,8 +2172,7 @@ class WebpackCLI {
         let loadingError;
 
         try {
-          options = // eslint-disable-next-line no-eval
-            (await eval(`import("${isFileURL ? configPath : pathToFileURL(configPath)}")`)).default;
+          options = (await import(isFileURL ? configPath : pathToFileURL(configPath).href)).default;
         } catch (err) {
           if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
             throw err;
@@ -2528,7 +2530,7 @@ class WebpackCLI {
       process.exit(2);
     }
 
-    const { default: CLIPlugin } = (await import("./plugins/cli-plugin.js")).default;
+    const { default: CLIPlugin } = await import("./plugins/cli-plugin.js");
 
     const builtInOptions = this.schemaToOptions(options.webpack);
     const internalBuildConfig = (configuration: Configuration) => {

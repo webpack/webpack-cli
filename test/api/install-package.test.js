@@ -1,7 +1,8 @@
 "use strict";
 
 const { stripVTControlCharacters } = require("node:util");
-const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
+
+let CLI;
 
 const readlineQuestionMock = jest.fn();
 
@@ -17,6 +18,10 @@ const spawnMock = jest.fn();
 jest.mock("cross-spawn", () => ({ sync: spawnMock }));
 
 describe("installPackage", () => {
+  beforeAll(async () => {
+    ({ default: CLI } = await import("../../packages/webpack-cli/lib/webpack-cli"));
+  });
+
   let cli;
   let getDefaultPackageManagerSpy;
 
