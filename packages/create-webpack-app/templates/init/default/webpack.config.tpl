@@ -20,7 +20,7 @@ const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader
 const stylesHandler = "style-loader";<% } %><% } %>
 
 /** @type {import("webpack").Configuration} */
-const config <% if (langType === "Typescript") { %>: Configuration<% } %>= {
+const config <% if (langType === "Typescript") { %>: Configuration<% } %> = {
     entry: "<%= entryPoint %>",
     output: {
         path: path.resolve(__dirname, "dist"),
