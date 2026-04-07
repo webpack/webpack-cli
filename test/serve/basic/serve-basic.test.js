@@ -92,19 +92,14 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("second-output/main.js");
   });
 
-  it("should work in multi compiler mode with multiple dev servers", async () => {
-    const { stderr, stdout } = await runWatch(
-      __dirname,
-      ["serve", "--config", "multi-dev-server.config.js"],
-      normalStdKillOptions,
-    );
+  it("should throw error when multiple dev servers have different ports", async () => {
+    const { stderr } = await runWatch(__dirname, [
+      "serve",
+      "--config",
+      "multi-dev-server.config.js",
+    ]);
 
     expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).toContain("HotModuleReplacementPlugin");
-    expect(stdout).toContain("one");
-    expect(stdout).toContain("first-output/main.js");
-    expect(stdout).toContain("two");
-    expect(stdout).toContain("second-output/main.js");
   });
 
   it("should work in multi compiler mode with shared devServer config", async () => {
@@ -518,5 +513,16 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("first-output/main.js");
     expect(stdout).toContain("two");
     expect(stdout).toContain("second-output/main.js");
+  });
+
+  it("should disable all dev servers with --no-dev-server", async () => {
+    const { stderr } = await runWatch(__dirname, [
+      "serve",
+      "--config",
+      "multi.config.js",
+      "--no-dev-server",
+    ]);
+
+    expect(stderr).toContain("No dev server configurations to run");
   });
 });

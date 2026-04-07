@@ -1677,15 +1677,16 @@ class WebpackCLI {
         const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
+        const usedPorts = new Set<string>();
 
-        const portGroups = new Map<string, DevServerConfiguration>();
+        let devServerConfiguration: DevServerConfiguration | undefined;
 
         for (const compilerForDevServer of compilersForDevServer) {
           if (compilerForDevServer.options.devServer === false) {
             continue;
           }
 
-          const devServerConfiguration: DevServerConfiguration =
+          const currentConfig: DevServerConfiguration =
             compilerForDevServer.options.devServer || {};
 
           const args: Record<string, WebpackArgument> = {};
@@ -1699,31 +1700,31 @@ class WebpackCLI {
 
             if (arg) {
               args[name] = arg as unknown as WebpackArgument;
-              // We really don't know what the value is
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               values[name] = options[name as keyof Options] as any;
             }
           }
 
           if (Object.keys(values).length > 0) {
-            this.#processArguments(webpack, args, devServerConfiguration, values);
+            this.#processArguments(webpack, args, currentConfig, values);
           }
 
-          // Use a string key to group by port; configs without a port
-          // share the "default" group and will be served together.
-          const portKey = devServerConfiguration.port
-            ? String(devServerConfiguration.port)
-            : "default";
+          const portKey = currentConfig.port ? String(currentConfig.port) : "default";
 
-          // Only use the first config's devServer options for each port group.
-          // Subsequent configs sharing the same port will be handled by the
-          // same dev server instance via the multi-compiler.
-          if (!portGroups.has(portKey)) {
-            portGroups.set(portKey, devServerConfiguration);
+          usedPorts.add(portKey);
+
+          if (usedPorts.size > 1) {
+            throw new Error(
+              "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
+            );
+          }
+
+          if (!devServerConfiguration) {
+            devServerConfiguration = currentConfig;
           }
         }
 
-        for (const devServerConfiguration of portGroups.values()) {
+        if (devServerConfiguration) {
           try {
             const server = new DevServer(devServerConfiguration, compiler);
 
