@@ -72,8 +72,6 @@ exports[`create-webpack-app cli should configure WDS as opted 2`] = `
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const isProduction = process.env.NODE_ENV === "production";
@@ -109,8 +107,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
     } else {
         config.mode = "development";
     }
@@ -144,7 +140,6 @@ exports[`create-webpack-app cli should configure html-webpack-plugin as opted 2`
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -187,8 +182,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
     } else {
         config.mode = "development";
     }
@@ -223,7 +216,6 @@ exports[`create-webpack-app cli should configure workbox-webpack-plugin as opted
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
@@ -267,7 +259,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
         config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
@@ -303,8 +294,6 @@ exports[`create-webpack-app cli should generate ES6 project correctly 2`] = `
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -342,8 +331,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
     } else {
         config.mode = "development";
     }
@@ -380,7 +367,6 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
@@ -427,7 +413,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
         config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
@@ -465,7 +450,6 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
@@ -512,7 +496,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
         config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
@@ -548,7 +531,6 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
@@ -595,7 +577,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
         config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
@@ -633,7 +614,6 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
@@ -680,7 +660,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
         config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
@@ -718,7 +697,6 @@ exports[`create-webpack-app cli should generate default project when nothing is 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";
 
@@ -765,7 +743,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
         config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
@@ -1076,7 +1053,6 @@ exports[`create-webpack-app cli should generate typescript project correctly 1`]
   "description": "My webpack project",
   "devDependencies": {
     "ts-loader": "x.x.x",
-    "ts-node": "x.x.x",
     "typescript": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
@@ -1097,9 +1073,7 @@ exports[`create-webpack-app cli should generate typescript project correctly 2`]
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { Configuration } from "webpack"; 
-
-
+import { Configuration } from "webpack";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1141,8 +1115,6 @@ const config : Configuration= {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
     } else {
         config.mode = "development";
     }
@@ -1308,8 +1280,6 @@ exports[`create-webpack-app cli should use css preprocessor and css with postcss
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
-
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -1356,7 +1326,6 @@ export default () => {
     if (isProduction) {
         config.mode = "production";
         config.plugins!.push(new MiniCssExtractPlugin());
-        
     } else {
         config.mode = "development";
     }
@@ -1396,8 +1365,6 @@ exports[`create-webpack-app cli should use to use css preprocessor with postcss 
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
-
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -1440,7 +1407,6 @@ export default () => {
     if (isProduction) {
         config.mode = "production";
         config.plugins!.push(new MiniCssExtractPlugin());
-        
     } else {
         config.mode = "development";
     }
