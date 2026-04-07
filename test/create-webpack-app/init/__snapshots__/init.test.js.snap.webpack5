@@ -1073,7 +1073,7 @@ exports[`create-webpack-app cli should generate typescript project correctly 2`]
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { Configuration } from "webpack";
+import { type Configuration } from "webpack";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
