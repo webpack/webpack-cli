@@ -107,8 +107,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
     } else {
         config.mode = "development";
     }
@@ -184,8 +182,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
     } else {
         config.mode = "development";
     }
@@ -263,10 +259,7 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+        config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
     }
@@ -338,8 +331,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
     } else {
         config.mode = "development";
     }
@@ -422,10 +413,7 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+        config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
     }
@@ -508,10 +496,7 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+        config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
     }
@@ -592,10 +577,7 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+        config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
     }
@@ -678,10 +660,7 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+        config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
     }
@@ -764,10 +743,7 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        
+        config.plugins!.push(new WorkboxWebpackPlugin.GenerateSW());
     } else {
         config.mode = "development";
     }
@@ -1097,6 +1073,7 @@ exports[`create-webpack-app cli should generate typescript project correctly 2`]
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { type Configuration } from "webpack";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1104,7 +1081,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 
 /** @type {import("webpack").Configuration} */
-const config = {
+const config : Configuration = {
     entry: "./src/index.ts",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -1138,8 +1115,6 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        
     } else {
         config.mode = "development";
     }
@@ -1315,7 +1290,6 @@ const isProduction = process.env.NODE_ENV === "production";
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 
 
-
 /** @type {import("webpack").Configuration} */
 const config = {
     entry: "./src/index.js",
@@ -1351,10 +1325,7 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+        config.plugins!.push(new MiniCssExtractPlugin());
     } else {
         config.mode = "development";
     }
@@ -1404,7 +1375,6 @@ const isProduction = process.env.NODE_ENV === "production";
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 
 
-
 /** @type {import("webpack").Configuration} */
 const config = {
     entry: "./src/index.js",
@@ -1436,10 +1406,7 @@ const config = {
 export default () => {
     if (isProduction) {
         config.mode = "production";
-        
-        config.plugins.push(new MiniCssExtractPlugin());
-        
-        
+        config.plugins!.push(new MiniCssExtractPlugin());
     } else {
         config.mode = "development";
     }

@@ -149,7 +149,10 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
 
       const files: FileRecord[] = [
         { filePath: "./index.html", fileType: "text" },
-        { filePath: "webpack.config.js", fileType: "text" },
+        {
+          filePath: answers.langType === "Typescript" ? "webpack.config.ts" : "webpack.config.js",
+          fileType: "text",
+        },
         { filePath: "package.json", fileType: "text" },
         { filePath: "README.md", fileType: "text" },
       ];
@@ -186,7 +189,9 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
           templateFile: join(
             plop.getPlopfilePath(),
             "../templates/init/default",
-            `${file.filePath}.tpl`,
+            file.filePath.startsWith("webpack.config")
+              ? "webpack.config.tpl"
+              : `${file.filePath}.tpl`,
           ),
           fileType: file.fileType,
           data: answers,

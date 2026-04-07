@@ -1,10 +1,18 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "module": "es6",
-    "target": "es5",
-    "allowJs": true
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "esnext",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "isolatedModules": true,
+    "rewriteRelativeImportExtensions": true
   },
-  "files": ["src/index.ts"]
+  "include": ["./src/**/*"],
+  "exclude": ["./node_modules"]
 }
