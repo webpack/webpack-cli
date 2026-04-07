@@ -105,7 +105,7 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
           devDependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
           break;
         case "Typescript":
-          devDependencies.push("typescript", "ts-loader", "ts-node");
+          devDependencies.push("typescript", "ts-loader");
           break;
       }
 
