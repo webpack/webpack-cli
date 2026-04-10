@@ -3,7 +3,7 @@ const webpack = require("webpack");
 module.exports = {
   mode: "development",
   plugins: [
-    new webpack.BannerPlugin({
+    new webpack.ProgressPlugin({
       unknown: "unknown",
     }),
   ],
