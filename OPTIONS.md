@@ -105,6 +105,8 @@ Options:
   --experiments-lazy-compilation-test <value>                                        Specify which entrypoints or import()ed modules should be lazily compiled. This is matched with the imported module and not the entrypoint name.
   --experiments-output-module                                                        Allow output javascript files as module source type.
   --no-experiments-output-module                                                     Negative 'experiments-output-module' option.
+  --experiments-source-import                                                        Enable experimental tc39 proposal https://github.com/tc39/proposal-source-phase-imports. This allows importing modules at source phase.
+  --no-experiments-source-import                                                     Negative 'experiments-source-import' option.
   --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
   --no-experiments-sync-web-assembly                                                 Negative 'experiments-sync-web-assembly' option.
   -e, --extends <value...>                                                           Path to the configuration to be extended (only works when using webpack-cli).
@@ -183,6 +185,7 @@ Options:
   --no-module-generator-css-auto-exports-only                                        Negative 'module-generator-css-auto-exports-only' option.
   --module-generator-css-auto-local-ident-hash-digest <value>                        Digest types used for the hash.
   --module-generator-css-auto-local-ident-hash-digest-length <value>                 Number of chars which are used for the hash.
+  --module-generator-css-auto-local-ident-hash-function <value>                      Algorithm used for generation the hash (see node.js crypto package).
   --module-generator-css-auto-local-ident-hash-salt <value>                          Any string which is added to the hash to salt it.
   --module-generator-css-auto-local-ident-name <value>                               Configure the generated local ident name.
   --module-generator-css-global-es-module                                            Configure the generated JS modules that use the ES modules syntax.
@@ -193,6 +196,7 @@ Options:
   --no-module-generator-css-global-exports-only                                      Negative 'module-generator-css-global-exports-only' option.
   --module-generator-css-global-local-ident-hash-digest <value>                      Digest types used for the hash.
   --module-generator-css-global-local-ident-hash-digest-length <value>               Number of chars which are used for the hash.
+  --module-generator-css-global-local-ident-hash-function <value>                    Algorithm used for generation the hash (see node.js crypto package).
   --module-generator-css-global-local-ident-hash-salt <value>                        Any string which is added to the hash to salt it.
   --module-generator-css-global-local-ident-name <value>                             Configure the generated local ident name.
   --module-generator-css-module-es-module                                            Configure the generated JS modules that use the ES modules syntax.
@@ -203,6 +207,7 @@ Options:
   --no-module-generator-css-module-exports-only                                      Negative 'module-generator-css-module-exports-only' option.
   --module-generator-css-module-local-ident-hash-digest <value>                      Digest types used for the hash.
   --module-generator-css-module-local-ident-hash-digest-length <value>               Number of chars which are used for the hash.
+  --module-generator-css-module-local-ident-hash-function <value>                    Algorithm used for generation the hash (see node.js crypto package).
   --module-generator-css-module-local-ident-hash-salt <value>                        Any string which is added to the hash to salt it.
   --module-generator-css-module-local-ident-name <value>                             Configure the generated local ident name.
   --module-generator-json-json-parse                                                 Use `JSON.parse` when the JSON string is longer than 20 characters.
@@ -331,6 +336,8 @@ Options:
   --no-module-parser-javascript-require-include                                      Negative 'module-parser-javascript-require-include' option.
   --module-parser-javascript-require-js                                              Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-require-js                                           Negative 'module-parser-javascript-require-js' option.
+  --module-parser-javascript-source-import                                           Enable experimental tc39 proposal https://github.com/tc39/proposal-source-phase-imports. This allows importing modules at source phase.
+  --no-module-parser-javascript-source-import                                        Negative 'module-parser-javascript-source-import' option.
   --module-parser-javascript-strict-export-presence                                  Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-strict-export-presence                               Negative 'module-parser-javascript-strict-export-presence' option.
   --module-parser-javascript-strict-this-context-on-imports                          Handle the this context correctly according to the spec for namespace objects.
@@ -411,6 +418,8 @@ Options:
   --no-module-parser-javascript-auto-require-include                                 Negative 'module-parser-javascript-auto-require-include' option.
   --module-parser-javascript-auto-require-js                                         Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-auto-require-js                                      Negative 'module-parser-javascript-auto-require-js' option.
+  --module-parser-javascript-auto-source-import                                      Enable experimental tc39 proposal https://github.com/tc39/proposal-source-phase-imports. This allows importing modules at source phase.
+  --no-module-parser-javascript-auto-source-import                                   Negative 'module-parser-javascript-auto-source-import' option.
   --module-parser-javascript-auto-strict-export-presence                             Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-auto-strict-export-presence                          Negative 'module-parser-javascript-auto-strict-export-presence' option.
   --module-parser-javascript-auto-strict-this-context-on-imports                     Handle the this context correctly according to the spec for namespace objects.
@@ -491,6 +500,8 @@ Options:
   --no-module-parser-javascript-dynamic-require-include                              Negative 'module-parser-javascript-dynamic-require-include' option.
   --module-parser-javascript-dynamic-require-js                                      Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-dynamic-require-js                                   Negative 'module-parser-javascript-dynamic-require-js' option.
+  --module-parser-javascript-dynamic-source-import                                   Enable experimental tc39 proposal https://github.com/tc39/proposal-source-phase-imports. This allows importing modules at source phase.
+  --no-module-parser-javascript-dynamic-source-import                                Negative 'module-parser-javascript-dynamic-source-import' option.
   --module-parser-javascript-dynamic-strict-export-presence                          Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-dynamic-strict-export-presence                       Negative 'module-parser-javascript-dynamic-strict-export-presence' option.
   --module-parser-javascript-dynamic-strict-this-context-on-imports                  Handle the this context correctly according to the spec for namespace objects.
@@ -569,6 +580,8 @@ Options:
   --no-module-parser-javascript-esm-require-include                                  Negative 'module-parser-javascript-esm-require-include' option.
   --module-parser-javascript-esm-require-js                                          Enable/disable parsing of require.js special syntax like require.config, requirejs.config, require.version and requirejs.onError.
   --no-module-parser-javascript-esm-require-js                                       Negative 'module-parser-javascript-esm-require-js' option.
+  --module-parser-javascript-esm-source-import                                       Enable experimental tc39 proposal https://github.com/tc39/proposal-source-phase-imports. This allows importing modules at source phase.
+  --no-module-parser-javascript-esm-source-import                                    Negative 'module-parser-javascript-esm-source-import' option.
   --module-parser-javascript-esm-strict-export-presence                              Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-esm-strict-export-presence                           Negative 'module-parser-javascript-esm-strict-export-presence' option.
   --module-parser-javascript-esm-strict-this-context-on-imports                      Handle the this context correctly according to the spec for namespace objects.
@@ -614,6 +627,8 @@ Options:
   --module-rules-loader <value...>                                                   A loader request.
   --module-rules-mimetype <value...>                                                 Match module mimetype when load from Data URI.
   --module-rules-mimetype-not <value...>                                             Logical NOT.
+  --module-rules-phase <value...>                                                    Match the import phase of the dependency.
+  --module-rules-phase-not <value...>                                                Logical NOT.
   --module-rules-real-resource <value...>                                            Match the real resource path of the module.
   --module-rules-real-resource-not <value...>                                        Logical NOT.
   --module-rules-resource <value...>                                                 Match the resource path of the module.
@@ -1323,9 +1338,11 @@ Options:
   --stats-warnings-filter <value...>                                                 Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
   --stats-warnings-filter-reset                                                      Clear all items provided in 'stats.warningsFilter' configuration. Suppress listing warnings that match the specified filters (they will still be counted). Filters can be Strings, RegExps or Functions.
   --stats-warnings-space <value>                                                     Space to display warnings (value is in number of lines).
-  -t, --target <value...>                                                            Environment to build for. Environment to build for. An array of environments to build for all of them when possible.
+  -t, --target <value...>                                                            Specific environment, runtime, or syntax. Environment to build for. An array of environments to build for all of them when possible.
   --no-target                                                                        Negative 'target' option.
   --target-reset                                                                     Clear all items provided in 'target' configuration. Environment to build for. An array of environments to build for all of them when possible.
+  --validate                                                                         Enable validation of webpack configuration. Defaults to true in development mode. In production mode, defaults to true unless futureDefaults is enabled, then defaults to false.
+  --no-validate                                                                      Negative 'validate' option.
   -w, --watch                                                                        Enter watch mode, which rebuilds on file change.
   --no-watch                                                                         Negative 'watch' option.
   --watch-options-aggregate-timeout <value>                                          Delay the rebuilt after the first change. Value is a time in ms.

@@ -22,7 +22,7 @@ Options:
   --name <value>                                      Name of the configuration. Used when loading multiple configurations.
   -o, --output-path <value>                           The output directory as **absolute path** (required).
   --stats [value]                                     Stats options object or preset name.
-  -t, --target <value...>                             Environment to build for. Environment to build for. An array of environments to build for all of them when possible.
+  -t, --target <value...>                             Specific environment, runtime, or syntax. Environment to build for. An array of environments to build for all of them when possible.
   -w, --watch                                         Enter watch mode, which rebuilds on file change.
   --watch-options-stdin                               Stop watching when stdin stream has ended.
   --allowed-hosts <value...>                          Allows to enumerate the hosts from which access to the dev server are allowed (useful when you are proxying dev server, by default is 'auto').
