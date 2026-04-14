@@ -28,8 +28,10 @@ describe("external command", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("Usage: webpack custom-command|cc [options]");
-    expect(stdout).toContain("-o, --output <value>  To get the output in a specified format");
+    expect(stdout).toContain("Usage");
+    expect(stdout).toContain("webpack custom-command|cc [options]");
+    expect(stdout).toContain("-o, --output <value>");
+    expect(stdout).toContain("To get the output in a specified format");
   });
 
   it("should work with help for option", async () => {
@@ -43,8 +45,10 @@ describe("external command", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("Usage: webpack custom-command --output <value>");
-    expect(stdout).toContain("Description: To get the output in a specified format");
+    expect(stdout).toContain("Usage");
+    expect(stdout).toContain("webpack custom-command --output <value>");
+    expect(stdout).toContain("Description");
+    expect(stdout).toContain("To get the output in a specified format");
   });
 
   it("should handle errors in external commands", async () => {

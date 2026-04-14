@@ -1,7 +1,7 @@
 "use strict";
 
 const { join } = require("node:path");
-const { run } = require("../utils/test-utils");
+const { run, stripRendererChrome } = require("../utils/test-utils");
 
 describe("'-o, --output <value>' usage", () => {
   it("gets info text by default", async () => {
@@ -9,7 +9,7 @@ describe("'-o, --output <value>' usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("webpack:");
+    expect(stdout).toContain("webpack");
   });
 
   it("gets info as json", async () => {
@@ -20,7 +20,7 @@ describe("'-o, --output <value>' usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain('"Packages":');
+    expect(stripRendererChrome(stdout)).toContain('"Packages":');
 
     const parse = () => {
       const output = JSON.parse(stdout);

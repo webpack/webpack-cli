@@ -1,7 +1,7 @@
 "use strict";
 
 const { join } = require("node:path");
-const { run } = require("../utils/test-utils");
+const { run, stripRendererChrome } = require("../utils/test-utils");
 
 describe("'-a, --additional-package <value...>' usage", () => {
   it("should work with only one package", async () => {
@@ -13,7 +13,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("System:");
+    expect(stripRendererChrome(stdout)).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
@@ -30,7 +30,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("System:");
+    expect(stripRendererChrome(stdout)).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
@@ -49,7 +49,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("System:");
+    expect(stripRendererChrome(stdout)).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
@@ -70,7 +70,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("System:");
+    expect(stripRendererChrome(stdout)).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");

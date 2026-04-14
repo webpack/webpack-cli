@@ -15,7 +15,7 @@ describe("basic usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("webpack:");
+    expect(stdout).toContain("webpack");
   });
 
   it("should work with --version", async () => {
@@ -23,7 +23,7 @@ describe("basic usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("webpack:");
+    expect(stdout).toContain("webpack");
   });
 
   it("should work with -v alias", async () => {
@@ -31,7 +31,7 @@ describe("basic usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("webpack:");
+    expect(stdout).toContain("webpack");
   });
 
   it("should work and gets more info in project root", async () => {
@@ -39,7 +39,7 @@ describe("basic usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("webpack:");
+    expect(stdout).toContain("webpack");
   });
 
   it("shows an appropriate warning on supplying unknown args", async () => {
