@@ -37,6 +37,12 @@ export interface RenderOptions {
   columns: number;
 }
 
+export interface AliasHelpData {
+  alias: string;
+  canonical: string;
+  optionHelp: OptionHelpData;
+}
+
 // ─── Layout constants ─────────────────────────────────────────────
 export const MAX_WIDTH = 80;
 export const INDENT = 2;
@@ -126,6 +132,22 @@ export function renderOptionHelp(data: OptionHelpData, opts: RenderOptions): voi
   renderRows(rows, colors, log, termWidth);
   log(div);
   log("");
+}
+
+export function renderAliasHelp(data: AliasHelpData, opts: RenderOptions): void {
+  const { colors, log } = opts;
+  const termWidth = Math.min(opts.columns, MAX_WIDTH);
+  const div = divider(termWidth, colors);
+
+  log("");
+  log(
+    `${indent(INDENT)}${colors.bold(colors.yellow("⬡"))} ${colors.bold(colors.yellow(data.alias))}` +
+      `  ${colors.yellow("→")}  ` +
+      `${colors.bold(colors.cyan(data.canonical))}`,
+  );
+  log(`${indent(INDENT)}${colors.yellow("alias for")} ${colors.bold(data.canonical)}`);
+  log(div);
+  renderOptionHelp(data.optionHelp, opts);
 }
 
 export function renderFooter(opts: RenderOptions, footer: FooterOptions = {}): void {

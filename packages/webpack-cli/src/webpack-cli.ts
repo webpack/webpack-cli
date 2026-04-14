@@ -31,7 +31,7 @@ import {
   default as webpack,
 } from "webpack";
 import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
-import { RenderOptions, renderFooter, renderOptionHelp } from "./ui-renderer.js";
+import { RenderOptions, renderAliasHelp, renderFooter, renderOptionHelp } from "./ui-renderer.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -1256,7 +1256,17 @@ class WebpackCLI {
         possibleValues,
       };
 
-      renderOptionHelp(optionHelpData, this.#renderOptions());
+      const isShortAlias = optionName.startsWith("-") && !optionName.startsWith("--");
+
+      if (isShortAlias) {
+        renderAliasHelp(
+          { alias: optionName, canonical: canonicalName, optionHelp: optionHelpData },
+          this.#renderOptions(),
+        );
+      } else {
+        renderOptionHelp(optionHelpData, this.#renderOptions());
+      }
+
       renderFooter(this.#renderOptions(), { verbose: isVerbose });
       process.exit(0);
 
