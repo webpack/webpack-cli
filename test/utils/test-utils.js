@@ -234,6 +234,53 @@ const runPromptWithAnswers = async (cwd, args, answers = [], options = {}) => {
   });
 };
 
+/**
+ * Strips webpack-cli UI renderer chrome from stdout/stderr so that
+ * tests written before the renderer was introduced continue to work
+ * without modification.
+ *
+ * Removes:
+ * - Command header block  (⬡ webpack <name>\n───\n<description>\n)
+ * - Command footer block  (───\n)
+ * - Status prefix icons   (✔ / ✖ / ⚠ / ℹ  at line start)
+ * - Divider lines         (lines that are only ─ chars + whitespace)
+ * - The 2-space indent    that the renderer adds to every stats line
+ *
+ * The result is what the CLI would have printed before the renderer
+ * existed, so legacy assertions keep working unchanged.
+ * @param {string} str The raw output string from the CLI.
+ * @returns {string} The sanitized string with UI chrome removed.
+ */
+function stripRendererChrome(str) {
+  if (!str) return str;
+
+  return (
+    str
+      .split("\n")
+      // Drop divider lines
+      .filter((line) => !/^\s*─{10,}\s*$/.test(line))
+      // Drop command header lines  ⬡ webpack build
+      .filter((line) => !/^\s*⬡\s+webpack\s+\w/.test(line))
+      // Convert section headers  "  ⬡ System" → "  System:"
+      // so legacy toContain("System:") assertions still pass
+      .map((line) => line.replace(/^\s{2}⬡\s+(.+)$/, (_, title) => `  ${title}:`))
+      // Drop known command description lines
+      .filter(
+        (line) =>
+          !/^\s*(Compiling your application|Watching for file changes|Starting the development server|Validating your webpack configuration|Installed package versions|System and environment information)\s*[….]?\s*$/.test(
+            line,
+          ),
+      )
+      // Drop status icon prefixes but keep the message
+      .map((line) => line.replace(/^\s{2}[✔✖⚠ℹ]\s+/, ""))
+      // Strip the 2-space indent the renderer adds to stats lines
+      .map((line) => (line.startsWith("  ") ? line.slice(2) : line))
+      .join("\n")
+      .replaceAll(/\n{3,}/g, "\n\n")
+      .trim()
+  );
+}
+
 const normalizeVersions = (output) =>
   output.replaceAll(
     /(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gi,
@@ -260,6 +307,7 @@ const normalizeStdout = (stdout) => {
   }
 
   let normalizedStdout = stripVTControlCharacters(stdout);
+  normalizedStdout = stripRendererChrome(normalizedStdout);
   normalizedStdout = normalizeCwd(normalizedStdout);
   normalizedStdout = normalizeVersions(normalizedStdout);
   normalizedStdout = normalizeError(normalizedStdout);
@@ -280,6 +328,7 @@ const normalizeStderr = (stderr) => {
   }
 
   let normalizedStderr = stripVTControlCharacters(stderr);
+  normalizedStderr = stripRendererChrome(normalizedStderr);
   normalizedStderr = normalizeCwd(normalizedStderr);
 
   normalizedStderr = normalizedStderr.replaceAll(IPV4, "x.x.x.x");
@@ -392,5 +441,6 @@ module.exports = {
   run,
   runPromptWithAnswers,
   runWatch,
+  stripRendererChrome,
   uniqueDirectoryForTest,
 };
