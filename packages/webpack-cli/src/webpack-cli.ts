@@ -31,6 +31,7 @@ import {
   default as webpack,
 } from "webpack";
 import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
+import { RenderOptions, renderFooter, renderOptionHelp } from "./ui-renderer.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -990,6 +991,16 @@ class WebpackCLI {
     }
   }
 
+  #renderOptions(): RenderOptions {
+    return {
+      colors: this.colors,
+      log: (line) => this.logger.raw(line),
+      // process.stdout.columns can be undefined in non-TTY environments
+      // (CI, test runners, pipes). Fall back to 80 which fits most terminals.
+      columns: process.stdout.columns ?? 80,
+    };
+  }
+
   async #outputHelp(
     options: string[],
     isVerbose: boolean,
@@ -1213,48 +1224,41 @@ class WebpackCLI {
         (option.variadic === true ? "..." : "");
       const value = option.required ? `<${nameOutput}>` : option.optional ? `[${nameOutput}]` : "";
 
-      this.logger.raw(
-        `${bold("Usage")}: webpack${isCommandSpecified ? ` ${commandName}` : ""} ${option.long}${
-          value ? ` ${value}` : ""
-        }`,
-      );
-
-      if (option.short) {
-        this.logger.raw(
-          `${bold("Short:")} webpack${isCommandSpecified ? ` ${commandName}` : ""} ${
-            option.short
-          }${value ? ` ${value}` : ""}`,
-        );
-      }
-
-      if (option.description) {
-        this.logger.raw(`${bold("Description:")} ${option.description}`);
-      }
-
       const { configs } = option as Option & { configs?: ArgumentConfig[] };
+      let possibleValues: string | undefined;
 
       if (configs) {
-        const possibleValues = configs.reduce((accumulator, currentValue) => {
-          if (currentValue.values) {
-            return [...accumulator, ...currentValue.values];
-          }
-
+        const values = configs.reduce((accumulator, currentValue) => {
+          if (currentValue.values) return [...accumulator, ...currentValue.values];
           return accumulator;
         }, [] as EnumValue[]);
 
-        if (possibleValues.length > 0) {
+        if (values.length > 0) {
           // Convert the possible values to a union type string
           // ['mode', 'development', 'production'] => "'mode' | 'development' | 'production'"
           // [false, 'eval'] => "false | 'eval'"
-          const possibleValuesUnionTypeString = possibleValues
+          possibleValues = values
             .map((value) => (typeof value === "string" ? `'${value}'` : value))
             .join(" | ");
-
-          this.logger.raw(`${bold("Possible values:")} ${possibleValuesUnionTypeString}`);
         }
       }
 
-      this.logger.raw("");
+      const canonicalName = option.long ?? optionName;
+      const docUrl = `https://webpack.js.org/option/${canonicalName.replace(/^--/, "")}/`;
+      const base = `webpack${isCommandSpecified ? ` ${commandName}` : ""}`;
+
+      const optionHelpData = {
+        optionName: canonicalName,
+        usage: `${base} ${canonicalName}${value ? ` ${value}` : ""}`,
+        short: option.short ? `${base} ${option.short}${value ? ` ${value}` : ""}` : undefined,
+        description: option.description || undefined,
+        docUrl,
+        possibleValues,
+      };
+
+      renderOptionHelp(optionHelpData, this.#renderOptions());
+      renderFooter(this.#renderOptions(), { verbose: isVerbose });
+      process.exit(0);
 
       // TODO implement this after refactor cli arguments
       // logger.raw('Documentation: https://webpack.js.org/option/name/');
@@ -1953,7 +1957,7 @@ class WebpackCLI {
 
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+
     const self: WebpackCLI = this;
 
     // Register own exit
