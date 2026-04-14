@@ -31,7 +31,15 @@ import {
   default as webpack,
 } from "webpack";
 import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
-import { RenderOptions, renderAliasHelp, renderFooter, renderOptionHelp } from "./ui-renderer.js";
+import {
+  CommandHelpData,
+  HelpOption,
+  RenderOptions,
+  renderAliasHelp,
+  renderCommandHelp,
+  renderFooter,
+  renderOptionHelp,
+} from "./ui-renderer.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -656,6 +664,36 @@ class WebpackCLI {
       }
     }
 
+    // Without this, `webpack watch --help` would start the watcher (never exits).
+    command.addOption(new Option("-h, --help [verbose]", "Display help for commands and options."));
+    command.hook("preAction", async (thisCommand) => {
+      const opts = thisCommand.opts();
+
+      if (typeof opts.help === "undefined") {
+        return;
+      }
+
+      const isVerbose = opts.help === "verbose";
+
+      this.program.forHelp = true;
+
+      const commandHelpData = this.#buildCommandHelpData(
+        thisCommand as Command,
+        this.program,
+        isVerbose,
+      );
+
+      const canPaginate =
+        Boolean(process.stdout.isTTY) &&
+        Boolean(process.stdin.isTTY) &&
+        typeof (process.stdin as NodeJS.ReadStream & { setRawMode?: unknown }).setRawMode ===
+          "function";
+
+      await renderCommandHelp(commandHelpData, this.#renderOptions(), canPaginate);
+      renderFooter(this.#renderOptions(), { verbose: isVerbose });
+      process.exit(0);
+    });
+
     command.action(options.action);
 
     return command;
@@ -1001,6 +1039,35 @@ class WebpackCLI {
     };
   }
 
+  #buildCommandHelpData(command: Command, program: Command, isVerbose: boolean): CommandHelpData {
+    const visibleOptions: HelpOption[] = command.options
+      .filter((opt) => {
+        if ((opt as Option & { internal?: boolean }).internal) return false;
+        return isVerbose || !opt.hidden;
+      })
+      .map((opt) => ({
+        flags: opt.flags,
+        description: opt.description ?? "",
+      }));
+
+    const globalOptions: HelpOption[] = program.options.map((opt) => ({
+      flags: opt.flags,
+      description: opt.description ?? "",
+    }));
+
+    const aliases = command.aliases();
+    const usageParts = [command.name(), ...aliases].join("|");
+    const usage = `webpack ${usageParts} ${command.usage()}`;
+
+    return {
+      name: command.name(),
+      usage,
+      description: command.description(),
+      options: visibleOptions,
+      globalOptions,
+    };
+  }
+
   async #outputHelp(
     options: string[],
     isVerbose: boolean,
@@ -1167,6 +1234,9 @@ class WebpackCLI {
         if (buildCommand) {
           this.logger.raw(buildCommand.helpInformation());
         }
+
+        renderFooter(this.#renderOptions(), { verbose: isVerbose });
+        process.exit(0);
       } else {
         const [name] = options;
 
@@ -1178,7 +1248,16 @@ class WebpackCLI {
           process.exit(2);
         }
 
-        this.logger.raw(command.helpInformation());
+        const commandHelpData = this.#buildCommandHelpData(command, program, isVerbose);
+        const canPaginate =
+          Boolean(process.stdout.isTTY) &&
+          Boolean(process.stdin.isTTY) &&
+          typeof (process.stdin as NodeJS.ReadStream & { setRawMode?: unknown }).setRawMode ===
+            "function";
+
+        await renderCommandHelp(commandHelpData, this.#renderOptions(), canPaginate);
+        renderFooter(this.#renderOptions(), { verbose: isVerbose });
+        process.exit(0);
       }
     } else if (isHelpCommandSyntax) {
       let isCommandSpecified = false;
@@ -1275,14 +1354,7 @@ class WebpackCLI {
     } else {
       outputIncorrectUsageOfHelp();
     }
-
-    this.logger.raw(
-      "To see list of all supported commands and options run 'webpack --help=verbose'.\n",
-    );
-    this.logger.raw(`${bold("Webpack documentation:")} https://webpack.js.org/.`);
-    this.logger.raw(`${bold("CLI documentation:")} https://webpack.js.org/api/cli/.`);
-    this.logger.raw(`${bold("Made with ♥ by the webpack team")}.`);
-    process.exit(0);
+    // all branches now exit themselves so no need logger and process.exit
   }
 
   async #renderVersion(options: { output?: string } = {}): Promise<string> {

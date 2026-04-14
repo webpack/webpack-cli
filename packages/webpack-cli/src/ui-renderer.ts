@@ -43,6 +43,22 @@ export interface AliasHelpData {
   optionHelp: OptionHelpData;
 }
 
+export interface HelpOption {
+  /** e.g. "-c, --config <pathToConfigFile...>" */
+  flags: string;
+  description: string;
+}
+
+export interface CommandHelpData {
+  /** e.g. "build", "serve", "info" */
+  name: string;
+  /** e.g. "webpack build|bundle|b [entries...] [options]" */
+  usage: string;
+  description: string;
+  options: HelpOption[];
+  globalOptions: HelpOption[];
+}
+
 // ─── Layout constants ─────────────────────────────────────────────
 export const MAX_WIDTH = 80;
 export const INDENT = 2;
@@ -109,6 +125,190 @@ export function renderRows(
       log(`${continuation}${colorFn(lines[i])}`);
     }
   }
+}
+
+function _renderHelpOptions(
+  options: HelpOption[],
+  colors: Colors,
+  push: (line: string) => void,
+  termWidth: number,
+  flagsWidth: number,
+): void {
+  const descWidth = termWidth - INDENT - flagsWidth - COL_GAP;
+  const continuation = indent(INDENT + flagsWidth + COL_GAP);
+
+  for (const { flags, description } of options) {
+    const descLines = wrapValue(description || "", descWidth);
+    const flagsPadded = flags.padEnd(flagsWidth);
+    push(`${indent(INDENT)}${colors.cyan(flagsPadded)}${indent(COL_GAP)}${descLines[0] ?? ""}`);
+    for (let i = 1; i < descLines.length; i++) {
+      push(`${continuation}${descLines[i]}`);
+    }
+  }
+}
+
+async function _page(lines: string[], opts: RenderOptions): Promise<void> {
+  const { colors, log } = opts;
+
+  if (
+    !process.stdin.isTTY ||
+    typeof (process.stdin as NodeJS.ReadStream & { setRawMode?: unknown }).setRawMode !== "function"
+  ) {
+    for (const line of lines) log(line);
+    return;
+  }
+
+  const termHeight: number = (process.stdout as NodeJS.WriteStream & { rows?: number }).rows ?? 24;
+  const pageSize = termHeight - 2;
+  let pos = 0;
+
+  const flush = (count: number) => {
+    const end = Math.min(pos + count, lines.length);
+    for (let i = pos; i < end; i++) log(lines[i]);
+    pos = end;
+  };
+
+  flush(pageSize);
+  if (pos >= lines.length) return;
+
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+  process.stdin.setEncoding("utf8");
+
+  const hint =
+    `${indent(INDENT)}${colors.cyan("─")} ` +
+    `${colors.bold("Enter")} next line  ` +
+    `${colors.bold("Space")} next page  ` +
+    `${colors.bold("q")} quit`;
+
+  process.stdout.write(`\n${hint}\r`);
+
+  await new Promise<void>((resolve) => {
+    const clearHint = () => process.stdout.write(`\r${" ".repeat(process.stdout.columns ?? 80)}\r`);
+    const printHint = () => process.stdout.write(`${hint}`);
+    const onKey = (key: string) => {
+      if (key === "\u0003") {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        cleanup();
+        process.exit(0);
+      }
+
+      if (key === "q" || key === "Q" || key === "\u001B") {
+        clearHint();
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        cleanup();
+        resolve();
+        return;
+      }
+
+      if (key === " " || key === "d") {
+        clearHint();
+        flush(Math.floor(pageSize / 2));
+        if (pos < lines.length) {
+          process.stdout.write("\n");
+          printHint();
+        } else {
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          cleanup();
+          resolve();
+        }
+        return;
+      }
+
+      if ((key === "\r" || key === "\n" || key === "\u001B[B") && pos < lines.length) {
+        clearHint();
+        process.stdout.write(`${lines[pos]}\n`);
+        pos++;
+        if (pos < lines.length) {
+          printHint();
+        } else {
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          cleanup();
+          resolve();
+        }
+      }
+    };
+
+    const cleanup = () => {
+      process.stdin.removeListener("data", onKey);
+      process.stdin.setRawMode(false);
+      process.stdin.pause();
+      process.stdout.write("\n");
+    };
+
+    process.stdin.on("data", onKey);
+  });
+}
+
+export async function renderCommandHelp(
+  data: CommandHelpData,
+  opts: RenderOptions,
+  paginate = true,
+): Promise<void> {
+  const { colors } = opts;
+  const termWidth = Math.min(opts.columns || MAX_WIDTH, MAX_WIDTH);
+  const div = divider(termWidth, colors);
+
+  const lines: string[] = [];
+  const push = (line: string) => lines.push(line);
+
+  push("");
+  push(`${indent(INDENT)}${colors.bold(colors.cyan("⬡"))} ${colors.bold(`webpack ${data.name}`)}`);
+  push(div);
+
+  const descWidth = termWidth - INDENT * 2;
+  for (const line of wrapValue(data.description, descWidth)) {
+    push(`${indent(INDENT)}${line}`);
+  }
+
+  push("");
+  const usageLabel = `${colors.bold("Usage:")}  `;
+  const usageIndent = indent(INDENT + "Usage:  ".length);
+  const usageWidth = termWidth - INDENT - "Usage:  ".length;
+  const usageLines = wrapValue(data.usage, usageWidth);
+  push(`${indent(INDENT)}${usageLabel}${usageLines[0]}`);
+  for (let i = 1; i < usageLines.length; i++) push(`${usageIndent}${usageLines[i]}`);
+
+  push("");
+
+  const allFlags = [...data.options, ...data.globalOptions].map((opt) => opt.flags.length);
+  const flagsWidth = Math.min(38, allFlags.length > 0 ? Math.max(...allFlags) + COL_GAP : 20);
+
+  if (data.options.length > 0) {
+    push(`${indent(INDENT)}${colors.bold(colors.cyan("Options"))}`);
+    push(div);
+    _renderHelpOptions(data.options, colors, push, termWidth, flagsWidth);
+    push("");
+  }
+
+  if (data.globalOptions.length > 0) {
+    push(`${indent(INDENT)}${colors.bold(colors.cyan("Global options"))}`);
+    push(div);
+    _renderHelpOptions(data.globalOptions, colors, push, termWidth, flagsWidth);
+    push("");
+  }
+
+  push(div);
+  push(
+    `  ${colors.cyan("ℹ")} Run ${colors.bold(`'webpack help ${data.name} --verbose'`)} to see all available options.`,
+  );
+  push("");
+
+  const termHeight = (process.stdout as NodeJS.WriteStream & { rows?: number }).rows ?? 24;
+  const canPage =
+    paginate &&
+    process.stdout.isTTY &&
+    process.stdin.isTTY &&
+    typeof (process.stdin as NodeJS.ReadStream & { setRawMode?: unknown }).setRawMode ===
+      "function";
+  const shouldPage = canPage && lines.length > termHeight - 2;
+
+  if (!shouldPage) {
+    for (const line of lines) opts.log(line);
+    return;
+  }
+
+  await _page(lines, opts);
 }
 
 export function renderOptionHelp(data: OptionHelpData, opts: RenderOptions): void {
