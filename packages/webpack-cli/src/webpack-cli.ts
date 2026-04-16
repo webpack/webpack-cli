@@ -104,6 +104,12 @@ interface Command extends CommanderCommand {
   context: Context;
 }
 
+interface CommandUIOptions {
+  description?: string;
+  footer?: "global" | "command";
+  skipIf?: (opts: RecordAny) => boolean;
+}
+
 interface CommandOptions<
   A = void,
   O extends CommanderArgs = CommanderArgs,
@@ -117,6 +123,7 @@ interface CommandOptions<
   dependencies?: string[];
   pkg?: string;
   preload?: () => Promise<C>;
+  ui?: CommandUIOptions;
   options?:
     | CommandOption[]
     | ((command: Command & { context: C }) => CommandOption[])
@@ -672,6 +679,33 @@ class WebpackCLI {
     }
 
     command.action(options.action);
+
+    if (options.ui) {
+      const { ui } = options;
+
+      command.hook("preAction", (_thisCmd, actionCmd) => {
+        if (ui.skipIf?.(actionCmd.opts())) return;
+
+        renderCommandHeader(
+          {
+            name: command.name(),
+            description: ui.description ?? command.description(),
+          },
+          this.#renderOptions(),
+        );
+      });
+
+      command.hook("postAction", (_thisCmd, actionCmd) => {
+        if (ui.skipIf?.(actionCmd.opts())) return;
+
+        const renderOpts = this.#renderOptions();
+        if (ui.footer === "command") {
+          renderCommandFooter(renderOpts);
+        } else {
+          renderFooter(renderOpts);
+        }
+      });
+    }
 
     return command;
   }
@@ -1830,9 +1864,12 @@ class WebpackCLI {
           hidden: false,
         },
       ],
+      ui: {
+        description: "Installed package versions.",
+        footer: "global",
+        skipIf: (opts) => Boolean(opts.output),
+      },
       action: async (options: { output?: string }) => {
-        const renderOpts = this.#renderOptions();
-
         if (options.output) {
           // Machine-readable output requested, bypass the visual renderer entirely.
           const info = await this.#renderVersion(options);
@@ -1840,19 +1877,13 @@ class WebpackCLI {
           return;
         }
 
-        renderCommandHeader(
-          { name: "version", description: "Installed package versions." },
-          renderOpts,
-        );
-
         const rawInfo = await this.#getInfoOutput({
           information: {
             npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
           },
         });
 
-        renderVersionOutput(rawInfo, renderOpts);
-        renderFooter(renderOpts);
+        renderVersionOutput(rawInfo, this.#renderOptions());
       },
     },
     info: {
@@ -1882,24 +1913,18 @@ class WebpackCLI {
           hidden: false,
         },
       ],
+      ui: {
+        description: "System and environment information.",
+        footer: "global",
+        skipIf: (opts) => Boolean(opts.output),
+      },
       action: async (options: { output?: string; additionalPackage?: string[] }) => {
-        const renderOpts = this.#renderOptions();
-
-        if (!options.output) {
-          renderCommandHeader(
-            { name: "info", description: "System and environment information." },
-            renderOpts,
-          );
-        }
-
-        const info = await this.#getInfoOutput(options);
-
         if (options.output) {
-          this.logger.raw(info);
+          this.logger.raw(await this.#getInfoOutput(options));
           return;
         }
 
-        renderInfoOutput(info, renderOpts);
+        renderInfoOutput(await this.#getInfoOutput(options), this.#renderOptions());
       },
     },
     configtest: {
@@ -1912,6 +1937,10 @@ class WebpackCLI {
       preload: async () => {
         const webpack = await this.loadWebpack();
         return { webpack };
+      },
+      ui: {
+        description: "Validating your webpack configuration.",
+        footer: "command",
       },
       action: async (configPath: string | undefined, _options: CommanderArgs, cmd) => {
         const { webpack } = cmd.context;
@@ -1944,11 +1973,6 @@ class WebpackCLI {
           process.exit(2);
         }
 
-        renderCommandHeader(
-          { name: "configtest", description: "Validating your webpack configuration." },
-          renderOpts,
-        );
-
         const pathList = [...configPaths].join(", ");
         renderWarning(`Validating: ${pathList}`, renderOpts);
 
@@ -1965,7 +1989,6 @@ class WebpackCLI {
         }
 
         renderSuccess("No validation errors found.", renderOpts);
-        renderCommandFooter(renderOpts);
       },
     },
   };
