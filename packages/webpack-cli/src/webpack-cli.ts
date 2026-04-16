@@ -36,9 +36,16 @@ import {
   HelpOption,
   RenderOptions,
   renderAliasHelp,
+  renderCommandFooter,
+  renderCommandHeader,
   renderCommandHelp,
+  renderError,
   renderFooter,
+  renderInfoOutput,
   renderOptionHelp,
+  renderSuccess,
+  renderVersionOutput,
+  renderWarning,
 } from "./ui-renderer.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
@@ -1824,9 +1831,28 @@ class WebpackCLI {
         },
       ],
       action: async (options: { output?: string }) => {
-        const info = await this.#renderVersion(options);
+        const renderOpts = this.#renderOptions();
 
-        this.logger.raw(info);
+        if (options.output) {
+          // Machine-readable output requested, bypass the visual renderer entirely.
+          const info = await this.#renderVersion(options);
+          this.logger.raw(info);
+          return;
+        }
+
+        renderCommandHeader(
+          { name: "version", description: "Installed package versions." },
+          renderOpts,
+        );
+
+        const rawInfo = await this.#getInfoOutput({
+          information: {
+            npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
+          },
+        });
+
+        renderVersionOutput(rawInfo, renderOpts);
+        renderFooter(renderOpts);
       },
     },
     info: {
@@ -1857,9 +1883,23 @@ class WebpackCLI {
         },
       ],
       action: async (options: { output?: string; additionalPackage?: string[] }) => {
+        const renderOpts = this.#renderOptions();
+
+        if (!options.output) {
+          renderCommandHeader(
+            { name: "info", description: "System and environment information." },
+            renderOpts,
+          );
+        }
+
         const info = await this.#getInfoOutput(options);
 
-        this.logger.raw(info);
+        if (options.output) {
+          this.logger.raw(info);
+          return;
+        }
+
+        renderInfoOutput(info, renderOpts);
       },
     },
     configtest: {
@@ -1881,6 +1921,7 @@ class WebpackCLI {
           configPath ? { env, argv, webpack, config: [configPath] } : { env, argv, webpack },
         );
         const configPaths = new Set<string>();
+        const renderOpts = this.#renderOptions();
 
         if (Array.isArray(config.options)) {
           for (const options of config.options) {
@@ -1899,25 +1940,32 @@ class WebpackCLI {
         }
 
         if (configPaths.size === 0) {
-          this.logger.error("No configuration found.");
+          renderError("No configuration found.", renderOpts);
           process.exit(2);
         }
 
-        this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
+        renderCommandHeader(
+          { name: "configtest", description: "Validating your webpack configuration." },
+          renderOpts,
+        );
+
+        const pathList = [...configPaths].join(", ");
+        renderWarning(`Validating: ${pathList}`, renderOpts);
 
         try {
           cmd.context.webpack.validate(config.options);
         } catch (error) {
           if (this.isValidationError(error as Error)) {
-            this.logger.error((error as Error).message);
+            renderError((error as Error).message, renderOpts);
           } else {
-            this.logger.error(error);
+            renderError(String(error), renderOpts);
           }
 
           process.exit(2);
         }
 
-        this.logger.success("There are no validation errors in the given webpack configuration.");
+        renderSuccess("No validation errors found.", renderOpts);
+        renderCommandFooter(renderOpts);
       },
     },
   };
