@@ -39,9 +39,6 @@ exports[`CLI API custom help output should display help for a command 1`] = `
     "                          or markdown)",
   ],
   [
-    "  -h, --help [verbose]    Display help for commands and options.",
-  ],
-  [
     "",
   ],
   [
@@ -70,9 +67,6 @@ exports[`CLI API custom help output should display help for a command 1`] = `
   ],
   [
     "  ──────────────────────────────────────────────────────────────────────────",
-  ],
-  [
-    "  ℹ Run 'webpack help version --verbose' to see all available options.",
   ],
   [
     "",

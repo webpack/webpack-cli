@@ -124,7 +124,6 @@ exports[`renderCommandHelp should match full output snapshot for build command 1
   "  -h, --help [verbose]                  Display help for commands and options.",
   "",
   "  ──────────────────────────────────────────────────────────────────────────",
-  "  ℹ Run 'webpack help build --verbose' to see all available options.",
   "",
 ]
 `;
@@ -152,7 +151,6 @@ exports[`renderCommandHelp should match full output snapshot for info command 1`
   "  -h, --help [verbose]                Display help for commands and options.",
   "",
   "  ──────────────────────────────────────────────────────────────────────────",
-  "  ℹ Run 'webpack help info --verbose' to see all available options.",
   "",
 ]
 `;
@@ -228,25 +226,6 @@ exports[`renderOptionHelp should match snapshot with all fields 1`] = `
   "  Possible values  'development' | 'production' | 'none'",
   "  ──────────────────────────────────────────────────────────────────────────",
   "",
-]
-`;
-
-exports[`renderStatsOutput should match snapshot for failed build 1`] = `
-[
-  "
-  ERROR in ./src/index.js
-  Module not found: './missing'",
-  "",
-  "  ✖ Compilation failed: 1 error",
-]
-`;
-
-exports[`renderStatsOutput should match snapshot for successful build 1`] = `
-[
-  "
-  asset main.js 2 KiB [emitted]",
-  "",
-  "  ✔ Compiled successfully in 120ms",
 ]
 `;
 

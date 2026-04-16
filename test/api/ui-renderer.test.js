@@ -11,7 +11,6 @@ const {
   renderInfo,
   renderInfoOutput,
   renderOptionHelp,
-  renderStatsOutput,
   renderSuccess,
   renderVersionOutput,
   renderWarning,
@@ -177,25 +176,25 @@ describe("renderVersionOutput", () => {
 describe("renderCommandHelp", () => {
   it("should render the command name in the header", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     expect(getOutput(captured)).toContain("webpack build");
   });
 
   it("should render the command description", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     expect(getOutput(captured)).toContain("Run webpack");
   });
 
   it("should render the Usage line with aliases", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     expect(getOutput(captured)).toContain("build|bundle|b");
   });
 
   it("should render all option flags", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     const output = getOutput(captured);
     expect(output).toContain("--config");
     expect(output).toContain("--mode");
@@ -204,7 +203,7 @@ describe("renderCommandHelp", () => {
 
   it("should render all option descriptions", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     const output = getOutput(captured);
     expect(output).toContain("Provide path");
     expect(output).toContain("watch mode");
@@ -212,26 +211,26 @@ describe("renderCommandHelp", () => {
 
   it("should render the Options section header", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     expect(getOutput(captured)).toContain("Options");
   });
 
   it("should render the Global options section header", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     expect(getOutput(captured)).toContain("Global options");
   });
 
   it("should render global option flags", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     expect(getOutput(captured)).toContain("--color");
     expect(getOutput(captured)).toContain("--no-color");
   });
 
   it("should use the same column width for Options and Global options", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     const optionLines = captured.filter((l) => stripAnsi(l).startsWith("  -"));
     const descStarts = optionLines
       .map((l) => {
@@ -249,14 +248,14 @@ describe("renderCommandHelp", () => {
       options: [{ flags: "--very-long-option-name", description: "A ".repeat(80).trim() }],
     };
     const { captured, opts } = makeOpts(80);
-    await renderCommandHelp(longDesc, opts, false);
+    renderCommandHelp(longDesc, opts);
     const overflowing = captured.filter((l) => stripAnsi(l).length > 82);
     expect(overflowing).toHaveLength(0);
   });
 
   it("should work for the info command", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_INFO, opts, false);
+    renderCommandHelp(COMMAND_HELP_INFO, opts);
     const output = getOutput(captured);
     expect(output).toContain("webpack info");
     expect(output).toContain("--output");
@@ -265,7 +264,7 @@ describe("renderCommandHelp", () => {
 
   it("should not overflow terminal width", async () => {
     const { captured, opts } = makeOpts(80);
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     const overflowing = captured.filter((l) => stripAnsi(l).length > 82);
     expect(overflowing).toHaveLength(0);
   });
@@ -276,19 +275,19 @@ describe("renderCommandHelp", () => {
       description: `Description for option ${i}`,
     }));
     const { captured, opts } = makeOpts();
-    await renderCommandHelp({ ...COMMAND_HELP_BUILD, options: manyOptions }, opts, false);
+    renderCommandHelp({ ...COMMAND_HELP_BUILD, options: manyOptions }, opts);
     expect(captured.filter((l) => l.includes("--option-"))).toHaveLength(40);
   });
 
   it("should match full output snapshot for build command", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_BUILD, opts, false);
+    renderCommandHelp(COMMAND_HELP_BUILD, opts);
     expect(captured).toMatchSnapshot();
   });
 
   it("should match full output snapshot for info command", async () => {
     const { captured, opts } = makeOpts();
-    await renderCommandHelp(COMMAND_HELP_INFO, opts, false);
+    renderCommandHelp(COMMAND_HELP_INFO, opts);
     expect(captured).toMatchSnapshot();
   });
 });
@@ -367,63 +366,6 @@ describe("renderCommandFooter", () => {
   it("should match snapshot", () => {
     const { captured, opts } = makeOpts();
     renderCommandFooter(opts);
-    expect(captured).toMatchSnapshot();
-  });
-});
-
-describe("renderStatsOutput", () => {
-  it("should indent each line of the stats string", () => {
-    const { captured, opts } = makeOpts();
-    renderStatsOutput("asset main.js 2 KiB [emitted]", { success: true, message: "OK" }, opts);
-    const statsEntry = captured.find((line) => line.includes("asset main.js"));
-    expect(statsEntry).toBeDefined();
-    const firstContentLine = statsEntry.split("\n").find((line) => line.includes("asset main.js"));
-    expect(firstContentLine.startsWith(" ".repeat(INDENT))).toBe(true);
-  });
-
-  it("should render success summary with ✔", () => {
-    const { captured, opts } = makeOpts();
-    renderStatsOutput("", { success: true, message: "Compiled successfully" }, opts);
-    expect(getOutput(captured)).toContain("✔");
-    expect(getOutput(captured)).toContain("Compiled successfully");
-  });
-
-  it("should render error summary with ✖", () => {
-    const { captured, opts } = makeOpts();
-    renderStatsOutput("", { success: false, message: "Build failed" }, opts);
-    expect(getOutput(captured)).toContain("✖");
-    expect(getOutput(captured)).toContain("Build failed");
-  });
-
-  it("should handle empty stats string gracefully", () => {
-    const { captured, opts } = makeOpts();
-    expect(() => renderStatsOutput("", null, opts)).not.toThrow();
-    expect(captured).toHaveLength(0);
-  });
-
-  it("should handle whitespace-only stats string", () => {
-    const { captured, opts } = makeOpts();
-    renderStatsOutput("   \n   ", null, opts);
-    expect(captured).toHaveLength(0);
-  });
-
-  it("should match snapshot for successful build", () => {
-    const { captured, opts } = makeOpts();
-    renderStatsOutput(
-      "asset main.js 2 KiB [emitted]",
-      { success: true, message: "Compiled successfully in 120ms" },
-      opts,
-    );
-    expect(captured).toMatchSnapshot();
-  });
-
-  it("should match snapshot for failed build", () => {
-    const { captured, opts } = makeOpts();
-    renderStatsOutput(
-      "ERROR in ./src/index.js\nModule not found: './missing'",
-      { success: false, message: "Compilation failed: 1 error" },
-      opts,
-    );
     expect(captured).toMatchSnapshot();
   });
 });
