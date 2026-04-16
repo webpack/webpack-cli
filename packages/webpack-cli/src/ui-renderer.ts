@@ -59,18 +59,6 @@ export interface CommandHelpData {
   globalOptions: HelpOption[];
 }
 
-/** Passed to `renderCommandHeader` to describe the running command. */
-export interface CommandMeta {
-  name: string;
-  description: string;
-}
-
-/** One section emitted by `renderInfoOutput`, e.g. "System" or "Binaries". */
-export interface InfoSection {
-  title: string;
-  rows: Row[];
-}
-
 // ─── Layout constants ─────────────────────────────────────────────
 export const MAX_WIDTH = 80;
 export const INDENT = 2;
@@ -139,29 +127,6 @@ export function renderRows(
   }
 }
 
-export function renderCommandHeader(meta: CommandMeta, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  const termWidth = Math.min(opts.columns || MAX_WIDTH, MAX_WIDTH);
-
-  log("");
-  log(`${indent(INDENT)}${colors.bold(colors.cyan("⬡"))} ${colors.bold(`webpack ${meta.name}`)}`);
-  log(divider(termWidth, colors));
-
-  if (meta.description) {
-    const descWidth = termWidth - INDENT * 2;
-    for (const line of wrapValue(meta.description, descWidth)) {
-      log(`${indent(INDENT)}${line}`);
-    }
-    log("");
-  }
-}
-
-export function renderCommandFooter(opts: RenderOptions): void {
-  const termWidth = Math.min(opts.columns, MAX_WIDTH);
-  opts.log(divider(termWidth, opts.colors));
-  opts.log("");
-}
-
 function _renderHelpOptions(
   options: HelpOption[],
   colors: Colors,
@@ -227,9 +192,6 @@ export function renderCommandHelp(data: CommandHelpData, opts: RenderOptions): v
   }
 
   push(div);
-  push(
-    `  ${colors.cyan("ℹ")} Run ${colors.bold(`'webpack help ${data.name} --verbose'`)} to see all available options.`,
-  );
   push("");
 
   for (const line of lines) opts.log(line);
@@ -272,116 +234,6 @@ export function renderAliasHelp(data: AliasHelpData, opts: RenderOptions): void 
   log(`${indent(INDENT)}${colors.yellow("alias for")} ${colors.bold(data.canonical)}`);
   log(div);
   renderOptionHelp(data.optionHelp, opts);
-}
-
-export function renderError(message: string, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  log(`${indent(INDENT)}${colors.red("✖")} ${colors.bold(message)}`);
-}
-
-export function renderSuccess(message: string, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  log(`${indent(INDENT)}${colors.green("✔")} ${colors.bold(message)}`);
-}
-
-export function renderWarning(message: string, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  log(`${indent(INDENT)}${colors.yellow("⚠")} ${message}`);
-}
-
-export function renderInfo(message: string, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  log(`${indent(INDENT)}${colors.cyan("ℹ")} ${message}`);
-}
-
-export function parseEnvinfoSections(raw: string): InfoSection[] {
-  const sections: InfoSection[] = [];
-  let current: InfoSection | null = null;
-
-  for (const line of raw.split("\n")) {
-    const sectionMatch = line.match(/^ {2}([^:]+):\s*$/);
-    if (sectionMatch) {
-      if (current) sections.push(current);
-      current = { title: sectionMatch[1].trim(), rows: [] };
-      continue;
-    }
-
-    const rowMatch = line.match(/^ {4}([^:]+):\s+(.+)$/);
-    if (rowMatch && current) {
-      current.rows.push({ label: rowMatch[1].trim(), value: rowMatch[2].trim() });
-      continue;
-    }
-
-    const emptyRowMatch = line.match(/^ {4}([^:]+):\s*$/);
-    if (emptyRowMatch && current) {
-      current.rows.push({ label: emptyRowMatch[1].trim(), value: "N/A", color: (str) => str });
-    }
-  }
-
-  if (current) sections.push(current);
-  return sections.filter((section) => section.rows.length > 0);
-}
-
-export function renderInfoOutput(rawEnvinfo: string, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  const termWidth = Math.min(opts.columns, MAX_WIDTH);
-  const div = divider(termWidth, colors);
-  const sections = parseEnvinfoSections(rawEnvinfo);
-
-  log("");
-
-  for (const section of sections) {
-    log(
-      `${indent(INDENT)}${colors.bold(colors.cyan("⬡"))} ${colors.bold(colors.cyan(section.title))}`,
-    );
-    log(div);
-    renderRows(section.rows, colors, log, termWidth);
-    log(div);
-    log("");
-  }
-}
-
-export function renderVersionOutput(rawEnvinfo: string, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  const termWidth = Math.min(opts.columns, MAX_WIDTH);
-  const div = divider(termWidth, colors);
-  const sections = parseEnvinfoSections(rawEnvinfo);
-
-  for (const section of sections) {
-    log("");
-    log(
-      `${indent(INDENT)}${colors.bold(colors.cyan("⬡"))} ${colors.bold(colors.cyan(section.title))}`,
-    );
-    log(div);
-
-    const labelWidth = Math.max(...section.rows.map((row) => row.label.length));
-
-    for (const { label, value } of section.rows) {
-      const arrowIdx = value.indexOf("=>");
-
-      if (arrowIdx !== -1) {
-        const requested = value.slice(0, arrowIdx).trim();
-        const resolved = value.slice(arrowIdx + 2).trim();
-        log(
-          `${indent(INDENT)}${colors.bold(label.padEnd(labelWidth))}${indent(COL_GAP)}` +
-            `${colors.cyan(requested.padEnd(12))}  ${colors.cyan("→")}  ${colors.green(colors.bold(resolved))}`,
-        );
-      } else {
-        log(
-          `${indent(INDENT)}${colors.bold(label.padEnd(labelWidth))}${indent(COL_GAP)}${colors.green(value)}`,
-        );
-      }
-    }
-    log(div);
-  }
-}
-
-export function renderSection(title: string, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  const termWidth = Math.min(opts.columns, MAX_WIDTH);
-  log("");
-  log(`${indent(INDENT)}${colors.bold(title)}`);
-  log(divider(termWidth, colors));
 }
 
 export function renderFooter(opts: RenderOptions, footer: FooterOptions = {}): void {

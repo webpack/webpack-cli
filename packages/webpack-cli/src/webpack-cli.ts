@@ -36,16 +36,9 @@ import {
   HelpOption,
   RenderOptions,
   renderAliasHelp,
-  renderCommandFooter,
-  renderCommandHeader,
   renderCommandHelp,
-  renderError,
   renderFooter,
-  renderInfoOutput,
   renderOptionHelp,
-  renderSuccess,
-  renderVersionOutput,
-  renderWarning,
 } from "./ui-renderer.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
@@ -117,7 +110,6 @@ interface CommandOptions<
   dependencies?: string[];
   pkg?: string;
   preload?: () => Promise<C>;
-  header?: { name: string; description: string };
   options?:
     | CommandOption[]
     | ((command: Command & { context: C }) => CommandOption[])
@@ -672,8 +664,6 @@ class WebpackCLI {
       }
     }
 
-    // Without this, `webpack watch --help` would start the watcher (never exits).
-    command.addOption(new Option("-h, --help [verbose]", "Display help for commands and options."));
     command.hook("preAction", async (thisCommand) => {
       const opts = thisCommand.opts();
 
@@ -690,7 +680,6 @@ class WebpackCLI {
         this.program,
         isVerbose,
       );
-
       renderCommandHelp(commandHelpData, this.#renderOptions());
       renderFooter(this.#renderOptions(), { verbose: isVerbose });
       process.exit(0);
@@ -1032,16 +1021,12 @@ class WebpackCLI {
   }
 
   #renderOptions(): RenderOptions {
-    const helpConfig = this.program.configureHelp();
-    const columns =
-      typeof helpConfig.helpWidth === "number"
-        ? helpConfig.helpWidth
-        : (process.stdout.columns ?? 80);
-
     return {
       colors: this.colors,
       log: (line) => this.logger.raw(line),
-      columns,
+      // process.stdout.columns can be undefined in non-TTY environments
+      // (CI, test runners, pipes). Fall back to 80 which fits most terminals.
+      columns: process.stdout.columns ?? 80,
     };
   }
 
@@ -1860,28 +1845,9 @@ class WebpackCLI {
         },
       ],
       action: async (options: { output?: string }) => {
-        const renderOpts = this.#renderOptions();
+        const info = await this.#renderVersion(options);
 
-        if (options.output) {
-          // Machine-readable output requested, bypass the visual renderer entirely.
-          const info = await this.#renderVersion(options);
-          this.logger.raw(info);
-          return;
-        }
-
-        renderCommandHeader(
-          { name: "version", description: "Installed package versions." },
-          renderOpts,
-        );
-
-        const rawInfo = await this.#getInfoOutput({
-          information: {
-            npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
-          },
-        });
-
-        renderVersionOutput(rawInfo, renderOpts);
-        renderFooter(renderOpts);
+        this.logger.raw(info);
       },
     },
     info: {
@@ -1912,23 +1878,9 @@ class WebpackCLI {
         },
       ],
       action: async (options: { output?: string; additionalPackage?: string[] }) => {
-        const renderOpts = this.#renderOptions();
-
-        if (!options.output) {
-          renderCommandHeader(
-            { name: "info", description: "System and environment information." },
-            renderOpts,
-          );
-        }
-
         const info = await this.#getInfoOutput(options);
 
-        if (options.output) {
-          this.logger.raw(info);
-          return;
-        }
-
-        renderInfoOutput(info, renderOpts);
+        this.logger.raw(info);
       },
     },
     configtest: {
@@ -1950,7 +1902,6 @@ class WebpackCLI {
           configPath ? { env, argv, webpack, config: [configPath] } : { env, argv, webpack },
         );
         const configPaths = new Set<string>();
-        const renderOpts = this.#renderOptions();
 
         if (Array.isArray(config.options)) {
           for (const options of config.options) {
@@ -1969,31 +1920,25 @@ class WebpackCLI {
         }
 
         if (configPaths.size === 0) {
-          renderError("No configuration found.", renderOpts);
+          this.logger.error("No configuration found.");
           process.exit(2);
         }
 
-        renderCommandHeader(
-          { name: "configtest", description: "Validating your webpack configuration." },
-          renderOpts,
-        );
-
-        const pathList = [...configPaths].join(", ");
-        renderWarning(`Validating: ${pathList}`, renderOpts);
+        this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
 
         try {
           cmd.context.webpack.validate(config.options);
         } catch (error) {
           if (this.isValidationError(error as Error)) {
-            renderError((error as Error).message, renderOpts);
+            this.logger.error((error as Error).message);
           } else {
-            renderError(String(error), renderOpts);
+            this.logger.error(error);
           }
+
           process.exit(2);
         }
 
-        renderSuccess("No validation errors found.", renderOpts);
-        renderCommandFooter(renderOpts);
+        this.logger.success("There are no validation errors in the given webpack configuration.");
       },
     },
   };
