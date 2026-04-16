@@ -664,27 +664,6 @@ class WebpackCLI {
       }
     }
 
-    command.hook("preAction", async (thisCommand) => {
-      const opts = thisCommand.opts();
-
-      if (typeof opts.help === "undefined") {
-        return;
-      }
-
-      const isVerbose = opts.help === "verbose";
-
-      this.program.forHelp = true;
-
-      const commandHelpData = this.#buildCommandHelpData(
-        thisCommand as Command,
-        this.program,
-        isVerbose,
-      );
-      renderCommandHelp(commandHelpData, this.#renderOptions());
-      renderFooter(this.#renderOptions(), { verbose: isVerbose });
-      process.exit(0);
-    });
-
     command.action(options.action);
 
     return command;
