@@ -65,12 +65,6 @@ export interface CommandMeta {
   description: string;
 }
 
-/** Summary line shown at the bottom of a build output block. */
-export interface BuildSummary {
-  success: boolean;
-  message: string;
-}
-
 /** One section emitted by `renderInfoOutput`, e.g. "System" or "Binaries". */
 export interface InfoSection {
   title: string;
@@ -188,104 +182,7 @@ function _renderHelpOptions(
   }
 }
 
-async function _page(lines: string[], opts: RenderOptions): Promise<void> {
-  const { colors, log } = opts;
-
-  if (
-    !process.stdin.isTTY ||
-    typeof (process.stdin as NodeJS.ReadStream & { setRawMode?: unknown }).setRawMode !== "function"
-  ) {
-    for (const line of lines) log(line);
-    return;
-  }
-
-  const termHeight: number = (process.stdout as NodeJS.WriteStream & { rows?: number }).rows ?? 24;
-  const pageSize = termHeight - 2;
-  let pos = 0;
-
-  const flush = (count: number) => {
-    const end = Math.min(pos + count, lines.length);
-    for (let i = pos; i < end; i++) log(lines[i]);
-    pos = end;
-  };
-
-  flush(pageSize);
-  if (pos >= lines.length) return;
-
-  process.stdin.setRawMode(true);
-  process.stdin.resume();
-  process.stdin.setEncoding("utf8");
-
-  const hint =
-    `${indent(INDENT)}${colors.cyan("─")} ` +
-    `${colors.bold("Enter")} next line  ` +
-    `${colors.bold("Space")} next page  ` +
-    `${colors.bold("q")} quit`;
-
-  process.stdout.write(`\n${hint}\r`);
-
-  await new Promise<void>((resolve) => {
-    const clearHint = () => process.stdout.write(`\r${" ".repeat(process.stdout.columns ?? 80)}\r`);
-    const printHint = () => process.stdout.write(`${hint}`);
-    const onKey = (key: string) => {
-      if (key === "\u0003") {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        cleanup();
-        process.exit(0);
-      }
-
-      if (key === "q" || key === "Q" || key === "\u001B") {
-        clearHint();
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        cleanup();
-        resolve();
-        return;
-      }
-
-      if (key === " " || key === "d") {
-        clearHint();
-        flush(Math.floor(pageSize / 2));
-        if (pos < lines.length) {
-          process.stdout.write("\n");
-          printHint();
-        } else {
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          cleanup();
-          resolve();
-        }
-        return;
-      }
-
-      if ((key === "\r" || key === "\n" || key === "\u001B[B") && pos < lines.length) {
-        clearHint();
-        process.stdout.write(`${lines[pos]}\n`);
-        pos++;
-        if (pos < lines.length) {
-          printHint();
-        } else {
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          cleanup();
-          resolve();
-        }
-      }
-    };
-
-    const cleanup = () => {
-      process.stdin.removeListener("data", onKey);
-      process.stdin.setRawMode(false);
-      process.stdin.pause();
-      process.stdout.write("\n");
-    };
-
-    process.stdin.on("data", onKey);
-  });
-}
-
-export async function renderCommandHelp(
-  data: CommandHelpData,
-  opts: RenderOptions,
-  paginate = true,
-): Promise<void> {
+export function renderCommandHelp(data: CommandHelpData, opts: RenderOptions): void {
   const { colors } = opts;
   const termWidth = Math.min(opts.columns || MAX_WIDTH, MAX_WIDTH);
   const div = divider(termWidth, colors);
@@ -335,21 +232,7 @@ export async function renderCommandHelp(
   );
   push("");
 
-  const termHeight = (process.stdout as NodeJS.WriteStream & { rows?: number }).rows ?? 24;
-  const canPage =
-    paginate &&
-    process.stdout.isTTY &&
-    process.stdin.isTTY &&
-    typeof (process.stdin as NodeJS.ReadStream & { setRawMode?: unknown }).setRawMode ===
-      "function";
-  const shouldPage = canPage && lines.length > termHeight - 2;
-
-  if (!shouldPage) {
-    for (const line of lines) opts.log(line);
-    return;
-  }
-
-  await _page(lines, opts);
+  for (const line of lines) opts.log(line);
 }
 
 export function renderOptionHelp(data: OptionHelpData, opts: RenderOptions): void {
@@ -490,34 +373,6 @@ export function renderVersionOutput(rawEnvinfo: string, opts: RenderOptions): vo
       }
     }
     log(div);
-  }
-}
-
-export function renderStatsOutput(
-  statsString: string,
-  summary: BuildSummary | null,
-  opts: RenderOptions,
-): void {
-  const { log } = opts;
-  const trimmed = statsString.trim();
-
-  if (trimmed) {
-    // Output the entire indented stats block as a single log() call so all
-    // lines arrive in one stdout chunk, watch mode tests depend on this.
-    const indented = trimmed
-      .split("\n")
-      .map((line) => `${indent(INDENT)}${line}`)
-      .join("\n");
-    log(`\n${indented}`);
-  }
-
-  if (summary) {
-    log("");
-    if (summary.success) {
-      renderSuccess(summary.message, opts);
-    } else {
-      renderError(summary.message, opts);
-    }
   }
 }
 

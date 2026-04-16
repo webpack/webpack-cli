@@ -44,7 +44,6 @@ import {
   renderInfo,
   renderInfoOutput,
   renderOptionHelp,
-  renderStatsOutput,
   renderSuccess,
   renderVersionOutput,
   renderWarning,
@@ -119,6 +118,7 @@ interface CommandOptions<
   dependencies?: string[];
   pkg?: string;
   preload?: () => Promise<C>;
+  header?: { name: string; description: string };
   options?:
     | CommandOption[]
     | ((command: Command & { context: C }) => CommandOption[])
@@ -692,13 +692,7 @@ class WebpackCLI {
         isVerbose,
       );
 
-      const canPaginate =
-        Boolean(process.stdout.isTTY) &&
-        Boolean(process.stdin.isTTY) &&
-        typeof (process.stdin as NodeJS.ReadStream & { setRawMode?: unknown }).setRawMode ===
-          "function";
-
-      await renderCommandHelp(commandHelpData, this.#renderOptions(), canPaginate);
+      renderCommandHelp(commandHelpData, this.#renderOptions());
       renderFooter(this.#renderOptions(), { verbose: isVerbose });
       process.exit(0);
     });
@@ -1039,12 +1033,16 @@ class WebpackCLI {
   }
 
   #renderOptions(): RenderOptions {
+    const helpConfig = this.program.configureHelp();
+    const columns =
+      typeof helpConfig.helpWidth === "number"
+        ? helpConfig.helpWidth
+        : (process.stdout.columns ?? 80);
+
     return {
       colors: this.colors,
       log: (line) => this.logger.raw(line),
-      // process.stdout.columns can be undefined in non-TTY environments
-      // (CI, test runners, pipes). Fall back to 80 which fits most terminals.
-      columns: process.stdout.columns ?? 80,
+      columns,
     };
   }
 
@@ -1258,13 +1256,8 @@ class WebpackCLI {
         }
 
         const commandHelpData = this.#buildCommandHelpData(command, program, isVerbose);
-        const canPaginate =
-          Boolean(process.stdout.isTTY) &&
-          Boolean(process.stdin.isTTY) &&
-          typeof (process.stdin as NodeJS.ReadStream & { setRawMode?: unknown }).setRawMode ===
-            "function";
 
-        await renderCommandHelp(commandHelpData, this.#renderOptions(), canPaginate);
+        renderCommandHelp(commandHelpData, this.#renderOptions());
         renderFooter(this.#renderOptions(), { verbose: isVerbose });
         process.exit(0);
       }
@@ -2935,8 +2928,6 @@ class WebpackCLI {
           })
         : null;
 
-    const renderOpts = this.#renderOptions();
-
     const callback: WebpackCallback = (error, stats): void => {
       if (error) {
         this.logger.error(error);
@@ -3028,6 +3019,7 @@ class WebpackCLI {
                 message: `Compiled with ${warnCount} warning${warnCount !== 1 ? "s" : ""}${time}`,
               };
             } else {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               summary = { success: true, message: `Compiled successfully${time}` };
             }
           } catch {
@@ -3035,7 +3027,6 @@ class WebpackCLI {
           }
         }
 
-        renderStatsOutput(printedStats, summary, renderOpts);
         onFirstBuildComplete?.();
       }
     };
