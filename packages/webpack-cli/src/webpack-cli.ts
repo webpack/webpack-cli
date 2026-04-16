@@ -41,7 +41,6 @@ import {
   renderCommandHelp,
   renderError,
   renderFooter,
-  renderInfo,
   renderInfoOutput,
   renderOptionHelp,
   renderSuccess,
@@ -1655,7 +1654,6 @@ class WebpackCLI {
         this.schemaToOptions(cmd.context.webpack, undefined, this.#CLIOptions),
       action: async (entries, options, cmd) => {
         const { webpack } = cmd.context;
-        const renderOpts = this.#renderOptions();
 
         if (entries.length > 0) {
           options.entry = [...entries, ...(options.entry || [])];
@@ -1663,19 +1661,7 @@ class WebpackCLI {
 
         options.webpack = webpack;
 
-        let headerWasPrinted = false;
-
-        await this.runWebpack(options as Options, false, () => {
-          headerWasPrinted = true;
-          renderCommandHeader(
-            { name: "build", description: "Compiling your application…" },
-            renderOpts,
-          );
-        });
-
-        if (headerWasPrinted && !options.json) {
-          renderCommandFooter(renderOpts);
-        }
+        await this.runWebpack(options as Options, false);
       },
     },
     watch: {
@@ -1693,7 +1679,6 @@ class WebpackCLI {
         this.schemaToOptions(cmd.context.webpack, undefined, this.#CLIOptions),
       action: async (entries, options, cmd) => {
         const { webpack } = cmd.context;
-        const renderOpts = this.#renderOptions();
 
         if (entries.length > 0) {
           options.entry = [...entries, ...(options.entry || [])];
@@ -1701,12 +1686,7 @@ class WebpackCLI {
 
         options.webpack = webpack;
 
-        await this.runWebpack(options as Options, true, () =>
-          renderCommandHeader(
-            { name: "watch", description: "Watching for file changes…" },
-            renderOpts,
-          ),
-        );
+        await this.runWebpack(options as Options, true);
       },
     },
     serve: {
@@ -1735,8 +1715,6 @@ class WebpackCLI {
       },
       action: async (entries: string[], options: CommanderArgs, cmd) => {
         const { webpack, webpackOptions, devServerOptions } = cmd.context;
-        const renderOpts = this.#renderOptions();
-        let serveHeaderPrinted = false;
         const webpackCLIOptions: Options = { webpack, isWatchingLikeCommand: true };
         const devServerCLIOptions: CommanderArgs = {};
 
@@ -1821,33 +1799,12 @@ class WebpackCLI {
             const portNumber = Number(devServerConfiguration.port);
 
             if (usedPorts.includes(portNumber)) {
-              renderError(
-                `Port ${portNumber} is already in use by another devServer configuration.`,
-                renderOpts,
-              );
-              renderInfo(
-                "Each devServer entry must use a unique port, or use --config-name to run a single configuration.",
-                renderOpts,
-              );
-              renderInfo(
-                "Documentation: https://webpack.js.org/configuration/dev-server/#devserverport",
-                renderOpts,
-              );
               throw new Error(
                 "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
               );
             }
 
             usedPorts.push(portNumber);
-          }
-
-          // All validation passed for this compiler, safe to print the header.
-          if (!serveHeaderPrinted) {
-            renderCommandHeader(
-              { name: "serve", description: "Starting the development server…" },
-              renderOpts,
-            );
-            serveHeaderPrinted = true;
           }
 
           try {
@@ -1858,14 +1815,11 @@ class WebpackCLI {
             servers.push(server as unknown as InstanceType<DevServerConstructor>);
           } catch (error) {
             if (this.isValidationError(error as Error)) {
-              renderError((error as Error).message, renderOpts);
+              this.logger.error((error as Error).message);
             } else {
-              renderError(String(error), renderOpts);
+              this.logger.error(error);
             }
-            renderInfo(
-              "Documentation: https://webpack.js.org/configuration/dev-server/",
-              renderOpts,
-            );
+
             process.exit(2);
           }
         }
@@ -2903,11 +2857,7 @@ class WebpackCLI {
     return Boolean(compiler.options.watchOptions?.stdin);
   }
 
-  async runWebpack(
-    options: Options,
-    isWatchCommand: boolean,
-    headerFn?: () => void,
-  ): Promise<void> {
+  async runWebpack(options: Options, isWatchCommand: boolean): Promise<void> {
     let compiler: Compiler | MultiCompiler;
     let stringifyChunked: typeof stringifyChunkedType;
     let Readable: typeof ReadableType;
@@ -2917,27 +2867,13 @@ class WebpackCLI {
       ({ Readable } = await import("node:stream"));
     }
 
-    // For non-watch builds, resolve only after the first compilation so
-    // the caller (build action) can safely call renderCommandFooter() knowing
-    // the stats have already been output.
-    let onFirstBuildComplete: (() => void) | undefined;
-    const firstBuildComplete =
-      !isWatchCommand && !options.watch
-        ? new Promise<void>((resolve) => {
-            onFirstBuildComplete = resolve;
-          })
-        : null;
-
     const callback: WebpackCallback = (error, stats): void => {
       if (error) {
         this.logger.error(error);
         process.exit(2);
       }
 
-      const hasCompilationErrors =
-        stats && (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings()));
-
-      if (hasCompilationErrors) {
+      if (stats && (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings()))) {
         process.exitCode = 1;
       }
 
@@ -2962,72 +2898,28 @@ class WebpackCLI {
             .on("error", handleWriteError)
             .pipe(process.stdout)
             .on("error", handleWriteError)
-            .on("close", () => {
-              process.stdout.write("\n");
-              onFirstBuildComplete?.();
-            });
+            .on("close", () => process.stdout.write("\n"));
         } else {
           Readable.from(stringifyChunked(stats.toJson(statsOptions as StatsOptions)))
             .on("error", handleWriteError)
             .pipe(fs.createWriteStream(options.json))
             .on("error", handleWriteError)
+            // Use stderr to logging
             .on("close", () => {
-              // Use stderr to logging
               process.stderr.write(
                 `[webpack-cli] ${this.colors.green(
                   `stats are successfully stored as json to ${options.json}`,
                 )}\n`,
               );
-              onFirstBuildComplete?.();
             });
         }
       } else {
         const printedStats = stats.toString(statsOptions);
 
-        // Only emit header+chrome when there is something meaningful to frame.
-        // stats: none produces an empty string, matching the old behavior.
-        const hasOutput = printedStats.trim().length > 0;
-
-        if (!hasCompilationErrors && hasOutput) {
-          headerFn?.();
+        // Avoid extra empty line when `stats: 'none'`
+        if (printedStats) {
+          this.logger.raw(printedStats);
         }
-
-        // ...summary computation unchanged...
-        let summary: { success: boolean; message: string } | null = null;
-        if (!this.isMultipleCompiler(compiler)) {
-          try {
-            const json = (stats as Stats).toJson({
-              all: false,
-              timings: true,
-              errorsCount: true,
-              warningsCount: true,
-            });
-            const time = typeof json.time === "number" ? ` in ${json.time}ms` : "";
-            const errCount = json.errorsCount ?? 0;
-            const warnCount = json.warningsCount ?? 0;
-
-            if (errCount > 0) {
-              summary = {
-                success: false,
-                message: `Compilation failed: ${errCount} error${errCount !== 1 ? "s" : ""}${
-                  warnCount > 0 ? `, ${warnCount} warning${warnCount !== 1 ? "s" : ""}` : ""
-                }${time}`,
-              };
-            } else if (warnCount > 0) {
-              summary = {
-                success: true,
-                message: `Compiled with ${warnCount} warning${warnCount !== 1 ? "s" : ""}${time}`,
-              };
-            } else {
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              summary = { success: true, message: `Compiled successfully${time}` };
-            }
-          } catch {
-            // proceed without summary
-          }
-        }
-
-        onFirstBuildComplete?.();
       }
     };
 
@@ -3095,12 +2987,6 @@ class WebpackCLI {
         });
         process.stdin.resume();
       }
-    }
-
-    // For non-watch builds, block until the first compilation callback fires
-    // so callers can rely on all output being flushed before continuing.
-    if (firstBuildComplete) {
-      await firstBuildComplete;
     }
   }
 }
