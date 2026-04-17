@@ -508,6 +508,30 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
+  it("should generate react template with typescript", async () => {
+    const { stdout } = await runPromptWithAnswers(
+      dir,
+      ["init", ".", "--template=react"],
+      [`${DOWN}${ENTER}`, `y${ENTER}`, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER, ENTER],
+    );
+
+    expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stdout).toContain("webpack.config.ts");
+
+    const files = [
+      ...reactTemplateFiles.filter((file) => file !== "webpack.config.js"),
+      "webpack.config.ts",
+      "tsconfig.json",
+    ];
+
+    for (const file of files) {
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
+    }
+
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir, "webpack.config.ts")).toMatchSnapshot();
+  });
+
   it("should generate vue template with store and router support on prompt answers", async () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
@@ -532,6 +556,30 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
+  it("should generate vue template with typescript", async () => {
+    const { stdout } = await runPromptWithAnswers(
+      dir,
+      ["init", ".", "--template=vue"],
+      [`${DOWN}${ENTER}`, `y${ENTER}`, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER, ENTER],
+    );
+
+    expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stdout).toContain("webpack.config.ts");
+
+    const files = [
+      ...vueTemplateFiles.filter((file) => file !== "webpack.config.js"),
+      "webpack.config.ts",
+      "tsconfig.json",
+    ];
+
+    for (const file of files) {
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
+    }
+
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir, "webpack.config.ts")).toMatchSnapshot();
+  });
+
   it("should generate svelte template with prompt answers", async () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
@@ -552,5 +600,29 @@ describe("create-webpack-app cli", () => {
 
     // Check if the generated webpack configuration matches the snapshot
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
+  });
+
+  it("should generate svelte template with typescript", async () => {
+    const { stdout } = await runPromptWithAnswers(
+      dir,
+      ["init", ".", "--template=svelte"],
+      [`${DOWN}${ENTER}`, `y${ENTER}`, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER, ENTER],
+    );
+
+    expect(stdout).toContain("Project has been initialised with webpack!");
+    expect(stdout).toContain("webpack.config.ts");
+
+    const files = [
+      ...svelteTemplateFiles.filter((file) => file !== "webpack.config.js"),
+      "webpack.config.ts",
+      "tsconfig.json",
+    ];
+
+    for (const file of files) {
+      expect(existsSync(resolve(dir, file))).toBeTruthy();
+    }
+
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
+    expect(readFromWebpackConfig(dir, "webpack.config.ts")).toMatchSnapshot();
   });
 });
