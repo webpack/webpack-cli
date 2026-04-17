@@ -151,7 +151,10 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
 
       const files: FileRecord[] = [
         { filePath: "./index.html", fileType: "text" },
-        { filePath: "webpack.config.js", fileType: "text" },
+        {
+          filePath: answers.langType === "Typescript" ? "webpack.config.ts" : "webpack.config.js",
+          fileType: "text",
+        },
         { filePath: "package.json", fileType: "text" },
         { filePath: "README.md", fileType: "text" },
         { filePath: "./src/assets/webpack.png", fileType: "binary" },
@@ -206,7 +209,9 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
           templateFile: join(
             plop.getPlopfilePath(),
             "../templates/init/react",
-            `${file.filePath}.tpl`,
+            file.filePath.startsWith("webpack.config")
+              ? "webpack.config.tpl"
+              : `${file.filePath}.tpl`,
           ),
           fileType: file.fileType,
           data: answers,
