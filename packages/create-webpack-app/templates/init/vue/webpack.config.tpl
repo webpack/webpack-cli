@@ -1,26 +1,23 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
+import { VueLoaderPlugin } from "vue-loader";
 import path from "node:path";
-import { fileURLToPath } from "node:url";<% if (htmlWebpackPlugin) { %>
+import { fileURLToPath } from "node:url";<% if (langType === "Typescript") { %>
+import { type Configuration } from "webpack";<% if (devServer) { %>
+import "webpack-dev-server";<% } %><% } %><% if (htmlWebpackPlugin) { %>
 import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
 import MiniCssExtractPlugin from "mini-css-extract-plugin";<% } %><% if (workboxWebpackPlugin) { %>
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";<% } %>
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === "production";
-<% if (cssType !== "none") { %>
-<% if (extractPlugin === "Yes") { %>
-const stylesHandler = MiniCssExtractPlugin.loader;
-<% } else if (extractPlugin === "Only for Production") { %>
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
-<% } else { %>
-const stylesHandler = "style-loader";
-<% } %>
-<% } %>
+const isProduction = process.env.NODE_ENV === "production";<% if (cssType !== "none") { %><% if (extractPlugin === "Yes") { %>
+const stylesHandler = MiniCssExtractPlugin.loader;<% } else if (extractPlugin === "Only for Production") { %>
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "vue-style-loader";<% } else { %>
+const stylesHandler = "vue-style-loader";<% } %><% } %>
 
 /** @type {import("webpack").Configuration} */
-const config = {
+const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
     entry: "<%= entry %>",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -28,31 +25,38 @@ const config = {
     devServer: {
         open: true,
     },<% } %>
-    plugins: [<% if (htmlWebpackPlugin) { %>
+    plugins: [
+        new VueLoaderPlugin(),<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
             template: "index.html",
-        }),
-<% } %><% if (extractPlugin === "Yes") { %>
-        new MiniCssExtractPlugin(),
-<% } %>
+        }),<% } %><% if (extractPlugin === "Yes") { %>
+        new MiniCssExtractPlugin(),<% } %>
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
-        rules: [<% if (langType == "ES6") { %>
+        rules: [
             {
-                test: /\.(js|jsx)$/,
+                test: /\.vue$/,
+                loader: "vue-loader"
+            },<% if (langType == "ES6") { %>
+            {
+                test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ["@babel/preset-env", "@babel/preset-react"],
+                        presets: ["@babel/preset-env"],
                     },
                 },
             },<% } %><% if (langType == "Typescript") { %>
             {
                 test: /\.(ts|tsx)$/i,
                 loader: "ts-loader",
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                    transpileOnly: true,
+                },
                 exclude: ["/node_modules/"],
             },<% } %><%  if (isCSS && !isPostCSS) { %>
             {
@@ -79,28 +83,23 @@ const config = {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
-
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
     resolve: {
         alias: {
-            "@": path.resolve(__dirname, "./src/"),
-        },
-        extensions: [".jsx", ".js"<% if (langType === "Typescript") { %>, ".tsx", ".ts"<% } %>],
+            "@": path.resolve(__dirname, "./src/")
+        },<% if (langType == "Typescript") {%>
+        extensions: [".tsx", ".ts", ".js", ".vue", ".json"],<% } %>
     },
 };
 
 export default () => {
     if (isProduction) {
-        config.mode = "production";
-        <% if (extractPlugin === "Only for Production") { %>
-        config.plugins.push(new MiniCssExtractPlugin());
-        <% } %>
-        <% if (workboxWebpackPlugin) { %>
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        <% } %>
+        config.mode = "production";<% if (extractPlugin === "Only for Production") { %>
+        config.plugins?.push(new MiniCssExtractPlugin());<% } %><% if (workboxWebpackPlugin) { %>
+        config.plugins?.push(new WorkboxWebpackPlugin.GenerateSW());<% } %>
     } else {
         config.mode = "development";
     }

@@ -143,7 +143,10 @@ export default async function svelteInitGenerator(plop: NodePlopAPI) {
       const files: FileRecord[] = [
         { filePath: "./index.html", fileType: "text" },
         { filePath: "./src/assets/webpack.png", fileType: "binary" },
-        { filePath: "webpack.config.js", fileType: "text" },
+        {
+          filePath: answers.langType === "Typescript" ? "webpack.config.ts" : "webpack.config.js",
+          fileType: "text",
+        },
         { filePath: "package.json", fileType: "text" },
         { filePath: "README.md", fileType: "text" },
         { filePath: "./src/components/HelloWorld.svelte", fileType: "text" },
@@ -193,7 +196,9 @@ export default async function svelteInitGenerator(plop: NodePlopAPI) {
           templateFile: join(
             plop.getPlopfilePath(),
             "../templates/init/svelte",
-            `${file.filePath}.tpl`,
+            file.filePath.startsWith("webpack.config")
+              ? "webpack.config.tpl"
+              : `${file.filePath}.tpl`,
           ),
           fileType: file.fileType,
           data: answers,

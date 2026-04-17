@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "es6",
+    "target": "esnext",
+    "module": "esnext",
     "strict": true,
     "jsx": "preserve",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "baseUrl": ".",
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "isolatedModules": true,
+    "rewriteRelativeImportExtensions": true,
     "types": [
       "webpack-env",
       "vue-router"
@@ -22,6 +25,7 @@
     "lib": [
       "esnext",
       "dom",
+      "dom.iterable",
     ]
   },
   "include": [

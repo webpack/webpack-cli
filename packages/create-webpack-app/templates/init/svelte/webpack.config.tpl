@@ -1,27 +1,22 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-import { VueLoaderPlugin } from "vue-loader";
 import path from "node:path";
-import { fileURLToPath } from "node:url";<% if (htmlWebpackPlugin) { %>
+import { fileURLToPath } from "node:url";<% if (langType === "Typescript") { %>
+import { type Configuration } from "webpack";<% if (devServer) { %>
+import "webpack-dev-server";<% } %><% } %><% if (htmlWebpackPlugin) { %>
 import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
 import MiniCssExtractPlugin from "mini-css-extract-plugin";<% } %><% if (workboxWebpackPlugin) { %>
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";<% } %>
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === "production";
-<% if (cssType !== "none") { %>
-<% if (extractPlugin === "Yes") { %>
-const stylesHandler = MiniCssExtractPlugin.loader;
-<% } else if (extractPlugin === "Only for Production") { %>
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "vue-style-loader";
-<% } else { %>
-const stylesHandler = "vue-style-loader";
-<% } %>
-<% } %>
+const isProduction = process.env.NODE_ENV === "production";<% if (cssType !== "none") { %><% if (extractPlugin === "Yes") { %>
+const stylesHandler = MiniCssExtractPlugin.loader;<% } else if (extractPlugin === "Only for Production") { %>
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";<% } else { %>
+const stylesHandler = "style-loader";<% } %><% } %>
 
 /** @type {import("webpack").Configuration} */
-const config = {
+const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
     entry: "<%= entry %>",
     output: {
         path: path.resolve(__dirname, "dist"),
@@ -29,22 +24,25 @@ const config = {
     devServer: {
         open: true,
     },<% } %>
-    plugins: [
-        new VueLoaderPlugin(),<% if (htmlWebpackPlugin) { %>
+    plugins: [<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
-            template: "index.html",
-        }),
-<% } %><% if (extractPlugin === "Yes") { %>
-        new MiniCssExtractPlugin(),
-<% } %>
+            template: "./index.html",
+        }),<% } %><% if (extractPlugin === "Yes") { %>
+        new MiniCssExtractPlugin(),<% } %>
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [
             {
-                test: /\.vue$/,
-                loader: "vue-loader"
+                test: /\.svelte$/,
+                use: {
+                    loader: "svelte-loader",
+                    options: {
+                        emitCss: true,
+                        hotReload: true
+                    }
+                }
             },<% if (langType == "ES6") { %>
             {
                 test: /\.js$/,
@@ -57,13 +55,12 @@ const config = {
                 },
             },<% } %><% if (langType == "Typescript") { %>
             {
-                test: /\.(ts|tsx)$/i,
+                test: /\.ts$/,
                 loader: "ts-loader",
+                exclude: /node_modules/,
                 options: {
-                    appendTsSuffixTo: [/\.vue$/],
-                    transpileOnly: true,
+                    appendTsSuffixTo: [/\.svelte$/],
                 },
-                exclude: ["/node_modules/"],
             },<% } %><%  if (isCSS && !isPostCSS) { %>
             {
                 test: /\.css$/i,
@@ -95,21 +92,19 @@ const config = {
     },
     resolve: {
         alias: {
-            "@": path.resolve(__dirname, "./src/")
-        },<% if (langType == "Typescript") {%>
-        extensions: [".tsx", ".ts", ".js", ".vue", ".json"],<% } %>
+            "@": path.resolve(__dirname, "./src/"),
+        },
+        extensions: [".mjs", ".js", ".svelte"<% if (langType == "Typescript") {%>, ".ts"<% } %>],
+        mainFields: ["svelte", "browser", "module", "main"],
+        conditionNames: ["svelte", "module", "browser", "main", "default"]
     },
 };
 
 export default () => {
     if (isProduction) {
-        config.mode = "production";
-        <% if (extractPlugin === "Only for Production") { %>
-        config.plugins.push(new MiniCssExtractPlugin());
-        <% } %>
-        <% if (workboxWebpackPlugin) { %>
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        <% } %>
+        config.mode = "production";<% if (extractPlugin === "Only for Production") { %>
+        config.plugins?.push(new MiniCssExtractPlugin());<% } %><% if (workboxWebpackPlugin) { %>
+        config.plugins?.push(new WorkboxWebpackPlugin.GenerateSW());<% } %>
     } else {
         config.mode = "development";
     }
