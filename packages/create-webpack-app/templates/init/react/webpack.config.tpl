@@ -89,8 +89,8 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
 export default () => {
     if (isProduction) {
         config.mode = "production";<% if (extractPlugin === "Only for Production") { %>
-        config.plugins.push(new MiniCssExtractPlugin());<% } %><% if (workboxWebpackPlugin) { %>
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());<% } %>
+        config.plugins?.push(new MiniCssExtractPlugin());<% } %><% if (workboxWebpackPlugin) { %>
+        config.plugins?.push(new WorkboxWebpackPlugin.GenerateSW());<% } %>
     } else {
         config.mode = "development";
     }
