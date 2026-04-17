@@ -296,17 +296,22 @@ export function parseEnvinfoSections(raw: string): InfoSection[] {
   let current: InfoSection | null = null;
 
   for (const line of raw.split("\n")) {
-    const sectionMatch = line.match(/^ {2}([^:]+):\s*$/);
+    const sectionMatch = line.match(/^ {2}([^:\s][^:]+):\s*$/);
     if (sectionMatch) {
       if (current) sections.push(current);
       current = { title: sectionMatch[1].trim(), rows: [] };
       continue;
     }
 
-    const rowMatch = line.match(/^ {4}([^:]+):\s+(.+)$/);
+    const rowMatch = line.match(/^ {4}([^:]+):\s+(.*)$/);
     if (rowMatch && current) {
-      current.rows.push({ label: rowMatch[1].trim(), value: rowMatch[2].trim() });
-      continue;
+      const label = rowMatch[1].trim();
+      const value = rowMatch[2].trim();
+
+      if (value) {
+        current.rows.push({ label, value });
+        continue;
+      }
     }
 
     const emptyRowMatch = line.match(/^ {4}([^:]+):\s*$/);

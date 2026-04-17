@@ -591,12 +591,12 @@ describe("renderInfo", () => {
 describe("parseEnvinfoSections", () => {
   it("returns one section per heading", () => {
     const sections = parseEnvinfoSections(ENVINFO_FIXTURE);
-    expect(sections.map((s) => s.title)).toEqual(["System", "Binaries", "Packages"]);
+    expect(sections.map((section) => section.title)).toEqual(["System", "Binaries", "Packages"]);
   });
 
   it("parses key/value rows correctly", () => {
     const sections = parseEnvinfoSections(ENVINFO_FIXTURE);
-    const system = sections.find((s) => s.title === "System");
+    const system = sections.find((section) => section.title === "System");
     expect(system.rows).toEqual(
       expect.arrayContaining([expect.objectContaining({ label: "OS", value: "macOS 14.0" })]),
     );
@@ -608,17 +608,86 @@ describe("parseEnvinfoSections", () => {
 
   it("skips sections with no parseable rows", () => {
     const sections = parseEnvinfoSections("\n  Empty:\n\n  Real:\n    Key: value\n");
-    const titles = sections.map((s) => s.title);
+    const titles = sections.map((section) => section.title);
     expect(titles).not.toContain("Empty");
     expect(titles).toContain("Real");
   });
 
+  it("sets value to 'N/A' for a row with no value", () => {
+    const sections = parseEnvinfoSections("\n  Browsers:\n    Chrome:\n    Node: 20.0.0\n");
+    const chrome = sections[0].rows.find((row) => row.label === "Chrome");
+    expect(chrome.value).toBe("N/A");
+  });
+
+  it("attaches a passthrough color function to an N/A row", () => {
+    const sections = parseEnvinfoSections("\n  Browsers:\n    Chrome:\n");
+    const chrome = sections[0].rows.find((row) => row.label === "Chrome");
+    expect(chrome.color).toBeDefined();
+    expect(chrome.color("test")).toBe("test");
+  });
+
+  it("does not apply N/A or a color function to a row that has a value", () => {
+    const sections = parseEnvinfoSections("\n  Browsers:\n    Node: 20.0.0\n");
+    const node = sections[0].rows.find((row) => row.label === "Node");
+    expect(node.value).toBe("20.0.0");
+    expect(node.color).toBeUndefined();
+  });
+
+  it("handles a section where every row is empty", () => {
+    const sections = parseEnvinfoSections(
+      "\n  Browsers:\n    Chrome:\n    Firefox:\n    Safari:\n",
+    );
+    expect(sections[0].rows).toHaveLength(3);
+    for (const row of sections[0].rows) {
+      expect(row.value).toBe("N/A");
+      expect(row.color("x")).toBe("x");
+    }
+  });
+
+  it("handles mixed empty and valued rows in the same section", () => {
+    const sections = parseEnvinfoSections(
+      "\n  Binaries:\n    Node: 20.0.0\n    Yarn:\n    npm: 10.0.0\n    pnpm:\n",
+    );
+    // eslint-disable-next-line prefer-destructuring
+    const rows = sections[0].rows;
+    expect(rows.find((row) => row.label === "Node").value).toBe("20.0.0");
+    expect(rows.find((row) => row.label === "Yarn").value).toBe("N/A");
+    expect(rows.find((row) => row.label === "npm").value).toBe("10.0.0");
+    expect(rows.find((row) => row.label === "pnpm").value).toBe("N/A");
+  });
+
+  it("handles complex output with parentheses, paths, and multiple spaces", () => {
+    const COMPLEX_FIXTURE = `
+  System:
+    OS: macOS 14.0 (23A344)
+    CPU: (10) arm64 Apple M2 Pro
+    Memory: 10.23 GB / 32.00 GB
+  Binaries:
+    Node: 20.9.0 - /usr/local/bin/node
+    Yarn: 1.22.19 - ~/.yarn/bin/yarn
+    npm:
+  Utilities:
+    Git: 2.39.3 (Apple Git-145)
+  `;
+
+    const sections = parseEnvinfoSections(COMPLEX_FIXTURE);
+    const system = sections.find((str) => str.title === "System");
+    const binaries = sections.find((str) => str.title === "Binaries");
+    const utilities = sections.find((str) => str.title === "Utilities");
+    expect(system.rows.find((row) => row.label === "OS").value).toBe("macOS 14.0 (23A344)");
+    expect(system.rows.find((row) => row.label === "CPU").value).toBe("(10) arm64 Apple M2 Pro");
+    expect(binaries.rows.find((row) => row.label === "Node").value).toBe(
+      "20.9.0 - /usr/local/bin/node",
+    );
+    expect(binaries.rows.find((row) => row.label === "npm").value).toBe("N/A");
+    expect(utilities.rows.find((row) => row.label === "Git").value).toBe("2.39.3 (Apple Git-145)");
+  });
+
   it("should match snapshot", () => {
     const sections = parseEnvinfoSections(ENVINFO_FIXTURE);
-    // strip color functions — not serialisable in snapshots
-    const serialisable = sections.map((s) => ({
-      title: s.title,
-      rows: s.rows.map(({ label, value }) => ({ label, value })),
+    const serialisable = sections.map((section) => ({
+      title: section.title,
+      rows: section.rows.map(({ label, value }) => ({ label, value })),
     }));
     expect(serialisable).toMatchSnapshot();
   });
