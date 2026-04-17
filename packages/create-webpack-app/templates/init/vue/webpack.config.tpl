@@ -3,6 +3,8 @@
 import { VueLoaderPlugin } from "vue-loader";
 import path from "node:path";
 import { fileURLToPath } from "node:url";<% if (htmlWebpackPlugin) { %>
+import { type Configuration } from "webpack";<% if (devServer) { %>
+import "webpack-dev-server";<% } %><% } %><% if (htmlWebpackPlugin) { %>
 import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
 import MiniCssExtractPlugin from "mini-css-extract-plugin";<% } %><% if (workboxWebpackPlugin) { %>
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";<% } %>
@@ -21,7 +23,7 @@ const stylesHandler = "vue-style-loader";
 <% } %>
 
 /** @type {import("webpack").Configuration} */
-const config = {
+const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
     entry: "<%= entry %>",
     output: {
         path: path.resolve(__dirname, "dist"),
