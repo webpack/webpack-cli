@@ -10,13 +10,9 @@ import WorkboxWebpackPlugin from "workbox-webpack-plugin";<% } %>
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === "production";
-<% if (cssType !== "none") { %>
-<% if (extractPlugin === "Yes") { %>
-const stylesHandler = MiniCssExtractPlugin.loader;
-<% } else if (extractPlugin === "Only for Production") { %>
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
-<% } else { %>
+const isProduction = process.env.NODE_ENV === "production";<% if (cssType !== "none") { %><% if (extractPlugin === "Yes") { %>
+const stylesHandler = MiniCssExtractPlugin.loader;<% } else if (extractPlugin === "Only for Production") { %>
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";<% } else { %>
 const stylesHandler = "style-loader";<% } %><% } %>
 
 /** @type {import("webpack").Configuration} */
@@ -31,10 +27,8 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
     plugins: [<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
             template: "index.html",
-        }),
-<% } %><% if (extractPlugin === "Yes") { %>
-        new MiniCssExtractPlugin(),
-<% } %>
+        }),<% } %><% if (extractPlugin === "Yes") { %>
+        new MiniCssExtractPlugin(),<% } %>
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],

@@ -8,16 +8,10 @@ import WorkboxWebpackPlugin from "workbox-webpack-plugin";<% } %>
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === "production";
-<% if (cssType !== "none") { %>
-<% if (extractPlugin === "Yes") { %>
-const stylesHandler = MiniCssExtractPlugin.loader;
-<% } else if (extractPlugin === "Only for Production") { %>
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
-<% } else { %>
-const stylesHandler = "style-loader";
-<% } %>
-<% } %>
+const isProduction = process.env.NODE_ENV === "production";<% if (cssType !== "none") { %><% if (extractPlugin === "Yes") { %>
+const stylesHandler = MiniCssExtractPlugin.loader;<% } else if (extractPlugin === "Only for Production") { %>
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";<% } else { %>
+const stylesHandler = "style-loader";<% } %><% } %>
 
 /** @type {import("webpack").Configuration} */
 const config = {
@@ -31,10 +25,8 @@ const config = {
     plugins: [<% if (htmlWebpackPlugin) { %>
         new HtmlWebpackPlugin({
             template: "./index.html",
-        }),
-<% } %><% if (extractPlugin === "Yes") { %>
-        new MiniCssExtractPlugin(),
-<% } %>
+        }),<% } %><% if (extractPlugin === "Yes") { %>
+        new MiniCssExtractPlugin(),<% } %>
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
@@ -108,13 +100,9 @@ const config = {
 
 export default () => {
     if (isProduction) {
-        config.mode = "production";
-        <% if (extractPlugin === "Only for Production") { %>
-        config.plugins.push(new MiniCssExtractPlugin());
-        <% } %>
-        <% if (workboxWebpackPlugin) { %>
-        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
-        <% } %>
+        config.mode = "production";<% if (extractPlugin === "Only for Production") { %>
+        config.plugins.push(new MiniCssExtractPlugin());<% } %><% if (workboxWebpackPlugin) { %>
+        config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());<% } %>
     } else {
         config.mode = "development";
     }
