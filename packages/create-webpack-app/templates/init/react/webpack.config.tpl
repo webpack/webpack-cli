@@ -1,7 +1,7 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 import path from "node:path";
-import { fileURLToPath } from "node:url";<% if (htmlWebpackPlugin) { %>
+import { fileURLToPath } from "node:url";<% if (langType === "Typescript") { %>
 import { type Configuration } from "webpack";<% if (devServer) { %>
 import "webpack-dev-server";<% } %><% } %><% if (htmlWebpackPlugin) { %>
 import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
