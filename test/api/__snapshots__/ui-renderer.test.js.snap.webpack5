@@ -74,23 +74,6 @@ exports[`renderAliasHelp should match snapshot 1`] = `
 ]
 `;
 
-exports[`renderCommandFooter should match snapshot 1`] = `
-[
-  "  ──────────────────────────────────────────────────────────────────────────",
-  "",
-]
-`;
-
-exports[`renderCommandHeader should match snapshot 1`] = `
-[
-  "",
-  "  ⬡ webpack build",
-  "  ──────────────────────────────────────────────────────────────────────────",
-  "  Compiling.",
-  "",
-]
-`;
-
 exports[`renderCommandHelp should match full output snapshot for build command 1`] = `
 [
   "",
@@ -179,12 +162,6 @@ exports[`renderFooter should match snapshot (verbose) 1`] = `
   "  CLI documentation:      https://webpack.js.org/api/cli/",
   "  Made with ♥  by the webpack team",
   "",
-]
-`;
-
-exports[`renderInfo should match snapshot 1`] = `
-[
-  "  ℹ just so you know",
 ]
 `;
 

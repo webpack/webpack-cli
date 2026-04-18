@@ -59,12 +59,6 @@ export interface CommandHelpData {
   globalOptions: HelpOption[];
 }
 
-/** Passed to `renderCommandHeader` to describe the running command. */
-export interface CommandMeta {
-  name: string;
-  description: string;
-}
-
 /** One section emitted by `renderInfoOutput`, e.g. "System" or "Binaries". */
 export interface InfoSection {
   title: string;
@@ -137,29 +131,6 @@ export function renderRows(
       log(`${continuation}${colorFn(lines[i])}`);
     }
   }
-}
-
-export function renderCommandHeader(meta: CommandMeta, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  const termWidth = Math.min(opts.columns || MAX_WIDTH, MAX_WIDTH);
-
-  log("");
-  log(`${indent(INDENT)}${colors.bold(colors.cyan("⬡"))} ${colors.bold(`webpack ${meta.name}`)}`);
-  log(divider(termWidth, colors));
-
-  if (meta.description) {
-    const descWidth = termWidth - INDENT * 2;
-    for (const line of wrapValue(meta.description, descWidth)) {
-      log(`${indent(INDENT)}${line}`);
-    }
-    log("");
-  }
-}
-
-export function renderCommandFooter(opts: RenderOptions): void {
-  const termWidth = Math.min(opts.columns, MAX_WIDTH);
-  opts.log(divider(termWidth, opts.colors));
-  opts.log("");
 }
 
 function _renderHelpOptions(
@@ -284,11 +255,6 @@ export function renderSuccess(message: string, opts: RenderOptions): void {
 export function renderWarning(message: string, opts: RenderOptions): void {
   const { colors, log } = opts;
   log(`${indent(INDENT)}${colors.yellow("⚠")} ${message}`);
-}
-
-export function renderInfo(message: string, opts: RenderOptions): void {
-  const { colors, log } = opts;
-  log(`${indent(INDENT)}${colors.cyan("ℹ")} ${message}`);
 }
 
 export function parseEnvinfoSections(raw: string): InfoSection[] {

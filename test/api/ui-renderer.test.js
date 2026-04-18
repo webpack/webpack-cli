@@ -3,12 +3,9 @@ const {
   MAX_WIDTH,
   parseEnvinfoSections,
   renderAliasHelp,
-  renderCommandFooter,
-  renderCommandHeader,
   renderCommandHelp,
   renderError,
   renderFooter,
-  renderInfo,
   renderInfoOutput,
   renderOptionHelp,
   renderSuccess,
@@ -292,84 +289,6 @@ describe("renderCommandHelp", () => {
   });
 });
 
-describe("renderCommandHeader", () => {
-  it("should render 'webpack <name>' in the header", () => {
-    const { captured, opts } = makeOpts();
-    renderCommandHeader({ name: "build", description: "Compiling." }, opts);
-    expect(getOutput(captured)).toContain("webpack build");
-  });
-
-  it("should render the description", () => {
-    const { captured, opts } = makeOpts();
-    renderCommandHeader({ name: "build", description: "Compiling." }, opts);
-    expect(getOutput(captured)).toContain("Compiling.");
-  });
-
-  it("should render a divider", () => {
-    const { captured, opts } = makeOpts();
-    renderCommandHeader({ name: "build", description: "Compiling." }, opts);
-    expect(captured.some((l) => /─{10,}/.test(l))).toBe(true);
-  });
-
-  it("should include the ⬡ icon", () => {
-    const { captured, opts } = makeOpts();
-    renderCommandHeader({ name: "build", description: "Compiling." }, opts);
-    expect(getOutput(captured)).toContain("⬡");
-  });
-
-  it("should omit description block when empty", () => {
-    const { captured, opts } = makeOpts();
-    renderCommandHeader({ name: "build", description: "" }, opts);
-    const nonEmpty = captured.filter((l) => l.trim().length > 0);
-    expect(nonEmpty).toHaveLength(2); // icon+title + divider
-  });
-
-  it("should cap divider at MAX_WIDTH on wide terminals", () => {
-    const { captured, opts } = makeOpts(300);
-    renderCommandHeader({ name: "build", description: "Building." }, opts);
-    const div = captured.find((l) => /─{10,}/.test(l));
-    expect(stripAnsi(div).length).toBeLessThanOrEqual(INDENT + MAX_WIDTH);
-  });
-
-  it("should match snapshot", () => {
-    const { captured, opts } = makeOpts();
-    renderCommandHeader({ name: "build", description: "Compiling." }, opts);
-    expect(captured).toMatchSnapshot();
-  });
-});
-
-describe("renderCommandFooter", () => {
-  it("should render a divider", () => {
-    const { captured, opts } = makeOpts();
-    renderCommandFooter(opts);
-    expect(captured.some((l) => /─{10,}/.test(l))).toBe(true);
-  });
-
-  it("should end with a blank line", () => {
-    const { captured, opts } = makeOpts();
-    renderCommandFooter(opts);
-    expect(captured[captured.length - 1]).toBe("");
-  });
-
-  it("header and footer dividers should be the same length", () => {
-    const hCapture = makeOpts(80);
-    renderCommandHeader({ name: "build", description: "" }, hCapture.opts);
-    const hDiv = hCapture.captured.find((l) => /─{10,}/.test(l));
-
-    const fCapture = makeOpts(80);
-    renderCommandFooter(fCapture.opts);
-    const fDiv = fCapture.captured.find((l) => /─{10,}/.test(l));
-
-    expect(stripAnsi(hDiv)).toHaveLength(stripAnsi(fDiv).length);
-  });
-
-  it("should match snapshot", () => {
-    const { captured, opts } = makeOpts();
-    renderCommandFooter(opts);
-    expect(captured).toMatchSnapshot();
-  });
-});
-
 describe("renderOptionHelp", () => {
   it("should render option name in header", () => {
     const { captured, opts } = makeOpts();
@@ -569,21 +488,6 @@ describe("renderWarning", () => {
   it("should match snapshot", () => {
     const { captured, opts } = makeOpts();
     renderWarning("watch out", opts);
-    expect(captured).toMatchSnapshot();
-  });
-});
-
-describe("renderInfo", () => {
-  it("outputs message with ℹ", () => {
-    const { captured, opts } = makeOpts();
-    renderInfo("just so you know", opts);
-    expect(getOutput(captured)).toContain("ℹ");
-    expect(getOutput(captured)).toContain("just so you know");
-  });
-
-  it("should match snapshot", () => {
-    const { captured, opts } = makeOpts();
-    renderInfo("just so you know", opts);
     expect(captured).toMatchSnapshot();
   });
 });
