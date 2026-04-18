@@ -39,7 +39,7 @@ const serveCommand = () => {
 const versionCommand = () => {
   const packageName = "webpack";
   const args = ["version"];
-  const logMessage = "webpack:";
+  const logMessage = "webpack";
 
   return runTestStdout({
     packageName,
@@ -60,7 +60,7 @@ const helpCommand = () => {
 const infoCommand = () => {
   const packageName = "webpack";
   const args = ["info"];
-  const logMessage = "System:";
+  const logMessage = "System";
 
   return runTestStdout({ packageName, cliArgs: args, logMessage });
 };

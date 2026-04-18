@@ -7,35 +7,37 @@ exports[`'configtest' command with the configuration path option should throw er
 exports[`'configtest' command with the configuration path option should throw syntax error: stderr 1`] = `
 "[webpack-cli] Failed to load './syntax-error.config.js' config
 ▶ ESM (\`import\`) failed:
-  Unexpected token ';'
+Unexpected token ';'
 
 ▶ CJS (\`require\`) failed:
-  Unexpected token ';'"
+Unexpected token ';'"
 `;
 
 exports[`'configtest' command with the configuration path option should throw syntax error: stdout 1`] = `""`;
 
-exports[`'configtest' command with the configuration path option should throw validation error: stderr 1`] = `
-"[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
+exports[`'configtest' command with the configuration path option should throw validation error: stderr 1`] = `""`;
+
+exports[`'configtest' command with the configuration path option should throw validation error: stdout 1`] = `
+"Validating: ./error.config.js
+Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
  - configuration.mode should be one of these:
-   "development" | "production" | "none"
-   -> Enable production optimizations or development hints."
+ "development" | "production" | "none"
+ -> Enable production optimizations or development hints."
 `;
 
-exports[`'configtest' command with the configuration path option should throw validation error: stdout 1`] = `"[webpack-cli] Validate './error.config.js'."`;
+exports[`'configtest' command with the configuration path option should validate the config with alias 't': stderr 1`] = `""`;
 
-exports[`'configtest' command with the configuration path option should validate the config with alias 't': stderr 1`] = `
-"[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
+exports[`'configtest' command with the configuration path option should validate the config with alias 't': stdout 1`] = `
+"Validating: ./error.config.js
+Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
  - configuration.mode should be one of these:
-   "development" | "production" | "none"
-   -> Enable production optimizations or development hints."
+ "development" | "production" | "none"
+ -> Enable production optimizations or development hints."
 `;
-
-exports[`'configtest' command with the configuration path option should validate the config with alias 't': stdout 1`] = `"[webpack-cli] Validate './error.config.js'."`;
 
 exports[`'configtest' command with the configuration path option should validate webpack config successfully: stderr 1`] = `""`;
 
 exports[`'configtest' command with the configuration path option should validate webpack config successfully: stdout 1`] = `
-"[webpack-cli] Validate './basic.config.js'.
-[webpack-cli] There are no validation errors in the given webpack configuration."
+"Validating: ./basic.config.js
+No validation errors found."
 `;

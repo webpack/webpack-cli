@@ -31,6 +31,21 @@ import {
   default as webpack,
 } from "webpack";
 import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
+import {
+  CommandHelpData,
+  HelpOption,
+  MAX_WIDTH,
+  RenderOptions,
+  renderAliasHelp,
+  renderCommandHelp,
+  renderError,
+  renderFooter,
+  renderInfoOutput,
+  renderOptionHelp,
+  renderSuccess,
+  renderVersionOutput,
+  renderWarning,
+} from "./ui-renderer.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -990,6 +1005,38 @@ class WebpackCLI {
     }
   }
 
+  #renderOptions(): RenderOptions {
+    return {
+      colors: this.colors,
+      log: (line) => this.logger.raw(line),
+      columns: process.stdout.columns ?? MAX_WIDTH, // import MAX_WIDTH from ui-renderer
+    };
+  }
+
+  #buildCommandHelpData(command: Command, program: Command, isVerbose: boolean): CommandHelpData {
+    const visibleOptions: HelpOption[] = command.options
+      .filter((opt) => {
+        if ((opt as Option & { internal?: boolean }).internal) return false;
+        return isVerbose || !opt.hidden;
+      })
+      .map((opt) => ({ flags: opt.flags, description: opt.description ?? "" }));
+
+    const globalOptions: HelpOption[] = program.options.map((opt) => ({
+      flags: opt.flags,
+      description: opt.description ?? "",
+    }));
+
+    const usageParts = [command.name(), ...command.aliases()].join("|");
+
+    return {
+      name: command.name(),
+      usage: `webpack ${usageParts} ${command.usage()}`,
+      description: command.description(),
+      options: visibleOptions,
+      globalOptions,
+    };
+  }
+
   async #outputHelp(
     options: string[],
     isVerbose: boolean,
@@ -1156,6 +1203,9 @@ class WebpackCLI {
         if (buildCommand) {
           this.logger.raw(buildCommand.helpInformation());
         }
+
+        renderFooter(this.#renderOptions(), { verbose: isVerbose });
+        process.exit(0);
       } else {
         const [name] = options;
 
@@ -1167,7 +1217,11 @@ class WebpackCLI {
           process.exit(2);
         }
 
-        this.logger.raw(command.helpInformation());
+        const commandHelpData = this.#buildCommandHelpData(command, program, isVerbose);
+
+        renderCommandHelp(commandHelpData, this.#renderOptions());
+        renderFooter(this.#renderOptions(), { verbose: isVerbose });
+        process.exit(0);
       }
     } else if (isHelpCommandSyntax) {
       let isCommandSpecified = false;
@@ -1213,62 +1267,58 @@ class WebpackCLI {
         (option.variadic === true ? "..." : "");
       const value = option.required ? `<${nameOutput}>` : option.optional ? `[${nameOutput}]` : "";
 
-      this.logger.raw(
-        `${bold("Usage")}: webpack${isCommandSpecified ? ` ${commandName}` : ""} ${option.long}${
-          value ? ` ${value}` : ""
-        }`,
-      );
-
-      if (option.short) {
-        this.logger.raw(
-          `${bold("Short:")} webpack${isCommandSpecified ? ` ${commandName}` : ""} ${
-            option.short
-          }${value ? ` ${value}` : ""}`,
-        );
-      }
-
-      if (option.description) {
-        this.logger.raw(`${bold("Description:")} ${option.description}`);
-      }
-
       const { configs } = option as Option & { configs?: ArgumentConfig[] };
+      let possibleValues: string | undefined;
 
       if (configs) {
-        const possibleValues = configs.reduce((accumulator, currentValue) => {
-          if (currentValue.values) {
-            return [...accumulator, ...currentValue.values];
-          }
-
+        const values = configs.reduce((accumulator, currentValue) => {
+          if (currentValue.values) return [...accumulator, ...currentValue.values];
           return accumulator;
         }, [] as EnumValue[]);
 
-        if (possibleValues.length > 0) {
+        if (values.length > 0) {
           // Convert the possible values to a union type string
           // ['mode', 'development', 'production'] => "'mode' | 'development' | 'production'"
           // [false, 'eval'] => "false | 'eval'"
-          const possibleValuesUnionTypeString = possibleValues
+          possibleValues = values
             .map((value) => (typeof value === "string" ? `'${value}'` : value))
             .join(" | ");
-
-          this.logger.raw(`${bold("Possible values:")} ${possibleValuesUnionTypeString}`);
         }
       }
 
-      this.logger.raw("");
+      const canonicalName = option.long ?? optionName;
+      const docUrl = `https://webpack.js.org/option/${canonicalName.replace(/^--/, "")}/`;
+      const base = `webpack${isCommandSpecified ? ` ${commandName}` : ""}`;
+
+      const optionHelpData = {
+        optionName: canonicalName,
+        usage: `${base} ${canonicalName}${value ? ` ${value}` : ""}`,
+        short: option.short ? `${base} ${option.short}${value ? ` ${value}` : ""}` : undefined,
+        description: option.description || undefined,
+        docUrl,
+        possibleValues,
+      };
+
+      const isShortAlias = optionName.startsWith("-") && !optionName.startsWith("--");
+
+      if (isShortAlias) {
+        renderAliasHelp(
+          { alias: optionName, canonical: canonicalName, optionHelp: optionHelpData },
+          this.#renderOptions(),
+        );
+      } else {
+        renderOptionHelp(optionHelpData, this.#renderOptions());
+      }
+
+      renderFooter(this.#renderOptions(), { verbose: isVerbose });
+      process.exit(0);
 
       // TODO implement this after refactor cli arguments
       // logger.raw('Documentation: https://webpack.js.org/option/name/');
     } else {
       outputIncorrectUsageOfHelp();
     }
-
-    this.logger.raw(
-      "To see list of all supported commands and options run 'webpack --help=verbose'.\n",
-    );
-    this.logger.raw(`${bold("Webpack documentation:")} https://webpack.js.org/.`);
-    this.logger.raw(`${bold("CLI documentation:")} https://webpack.js.org/api/cli/.`);
-    this.logger.raw(`${bold("Made with ♥ by the webpack team")}.`);
-    process.exit(0);
+    // all branches now exit themselves so no need logger and process.exit
   }
 
   async #renderVersion(options: { output?: string } = {}): Promise<string> {
@@ -1773,9 +1823,18 @@ class WebpackCLI {
         },
       ],
       action: async (options: { output?: string }) => {
-        const info = await this.#renderVersion(options);
+        const rawInfo = await this.#getInfoOutput({
+          information: {
+            npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
+          },
+        });
 
-        this.logger.raw(info);
+        if (options.output) {
+          this.logger.raw(await this.#renderVersion(options));
+          return;
+        }
+
+        renderVersionOutput(rawInfo, this.#renderOptions());
       },
     },
     info: {
@@ -1808,7 +1867,12 @@ class WebpackCLI {
       action: async (options: { output?: string; additionalPackage?: string[] }) => {
         const info = await this.#getInfoOutput(options);
 
-        this.logger.raw(info);
+        if (options.output) {
+          this.logger.raw(info);
+          return;
+        }
+
+        renderInfoOutput(info, this.#renderOptions());
       },
     },
     configtest: {
@@ -1830,6 +1894,7 @@ class WebpackCLI {
           configPath ? { env, argv, webpack, config: [configPath] } : { env, argv, webpack },
         );
         const configPaths = new Set<string>();
+        const renderOpts = this.#renderOptions();
 
         if (Array.isArray(config.options)) {
           for (const options of config.options) {
@@ -1848,25 +1913,20 @@ class WebpackCLI {
         }
 
         if (configPaths.size === 0) {
-          this.logger.error("No configuration found.");
+          renderError("No configuration found.", renderOpts);
           process.exit(2);
         }
-
-        this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
-
+        renderWarning(`Validating: ${[...configPaths].join(", ")}`, renderOpts);
         try {
           cmd.context.webpack.validate(config.options);
         } catch (error) {
-          if (this.isValidationError(error as Error)) {
-            this.logger.error((error as Error).message);
-          } else {
-            this.logger.error(error);
-          }
-
+          renderError(
+            this.isValidationError(error as Error) ? (error as Error).message : String(error),
+            renderOpts,
+          );
           process.exit(2);
         }
-
-        this.logger.success("There are no validation errors in the given webpack configuration.");
+        renderSuccess("No validation errors found.", renderOpts);
       },
     },
   };
@@ -1953,7 +2013,7 @@ class WebpackCLI {
 
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+
     const self: WebpackCLI = this;
 
     // Register own exit

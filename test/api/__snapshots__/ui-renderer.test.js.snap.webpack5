@@ -1,0 +1,245 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`parseEnvinfoSections should match snapshot 1`] = `
+[
+  {
+    "rows": [
+      {
+        "label": "OS",
+        "value": "macOS 14.0",
+      },
+      {
+        "label": "CPU",
+        "value": "Apple M2",
+      },
+      {
+        "label": "Memory",
+        "value": "16 GB",
+      },
+    ],
+    "title": "System",
+  },
+  {
+    "rows": [
+      {
+        "label": "Node",
+        "value": "20.1.0",
+      },
+      {
+        "label": "npm",
+        "value": "9.6.7",
+      },
+      {
+        "label": "pnpm",
+        "value": "Not Found",
+      },
+    ],
+    "title": "Binaries",
+  },
+  {
+    "rows": [
+      {
+        "label": "webpack",
+        "value": "^5.105.4 => 5.105.4",
+      },
+      {
+        "label": "webpack-cli",
+        "value": "^6.0.0 => 6.0.1",
+      },
+      {
+        "label": "webpack-dev-server",
+        "value": "^5.1.0 => 5.2.3",
+      },
+    ],
+    "title": "Packages",
+  },
+]
+`;
+
+exports[`renderAliasHelp should match snapshot 1`] = `
+[
+  "",
+  "  ⬡ -c  →  --config",
+  "  alias for --config",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+  "  ⬡ --config",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  Usage          webpack --config <pathToConfigFile...>",
+  "  Short          webpack -c <pathToConfigFile...>",
+  "  Description    Provide path to a webpack configuration file.",
+  "  Documentation  https://webpack.js.org/option/config/",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+]
+`;
+
+exports[`renderCommandHelp should match full output snapshot for build command 1`] = `
+[
+  "",
+  "  ⬡ webpack build",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  Run webpack (default command, can be omitted).",
+  "",
+  "  Usage:  webpack build|bundle|b [entries...] [options]",
+  "",
+  "  Options",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  -c, --config <pathToConfigFile...>    Provide path to one or more webpack",
+  "                                        configuration files.",
+  "  --config-name <name...>               Name(s) of particular configuration(s)",
+  "                                        to use if configuration file exports an",
+  "                                        array of multiple configurations.",
+  "  -m, --merge                           Merge two or more configurations using",
+  "                                        'webpack-merge'.",
+  "  --mode <value>                        Enable production optimizations or",
+  "                                        development hints.",
+  "  -o, --output-path <value>             The output directory as absolute path",
+  "                                        (required).",
+  "  -w, --watch                           Enter watch mode, which rebuilds on file",
+  "                                        change.",
+  "",
+  "  Global options",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  --color                               Enable colors on console.",
+  "  --no-color                            Disable colors on console.",
+  "  -v, --version                         Output the version number.",
+  "  -h, --help [verbose]                  Display help for commands and options.",
+  "",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+]
+`;
+
+exports[`renderCommandHelp should match full output snapshot for info command 1`] = `
+[
+  "",
+  "  ⬡ webpack info",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  Outputs information about your system.",
+  "",
+  "  Usage:  webpack info|i [options]",
+  "",
+  "  Options",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  -o, --output <value>                Get output in a specified format (json or",
+  "                                      markdown).",
+  "  -a, --additional-package <value>    Adds additional packages to the output.",
+  "",
+  "  Global options",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  --color                             Enable colors on console.",
+  "  --no-color                          Disable colors on console.",
+  "  -v, --version                       Output the version number.",
+  "  -h, --help [verbose]                Display help for commands and options.",
+  "",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+]
+`;
+
+exports[`renderError should match snapshot 1`] = `
+[
+  "  ✖ something went wrong",
+]
+`;
+
+exports[`renderFooter should match snapshot (default) 1`] = `
+[
+  "  ℹ Run 'webpack --help=verbose' to see all available commands and options.",
+  "",
+  "  Webpack documentation:  https://webpack.js.org/",
+  "  CLI documentation:      https://webpack.js.org/api/cli/",
+  "  Made with ♥  by the webpack team",
+  "",
+]
+`;
+
+exports[`renderFooter should match snapshot (verbose) 1`] = `
+[
+  "",
+  "  Webpack documentation:  https://webpack.js.org/",
+  "  CLI documentation:      https://webpack.js.org/api/cli/",
+  "  Made with ♥  by the webpack team",
+  "",
+]
+`;
+
+exports[`renderInfoOutput should match full output snapshot 1`] = `
+[
+  "",
+  "  ⬡ System",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  OS      macOS 14.0",
+  "  CPU     Apple M2",
+  "  Memory  16 GB",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+  "  ⬡ Binaries",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  Node  20.1.0",
+  "  npm   9.6.7",
+  "  pnpm  Not Found",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+  "  ⬡ Packages",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  webpack             ^5.105.4 => 5.105.4",
+  "  webpack-cli         ^6.0.0 => 6.0.1",
+  "  webpack-dev-server  ^5.1.0 => 5.2.3",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+]
+`;
+
+exports[`renderOptionHelp should match snapshot with all fields 1`] = `
+[
+  "",
+  "  ⬡ --mode",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  Usage            webpack --mode <value>",
+  "  Description      Enable production optimizations or development hints.",
+  "  Documentation    https://webpack.js.org/option/mode/",
+  "  Possible values  'development' | 'production' | 'none'",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+]
+`;
+
+exports[`renderSuccess should match snapshot 1`] = `
+[
+  "  ✔ all good",
+]
+`;
+
+exports[`renderVersionOutput should match full output snapshot 1`] = `
+[
+  "",
+  "  ⬡ System",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  OS      macOS 14.0",
+  "  CPU     Apple M2",
+  "  Memory  16 GB",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+  "  ⬡ Binaries",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  Node  20.1.0",
+  "  npm   9.6.7",
+  "  pnpm  Not Found",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "",
+  "  ⬡ Packages",
+  "  ──────────────────────────────────────────────────────────────────────────",
+  "  webpack             ^5.105.4      →  5.105.4",
+  "  webpack-cli         ^6.0.0        →  6.0.1",
+  "  webpack-dev-server  ^5.1.0        →  5.2.3",
+  "  ──────────────────────────────────────────────────────────────────────────",
+]
+`;
+
+exports[`renderWarning should match snapshot 1`] = `
+[
+  "  ⚠ watch out",
+]
+`;
