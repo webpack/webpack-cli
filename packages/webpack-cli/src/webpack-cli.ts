@@ -34,10 +34,9 @@ import { type Configuration as DevServerConfiguration } from "webpack-dev-server
 import {
   CommandHelpData,
   HelpOption,
+  MAX_WIDTH,
   RenderOptions,
   renderAliasHelp,
-  renderCommandFooter,
-  renderCommandHeader,
   renderCommandHelp,
   renderError,
   renderFooter,
@@ -104,12 +103,6 @@ interface Command extends CommanderCommand {
   context: Context;
 }
 
-interface CommandUIOptions {
-  description?: string;
-  footer?: "global" | "command";
-  skipIf?: (opts: RecordAny) => boolean;
-}
-
 interface CommandOptions<
   A = void,
   O extends CommanderArgs = CommanderArgs,
@@ -123,7 +116,6 @@ interface CommandOptions<
   dependencies?: string[];
   pkg?: string;
   preload?: () => Promise<C>;
-  ui?: CommandUIOptions;
   options?:
     | CommandOption[]
     | ((command: Command & { context: C }) => CommandOption[])
@@ -680,33 +672,6 @@ class WebpackCLI {
 
     command.action(options.action);
 
-    if (options.ui) {
-      const { ui } = options;
-
-      command.hook("preAction", (_thisCmd, actionCmd) => {
-        if (ui.skipIf?.(actionCmd.opts())) return;
-
-        renderCommandHeader(
-          {
-            name: command.name(),
-            description: ui.description ?? command.description(),
-          },
-          this.#renderOptions(),
-        );
-      });
-
-      command.hook("postAction", (_thisCmd, actionCmd) => {
-        if (ui.skipIf?.(actionCmd.opts())) return;
-
-        const renderOpts = this.#renderOptions();
-        if (ui.footer === "command") {
-          renderCommandFooter(renderOpts);
-        } else {
-          renderFooter(renderOpts);
-        }
-      });
-    }
-
     return command;
   }
 
@@ -1044,9 +1009,7 @@ class WebpackCLI {
     return {
       colors: this.colors,
       log: (line) => this.logger.raw(line),
-      // process.stdout.columns can be undefined in non-TTY environments
-      // (CI, test runners, pipes). Fall back to 80 which fits most terminals.
-      columns: process.stdout.columns ?? 80,
+      columns: process.stdout.columns ?? MAX_WIDTH, // import MAX_WIDTH from ui-renderer
     };
   }
 
@@ -1056,23 +1019,18 @@ class WebpackCLI {
         if ((opt as Option & { internal?: boolean }).internal) return false;
         return isVerbose || !opt.hidden;
       })
-      .map((opt) => ({
-        flags: opt.flags,
-        description: opt.description ?? "",
-      }));
+      .map((opt) => ({ flags: opt.flags, description: opt.description ?? "" }));
 
     const globalOptions: HelpOption[] = program.options.map((opt) => ({
       flags: opt.flags,
       description: opt.description ?? "",
     }));
 
-    const aliases = command.aliases();
-    const usageParts = [command.name(), ...aliases].join("|");
-    const usage = `webpack ${usageParts} ${command.usage()}`;
+    const usageParts = [command.name(), ...command.aliases()].join("|");
 
     return {
       name: command.name(),
-      usage,
+      usage: `webpack ${usageParts} ${command.usage()}`,
       description: command.description(),
       options: visibleOptions,
       globalOptions,
@@ -1864,24 +1822,17 @@ class WebpackCLI {
           hidden: false,
         },
       ],
-      ui: {
-        description: "Installed package versions.",
-        footer: "global",
-        skipIf: (opts) => Boolean(opts.output),
-      },
       action: async (options: { output?: string }) => {
-        if (options.output) {
-          // Machine-readable output requested, bypass the visual renderer entirely.
-          const info = await this.#renderVersion(options);
-          this.logger.raw(info);
-          return;
-        }
-
         const rawInfo = await this.#getInfoOutput({
           information: {
             npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
           },
         });
+
+        if (options.output) {
+          this.logger.raw(await this.#renderVersion(options));
+          return;
+        }
 
         renderVersionOutput(rawInfo, this.#renderOptions());
       },
@@ -1913,18 +1864,15 @@ class WebpackCLI {
           hidden: false,
         },
       ],
-      ui: {
-        description: "System and environment information.",
-        footer: "global",
-        skipIf: (opts) => Boolean(opts.output),
-      },
       action: async (options: { output?: string; additionalPackage?: string[] }) => {
+        const info = await this.#getInfoOutput(options);
+
         if (options.output) {
-          this.logger.raw(await this.#getInfoOutput(options));
+          this.logger.raw(info);
           return;
         }
 
-        renderInfoOutput(await this.#getInfoOutput(options), this.#renderOptions());
+        renderInfoOutput(info, this.#renderOptions());
       },
     },
     configtest: {
@@ -1937,10 +1885,6 @@ class WebpackCLI {
       preload: async () => {
         const webpack = await this.loadWebpack();
         return { webpack };
-      },
-      ui: {
-        description: "Validating your webpack configuration.",
-        footer: "command",
       },
       action: async (configPath: string | undefined, _options: CommanderArgs, cmd) => {
         const { webpack } = cmd.context;
@@ -1972,22 +1916,16 @@ class WebpackCLI {
           renderError("No configuration found.", renderOpts);
           process.exit(2);
         }
-
-        const pathList = [...configPaths].join(", ");
-        renderWarning(`Validating: ${pathList}`, renderOpts);
-
+        renderWarning(`Validating: ${[...configPaths].join(", ")}`, renderOpts);
         try {
           cmd.context.webpack.validate(config.options);
         } catch (error) {
-          if (this.isValidationError(error as Error)) {
-            renderError((error as Error).message, renderOpts);
-          } else {
-            renderError(String(error), renderOpts);
-          }
-
+          renderError(
+            this.isValidationError(error as Error) ? (error as Error).message : String(error),
+            renderOpts,
+          );
           process.exit(2);
         }
-
         renderSuccess("No validation errors found.", renderOpts);
       },
     },
