@@ -70,7 +70,7 @@
     "get-port": "^7.1.0",
     "husky": "^9.1.4",
     "jest": "^30.2.0",
-    "lint-staged": "^16.3.2",
+    "lint-staged": "^17.0.3",
     "mini-css-extract-plugin": "^2.6.1",
     "prettier": "^3.6.0",
     "readable-stream": "^4.5.2",
