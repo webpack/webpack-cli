@@ -39,8 +39,8 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@inquirer/expand": "^5.0.13",
-    "@inquirer/select": "^5.1.4",
+    "@inquirer/expand": "^5.0.14",
+    "@inquirer/select": "^5.1.5",
     "colorette": "^2.0.20",
     "commander": "^14.0.3",
     "cross-spawn": "^7.0.6",
