@@ -75,7 +75,7 @@
     "prettier": "^3.6.0",
     "readable-stream": "^4.5.2",
     "sass": "^1.54.9",
-    "sass-loader": "^16.0.2",
+    "sass-loader": "^17.0.0",
     "style-loader": "^4.0.0",
     "ts-jest": "^29.0.1",
     "ts-loader": "^9.3.1",
