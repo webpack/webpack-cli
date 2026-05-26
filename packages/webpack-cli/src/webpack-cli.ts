@@ -245,6 +245,9 @@ type Options =
 
 const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
 
+// Options that get a single-character alias derived from their name.
+const FLAGS_WITH_ALIAS = new Set(["devtool", "output-path", "target", "watch", "extends"]);
+
 class ConfigurationLoadingError extends Error {
   name = "ConfigurationLoadingError";
 
@@ -676,9 +679,8 @@ class WebpackCLI {
     };
     let mainOption: MainOption;
     let negativeOption: NegativeOption | undefined;
-    const flagsWithAlias = ["devtool", "output-path", "target", "watch", "extends"];
 
-    if (flagsWithAlias.includes(option.name)) {
+    if (FLAGS_WITH_ALIAS.has(option.name)) {
       [option.alias] = option.name;
     }
 
@@ -2558,8 +2560,10 @@ class WebpackCLI {
 
     const { default: CLIPlugin } = (await import("./plugins/cli-plugin.js")).default;
 
-    const builtInOptions = this.schemaToOptions(options.webpack);
-    const builtInOptionsByName = new Map(builtInOptions.map((option) => [option.name, option]));
+    // `getArguments()` already returns a name-keyed map of exactly the argument
+    // metadata `processArguments` consumes, so use it directly (cached) instead
+    // of rebuilding a `schemaToOptions` array and a lookup map on every run.
+    const builtInArgs = this.#getArguments(options.webpack, undefined);
     const internalBuildConfig = (configuration: Configuration) => {
       const originalWatchValue = configuration.watch;
 
@@ -2571,10 +2575,10 @@ class WebpackCLI {
         if (name === "argv") continue;
 
         const kebabName = this.toKebabCase(name);
-        const arg = builtInOptionsByName.get(kebabName);
+        const arg = builtInArgs[kebabName];
 
         if (arg) {
-          args[name] = arg as unknown as WebpackArgument;
+          args[name] = arg;
           // We really don't know what the value is
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           values[name] = options[name as keyof Options] as any;
