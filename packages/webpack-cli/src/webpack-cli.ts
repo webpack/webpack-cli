@@ -910,13 +910,39 @@ class WebpackCLI {
     return (error as Error).name === "ValidationError";
   }
 
+  // Building arguments from the webpack/dev-server schema walks a large JSON
+  // schema and is repeated within a single run (e.g. once per command and again
+  // in `loadConfig`). Cache the result per webpack module and schema.
+  #argumentsCache = new WeakMap<
+    object,
+    Map<Schema, ReturnType<(typeof webpack)["cli"]["getArguments"]>>
+  >();
+
+  #getArguments(webpackMod: typeof webpack, schema: Schema) {
+    let perModuleCache = this.#argumentsCache.get(webpackMod);
+
+    if (!perModuleCache) {
+      perModuleCache = new Map();
+      this.#argumentsCache.set(webpackMod, perModuleCache);
+    }
+
+    let args = perModuleCache.get(schema);
+
+    if (!args) {
+      args = webpackMod.cli.getArguments(schema);
+      perModuleCache.set(schema, args);
+    }
+
+    return args;
+  }
+
   schemaToOptions(
     webpackMod: typeof webpack,
     schema: Schema = undefined,
     additionalOptions: CommandOption[] = [],
     override: Partial<CommandOption> = {},
   ): CommandOption[] {
-    const args = webpackMod.cli.getArguments(schema);
+    const args = this.#getArguments(webpackMod, schema);
     // Take memory
     const options: CommandOption[] = Array.from({
       length: additionalOptions.length + Object.keys(args).length,
@@ -1630,12 +1656,11 @@ class WebpackCLI {
         const { webpack, webpackOptions, devServerOptions } = cmd.context;
         const webpackCLIOptions: Options = { webpack, isWatchingLikeCommand: true };
         const devServerCLIOptions: CommanderArgs = {};
+        const webpackOptionNames = new Set(webpackOptions.map((option) => option.name));
 
         for (const optionName in options) {
           const kebabedOption = this.toKebabCase(optionName);
-          const isBuiltInOption = webpackOptions.find(
-            (builtInOption) => builtInOption.name === kebabedOption,
-          );
+          const isBuiltInOption = webpackOptionNames.has(kebabedOption);
 
           if (isBuiltInOption) {
             webpackCLIOptions[optionName as keyof Options] = options[optionName];
@@ -1678,6 +1703,9 @@ class WebpackCLI {
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const usedPorts: number[] = [];
+        const devServerOptionsByName = new Map(
+          devServerOptions.map((option) => [option.name, option]),
+        );
 
         for (const compilerForDevServer of compilersForDevServer) {
           if (compilerForDevServer.options.devServer === false) {
@@ -1694,7 +1722,7 @@ class WebpackCLI {
             if (name === "argv") continue;
 
             const kebabName = this.toKebabCase(name);
-            const arg = devServerOptions.find((item) => item.name === kebabName);
+            const arg = devServerOptionsByName.get(kebabName);
 
             if (arg) {
               args[name] = arg as unknown as WebpackArgument;
@@ -1953,7 +1981,7 @@ class WebpackCLI {
 
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+
     const self: WebpackCLI = this;
 
     // Register own exit
@@ -2531,6 +2559,7 @@ class WebpackCLI {
     const { default: CLIPlugin } = (await import("./plugins/cli-plugin.js")).default;
 
     const builtInOptions = this.schemaToOptions(options.webpack);
+    const builtInOptionsByName = new Map(builtInOptions.map((option) => [option.name, option]));
     const internalBuildConfig = (configuration: Configuration) => {
       const originalWatchValue = configuration.watch;
 
@@ -2542,7 +2571,7 @@ class WebpackCLI {
         if (name === "argv") continue;
 
         const kebabName = this.toKebabCase(name);
-        const arg = builtInOptions.find((item) => item.name === kebabName);
+        const arg = builtInOptionsByName.get(kebabName);
 
         if (arg) {
           args[name] = arg as unknown as WebpackArgument;
