@@ -1953,7 +1953,6 @@ class WebpackCLI {
 
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self: WebpackCLI = this;
 
     // Register own exit
