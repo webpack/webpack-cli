@@ -2381,13 +2381,18 @@ class WebpackCLI {
       // Read each candidate directory once and match in-memory instead of
       // probing every `<name><ext>` combination with a separate `fs.access`
       // call (which is up to ~100 sequential syscalls when no config exists).
+      // Entries are lowercased so the membership check is case-insensitive; the
+      // actual existence is then confirmed with `access`, which keeps exact
+      // filesystem semantics (case-sensitive or not) identical to before.
       const directoryEntriesCache = new Map<string, Set<string> | null>();
       const readDirectoryEntries = async (directory: string) => {
         let entries = directoryEntriesCache.get(directory);
 
         if (typeof entries === "undefined") {
           try {
-            entries = new Set(await fs.promises.readdir(directory));
+            entries = new Set(
+              (await fs.promises.readdir(directory)).map((entry) => entry.toLowerCase()),
+            );
           } catch {
             entries = null;
           }
@@ -2412,7 +2417,7 @@ class WebpackCLI {
         const basename = path.basename(resolvedBase);
 
         for (const ext of orderedExtensions) {
-          if (!entries.has(basename + ext)) {
+          if (!entries.has((basename + ext).toLowerCase())) {
             continue;
           }
 
