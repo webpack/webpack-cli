@@ -2356,7 +2356,10 @@ class WebpackCLI {
     } else {
       const interpret = await import("interpret");
       // Prioritize popular extensions first to avoid unnecessary fs calls
-      const extensions = new Set([
+      const seenExtensions = new Set<string>();
+      const orderedExtensions: string[] = [];
+
+      for (const ext of [
         ".js",
         ".mjs",
         ".cjs",
@@ -2364,23 +2367,62 @@ class WebpackCLI {
         ".cts",
         ".mts",
         ...Object.keys(interpret.extensions),
-      ]);
-      // Order defines the priority, in decreasing order
-      const defaultConfigFiles = new Set(
-        DEFAULT_CONFIGURATION_FILES.flatMap((filename) =>
-          [...extensions].map((ext) => path.resolve(filename + ext)),
-        ),
-      );
+      ]) {
+        if (!seenExtensions.has(ext)) {
+          seenExtensions.add(ext);
+          orderedExtensions.push(ext);
+        }
+      }
+
+      // Read each candidate directory once and match in-memory instead of
+      // probing every `<name><ext>` combination with a separate `fs.access`
+      // call (which is up to ~100 sequential syscalls when no config exists).
+      const directoryEntriesCache = new Map<string, Set<string> | null>();
+      const readDirectoryEntries = async (directory: string) => {
+        let entries = directoryEntriesCache.get(directory);
+
+        if (typeof entries === "undefined") {
+          try {
+            entries = new Set(await fs.promises.readdir(directory));
+          } catch {
+            entries = null;
+          }
+
+          directoryEntriesCache.set(directory, entries);
+        }
+
+        return entries;
+      };
 
       let foundDefaultConfigFile;
 
-      for (const defaultConfigFile of defaultConfigFiles) {
-        try {
-          await fs.promises.access(defaultConfigFile, fs.constants.F_OK);
-          foundDefaultConfigFile = defaultConfigFile;
-          break;
-        } catch {
+      // Order defines the priority, in decreasing order
+      configFileSearch: for (const filename of DEFAULT_CONFIGURATION_FILES) {
+        const resolvedBase = path.resolve(filename);
+        const entries = await readDirectoryEntries(path.dirname(resolvedBase));
+
+        if (!entries) {
           continue;
+        }
+
+        const basename = path.basename(resolvedBase);
+
+        for (const ext of orderedExtensions) {
+          if (!entries.has(basename + ext)) {
+            continue;
+          }
+
+          const candidate = resolvedBase + ext;
+
+          // Confirm with `access` to preserve exact existence semantics (e.g.
+          // broken symlinks are listed by `readdir` but fail `access`).
+          try {
+            await fs.promises.access(candidate, fs.constants.F_OK);
+            foundDefaultConfigFile = candidate;
+            break configFileSearch;
+          } catch {
+            // Listed but not accessible, keep looking
+          }
         }
       }
 
