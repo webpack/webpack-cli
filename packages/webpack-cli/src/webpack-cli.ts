@@ -114,16 +114,8 @@ interface WebpackContext {
   webpack: typeof webpack;
 }
 
-interface WebpackOptionsContext {
-  webpackOptions: CommandOption[];
-}
-
 interface WebpackDevServerContext {
   devServer: typeof import("webpack-dev-server");
-}
-
-interface WebpackDevServerOptionsContext {
-  devServerOptions: CommandOption[];
 }
 
 interface KnownWebpackCLICommands {
@@ -131,11 +123,7 @@ interface KnownWebpackCLICommands {
   serve: CommandOptions<
     string[],
     CommanderArgs,
-    WebpackContext &
-      WebpackOptionsContext &
-      WebpackDevServerContext &
-      WebpackDevServerOptionsContext &
-      Context
+    WebpackContext & WebpackDevServerContext & Context
   >;
   watch: CommandOptions<string[], CommanderArgs, WebpackContext & Context>;
   version: CommandOptions<void, CommanderArgs, Context>;
@@ -1651,26 +1639,31 @@ class WebpackCLI {
       dependencies: [WEBPACK_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE],
       preload: async () => {
         const webpack = await this.loadWebpack();
-        const webpackOptions = this.schemaToOptions(webpack, undefined, this.#CLIOptions);
         const devServer = await this.loadWebpackDevServer();
+
+        return { webpack, devServer };
+      },
+      options: (cmd) => {
+        const { webpack, devServer } = cmd.context;
+        const webpackOptions = this.schemaToOptions(webpack, undefined, this.#CLIOptions);
         // @ts-expect-error different versions of the `Schema` type
         const devServerOptions = this.schemaToOptions(webpack, devServer.schema, undefined, {
           hidden: false,
           negativeHidden: false,
         });
 
-        return { webpack, webpackOptions, devServer, devServerOptions };
-      },
-      options: (cmd) => {
-        const { webpackOptions, devServerOptions } = cmd.context;
-
         return [...webpackOptions, ...devServerOptions];
       },
       action: async (entries: string[], options: CommanderArgs, cmd) => {
-        const { webpack, webpackOptions, devServerOptions } = cmd.context;
+        const { webpack, devServer } = cmd.context;
         const webpackCLIOptions: Options = { webpack, isWatchingLikeCommand: true };
         const devServerCLIOptions: CommanderArgs = {};
-        const webpackOptionNames = new Set(webpackOptions.map((option) => option.name));
+        // Derive the built-in option names from the cached argument metadata
+        // instead of retaining the full option arrays for the whole session.
+        const webpackOptionNames = new Set([
+          ...this.#CLIOptions.map((option) => option.name),
+          ...Object.keys(this.#getArguments(webpack, undefined)),
+        ]);
 
         for (const optionName in options) {
           const kebabedOption = this.toKebabCase(optionName);
@@ -1717,9 +1710,8 @@ class WebpackCLI {
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const usedPorts: number[] = [];
-        const devServerOptionsByName = new Map(
-          devServerOptions.map((option) => [option.name, option]),
-        );
+        // @ts-expect-error different versions of the `Schema` type
+        const devServerArgs = this.#getArguments(webpack, devServer.schema);
 
         for (const compilerForDevServer of compilersForDevServer) {
           if (compilerForDevServer.options.devServer === false) {
@@ -1736,10 +1728,10 @@ class WebpackCLI {
             if (name === "argv") continue;
 
             const kebabName = this.toKebabCase(name);
-            const arg = devServerOptionsByName.get(kebabName);
+            const arg = devServerArgs[kebabName];
 
             if (arg) {
-              args[name] = arg as unknown as WebpackArgument;
+              args[name] = arg;
               // We really don't know what the value is
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               values[name] = options[name as keyof Options] as any;
