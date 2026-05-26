@@ -266,7 +266,17 @@ class ConfigurationLoadingError extends Error {
 }
 
 class WebpackCLI {
-  colors: Colors;
+  #colors: Colors | undefined;
+
+  // Created lazily because `#createColors` loads the (large) webpack package,
+  // which commands like `version`/`info` don't otherwise need.
+  get colors(): Colors {
+    return (this.#colors ??= this.#createColors());
+  }
+
+  set colors(value: Colors) {
+    this.#colors = value;
+  }
 
   logger: Logger;
 
@@ -275,7 +285,6 @@ class WebpackCLI {
   program: Command;
 
   constructor() {
-    this.colors = this.#createColors();
     this.logger = this.getLogger();
 
     // Initialize program
