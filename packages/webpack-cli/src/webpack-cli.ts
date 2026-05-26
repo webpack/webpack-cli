@@ -923,10 +923,13 @@ class WebpackCLI {
 
   // Building arguments from the webpack/dev-server schema walks a large JSON
   // schema and is repeated within a single run (e.g. once per command and again
-  // in `loadConfig`). Cache the result per webpack module and schema.
+  // in `loadConfig`). Cache the result per webpack module and schema. The values
+  // are large (~1MB each) and only needed while setting up a command, so they are
+  // held via `WeakRef` to let the GC reclaim them afterwards (important for
+  // long-running `serve`/`watch`); a miss simply rebuilds them.
   #argumentsCache = new WeakMap<
     object,
-    Map<Schema, ReturnType<(typeof webpack)["cli"]["getArguments"]>>
+    Map<Schema, WeakRef<ReturnType<(typeof webpack)["cli"]["getArguments"]>>>
   >();
 
   #getArguments(webpackMod: typeof webpack, schema: Schema) {
@@ -937,11 +940,11 @@ class WebpackCLI {
       this.#argumentsCache.set(webpackMod, perModuleCache);
     }
 
-    let args = perModuleCache.get(schema);
+    let args = perModuleCache.get(schema)?.deref();
 
     if (!args) {
       args = webpackMod.cli.getArguments(schema);
-      perModuleCache.set(schema, args);
+      perModuleCache.set(schema, new WeakRef(args));
     }
 
     return args;
