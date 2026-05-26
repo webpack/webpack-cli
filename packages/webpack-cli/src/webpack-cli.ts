@@ -270,6 +270,10 @@ class WebpackCLI {
 
   #isColorSupportChanged: boolean | undefined;
 
+  // Flag tokens of the current invocation, used to register only the options
+  // actually present (instead of all ~850) when setting up a command.
+  #argvForParsing: readonly string[] | undefined;
+
   program: Command;
 
   constructor() {
@@ -650,7 +654,22 @@ class WebpackCLI {
         commandOptions = options.options;
       }
 
+      // Keep all option names for "did you mean" suggestions on unknown options,
+      // since not every option is registered on commander below.
+      (command as Command & { allOptionNames?: string[] }).allOptionNames = commandOptions.map(
+        (option) => option.name,
+      );
+
+      // For help we register every option (help lists them all). Otherwise we
+      // register only the options actually present in argv, avoiding the cost of
+      // building ~850 commander Options per run. Unrecognized flags still error.
+      const neededOptions = forHelp ? undefined : this.#neededOptionNames();
+
       for (const option of commandOptions) {
+        if (neededOptions && !this.#isOptionNeeded(option, neededOptions)) {
+          continue;
+        }
+
         this.makeOption(command, option);
       }
     }
@@ -658,6 +677,61 @@ class WebpackCLI {
     command.action(options.action);
 
     return command;
+  }
+
+  #neededOptionNames(): Set<string> | undefined {
+    const argv = this.#argvForParsing;
+
+    if (!argv) {
+      return undefined;
+    }
+
+    const names = new Set<string>();
+
+    for (const token of argv) {
+      // Must start with `-` to name an option.
+      if (token.length < 2 || token.charCodeAt(0) !== 45) {
+        continue;
+      }
+
+      if (token.charCodeAt(1) === 45) {
+        // Long option: `--name` or `--name=value`.
+        let name = token.slice(2);
+        const equalsIndex = name.indexOf("=");
+
+        if (equalsIndex !== -1) {
+          name = name.slice(0, equalsIndex);
+        }
+
+        if (!name) {
+          continue;
+        }
+
+        names.add(name);
+
+        // `--no-x` must register the `x` option (which provides the negation).
+        if (name.startsWith("no-")) {
+          names.add(name.slice(3));
+        }
+      } else {
+        // Short option: the alias is the first character; the rest (if any) is
+        // an attached value, e.g. `-d<value>` means `-d <value>`.
+        names.add(token[1]);
+      }
+    }
+
+    return names;
+  }
+
+  #isOptionNeeded(option: CommandOption, neededOptions: Set<string>): boolean {
+    if (neededOptions.has(option.name)) {
+      return true;
+    }
+
+    // `makeOption` derives a single-character alias for these from the name.
+    const alias = option.alias ?? (FLAGS_WITH_ALIAS.has(option.name) ? option.name[0] : undefined);
+
+    return typeof alias === "string" && neededOptions.has(alias);
   }
 
   makeOption(command: Command, option: CommandOption) {
@@ -2020,12 +2094,16 @@ class WebpackCLI {
               process.exit(2);
             }
 
-            for (const option of command.options) {
-              if (
-                !(option as Option & { internal?: boolean }).internal &&
-                distance(name, option.long?.slice(2) as string) < 3
-              ) {
-                this.logger.error(`Did you mean '--${option.name()}'?`);
+            const { allOptionNames } = command as Command & { allOptionNames?: string[] };
+            const candidateNames =
+              allOptionNames ??
+              command.options
+                .filter((option) => !(option as Option & { internal?: boolean }).internal)
+                .map((option) => option.long?.slice(2) as string);
+
+            for (const candidate of candidateNames) {
+              if (candidate && distance(name, candidate) < 3) {
+                this.logger.error(`Did you mean '--${candidate}'?`);
               }
             }
           }
@@ -2073,6 +2151,11 @@ class WebpackCLI {
     this.program.allowExcessArguments(true);
     this.program.action(async (options) => {
       const { operands, unknown } = this.program.parseOptions(this.program.args);
+
+      // Remember the flag tokens so command setup only registers options that
+      // are actually used (see `#neededOptionNames`).
+      this.#argvForParsing = unknown;
+
       const defaultCommandNameToRun = this.#commands.build.rawName;
       const hasOperand = typeof operands[0] !== "undefined";
       const operand = hasOperand ? operands[0] : defaultCommandNameToRun;
