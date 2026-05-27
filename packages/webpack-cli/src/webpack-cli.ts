@@ -654,9 +654,7 @@ class WebpackCLI {
         commandOptions = options.options;
       }
 
-      // Keep all option names (including the `no-` negated forms commander
-      // registers) for "did you mean" suggestions on unknown options, since not
-      // every option is registered on commander below.
+      // Keep all option names (including `no-` negated forms) for "did you mean" suggestions, since not every option is registered below.
       const allOptionNames: string[] = [];
 
       for (const option of commandOptions) {
@@ -669,9 +667,7 @@ class WebpackCLI {
 
       (command as Command & { allOptionNames?: string[] }).allOptionNames = allOptionNames;
 
-      // For help we register every option (help lists them all). Otherwise we
-      // register only the options actually present in argv, avoiding the cost of
-      // building ~850 commander Options per run. Unrecognized flags still error.
+      // Register every option for help, otherwise only the ones present in argv.
       const neededOptions = forHelp ? undefined : this.#neededOptionNames();
 
       for (const option of commandOptions) {
@@ -723,10 +719,7 @@ class WebpackCLI {
           names.add(name.slice(3));
         }
       } else {
-        // Short option(s): either a single option with an attached value
-        // (`-d<value>`) or combined boolean flags (`-abc` => `-a -b -c`). Since
-        // we can't tell which without the option definitions, register every
-        // letter; over-registering an unused option is harmless.
+        // Register every letter of a short token to cover both attached values (`-d<value>`) and combined flags (`-abc`); over-registering is harmless.
         for (const char of token.slice(1).split("=", 1)[0]) {
           names.add(char);
         }
@@ -1009,12 +1002,7 @@ class WebpackCLI {
     return (error as Error).name === "ValidationError";
   }
 
-  // Building arguments from the webpack/dev-server schema walks a large JSON
-  // schema and is repeated within a single run (e.g. once per command and again
-  // in `loadConfig`). Cache the result per webpack module and schema. The values
-  // are large (~1MB each) and only needed while setting up a command, so they are
-  // held via `WeakRef` to let the GC reclaim them afterwards (important for
-  // long-running `serve`/`watch`); a miss simply rebuilds them.
+  // Cache the expensive schema-to-arguments walk per webpack module and schema, held via `WeakRef` so the GC can reclaim the ~1MB result after command setup (a miss simply rebuilds it).
   #argumentsCache = new WeakMap<
     object,
     Map<Schema, WeakRef<ReturnType<(typeof webpack)["cli"]["getArguments"]>>>
@@ -2296,14 +2284,7 @@ class WebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
-  // Finds the highest-priority default configuration file (used when no
-  // `--config` is passed). Reads each candidate directory once and matches
-  // in-memory instead of probing every `<name><ext>` combination with a
-  // separate `fs.access` call (up to ~100 sequential syscalls when no config
-  // exists). Entries are lowercased so the membership check is case-insensitive;
-  // the actual existence is confirmed with `access`, which keeps exact
-  // filesystem semantics (case-sensitive or not). When a directory can't be
-  // listed (e.g. execute-only permissions), every candidate is probed directly.
+  // Finds the highest-priority default config file by reading each candidate directory once (case-insensitively) and confirming with `access`, instead of probing every `<name><ext>` combination separately.
   async #findDefaultConfigFile(): Promise<string | undefined> {
     const interpret = await import("interpret");
     // Prioritize popular extensions first to avoid unnecessary fs calls
@@ -2351,9 +2332,7 @@ class WebpackCLI {
       const basename = path.basename(resolvedBase);
 
       for (const ext of orderedExtensions) {
-        // Fast path: skip candidates absent from the directory listing. When the
-        // directory can't be listed, `entries` is `null`, so probe every
-        // candidate directly with `access`.
+        // Skip candidates absent from the listing, but when the directory can't be listed (`entries` is `null`) probe every candidate directly.
         if (entries && !entries.has((basename + ext).toLowerCase())) {
           continue;
         }
