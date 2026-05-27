@@ -654,11 +654,20 @@ class WebpackCLI {
         commandOptions = options.options;
       }
 
-      // Keep all option names for "did you mean" suggestions on unknown options,
-      // since not every option is registered on commander below.
-      (command as Command & { allOptionNames?: string[] }).allOptionNames = commandOptions.map(
-        (option) => option.name,
-      );
+      // Keep all option names (including the `no-` negated forms commander
+      // registers) for "did you mean" suggestions on unknown options, since not
+      // every option is registered on commander below.
+      const allOptionNames: string[] = [];
+
+      for (const option of commandOptions) {
+        allOptionNames.push(option.name);
+
+        if (this.#optionSupportsNegation(option)) {
+          allOptionNames.push(`no-${option.name}`);
+        }
+      }
+
+      (command as Command & { allOptionNames?: string[] }).allOptionNames = allOptionNames;
 
       // For help we register every option (help lists them all). Otherwise we
       // register only the options actually present in argv, avoiding the cost of
@@ -714,9 +723,13 @@ class WebpackCLI {
           names.add(name.slice(3));
         }
       } else {
-        // Short option: the alias is the first character; the rest (if any) is
-        // an attached value, e.g. `-d<value>` means `-d <value>`.
-        names.add(token[1]);
+        // Short option(s): either a single option with an attached value
+        // (`-d<value>`) or combined boolean flags (`-abc` => `-a -b -c`). Since
+        // we can't tell which without the option definitions, register every
+        // letter; over-registering an unused option is harmless.
+        for (const char of token.slice(1).split("=", 1)[0]) {
+          names.add(char);
+        }
       }
     }
 
@@ -732,6 +745,19 @@ class WebpackCLI {
     const alias = option.alias ?? (FLAGS_WITH_ALIAS.has(option.name) ? option.name[0] : undefined);
 
     return typeof alias === "string" && neededOptions.has(alias);
+  }
+
+  // Mirrors when `makeOption` registers a `--no-<name>` negated option.
+  #optionSupportsNegation(option: CommandOption): boolean {
+    if (option.configs) {
+      return option.configs.some(
+        (config) =>
+          config.type === "boolean" ||
+          (config.type === "enum" && (config.values || []).includes(false)),
+      );
+    }
+
+    return Boolean(option.negative);
   }
 
   makeOption(command: Command, option: CommandOption) {
@@ -2492,15 +2518,14 @@ class WebpackCLI {
       configFileSearch: for (const filename of DEFAULT_CONFIGURATION_FILES) {
         const resolvedBase = path.resolve(filename);
         const entries = await readDirectoryEntries(path.dirname(resolvedBase));
-
-        if (!entries) {
-          continue;
-        }
-
         const basename = path.basename(resolvedBase);
 
         for (const ext of orderedExtensions) {
-          if (!entries.has((basename + ext).toLowerCase())) {
+          // Fast path: skip candidates absent from the directory listing. When
+          // the directory can't be listed (e.g. execute-only permissions),
+          // `entries` is `null`, so probe every candidate directly with `access`
+          // to keep discovery working in restricted-permission directories.
+          if (entries && !entries.has((basename + ext).toLowerCase())) {
             continue;
           }
 
