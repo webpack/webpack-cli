@@ -114,16 +114,8 @@ interface WebpackContext {
   webpack: typeof webpack;
 }
 
-interface WebpackOptionsContext {
-  webpackOptions: CommandOption[];
-}
-
 interface WebpackDevServerContext {
   devServer: typeof import("webpack-dev-server");
-}
-
-interface WebpackDevServerOptionsContext {
-  devServerOptions: CommandOption[];
 }
 
 interface KnownWebpackCLICommands {
@@ -131,11 +123,7 @@ interface KnownWebpackCLICommands {
   serve: CommandOptions<
     string[],
     CommanderArgs,
-    WebpackContext &
-      WebpackOptionsContext &
-      WebpackDevServerContext &
-      WebpackDevServerOptionsContext &
-      Context
+    WebpackContext & WebpackDevServerContext & Context
   >;
   watch: CommandOptions<string[], CommanderArgs, WebpackContext & Context>;
   version: CommandOptions<void, CommanderArgs, Context>;
@@ -245,6 +233,9 @@ type Options =
 
 const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
 
+// Options that get a single-character alias derived from their name.
+const FLAGS_WITH_ALIAS = new Set(["devtool", "output-path", "target", "watch", "extends"]);
+
 class ConfigurationLoadingError extends Error {
   name = "ConfigurationLoadingError";
 
@@ -263,16 +254,29 @@ class ConfigurationLoadingError extends Error {
 }
 
 class WebpackCLI {
-  colors: Colors;
+  #colors: Colors | undefined;
+
+  // Created lazily because `#createColors` loads the (large) webpack package,
+  // which commands like `version`/`info` don't otherwise need.
+  get colors(): Colors {
+    return (this.#colors ??= this.#createColors());
+  }
+
+  set colors(value: Colors) {
+    this.#colors = value;
+  }
 
   logger: Logger;
 
   #isColorSupportChanged: boolean | undefined;
 
+  // Flag tokens of the current invocation, used to register only the options
+  // actually present (instead of all ~850) when setting up a command.
+  #argvForParsing: readonly string[] | undefined;
+
   program: Command;
 
   constructor() {
-    this.colors = this.#createColors();
     this.logger = this.getLogger();
 
     // Initialize program
@@ -650,7 +654,27 @@ class WebpackCLI {
         commandOptions = options.options;
       }
 
+      // Keep all option names (including `no-` negated forms) for "did you mean" suggestions, since not every option is registered below.
+      const allOptionNames: string[] = [];
+
       for (const option of commandOptions) {
+        allOptionNames.push(option.name);
+
+        if (this.#optionSupportsNegation(option)) {
+          allOptionNames.push(`no-${option.name}`);
+        }
+      }
+
+      (command as Command & { allOptionNames?: string[] }).allOptionNames = allOptionNames;
+
+      // Register every option for help, otherwise only the ones present in argv.
+      const neededOptions = forHelp ? undefined : this.#neededOptionNames();
+
+      for (const option of commandOptions) {
+        if (neededOptions && !this.#isOptionNeeded(option, neededOptions)) {
+          continue;
+        }
+
         this.makeOption(command, option);
       }
     }
@@ -658,6 +682,75 @@ class WebpackCLI {
     command.action(options.action);
 
     return command;
+  }
+
+  #neededOptionNames(): Set<string> | undefined {
+    const argv = this.#argvForParsing;
+
+    if (!argv) {
+      return undefined;
+    }
+
+    const names = new Set<string>();
+
+    for (const token of argv) {
+      // Must start with `-` to name an option.
+      if (token.length < 2 || token.charCodeAt(0) !== 45) {
+        continue;
+      }
+
+      if (token.charCodeAt(1) === 45) {
+        // Long option: `--name` or `--name=value`.
+        let name = token.slice(2);
+        const equalsIndex = name.indexOf("=");
+
+        if (equalsIndex !== -1) {
+          name = name.slice(0, equalsIndex);
+        }
+
+        if (!name) {
+          continue;
+        }
+
+        names.add(name);
+
+        // `--no-x` must register the `x` option (which provides the negation).
+        if (name.startsWith("no-")) {
+          names.add(name.slice(3));
+        }
+      } else {
+        // Register every letter of a short token to cover both attached values (`-d<value>`) and combined flags (`-abc`); over-registering is harmless.
+        for (const char of token.slice(1).split("=", 1)[0]) {
+          names.add(char);
+        }
+      }
+    }
+
+    return names;
+  }
+
+  #isOptionNeeded(option: CommandOption, neededOptions: Set<string>): boolean {
+    if (neededOptions.has(option.name)) {
+      return true;
+    }
+
+    // `makeOption` derives a single-character alias for these from the name.
+    const alias = option.alias ?? (FLAGS_WITH_ALIAS.has(option.name) ? option.name[0] : undefined);
+
+    return typeof alias === "string" && neededOptions.has(alias);
+  }
+
+  // Mirrors when `makeOption` registers a `--no-<name>` negated option.
+  #optionSupportsNegation(option: CommandOption): boolean {
+    if (option.configs) {
+      return option.configs.some(
+        (config) =>
+          config.type === "boolean" ||
+          (config.type === "enum" && (config.values || []).includes(false)),
+      );
+    }
+
+    return Boolean(option.negative);
   }
 
   makeOption(command: Command, option: CommandOption) {
@@ -676,9 +769,8 @@ class WebpackCLI {
     };
     let mainOption: MainOption;
     let negativeOption: NegativeOption | undefined;
-    const flagsWithAlias = ["devtool", "output-path", "target", "watch", "extends"];
 
-    if (flagsWithAlias.includes(option.name)) {
+    if (FLAGS_WITH_ALIAS.has(option.name)) {
       [option.alias] = option.name;
     }
 
@@ -910,13 +1002,37 @@ class WebpackCLI {
     return (error as Error).name === "ValidationError";
   }
 
+  // Cache the expensive schema-to-arguments walk per webpack module and schema, held via `WeakRef` so the GC can reclaim the ~1MB result after command setup (a miss simply rebuilds it).
+  #argumentsCache = new WeakMap<
+    object,
+    Map<Schema, WeakRef<ReturnType<(typeof webpack)["cli"]["getArguments"]>>>
+  >();
+
+  #getArguments(webpackMod: typeof webpack, schema: Schema) {
+    let perModuleCache = this.#argumentsCache.get(webpackMod);
+
+    if (!perModuleCache) {
+      perModuleCache = new Map();
+      this.#argumentsCache.set(webpackMod, perModuleCache);
+    }
+
+    let args = perModuleCache.get(schema)?.deref();
+
+    if (!args) {
+      args = webpackMod.cli.getArguments(schema);
+      perModuleCache.set(schema, new WeakRef(args));
+    }
+
+    return args;
+  }
+
   schemaToOptions(
     webpackMod: typeof webpack,
     schema: Schema = undefined,
     additionalOptions: CommandOption[] = [],
     override: Partial<CommandOption> = {},
   ): CommandOption[] {
-    const args = webpackMod.cli.getArguments(schema);
+    const args = this.#getArguments(webpackMod, schema);
     // Take memory
     const options: CommandOption[] = Array.from({
       length: additionalOptions.length + Object.keys(args).length,
@@ -1611,31 +1727,35 @@ class WebpackCLI {
       dependencies: [WEBPACK_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE],
       preload: async () => {
         const webpack = await this.loadWebpack();
-        const webpackOptions = this.schemaToOptions(webpack, undefined, this.#CLIOptions);
         const devServer = await this.loadWebpackDevServer();
+
+        return { webpack, devServer };
+      },
+      options: (cmd) => {
+        const { webpack, devServer } = cmd.context;
+        const webpackOptions = this.schemaToOptions(webpack, undefined, this.#CLIOptions);
         // @ts-expect-error different versions of the `Schema` type
         const devServerOptions = this.schemaToOptions(webpack, devServer.schema, undefined, {
           hidden: false,
           negativeHidden: false,
         });
 
-        return { webpack, webpackOptions, devServer, devServerOptions };
-      },
-      options: (cmd) => {
-        const { webpackOptions, devServerOptions } = cmd.context;
-
         return [...webpackOptions, ...devServerOptions];
       },
       action: async (entries: string[], options: CommanderArgs, cmd) => {
-        const { webpack, webpackOptions, devServerOptions } = cmd.context;
+        const { webpack, devServer } = cmd.context;
         const webpackCLIOptions: Options = { webpack, isWatchingLikeCommand: true };
         const devServerCLIOptions: CommanderArgs = {};
+        // Derive the built-in option names from the cached argument metadata
+        // instead of retaining the full option arrays for the whole session.
+        const webpackOptionNames = new Set([
+          ...this.#CLIOptions.map((option) => option.name),
+          ...Object.keys(this.#getArguments(webpack, undefined)),
+        ]);
 
         for (const optionName in options) {
           const kebabedOption = this.toKebabCase(optionName);
-          const isBuiltInOption = webpackOptions.find(
-            (builtInOption) => builtInOption.name === kebabedOption,
-          );
+          const isBuiltInOption = webpackOptionNames.has(kebabedOption);
 
           if (isBuiltInOption) {
             webpackCLIOptions[optionName as keyof Options] = options[optionName];
@@ -1678,6 +1798,8 @@ class WebpackCLI {
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const usedPorts: number[] = [];
+        // @ts-expect-error different versions of the `Schema` type
+        const devServerArgs = this.#getArguments(webpack, devServer.schema);
 
         for (const compilerForDevServer of compilersForDevServer) {
           if (compilerForDevServer.options.devServer === false) {
@@ -1694,10 +1816,10 @@ class WebpackCLI {
             if (name === "argv") continue;
 
             const kebabName = this.toKebabCase(name);
-            const arg = devServerOptions.find((item) => item.name === kebabName);
+            const arg = devServerArgs[kebabName];
 
             if (arg) {
-              args[name] = arg as unknown as WebpackArgument;
+              args[name] = arg;
               // We really don't know what the value is
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               values[name] = options[name as keyof Options] as any;
@@ -1953,7 +2075,7 @@ class WebpackCLI {
 
   async run(args: readonly string[], parseOptions: ParseOptions) {
     // Default `--color` and `--no-color` options
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+
     const self: WebpackCLI = this;
 
     // Register own exit
@@ -1986,12 +2108,16 @@ class WebpackCLI {
               process.exit(2);
             }
 
-            for (const option of command.options) {
-              if (
-                !(option as Option & { internal?: boolean }).internal &&
-                distance(name, option.long?.slice(2) as string) < 3
-              ) {
-                this.logger.error(`Did you mean '--${option.name()}'?`);
+            const { allOptionNames } = command as Command & { allOptionNames?: string[] };
+            const candidateNames =
+              allOptionNames ??
+              command.options
+                .filter((option) => !(option as Option & { internal?: boolean }).internal)
+                .map((option) => option.long?.slice(2) as string);
+
+            for (const candidate of candidateNames) {
+              if (candidate && distance(name, candidate) < 3) {
+                this.logger.error(`Did you mean '--${candidate}'?`);
               }
             }
           }
@@ -2039,6 +2165,11 @@ class WebpackCLI {
     this.program.allowExcessArguments(true);
     this.program.action(async (options) => {
       const { operands, unknown } = this.program.parseOptions(this.program.args);
+
+      // Remember the flag tokens so command setup only registers options that
+      // are actually used (see `#neededOptionNames`).
+      this.#argvForParsing = unknown;
+
       const defaultCommandNameToRun = this.#commands.build.rawName;
       const hasOperand = typeof operands[0] !== "undefined";
       const operand = hasOperand ? operands[0] : defaultCommandNameToRun;
@@ -2151,6 +2282,75 @@ class WebpackCLI {
     });
 
     await this.program.parseAsync(args, parseOptions);
+  }
+
+  // Finds the highest-priority default config file by reading each candidate directory once (case-insensitively) and confirming with `access`, instead of probing every `<name><ext>` combination separately.
+  async #findDefaultConfigFile(): Promise<string | undefined> {
+    const interpret = await import("interpret");
+    // Prioritize popular extensions first to avoid unnecessary fs calls
+    const seenExtensions = new Set<string>();
+    const orderedExtensions: string[] = [];
+
+    for (const ext of [
+      ".js",
+      ".mjs",
+      ".cjs",
+      ".ts",
+      ".cts",
+      ".mts",
+      ...Object.keys(interpret.extensions),
+    ]) {
+      if (!seenExtensions.has(ext)) {
+        seenExtensions.add(ext);
+        orderedExtensions.push(ext);
+      }
+    }
+
+    const directoryEntriesCache = new Map<string, Set<string> | null>();
+    const readDirectoryEntries = async (directory: string) => {
+      let entries = directoryEntriesCache.get(directory);
+
+      if (typeof entries === "undefined") {
+        try {
+          entries = new Set(
+            (await fs.promises.readdir(directory)).map((entry) => entry.toLowerCase()),
+          );
+        } catch {
+          entries = null;
+        }
+
+        directoryEntriesCache.set(directory, entries);
+      }
+
+      return entries;
+    };
+
+    // Order defines the priority, in decreasing order
+    for (const filename of DEFAULT_CONFIGURATION_FILES) {
+      const resolvedBase = path.resolve(filename);
+      const entries = await readDirectoryEntries(path.dirname(resolvedBase));
+      const basename = path.basename(resolvedBase);
+
+      for (const ext of orderedExtensions) {
+        // Skip candidates absent from the listing, but when the directory can't be listed (`entries` is `null`) probe every candidate directly.
+        if (entries && !entries.has((basename + ext).toLowerCase())) {
+          continue;
+        }
+
+        const candidate = resolvedBase + ext;
+
+        // Confirm with `access` to preserve exact existence semantics (e.g.
+        // broken symlinks are listed by `readdir` but fail `access`).
+        try {
+          await fs.promises.access(candidate, fs.constants.F_OK);
+          return candidate;
+        } catch {
+          // Listed but not accessible, keep looking
+        }
+      }
+    }
+
+    return undefined;
   }
 
   async loadConfig(options: Options) {
@@ -2324,35 +2524,7 @@ class WebpackCLI {
         }
       }
     } else {
-      const interpret = await import("interpret");
-      // Prioritize popular extensions first to avoid unnecessary fs calls
-      const extensions = new Set([
-        ".js",
-        ".mjs",
-        ".cjs",
-        ".ts",
-        ".cts",
-        ".mts",
-        ...Object.keys(interpret.extensions),
-      ]);
-      // Order defines the priority, in decreasing order
-      const defaultConfigFiles = new Set(
-        DEFAULT_CONFIGURATION_FILES.flatMap((filename) =>
-          [...extensions].map((ext) => path.resolve(filename + ext)),
-        ),
-      );
-
-      let foundDefaultConfigFile;
-
-      for (const defaultConfigFile of defaultConfigFiles) {
-        try {
-          await fs.promises.access(defaultConfigFile, fs.constants.F_OK);
-          foundDefaultConfigFile = defaultConfigFile;
-          break;
-        } catch {
-          continue;
-        }
-      }
+      const foundDefaultConfigFile = await this.#findDefaultConfigFile();
 
       if (foundDefaultConfigFile) {
         const loadedConfig = await loadConfigByPath(foundDefaultConfigFile, options.argv);
@@ -2530,7 +2702,10 @@ class WebpackCLI {
 
     const { default: CLIPlugin } = (await import("./plugins/cli-plugin.js")).default;
 
-    const builtInOptions = this.schemaToOptions(options.webpack);
+    // `getArguments()` already returns a name-keyed map of exactly the argument
+    // metadata `processArguments` consumes, so use it directly (cached) instead
+    // of rebuilding a `schemaToOptions` array and a lookup map on every run.
+    const builtInArgs = this.#getArguments(options.webpack, undefined);
     const internalBuildConfig = (configuration: Configuration) => {
       const originalWatchValue = configuration.watch;
 
@@ -2542,10 +2717,10 @@ class WebpackCLI {
         if (name === "argv") continue;
 
         const kebabName = this.toKebabCase(name);
-        const arg = builtInOptions.find((item) => item.name === kebabName);
+        const arg = builtInArgs[kebabName];
 
         if (arg) {
-          args[name] = arg as unknown as WebpackArgument;
+          args[name] = arg;
           // We really don't know what the value is
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           values[name] = options[name as keyof Options] as any;
