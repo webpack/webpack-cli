@@ -481,7 +481,7 @@ class WebpackCLI {
   }
 
   // Levenshtein edit distance between two strings, for "did you mean" suggestions.
-  #distance(first: string, second: string): number {
+  private static distance(first: string, second: string): number {
     let a = first;
     let b = second;
 
@@ -2284,7 +2284,7 @@ class WebpackCLI {
                 .map((option) => option.long?.slice(2) as string);
 
             for (const candidate of candidateNames) {
-              if (candidate && this.#distance(name, candidate) < 3) {
+              if (candidate && WebpackCLI.distance(name, candidate) < 3) {
                 this.logger.error(`Did you mean '--${candidate}'?`);
               }
             }
@@ -2425,7 +2425,7 @@ class WebpackCLI {
             this.logger.error(`Unknown command or entry '${operand}'`);
 
             const found = Object.values(this.#commands).find(
-              (commandOptions) => this.#distance(operand, commandOptions.rawName) < 3,
+              (commandOptions) => WebpackCLI.distance(operand, commandOptions.rawName) < 3,
             );
 
             if (found) {
