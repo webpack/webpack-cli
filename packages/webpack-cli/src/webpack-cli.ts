@@ -2296,6 +2296,84 @@ class WebpackCLI {
     await this.program.parseAsync(args, parseOptions);
   }
 
+  // Finds the highest-priority default configuration file (used when no
+  // `--config` is passed). Reads each candidate directory once and matches
+  // in-memory instead of probing every `<name><ext>` combination with a
+  // separate `fs.access` call (up to ~100 sequential syscalls when no config
+  // exists). Entries are lowercased so the membership check is case-insensitive;
+  // the actual existence is confirmed with `access`, which keeps exact
+  // filesystem semantics (case-sensitive or not). When a directory can't be
+  // listed (e.g. execute-only permissions), every candidate is probed directly.
+  async #findDefaultConfigFile(): Promise<string | undefined> {
+    const interpret = await import("interpret");
+    // Prioritize popular extensions first to avoid unnecessary fs calls
+    const seenExtensions = new Set<string>();
+    const orderedExtensions: string[] = [];
+
+    for (const ext of [
+      ".js",
+      ".mjs",
+      ".cjs",
+      ".ts",
+      ".cts",
+      ".mts",
+      ...Object.keys(interpret.extensions),
+    ]) {
+      if (!seenExtensions.has(ext)) {
+        seenExtensions.add(ext);
+        orderedExtensions.push(ext);
+      }
+    }
+
+    const directoryEntriesCache = new Map<string, Set<string> | null>();
+    const readDirectoryEntries = async (directory: string) => {
+      let entries = directoryEntriesCache.get(directory);
+
+      if (typeof entries === "undefined") {
+        try {
+          entries = new Set(
+            (await fs.promises.readdir(directory)).map((entry) => entry.toLowerCase()),
+          );
+        } catch {
+          entries = null;
+        }
+
+        directoryEntriesCache.set(directory, entries);
+      }
+
+      return entries;
+    };
+
+    // Order defines the priority, in decreasing order
+    for (const filename of DEFAULT_CONFIGURATION_FILES) {
+      const resolvedBase = path.resolve(filename);
+      const entries = await readDirectoryEntries(path.dirname(resolvedBase));
+      const basename = path.basename(resolvedBase);
+
+      for (const ext of orderedExtensions) {
+        // Fast path: skip candidates absent from the directory listing. When the
+        // directory can't be listed, `entries` is `null`, so probe every
+        // candidate directly with `access`.
+        if (entries && !entries.has((basename + ext).toLowerCase())) {
+          continue;
+        }
+
+        const candidate = resolvedBase + ext;
+
+        // Confirm with `access` to preserve exact existence semantics (e.g.
+        // broken symlinks are listed by `readdir` but fail `access`).
+        try {
+          await fs.promises.access(candidate, fs.constants.F_OK);
+          return candidate;
+        } catch {
+          // Listed but not accessible, keep looking
+        }
+      }
+    }
+
+    return undefined;
+  }
+
   async loadConfig(options: Options) {
     const disableInterpret =
       typeof options.disableInterpret !== "undefined" && options.disableInterpret;
@@ -2467,81 +2545,7 @@ class WebpackCLI {
         }
       }
     } else {
-      const interpret = await import("interpret");
-      // Prioritize popular extensions first to avoid unnecessary fs calls
-      const seenExtensions = new Set<string>();
-      const orderedExtensions: string[] = [];
-
-      for (const ext of [
-        ".js",
-        ".mjs",
-        ".cjs",
-        ".ts",
-        ".cts",
-        ".mts",
-        ...Object.keys(interpret.extensions),
-      ]) {
-        if (!seenExtensions.has(ext)) {
-          seenExtensions.add(ext);
-          orderedExtensions.push(ext);
-        }
-      }
-
-      // Read each candidate directory once and match in-memory instead of
-      // probing every `<name><ext>` combination with a separate `fs.access`
-      // call (which is up to ~100 sequential syscalls when no config exists).
-      // Entries are lowercased so the membership check is case-insensitive; the
-      // actual existence is then confirmed with `access`, which keeps exact
-      // filesystem semantics (case-sensitive or not) identical to before.
-      const directoryEntriesCache = new Map<string, Set<string> | null>();
-      const readDirectoryEntries = async (directory: string) => {
-        let entries = directoryEntriesCache.get(directory);
-
-        if (typeof entries === "undefined") {
-          try {
-            entries = new Set(
-              (await fs.promises.readdir(directory)).map((entry) => entry.toLowerCase()),
-            );
-          } catch {
-            entries = null;
-          }
-
-          directoryEntriesCache.set(directory, entries);
-        }
-
-        return entries;
-      };
-
-      let foundDefaultConfigFile;
-
-      // Order defines the priority, in decreasing order
-      configFileSearch: for (const filename of DEFAULT_CONFIGURATION_FILES) {
-        const resolvedBase = path.resolve(filename);
-        const entries = await readDirectoryEntries(path.dirname(resolvedBase));
-        const basename = path.basename(resolvedBase);
-
-        for (const ext of orderedExtensions) {
-          // Fast path: skip candidates absent from the directory listing. When
-          // the directory can't be listed (e.g. execute-only permissions),
-          // `entries` is `null`, so probe every candidate directly with `access`
-          // to keep discovery working in restricted-permission directories.
-          if (entries && !entries.has((basename + ext).toLowerCase())) {
-            continue;
-          }
-
-          const candidate = resolvedBase + ext;
-
-          // Confirm with `access` to preserve exact existence semantics (e.g.
-          // broken symlinks are listed by `readdir` but fail `access`).
-          try {
-            await fs.promises.access(candidate, fs.constants.F_OK);
-            foundDefaultConfigFile = candidate;
-            break configFileSearch;
-          } catch {
-            // Listed but not accessible, keep looking
-          }
-        }
-      }
+      const foundDefaultConfigFile = await this.#findDefaultConfigFile();
 
       if (foundDefaultConfigFile) {
         const loadedConfig = await loadConfigByPath(foundDefaultConfigFile, options.argv);
