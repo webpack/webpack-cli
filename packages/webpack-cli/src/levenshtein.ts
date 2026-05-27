@@ -1,9 +1,11 @@
 // Levenshtein distance via Myers' bit-parallel algorithm.
 // Inspired by fastest-levenshtein (MIT, https://github.com/ka-weihe/fastest-levenshtein).
 
-const peq = new Uint32Array(0x10000);
+// Allocated lazily on first `distance` call: the 256 KB buffer is only needed
+// for "did you mean" suggestions, which run on error paths, not normal builds.
+let peq: Uint32Array | undefined;
 
-function myers32(a: string, b: string): number {
+function myers32(a: string, b: string, peq: Uint32Array): number {
   const n = a.length;
   const m = b.length;
   const lst = 1 << (n - 1);
@@ -46,7 +48,7 @@ function myers32(a: string, b: string): number {
   return sc;
 }
 
-function myersX(longer: string, shorter: string): number {
+function myersX(longer: string, shorter: string, peq: Uint32Array): number {
   const n = shorter.length;
   const m = longer.length;
   const mhc: number[] = [];
@@ -161,5 +163,7 @@ export function distance(first: string, second: string): number {
     return a.length;
   }
 
-  return a.length <= 32 ? myers32(a, b) : myersX(a, b);
+  peq ??= new Uint32Array(0x10000);
+
+  return a.length <= 32 ? myers32(a, b, peq) : myersX(a, b, peq);
 }
