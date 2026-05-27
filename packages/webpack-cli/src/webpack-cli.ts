@@ -235,6 +235,10 @@ const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
 // Options that get a single-character alias derived from their name.
 const FLAGS_WITH_ALIAS = new Set(["devtool", "output-path", "target", "watch", "extends"]);
 
+// Keys the CLI sets on the parsed options itself (never webpack arguments), so
+// they don't need to be forwarded to webpack's `processArguments`.
+const INTERNAL_OPTION_KEYS = new Set(["webpack", "argv", "isWatchingLikeCommand"]);
+
 // Levenshtein distance via Myers' bit-parallel algorithm, used only for "did you
 // mean" suggestions. Inspired by fastest-levenshtein (MIT,
 // https://github.com/ka-weihe/fastest-levenshtein).
@@ -807,43 +811,49 @@ class WebpackCLI {
     }
 
     if (options.options) {
-      let commandOptions: CommandOption[];
-
-      if (
-        forHelp &&
-        !allDependenciesInstalled &&
-        options.dependencies &&
-        options.dependencies.length > 0
-      ) {
-        commandOptions = [];
-      } else if (typeof options.options === "function") {
-        commandOptions = await options.options(command);
-      } else {
-        commandOptions = options.options;
-      }
-
-      // Keep all option names (including `no-` negated forms) for "did you mean" suggestions, since not every option is registered below.
-      const allOptionNames: string[] = [];
-
-      for (const option of commandOptions) {
-        allOptionNames.push(option.name);
-
-        if (this.#optionSupportsNegation(option)) {
-          allOptionNames.push(`no-${option.name}`);
-        }
-      }
-
-      (command as Command & { allOptionNames?: string[] }).allOptionNames = allOptionNames;
-
       // Register every option for help, otherwise only the ones present in argv.
       const neededOptions = forHelp ? undefined : this.#neededOptionNames();
 
-      for (const option of commandOptions) {
-        if (neededOptions && !this.#isOptionNeeded(option, neededOptions)) {
-          continue;
+      // With no option flags in argv (e.g. a plain `webpack build`), nothing
+      // needs to be registered and no unknown-option suggestions are possible,
+      // so skip building the (large) option list entirely. This avoids the
+      // schema-to-arguments walk on the most common invocation.
+      if (!neededOptions || neededOptions.size > 0) {
+        let commandOptions: CommandOption[];
+
+        if (
+          forHelp &&
+          !allDependenciesInstalled &&
+          options.dependencies &&
+          options.dependencies.length > 0
+        ) {
+          commandOptions = [];
+        } else if (typeof options.options === "function") {
+          commandOptions = await options.options(command);
+        } else {
+          commandOptions = options.options;
         }
 
-        this.makeOption(command, option);
+        // Keep all option names (including `no-` negated forms) for "did you mean" suggestions, since not every option is registered below.
+        const allOptionNames: string[] = [];
+
+        for (const option of commandOptions) {
+          allOptionNames.push(option.name);
+
+          if (this.#optionSupportsNegation(option)) {
+            allOptionNames.push(`no-${option.name}`);
+          }
+        }
+
+        (command as Command & { allOptionNames?: string[] }).allOptionNames = allOptionNames;
+
+        for (const option of commandOptions) {
+          if (neededOptions && !this.#isOptionNeeded(option, neededOptions)) {
+            continue;
+          }
+
+          this.makeOption(command, option);
+        }
       }
     }
 
@@ -2899,7 +2909,9 @@ class WebpackCLI {
     // `getArguments()` already returns a name-keyed map of exactly the argument
     // metadata `processArguments` consumes, so use it directly (cached) instead
     // of rebuilding a `schemaToOptions` array and a lookup map on every run.
-    const builtInArgs = this.#getArguments(options.webpack, undefined);
+    // Computed lazily: a plain `webpack build` only has internal option keys, so
+    // it skips the schema-to-arguments walk entirely.
+    let builtInArgs: ReturnType<(typeof webpack)["cli"]["getArguments"]> | undefined;
     const internalBuildConfig = (configuration: Configuration) => {
       const originalWatchValue = configuration.watch;
 
@@ -2908,10 +2920,10 @@ class WebpackCLI {
       const values: ProcessedArguments = {};
 
       for (const name of Object.keys(options)) {
-        if (name === "argv") continue;
+        if (INTERNAL_OPTION_KEYS.has(name)) continue;
 
         const kebabName = this.toKebabCase(name);
-        const arg = builtInArgs[kebabName];
+        const arg = (builtInArgs ??= this.#getArguments(options.webpack, undefined))[kebabName];
 
         if (arg) {
           args[name] = arg;
