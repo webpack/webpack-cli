@@ -1,4 +1,6 @@
-const { distance } = require("../../packages/webpack-cli/lib/levenshtein");
+// The CLI uses this through the private `WebpackCLI.#distance`; it is exported
+// from the module so these unit tests can exercise the algorithm directly.
+const { distance } = require("../../packages/webpack-cli/lib/webpack-cli");
 
 describe("distance", () => {
   it("should return 0 for equal strings", () => {
