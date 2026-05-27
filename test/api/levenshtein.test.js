@@ -1,9 +1,6 @@
-const WebpackCLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
-
-// `distance` is a private static method (used for "did you mean" suggestions);
-// the TypeScript `private` modifier is erased at runtime, so the migrated unit
-// tests can still exercise the algorithm directly.
-const distance = (first, second) => WebpackCLI.distance(first, second);
+// The CLI uses this through the private `WebpackCLI.#distance`; it is exported
+// from the module so these unit tests can exercise the algorithm directly.
+const { distance } = require("../../packages/webpack-cli/lib/webpack-cli");
 
 describe("distance", () => {
   it("should return 0 for equal strings", () => {

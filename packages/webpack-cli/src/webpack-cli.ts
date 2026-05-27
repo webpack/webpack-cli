@@ -387,6 +387,29 @@ function myersX(longer: string, shorter: string, peq: Uint32Array): number {
   return score;
 }
 
+// Levenshtein edit distance between two strings, used for "did you mean"
+// suggestions. Exported only so it can be unit-tested directly; the CLI uses it
+// through the private `WebpackCLI.#distance`.
+export function distance(first: string, second: string): number {
+  let a = first;
+  let b = second;
+
+  if (a.length < b.length) {
+    const tmp = b;
+
+    b = a;
+    a = tmp;
+  }
+
+  if (b.length === 0) {
+    return a.length;
+  }
+
+  levenshteinPeq ??= new Uint32Array(0x10000);
+
+  return a.length <= 32 ? myers32(a, b, levenshteinPeq) : myersX(a, b, levenshteinPeq);
+}
+
 class ConfigurationLoadingError extends Error {
   name = "ConfigurationLoadingError";
 
@@ -485,24 +508,8 @@ class WebpackCLI {
   }
 
   // Levenshtein edit distance between two strings, for "did you mean" suggestions.
-  private static distance(first: string, second: string): number {
-    let a = first;
-    let b = second;
-
-    if (a.length < b.length) {
-      const tmp = b;
-
-      b = a;
-      a = tmp;
-    }
-
-    if (b.length === 0) {
-      return a.length;
-    }
-
-    levenshteinPeq ??= new Uint32Array(0x10000);
-
-    return a.length <= 32 ? myers32(a, b, levenshteinPeq) : myersX(a, b, levenshteinPeq);
+  static #distance(first: string, second: string): number {
+    return distance(first, second);
   }
 
   getLogger(): Logger {
@@ -2294,7 +2301,7 @@ class WebpackCLI {
                 .map((option) => option.long?.slice(2) as string);
 
             for (const candidate of candidateNames) {
-              if (candidate && WebpackCLI.distance(name, candidate) < 3) {
+              if (candidate && WebpackCLI.#distance(name, candidate) < 3) {
                 this.logger.error(`Did you mean '--${candidate}'?`);
               }
             }
@@ -2435,7 +2442,7 @@ class WebpackCLI {
             this.logger.error(`Unknown command or entry '${operand}'`);
 
             const found = Object.values(this.#commands).find(
-              (commandOptions) => WebpackCLI.distance(operand, commandOptions.rawName) < 3,
+              (commandOptions) => WebpackCLI.#distance(operand, commandOptions.rawName) < 3,
             );
 
             if (found) {
