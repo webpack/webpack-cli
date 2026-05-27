@@ -1,5 +1,15 @@
 # Change Log
 
+## 7.0.3
+
+### Patch Changes
+
+- Improved CLI startup performance and reduced memory usage. (by [@alexander-akait](https://github.com/alexander-akait) in [#4765](https://github.com/webpack/webpack-cli/pull/4765))
+
+- Reduced CLI startup CPU and memory usage by caching schema-derived argument metadata, registering only the options present in the arguments, and reading config directories once during default-config discovery. (by [@alexander-akait](https://github.com/alexander-akait) in [#4760](https://github.com/webpack/webpack-cli/pull/4760))
+
+- Replace the `fastest-levenshtein` dependency with a small in-tree implementation used for command/option "did you mean" suggestions. (by [@alexander-akait](https://github.com/alexander-akait) in [#4762](https://github.com/webpack/webpack-cli/pull/4762))
+
 ## 7.0.2
 
 ### Patch Changes
