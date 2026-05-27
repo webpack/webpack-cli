@@ -46,9 +46,9 @@ function myers32(a: string, b: string): number {
   return sc;
 }
 
-function myersX(b: string, a: string): number {
-  const n = a.length;
-  const m = b.length;
+function myersX(longer: string, shorter: string): number {
+  const n = shorter.length;
+  const m = longer.length;
   const mhc: number[] = [];
   const phc: number[] = [];
   const horizontalSize = Math.ceil(n / 32);
@@ -68,11 +68,11 @@ function myersX(b: string, a: string): number {
     const verticalLen = Math.min(32, m) + start;
 
     for (let k = start; k < verticalLen; k++) {
-      peq[b.charCodeAt(k)] |= 1 << k;
+      peq[longer.charCodeAt(k)] |= 1 << k;
     }
 
     for (let i = 0; i < n; i++) {
-      const eq = peq[a.charCodeAt(i)];
+      const eq = peq[shorter.charCodeAt(i)];
       const pb = (phc[(i / 32) | 0] >>> i) & 1;
       const mb = (mhc[(i / 32) | 0] >>> i) & 1;
       const xv = eq | mv;
@@ -95,7 +95,7 @@ function myersX(b: string, a: string): number {
     }
 
     for (let k = start; k < verticalLen; k++) {
-      peq[b.charCodeAt(k)] = 0;
+      peq[longer.charCodeAt(k)] = 0;
     }
   }
 
@@ -105,13 +105,13 @@ function myersX(b: string, a: string): number {
   const verticalLen = Math.min(32, m - start) + start;
 
   for (let k = start; k < verticalLen; k++) {
-    peq[b.charCodeAt(k)] |= 1 << k;
+    peq[longer.charCodeAt(k)] |= 1 << k;
   }
 
   let score = m;
 
   for (let i = 0; i < n; i++) {
-    const eq = peq[a.charCodeAt(i)];
+    const eq = peq[shorter.charCodeAt(i)];
     const pb = (phc[(i / 32) | 0] >>> i) & 1;
     const mb = (mhc[(i / 32) | 0] >>> i) & 1;
     const xv = eq | mv;
@@ -137,7 +137,7 @@ function myersX(b: string, a: string): number {
   }
 
   for (let k = start; k < verticalLen; k++) {
-    peq[b.charCodeAt(k)] = 0;
+    peq[longer.charCodeAt(k)] = 0;
   }
 
   return score;

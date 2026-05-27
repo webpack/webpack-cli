@@ -33,4 +33,12 @@ describe("distance", () => {
     expect(distance(a, b)).toBe(1);
     expect(distance("a".repeat(40), "b".repeat(40))).toBe(40);
   });
+
+  it("should handle a long string against a much shorter one", () => {
+    const long = "abcdefghijklmnopqrstuvwxyz0123456789ABCD";
+
+    expect(long).toHaveLength(40);
+    expect(distance(long, "abcde")).toBe(35);
+    expect(distance("abcde", long)).toBe(35);
+  });
 });
