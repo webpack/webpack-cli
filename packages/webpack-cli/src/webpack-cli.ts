@@ -13,7 +13,6 @@ import {
   program,
 } from "commander";
 import { type Config as EnvinfoConfig, type Options as EnvinfoOptions } from "envinfo";
-import { distance } from "fastest-levenshtein";
 import { type prepare } from "rechoir";
 import {
   type Argument as WebpackArgument,
@@ -31,6 +30,7 @@ import {
   default as webpack,
 } from "webpack";
 import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
+import { distance } from "./levenshtein.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
