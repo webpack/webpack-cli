@@ -30,7 +30,6 @@ import {
   default as webpack,
 } from "webpack";
 import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
-import { distance } from "./levenshtein.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -236,6 +235,154 @@ const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
 // Options that get a single-character alias derived from their name.
 const FLAGS_WITH_ALIAS = new Set(["devtool", "output-path", "target", "watch", "extends"]);
 
+// Levenshtein distance via Myers' bit-parallel algorithm, used only for "did you
+// mean" suggestions. Inspired by fastest-levenshtein (MIT,
+// https://github.com/ka-weihe/fastest-levenshtein).
+//
+// The 256 KB buffer is allocated lazily on first use: suggestions only run on
+// error paths, so a normal build never pays for it.
+let levenshteinPeq: Uint32Array | undefined;
+
+function myers32(a: string, b: string, peq: Uint32Array): number {
+  const n = a.length;
+  const m = b.length;
+  const lst = 1 << (n - 1);
+  let pv = -1;
+  let mv = 0;
+  let sc = n;
+  let i = n;
+
+  while (i--) {
+    peq[a.charCodeAt(i)] |= 1 << i;
+  }
+
+  for (i = 0; i < m; i++) {
+    let eq = peq[b.charCodeAt(i)];
+    const xv = eq | mv;
+
+    eq |= ((eq & pv) + pv) ^ pv;
+    mv |= ~(eq | pv);
+    pv &= eq;
+
+    if (mv & lst) {
+      sc++;
+    }
+
+    if (pv & lst) {
+      sc--;
+    }
+
+    mv = (mv << 1) | 1;
+    pv = (pv << 1) | ~(xv | mv);
+    mv &= xv;
+  }
+
+  i = n;
+
+  while (i--) {
+    peq[a.charCodeAt(i)] = 0;
+  }
+
+  return sc;
+}
+
+function myersX(longer: string, shorter: string, peq: Uint32Array): number {
+  const n = shorter.length;
+  const m = longer.length;
+  const mhc: number[] = [];
+  const phc: number[] = [];
+  const horizontalSize = Math.ceil(n / 32);
+  const verticalSize = Math.ceil(m / 32);
+
+  for (let i = 0; i < horizontalSize; i++) {
+    phc[i] = -1;
+    mhc[i] = 0;
+  }
+
+  let j = 0;
+
+  for (; j < verticalSize - 1; j++) {
+    let mv = 0;
+    let pv = -1;
+    const start = j * 32;
+    const verticalLen = Math.min(32, m) + start;
+
+    for (let k = start; k < verticalLen; k++) {
+      peq[longer.charCodeAt(k)] |= 1 << k;
+    }
+
+    for (let i = 0; i < n; i++) {
+      const eq = peq[shorter.charCodeAt(i)];
+      const pb = (phc[(i / 32) | 0] >>> i) & 1;
+      const mb = (mhc[(i / 32) | 0] >>> i) & 1;
+      const xv = eq | mv;
+      const xh = ((((eq | mb) & pv) + pv) ^ pv) | eq | mb;
+      let ph = mv | ~(xh | pv);
+      let mh = pv & xh;
+
+      if ((ph >>> 31) ^ pb) {
+        phc[(i / 32) | 0] ^= 1 << i;
+      }
+
+      if ((mh >>> 31) ^ mb) {
+        mhc[(i / 32) | 0] ^= 1 << i;
+      }
+
+      ph = (ph << 1) | pb;
+      mh = (mh << 1) | mb;
+      pv = mh | ~(xv | ph);
+      mv = ph & xv;
+    }
+
+    for (let k = start; k < verticalLen; k++) {
+      peq[longer.charCodeAt(k)] = 0;
+    }
+  }
+
+  let mv = 0;
+  let pv = -1;
+  const start = j * 32;
+  const verticalLen = Math.min(32, m - start) + start;
+
+  for (let k = start; k < verticalLen; k++) {
+    peq[longer.charCodeAt(k)] |= 1 << k;
+  }
+
+  let score = m;
+
+  for (let i = 0; i < n; i++) {
+    const eq = peq[shorter.charCodeAt(i)];
+    const pb = (phc[(i / 32) | 0] >>> i) & 1;
+    const mb = (mhc[(i / 32) | 0] >>> i) & 1;
+    const xv = eq | mv;
+    const xh = ((((eq | mb) & pv) + pv) ^ pv) | eq | mb;
+    let ph = mv | ~(xh | pv);
+    let mh = pv & xh;
+
+    score += (ph >>> (m - 1)) & 1;
+    score -= (mh >>> (m - 1)) & 1;
+
+    if ((ph >>> 31) ^ pb) {
+      phc[(i / 32) | 0] ^= 1 << i;
+    }
+
+    if ((mh >>> 31) ^ mb) {
+      mhc[(i / 32) | 0] ^= 1 << i;
+    }
+
+    ph = (ph << 1) | pb;
+    mh = (mh << 1) | mb;
+    pv = mh | ~(xv | ph);
+    mv = ph & xv;
+  }
+
+  for (let k = start; k < verticalLen; k++) {
+    peq[longer.charCodeAt(k)] = 0;
+  }
+
+  return score;
+}
+
 class ConfigurationLoadingError extends Error {
   name = "ConfigurationLoadingError";
 
@@ -331,6 +478,27 @@ class WebpackCLI {
 
   toKebabCase(str: string): string {
     return str.replaceAll(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+  }
+
+  // Levenshtein edit distance between two strings, for "did you mean" suggestions.
+  #distance(first: string, second: string): number {
+    let a = first;
+    let b = second;
+
+    if (a.length < b.length) {
+      const tmp = b;
+
+      b = a;
+      a = tmp;
+    }
+
+    if (b.length === 0) {
+      return a.length;
+    }
+
+    levenshteinPeq ??= new Uint32Array(0x10000);
+
+    return a.length <= 32 ? myers32(a, b, levenshteinPeq) : myersX(a, b, levenshteinPeq);
   }
 
   getLogger(): Logger {
@@ -2116,7 +2284,7 @@ class WebpackCLI {
                 .map((option) => option.long?.slice(2) as string);
 
             for (const candidate of candidateNames) {
-              if (candidate && distance(name, candidate) < 3) {
+              if (candidate && this.#distance(name, candidate) < 3) {
                 this.logger.error(`Did you mean '--${candidate}'?`);
               }
             }
@@ -2257,7 +2425,7 @@ class WebpackCLI {
             this.logger.error(`Unknown command or entry '${operand}'`);
 
             const found = Object.values(this.#commands).find(
-              (commandOptions) => distance(operand, commandOptions.rawName) < 3,
+              (commandOptions) => this.#distance(operand, commandOptions.rawName) < 3,
             );
 
             if (found) {
@@ -2286,25 +2454,23 @@ class WebpackCLI {
 
   // Finds the highest-priority default config file by reading each candidate directory once (case-insensitively) and confirming with `access`, instead of probing every `<name><ext>` combination separately.
   async #findDefaultConfigFile(): Promise<string | undefined> {
-    const interpret = await import("interpret");
-    // Prioritize popular extensions first to avoid unnecessary fs calls
-    const seenExtensions = new Set<string>();
-    const orderedExtensions: string[] = [];
+    // Popular extensions, tried first. The common case (e.g. `webpack.config.js`)
+    // matches here, so `interpret` is never loaded — see `getExoticExtensions`.
+    const commonExtensions = [".js", ".mjs", ".cjs", ".ts", ".cts", ".mts"];
 
-    for (const ext of [
-      ".js",
-      ".mjs",
-      ".cjs",
-      ".ts",
-      ".cts",
-      ".mts",
-      ...Object.keys(interpret.extensions),
-    ]) {
-      if (!seenExtensions.has(ext)) {
-        seenExtensions.add(ext);
-        orderedExtensions.push(ext);
+    // `interpret`'s extra extensions (e.g. `.coffee`) are only needed when no
+    // common-extension config exists, so defer importing it until then.
+    let exoticExtensions: string[] | undefined;
+    const getExoticExtensions = async () => {
+      if (typeof exoticExtensions === "undefined") {
+        const interpret = await import("interpret");
+        const common = new Set(commonExtensions);
+
+        exoticExtensions = Object.keys(interpret.extensions).filter((ext) => !common.has(ext));
       }
-    }
+
+      return exoticExtensions;
+    };
 
     const directoryEntriesCache = new Map<string, Set<string> | null>();
     const readDirectoryEntries = async (directory: string) => {
@@ -2325,13 +2491,13 @@ class WebpackCLI {
       return entries;
     };
 
-    // Order defines the priority, in decreasing order
-    for (const filename of DEFAULT_CONFIGURATION_FILES) {
-      const resolvedBase = path.resolve(filename);
-      const entries = await readDirectoryEntries(path.dirname(resolvedBase));
-      const basename = path.basename(resolvedBase);
-
-      for (const ext of orderedExtensions) {
+    const findInExtensions = async (
+      resolvedBase: string,
+      basename: string,
+      entries: Set<string> | null,
+      extensions: string[],
+    ): Promise<string | undefined> => {
+      for (const ext of extensions) {
         // Skip candidates absent from the listing, but when the directory can't be listed (`entries` is `null`) probe every candidate directly.
         if (entries && !entries.has((basename + ext).toLowerCase())) {
           continue;
@@ -2347,6 +2513,34 @@ class WebpackCLI {
         } catch {
           // Listed but not accessible, keep looking
         }
+      }
+
+      return undefined;
+    };
+
+    // Order defines the priority, in decreasing order. Within each filename,
+    // common extensions take priority over the exotic ones (matching the
+    // previous combined ordering).
+    for (const filename of DEFAULT_CONFIGURATION_FILES) {
+      const resolvedBase = path.resolve(filename);
+      const entries = await readDirectoryEntries(path.dirname(resolvedBase));
+      const basename = path.basename(resolvedBase);
+
+      const common = await findInExtensions(resolvedBase, basename, entries, commonExtensions);
+
+      if (common) {
+        return common;
+      }
+
+      const exotic = await findInExtensions(
+        resolvedBase,
+        basename,
+        entries,
+        await getExoticExtensions(),
+      );
+
+      if (exotic) {
+        return exotic;
       }
     }
 
