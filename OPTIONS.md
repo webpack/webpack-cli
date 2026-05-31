@@ -91,6 +91,8 @@ Options:
   --no-experiments-defer-import                                                      Negative 'experiments-defer-import' option.
   --experiments-future-defaults                                                      Apply defaults of next major version.
   --no-experiments-future-defaults                                                   Negative 'experiments-future-defaults' option.
+  --experiments-html                                                                 Enable experimental HTML support. This flag does not by itself make `.html` files usable directly as entry points without additional HTML handling.
+  --no-experiments-html                                                              Negative 'experiments-html' option.
   --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
   --no-experiments-lazy-compilation                                                  Negative 'experiments-lazy-compilation' option.
   --experiments-lazy-compilation-backend-client <value>                              A custom client.
@@ -109,6 +111,8 @@ Options:
   --no-experiments-source-import                                                     Negative 'experiments-source-import' option.
   --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
   --no-experiments-sync-web-assembly                                                 Negative 'experiments-sync-web-assembly' option.
+  --experiments-typescript                                                           Enable typescript support.
+  --no-experiments-typescript                                                        Negative 'experiments-typescript' option.
   -e, --extends <value...>                                                           Path to the configuration to be extended (only works when using webpack-cli).
   --extends-reset                                                                    Clear all items provided in 'extends' configuration. Extend configuration from another configuration (only works when using webpack-cli).
   --externals <value...>                                                             Every matched dependency becomes external. An exact matched dependency becomes external. The same string is used as external dependency.
@@ -158,7 +162,7 @@ Options:
   --module-generator-asset-data-url-mimetype <value>                                 Asset mimetype (getting from file extension by default).
   --module-generator-asset-emit                                                      Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
   --no-module-generator-asset-emit                                                   Negative 'module-generator-asset-emit' option.
-  --module-generator-asset-filename <value>                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --module-generator-asset-filename <value>                                          The filename of asset modules as relative path inside the 'output.path' directory.
   --module-generator-asset-output-path <value>                                       Emit the asset in the specified folder relative to 'output.path'. This should only be needed when custom 'publicPath' is specified to match the folder structure there.
   --module-generator-asset-public-path <value>                                       The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
   --module-generator-asset-inline-binary                                             Whether or not this asset module should be considered binary. This can be set to 'false' to treat this asset module as text.
@@ -170,7 +174,7 @@ Options:
   --no-module-generator-asset-resource-binary                                        Negative 'module-generator-asset-resource-binary' option.
   --module-generator-asset-resource-emit                                             Emit an output asset from this asset module. This can be set to 'false' to omit emitting e. g. for SSR.
   --no-module-generator-asset-resource-emit                                          Negative 'module-generator-asset-resource-emit' option.
-  --module-generator-asset-resource-filename <value>                                 Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --module-generator-asset-resource-filename <value>                                 The filename of asset modules as relative path inside the 'output.path' directory.
   --module-generator-asset-resource-output-path <value>                              Emit the asset in the specified folder relative to 'output.path'. This should only be needed when custom 'publicPath' is specified to match the folder structure there.
   --module-generator-asset-resource-public-path <value>                              The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
   --module-generator-css-es-module                                                   Configure the generated JS modules that use the ES modules syntax.
@@ -210,6 +214,8 @@ Options:
   --module-generator-css-module-local-ident-hash-function <value>                    Algorithm used for generation the hash (see node.js crypto package).
   --module-generator-css-module-local-ident-hash-salt <value>                        Any string which is added to the hash to salt it.
   --module-generator-css-module-local-ident-name <value>                             Configure the generated local ident name.
+  --module-generator-html-extract                                                    Emit the parsed and URL-rewritten HTML as a standalone `.html` output file alongside the module's JavaScript export. When unset, extraction defaults to `true` for HTML modules used as compilation entries (HTML entry points) and `false` for HTML modules imported from JavaScript. Filenames follow `output.htmlFilename` / `output.htmlChunkFilename`.
+  --no-module-generator-html-extract                                                 Negative 'module-generator-html-extract' option.
   --module-generator-json-json-parse                                                 Use `JSON.parse` when the JSON string is longer than 20 characters.
   --no-module-generator-json-json-parse                                              Negative 'module-generator-json-json-parse' option.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
@@ -239,6 +245,8 @@ Options:
   --no-module-parser-css-auto-import                                                 Negative 'module-parser-css-auto-import' option.
   --module-parser-css-auto-named-exports                                             Use ES modules named export for css exports.
   --no-module-parser-css-auto-named-exports                                          Negative 'module-parser-css-auto-named-exports' option.
+  --module-parser-css-auto-pure                                                      Enable strict pure mode: every selector must contain at least one local class or id selector.
+  --no-module-parser-css-auto-pure                                                   Negative 'module-parser-css-auto-pure' option.
   --module-parser-css-auto-url                                                       Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-auto-url                                                    Negative 'module-parser-css-auto-url' option.
   --module-parser-css-global-animation                                               Enable/disable renaming of `@keyframes`.
@@ -277,9 +285,13 @@ Options:
   --no-module-parser-css-module-import                                               Negative 'module-parser-css-module-import' option.
   --module-parser-css-module-named-exports                                           Use ES modules named export for css exports.
   --no-module-parser-css-module-named-exports                                        Negative 'module-parser-css-module-named-exports' option.
+  --module-parser-css-module-pure                                                    Enable strict pure mode: every selector must contain at least one local class or id selector.
+  --no-module-parser-css-module-pure                                                 Negative 'module-parser-css-module-pure' option.
   --module-parser-css-module-url                                                     Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-module-url                                                  Negative 'module-parser-css-module-url' option.
   --no-module-parser-javascript-amd                                                  Negative 'module-parser-javascript-amd' option.
+  --module-parser-javascript-anonymous-default-export-name                           Set .name to "default" for anonymous default export functions and classes per ES spec. Disable to reduce output size when .name is not needed.
+  --no-module-parser-javascript-anonymous-default-export-name                        Negative 'module-parser-javascript-anonymous-default-export-name' option.
   --module-parser-javascript-browserify                                              Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-browserify                                           Negative 'module-parser-javascript-browserify' option.
   --module-parser-javascript-commonjs                                                Enable/disable parsing of CommonJs syntax.
@@ -344,6 +356,8 @@ Options:
   --no-module-parser-javascript-strict-this-context-on-imports                       Negative 'module-parser-javascript-strict-this-context-on-imports' option.
   --module-parser-javascript-system                                                  Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
   --no-module-parser-javascript-system                                               Negative 'module-parser-javascript-system' option.
+  --module-parser-javascript-typescript                                              Enable typescript support.
+  --no-module-parser-javascript-typescript                                           Negative 'module-parser-javascript-typescript' option.
   --module-parser-javascript-unknown-context-critical                                Enable warnings when using the require function in a not statically analyse-able way.
   --no-module-parser-javascript-unknown-context-critical                             Negative 'module-parser-javascript-unknown-context-critical' option.
   --module-parser-javascript-unknown-context-recursive                               Enable recursive directory lookup when using the require function in a not statically analyse-able way.
@@ -362,6 +376,8 @@ Options:
   --no-module-parser-javascript-wrapped-context-recursive                            Negative 'module-parser-javascript-wrapped-context-recursive' option.
   --module-parser-javascript-wrapped-context-reg-exp <value>                         Set the inner regular expression for partial dynamic dependencies.
   --no-module-parser-javascript-auto-amd                                             Negative 'module-parser-javascript-auto-amd' option.
+  --module-parser-javascript-auto-anonymous-default-export-name                      Set .name to "default" for anonymous default export functions and classes per ES spec. Disable to reduce output size when .name is not needed.
+  --no-module-parser-javascript-auto-anonymous-default-export-name                   Negative 'module-parser-javascript-auto-anonymous-default-export-name' option.
   --module-parser-javascript-auto-browserify                                         Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-auto-browserify                                      Negative 'module-parser-javascript-auto-browserify' option.
   --module-parser-javascript-auto-commonjs                                           Enable/disable parsing of CommonJs syntax.
@@ -426,6 +442,8 @@ Options:
   --no-module-parser-javascript-auto-strict-this-context-on-imports                  Negative 'module-parser-javascript-auto-strict-this-context-on-imports' option.
   --module-parser-javascript-auto-system                                             Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
   --no-module-parser-javascript-auto-system                                          Negative 'module-parser-javascript-auto-system' option.
+  --module-parser-javascript-auto-typescript                                         Enable typescript support.
+  --no-module-parser-javascript-auto-typescript                                      Negative 'module-parser-javascript-auto-typescript' option.
   --module-parser-javascript-auto-unknown-context-critical                           Enable warnings when using the require function in a not statically analyse-able way.
   --no-module-parser-javascript-auto-unknown-context-critical                        Negative 'module-parser-javascript-auto-unknown-context-critical' option.
   --module-parser-javascript-auto-unknown-context-recursive                          Enable recursive directory lookup when using the require function in a not statically analyse-able way.
@@ -444,6 +462,8 @@ Options:
   --no-module-parser-javascript-auto-wrapped-context-recursive                       Negative 'module-parser-javascript-auto-wrapped-context-recursive' option.
   --module-parser-javascript-auto-wrapped-context-reg-exp <value>                    Set the inner regular expression for partial dynamic dependencies.
   --no-module-parser-javascript-dynamic-amd                                          Negative 'module-parser-javascript-dynamic-amd' option.
+  --module-parser-javascript-dynamic-anonymous-default-export-name                   Set .name to "default" for anonymous default export functions and classes per ES spec. Disable to reduce output size when .name is not needed.
+  --no-module-parser-javascript-dynamic-anonymous-default-export-name                Negative 'module-parser-javascript-dynamic-anonymous-default-export-name' option.
   --module-parser-javascript-dynamic-browserify                                      Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-dynamic-browserify                                   Negative 'module-parser-javascript-dynamic-browserify' option.
   --module-parser-javascript-dynamic-commonjs                                        Enable/disable parsing of CommonJs syntax.
@@ -508,6 +528,8 @@ Options:
   --no-module-parser-javascript-dynamic-strict-this-context-on-imports               Negative 'module-parser-javascript-dynamic-strict-this-context-on-imports' option.
   --module-parser-javascript-dynamic-system                                          Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
   --no-module-parser-javascript-dynamic-system                                       Negative 'module-parser-javascript-dynamic-system' option.
+  --module-parser-javascript-dynamic-typescript                                      Enable typescript support.
+  --no-module-parser-javascript-dynamic-typescript                                   Negative 'module-parser-javascript-dynamic-typescript' option.
   --module-parser-javascript-dynamic-unknown-context-critical                        Enable warnings when using the require function in a not statically analyse-able way.
   --no-module-parser-javascript-dynamic-unknown-context-critical                     Negative 'module-parser-javascript-dynamic-unknown-context-critical' option.
   --module-parser-javascript-dynamic-unknown-context-recursive                       Enable recursive directory lookup when using the require function in a not statically analyse-able way.
@@ -524,6 +546,8 @@ Options:
   --no-module-parser-javascript-dynamic-wrapped-context-recursive                    Negative 'module-parser-javascript-dynamic-wrapped-context-recursive' option.
   --module-parser-javascript-dynamic-wrapped-context-reg-exp <value>                 Set the inner regular expression for partial dynamic dependencies.
   --no-module-parser-javascript-esm-amd                                              Negative 'module-parser-javascript-esm-amd' option.
+  --module-parser-javascript-esm-anonymous-default-export-name                       Set .name to "default" for anonymous default export functions and classes per ES spec. Disable to reduce output size when .name is not needed.
+  --no-module-parser-javascript-esm-anonymous-default-export-name                    Negative 'module-parser-javascript-esm-anonymous-default-export-name' option.
   --module-parser-javascript-esm-browserify                                          Enable/disable special handling for browserify bundles.
   --no-module-parser-javascript-esm-browserify                                       Negative 'module-parser-javascript-esm-browserify' option.
   --module-parser-javascript-esm-commonjs                                            Enable/disable parsing of CommonJs syntax.
@@ -588,6 +612,8 @@ Options:
   --no-module-parser-javascript-esm-strict-this-context-on-imports                   Negative 'module-parser-javascript-esm-strict-this-context-on-imports' option.
   --module-parser-javascript-esm-system                                              Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
   --no-module-parser-javascript-esm-system                                           Negative 'module-parser-javascript-esm-system' option.
+  --module-parser-javascript-esm-typescript                                          Enable typescript support.
+  --no-module-parser-javascript-esm-typescript                                       Negative 'module-parser-javascript-esm-typescript' option.
   --module-parser-javascript-esm-unknown-context-critical                            Enable warnings when using the require function in a not statically analyse-able way.
   --no-module-parser-javascript-esm-unknown-context-critical                         Negative 'module-parser-javascript-esm-unknown-context-critical' option.
   --module-parser-javascript-esm-unknown-context-recursive                           Enable recursive directory lookup when using the require function in a not statically analyse-able way.
@@ -820,6 +846,8 @@ Options:
   --output-hot-update-chunk-filename <value>                                         The filename of the Hot Update Chunks. They are inside the output.path directory.
   --output-hot-update-global <value>                                                 The global variable used by webpack for loading of hot update chunks.
   --output-hot-update-main-filename <value>                                          The filename of the Hot Update Main File. It is inside the 'output.path' directory.
+  --output-html-chunk-filename <value>                                               Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
+  --output-html-filename <value>                                                     Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-ignore-browser-warnings                                                   Ignore warnings in the browser.
   --no-output-ignore-browser-warnings                                                Negative 'output-ignore-browser-warnings' option.
   --output-iife                                                                      Wrap javascript code into IIFE's to avoid leaking into global scope.
