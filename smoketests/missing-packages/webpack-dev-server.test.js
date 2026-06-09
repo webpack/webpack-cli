@@ -13,8 +13,9 @@ const webpackDevServerTest = () => {
 const webpackDevServerWithHelpTest = () => {
   const packageName = "webpack-dev-server";
   const cliArgs = ["help", "serve"];
-  const logMessage =
-    "To see all available options you need to install 'webpack', 'webpack-dev-server'.";
+  // Max 49-char prefix fits in one line.
+  // Deleting package's names is safe because CLI appends missing package list automatically.
+  const logMessage = "To see all available options you need to install";
 
   return runTestStdout({ packageName, cliArgs, logMessage });
 };

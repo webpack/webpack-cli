@@ -1,31 +1,208 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`CLI API custom help output should display help information 1`] = `
+exports[`CLI API custom help output should display help for a command 1`] = `
 [
   [
-    "Usage: webpack --mode <value>",
+    "",
   ],
   [
-    "Description: Enable production optimizations or development hints.",
+    "  ⬡ webpack version",
   ],
   [
-    "Possible values: 'development' | 'production' | 'none'",
+    "  ──────────────────────────────────────────────────────────────────────────",
+  ],
+  [
+    "  Output the version number of 'webpack', 'webpack-cli' and",
+  ],
+  [
+    "  'webpack-dev-server' and other packages.",
   ],
   [
     "",
   ],
   [
-    "To see list of all supported commands and options run 'webpack --help=verbose'.
-",
+    "  Usage:  webpack version|v [options]",
   ],
   [
-    "Webpack documentation: https://webpack.js.org/.",
+    "",
   ],
   [
-    "CLI documentation: https://webpack.js.org/api/cli/.",
+    "  Options",
   ],
   [
-    "Made with ♥ by the webpack team.",
+    "  ──────────────────────────────────────────────────────────────────────────",
+  ],
+  [
+    "  -o, --output <value>    To get the output in a specified format (accept json",
+  ],
+  [
+    "                          or markdown)",
+  ],
+  [
+    "",
+  ],
+  [
+    "  Global options",
+  ],
+  [
+    "  ──────────────────────────────────────────────────────────────────────────",
+  ],
+  [
+    "  --color                 Enable colors on console.",
+  ],
+  [
+    "  --no-color              Disable colors on console.",
+  ],
+  [
+    "  -v, --version           Output the version number of 'webpack', 'webpack-cli'",
+  ],
+  [
+    "                          and 'webpack-dev-server' and other packages.",
+  ],
+  [
+    "  -h, --help [verbose]    Display help for commands and options.",
+  ],
+  [
+    "",
+  ],
+  [
+    "  ──────────────────────────────────────────────────────────────────────────",
+  ],
+  [
+    "",
+  ],
+  [
+    "  ℹ Run 'webpack --help=verbose' to see all available commands and options.",
+  ],
+  [
+    "",
+  ],
+  [
+    "  Webpack documentation:  https://webpack.js.org/",
+  ],
+  [
+    "  CLI documentation:      https://webpack.js.org/api/cli/",
+  ],
+  [
+    "  Made with ♥  by the webpack team",
+  ],
+  [
+    "",
+  ],
+]
+`;
+
+exports[`CLI API custom help output should display help for a short alias flag 1`] = `
+[
+  [
+    "",
+  ],
+  [
+    "  ⬡ -c  →  --config",
+  ],
+  [
+    "  alias for --config",
+  ],
+  [
+    "  ──────────────────────────────────────────────────────────────────────────",
+  ],
+  [
+    "",
+  ],
+  [
+    "  ⬡ --config",
+  ],
+  [
+    "  ──────────────────────────────────────────────────────────────────────────",
+  ],
+  [
+    "  Usage          webpack --config <pathToConfigFile...>",
+  ],
+  [
+    "  Short          webpack -c <pathToConfigFile...>",
+  ],
+  [
+    "  Description    Provide path to one or more webpack configuration files to",
+  ],
+  [
+    "                 process, e.g. "./webpack.config.js".",
+  ],
+  [
+    "  Documentation  https://webpack.js.org/option/config/",
+  ],
+  [
+    "  ──────────────────────────────────────────────────────────────────────────",
+  ],
+  [
+    "",
+  ],
+  [
+    "  ℹ Run 'webpack --help=verbose' to see all available commands and options.",
+  ],
+  [
+    "",
+  ],
+  [
+    "  Webpack documentation:  https://webpack.js.org/",
+  ],
+  [
+    "  CLI documentation:      https://webpack.js.org/api/cli/",
+  ],
+  [
+    "  Made with ♥  by the webpack team",
+  ],
+  [
+    "",
+  ],
+]
+`;
+
+exports[`CLI API custom help output should display help information 1`] = `
+[
+  [
+    "",
+  ],
+  [
+    "  ⬡ --mode",
+  ],
+  [
+    "  ──────────────────────────────────────────────────────────────────────────",
+  ],
+  [
+    "  Usage            webpack --mode <value>",
+  ],
+  [
+    "  Description      Enable production optimizations or development hints.",
+  ],
+  [
+    "  Documentation    https://webpack.js.org/option/mode/",
+  ],
+  [
+    "  Possible values  'development' | 'production' | 'none'",
+  ],
+  [
+    "  ──────────────────────────────────────────────────────────────────────────",
+  ],
+  [
+    "",
+  ],
+  [
+    "  ℹ Run 'webpack --help=verbose' to see all available commands and options.",
+  ],
+  [
+    "",
+  ],
+  [
+    "  Webpack documentation:  https://webpack.js.org/",
+  ],
+  [
+    "  CLI documentation:      https://webpack.js.org/api/cli/",
+  ],
+  [
+    "  Made with ♥  by the webpack team",
+  ],
+  [
+    "",
   ],
 ]
 `;

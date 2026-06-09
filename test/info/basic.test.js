@@ -1,5 +1,5 @@
 const { join } = require("node:path");
-const { run } = require("../utils/test-utils");
+const { run, stripRendererChrome } = require("../utils/test-utils");
 
 describe("basic usage", () => {
   it("should work", async () => {
@@ -7,7 +7,7 @@ describe("basic usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("System:");
+    expect(stripRendererChrome(stdout)).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
@@ -19,9 +19,9 @@ describe("basic usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("System:");
-    expect(stdout).toContain("Monorepos:");
-    expect(stdout).toContain("Packages:");
+    expect(stripRendererChrome(stdout)).toContain("System:");
+    expect(stripRendererChrome(stdout)).toContain("Monorepos:");
+    expect(stripRendererChrome(stdout)).toContain("Packages:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");

@@ -1543,7 +1543,7 @@ describe("CLI API", () => {
 
       command.parseAsync(["--boolean"], { from: "user" });
 
-      expect(command.helpInformation()).toContain("--boolean   Description");
+      expect(command.helpInformation()).toMatch(/--boolean\s+Description/);
     });
 
     it("should make command with Boolean option and negative value and use negatedDescription", async () => {
@@ -1569,7 +1569,7 @@ describe("CLI API", () => {
 
       command.parseAsync(["--no-boolean"], { from: "user" });
 
-      expect(command.helpInformation()).toContain("--no-boolean  Negated description");
+      expect(command.helpInformation()).toMatch(/--no-boolean\s+Negated description/);
     });
   });
 
@@ -1578,6 +1578,22 @@ describe("CLI API", () => {
     let exitSpy;
 
     beforeEach(async () => {
+      // should be new program for each test
+      // eslint-disable-next-line import/no-extraneous-dependencies
+      const { Command } = require("commander");
+
+      cli = new CLI();
+      const freshProgram = new Command();
+      freshProgram.name("webpack");
+      freshProgram.configureOutput({
+        writeErr: (str) => {
+          cli.logger.error(str);
+        },
+        outputError: (str, write) => {
+          write(`Error: ${cli.capitalizeFirstLetter(str.replace(/^error:/, "").trim())}`);
+        },
+      });
+      cli.program = freshProgram;
       consoleSpy = jest.spyOn(globalThis.console, "log");
       exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
     });
@@ -1590,6 +1606,28 @@ describe("CLI API", () => {
     it("should display help information", async () => {
       try {
         await cli.run(["help", "--mode"], { from: "user" });
+      } catch {
+        // Nothing for tests
+      }
+
+      expect(exitSpy).toHaveBeenCalledWith(0);
+      expect(consoleSpy.mock.calls).toMatchSnapshot();
+    });
+
+    it("should display help for a short alias flag", async () => {
+      try {
+        await cli.run(["help", "-c"], { from: "user" });
+      } catch {
+        // Nothing for tests
+      }
+
+      expect(exitSpy).toHaveBeenCalledWith(0);
+      expect(consoleSpy.mock.calls).toMatchSnapshot();
+    });
+
+    it("should display help for a command", async () => {
+      try {
+        await cli.run(["help", "version"], { from: "user" });
       } catch {
         // Nothing for tests
       }

@@ -3,8 +3,8 @@
 exports[`config with invalid array syntax should throw syntax error and exit with non-zero exit code when even 1 object has syntax error 1`] = `
 "[webpack-cli] Failed to load './webpack.config.js' config
 ▶ ESM (\`import\`) failed:
-  Unexpected token ';'
+Unexpected token ';'
 
 ▶ CJS (\`require\`) failed:
-  Unexpected token ';'"
+Unexpected token ';'"
 `;

@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../utils/test-utils");
+const { run, stripRendererChrome } = require("../utils/test-utils");
 
 describe("'-o, --output <value>' usage", () => {
   it("gets info text by default", async () => {
@@ -8,7 +8,7 @@ describe("'-o, --output <value>' usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain("System:");
+    expect(stripRendererChrome(stdout)).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
     expect(stdout).toContain("Yarn");
@@ -20,7 +20,7 @@ describe("'-o, --output <value>' usage", () => {
 
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
-    expect(stdout).toContain('"System":');
+    expect(stripRendererChrome(stdout)).toContain('"System":');
 
     const parse = () => {
       const output = JSON.parse(stdout);
