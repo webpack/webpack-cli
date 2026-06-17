@@ -31,16 +31,6 @@ import {
   default as webpack,
 } from "webpack";
 import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
-import {
-  type StatusKind,
-  UI_INDENT,
-  commandHeader,
-  divider as uiDivider,
-  footer as uiFooter,
-  header as uiHeader,
-  renderEnvinfo,
-  statusLine,
-} from "./ui.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -255,6 +245,15 @@ type Options =
     RecordAny;
 
 const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
+
+// Shared visual constants for the help/info/version/configtest "chrome".
+// Colors collapse to plain strings when disabled (piped output or `--no-color`),
+// so the textual structure stays stable and script-friendly.
+const UI_INDENT = "  ";
+const UI_DIVIDER_WIDTH = 72;
+const UI_STATUS_ICONS = { success: "✔", error: "✖", warning: "⚠", info: "ℹ" } as const;
+
+type StatusKind = keyof typeof UI_STATUS_ICONS;
 
 // Options that get a single-character alias derived from their name.
 const FLAGS_WITH_ALIAS = new Set(["devtool", "output-path", "target", "watch", "extends"]);
@@ -1379,7 +1378,7 @@ class WebpackCLI {
     const divider = this.#uiDivider();
     const header = (title: string) => this.#uiHeader(title);
     // Section headings ("Options", "Commands", …) get a colored title and an underline.
-    const sectionTitle = (title: string) => `${INDENT}${bold(cyan(title))}\n${divider}`;
+    const sectionTitle = (title: string) => this.#uiSectionTitle(title);
     const outputIncorrectUsageOfHelp = () => {
       this.logger.error("Incorrect use of help");
       this.logger.error(
@@ -1659,7 +1658,7 @@ class WebpackCLI {
     }
 
     // Footer — shared across every help screen and framed command.
-    this.logger.raw(uiFooter(this.colors, { verbose: isVerbose }));
+    this.logger.raw(this.#uiFooter({ verbose: isVerbose }));
     process.exit(0);
   }
 
@@ -1673,16 +1672,122 @@ class WebpackCLI {
 
     // `--output json|markdown` must stay machine-readable, so only the default
     // plain-text output gets the visual treatment.
-    return typeof options.output === "undefined" ? renderEnvinfo(this.colors, info) : info;
+    return typeof options.output === "undefined" ? this.#renderEnvinfo(info) : info;
   }
 
-  // ─── Shared UI "chrome" (thin wrappers around ./ui that bind `this.colors`) ──
+  // ─── Shared UI "chrome" ──────────────────────────────────────────────────
+  // Small, pure(-ish) renderers for the CLI's visual structure. They read
+  // `this.colors`, which collapses to plain strings when colors are disabled,
+  // so the textual layout is identical with or without ANSI.
+
+  /** A horizontal rule used to separate sections. */
   #uiDivider(): string {
-    return uiDivider(this.colors);
+    return `${UI_INDENT}${this.colors.blue("─".repeat(UI_DIVIDER_WIDTH))}`;
   }
 
+  /** A branded title, e.g. `⬡ webpack build`. */
   #uiHeader(title: string): string {
-    return uiHeader(this.colors, title);
+    const { bold, cyan } = this.colors;
+    return `${UI_INDENT}${bold(cyan("⬡"))} ${bold(cyan(title))}`;
+  }
+
+  /** A section heading with an underline, e.g. `Options` followed by a divider. */
+  #uiSectionTitle(title: string): string {
+    const { bold, cyan } = this.colors;
+    return `${UI_INDENT}${bold(cyan(title))}\n${this.#uiDivider()}`;
+  }
+
+  /** A single status message prefixed with an icon (`✔`/`✖`/`⚠`/`ℹ`). */
+  #uiStatusLine(kind: StatusKind, message: string): string {
+    const { green, red, yellow, cyan } = this.colors;
+    const color = { success: green, error: red, warning: yellow, info: cyan }[kind];
+    return `${UI_INDENT}${color(UI_STATUS_ICONS[kind])} ${message}`;
+  }
+
+  /** The header block printed at the top of a framed command (`info`, `version`, …). */
+  #uiCommandHeader(name: string, description?: string): string {
+    const lines = ["", this.#uiHeader(`webpack ${name}`), this.#uiDivider()];
+
+    if (description) {
+      lines.push(`${UI_INDENT}${description}`, "");
+    }
+
+    return lines.join("\n");
+  }
+
+  /** The documentation footer shared by every help and framed-command screen. */
+  #uiFooter(options: { verbose?: boolean } = {}): string {
+    const { bold, cyan, red } = this.colors;
+    const lines: string[] = [];
+
+    if (!options.verbose) {
+      lines.push(
+        `${UI_INDENT}${cyan("ℹ")} Run ${bold("'webpack --help=verbose'")} to see all available commands and options.`,
+      );
+    }
+
+    lines.push(
+      "",
+      `${UI_INDENT}${bold("Webpack documentation:")}  ${cyan("https://webpack.js.org/")}`,
+      `${UI_INDENT}${bold("CLI documentation:")}      ${cyan("https://webpack.js.org/api/cli/")}`,
+      `${UI_INDENT}${bold("Made with")} ${red("♥")} ${bold("by the webpack team")}`,
+    );
+
+    return lines.join("\n");
+  }
+
+  /**
+   * Renders the plain-text output of `envinfo` (used by `info` and `version`)
+   * into branded sections with aligned rows. Section titles keep their trailing
+   * colon so existing tooling/assertions that grep for e.g. "System:" keep
+   * working, and "requested => resolved" version pairs are shown with a "→"
+   * arrow.
+   * @param {string} raw The raw multi-line text produced by `envinfo`.
+   * @returns {string} The styled, section-divided output.
+   */
+  #renderEnvinfo(raw: string): string {
+    const { bold, cyan, green } = this.colors;
+    const lines: string[] = [];
+    const sections: { title: string; rows: { label: string; value: string }[] }[] = [];
+    let section: (typeof sections)[number] | undefined;
+
+    for (const line of raw.split("\n")) {
+      const sectionMatch = /^ {2}(\S[^:]*):\s*$/.exec(line);
+
+      if (sectionMatch) {
+        section = { title: sectionMatch[1].trim(), rows: [] };
+        sections.push(section);
+        continue;
+      }
+
+      const rowMatch = /^ {4}([^:]+):\s*(.*)$/.exec(line);
+
+      if (rowMatch && section) {
+        section.rows.push({ label: rowMatch[1].trim(), value: rowMatch[2].trim() || "N/A" });
+      }
+    }
+
+    for (const { title, rows } of sections) {
+      if (rows.length === 0) {
+        continue;
+      }
+
+      const labelWidth = Math.max(...rows.map((row) => row.label.length)) + 1;
+
+      lines.push("", this.#uiHeader(`${title}:`), this.#uiDivider());
+
+      for (const { label, value } of rows) {
+        const arrowIndex = value.indexOf("=>");
+        const renderedValue =
+          arrowIndex === -1
+            ? green(value)
+            : `${green(value.slice(0, arrowIndex).trim())} ${cyan("→")} ${bold(green(value.slice(arrowIndex + 2).trim()))}`;
+
+        lines.push(`${UI_INDENT}${bold(`${label}:`.padEnd(labelWidth))}  ${renderedValue}`);
+      }
+    }
+
+    return [...lines, this.#uiDivider()].join("\n");
   }
 
   /**
@@ -1695,19 +1800,19 @@ class WebpackCLI {
     meta: { name: string; description: string },
     body: () => void | Promise<void>,
   ): Promise<void> {
-    this.logger.raw(commandHeader(this.colors, meta.name, meta.description));
+    this.logger.raw(this.#uiCommandHeader(meta.name, meta.description));
     await body();
-    this.logger.raw(uiFooter(this.colors));
+    this.logger.raw(this.#uiFooter());
   }
 
   /** Prints a status message with an icon; errors go to stderr, the rest to stdout. */
   #status(kind: StatusKind, message: string): void {
     if (kind === "error") {
-      process.stderr.write(`${statusLine(this.colors, kind, message)}\n`);
+      process.stderr.write(`${this.#uiStatusLine(kind, message)}\n`);
       return;
     }
 
-    this.logger.raw(statusLine(this.colors, kind, message));
+    this.logger.raw(this.#uiStatusLine(kind, message));
   }
 
   async #getInfoOutput(options: {
@@ -2253,7 +2358,7 @@ class WebpackCLI {
 
         await this.#frame(
           { name: "info", description: "System and environment information." },
-          () => this.logger.raw(renderEnvinfo(this.colors, info)),
+          () => this.logger.raw(this.#renderEnvinfo(info)),
         );
       },
     },

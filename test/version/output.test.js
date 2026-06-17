@@ -1,7 +1,7 @@
 "use strict";
 
 const { join } = require("node:path");
-const { run } = require("../utils/test-utils");
+const { normalizeStdout, run } = require("../utils/test-utils");
 
 describe("'-o, --output <value>' usage", () => {
   it("gets info text by default", async () => {
@@ -10,6 +10,8 @@ describe("'-o, --output <value>' usage", () => {
     expect(exitCode).toBe(0);
     expect(stderr).toBeFalsy();
     expect(stdout).toContain("webpack:");
+    // Snapshot the framed, branded output so the styled layout stays visible.
+    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
   it("gets info as json", async () => {
