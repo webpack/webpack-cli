@@ -1,0 +1,8 @@
+{
+  // JSON5 allows comments, unquoted keys and trailing commas
+  mode: "development",
+  entry: "./main.js",
+  output: {
+    filename: "foo.bundle.js",
+  },
+}

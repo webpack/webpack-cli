@@ -1,0 +1,5 @@
+mode = "development"
+entry = "./main.js"
+
+[output]
+filename = "foo.bundle.js"
