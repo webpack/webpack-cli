@@ -2592,14 +2592,17 @@ class WebpackCLI {
 
         // Fallback logic when we can't use `import(...)`
         if (loadingError) {
-          const { jsVariants, extensions } = await import("interpret");
+          const { extensions } = await import("interpret");
           const ext = path.extname(configPath).toLowerCase();
 
-          let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
-
-          if (!interpreted && ext.endsWith(".cts")) {
-            interpreted = jsVariants[".ts"] as string;
-          }
+          // Match against every extension `interpret` knows about (not just the
+          // JavaScript variants) so non-JS formats such as `.json5`, `.yaml` and
+          // `.yml` are loadable too. webpack-cli intentionally does not ship the
+          // parsers for these formats; `rechoir` loads the matching registration
+          // module (e.g. `json5/lib/register`, `yaml-hook/register`) only when a
+          // developer has installed it themselves, otherwise it reports which
+          // package to install below.
+          const interpreted = Object.keys(extensions).find((variant) => variant === ext);
 
           if (interpreted && !disableInterpret) {
             const rechoir: Rechoir = (await import("rechoir")).default;

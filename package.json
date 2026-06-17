@@ -70,6 +70,7 @@
     "get-port": "^7.1.0",
     "husky": "^9.1.4",
     "jest": "^30.2.0",
+    "json5": "^2.2.3",
     "lint-staged": "^17.0.3",
     "mini-css-extract-plugin": "^2.6.1",
     "prettier": "^3.6.0",
@@ -83,7 +84,8 @@
     "typescript": "^6.0.2",
     "webpack": "^5.106.1",
     "webpack-bundle-analyzer": "^5.1.0",
-    "webpack-dev-server": "^5.1.0"
+    "webpack-dev-server": "^5.1.0",
+    "yaml-hook": "^1.0.0"
   },
   "peerDependencies": {
     "webpack": "5.x.x"
