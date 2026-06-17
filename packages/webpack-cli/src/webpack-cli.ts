@@ -246,6 +246,12 @@ type Options =
 
 const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
 
+// Shared visual constants for the help/info/version "chrome" (header, dividers).
+// These are purely cosmetic — colors collapse to plain strings when output is
+// piped or `--no-color` is used, so the textual structure stays script-friendly.
+const UI_INDENT = "  ";
+const UI_DIVIDER_WIDTH = 72;
+
 // Options that get a single-character alias derived from their name.
 const FLAGS_WITH_ALIAS = new Set(["devtool", "output-path", "target", "watch", "extends"]);
 
@@ -1361,15 +1367,13 @@ class WebpackCLI {
       value === "--version" ||
       value === "-h" ||
       value === "--help";
-    const { bold, cyan, blue, red } = this.colors;
+    const { bold, cyan, red } = this.colors;
     // Shared "chrome" used to render the help screens. These are purely visual:
     // colors collapse to plain strings when colors are disabled (e.g. piped output
     // or `--no-color`), so the textual structure stays stable for scripts.
-    const INDENT = "  ";
-    const DIVIDER_WIDTH = 72;
-    const divider = `${INDENT}${blue("─".repeat(DIVIDER_WIDTH))}`;
-    // The hexagon mirrors the webpack logo and brands every help/info screen.
-    const header = (title: string) => `${INDENT}${bold(cyan("⬡"))} ${bold(title)}`;
+    const INDENT = UI_INDENT;
+    const divider = this.#uiDivider();
+    const header = (title: string) => this.#uiHeader(title);
     // Section headings ("Options", "Commands", …) get a colored title and an underline.
     const sectionTitle = (title: string) => `${INDENT}${bold(cyan(title))}\n${divider}`;
     const outputIncorrectUsageOfHelp = () => {
@@ -1669,18 +1673,80 @@ class WebpackCLI {
   }
 
   async #renderVersion(options: { output?: string } = {}): Promise<string> {
-    let info = await this.#getInfoOutput({
+    const info = await this.#getInfoOutput({
       ...options,
       information: {
         npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
       },
     });
 
-    if (typeof options.output === "undefined") {
-      info = info.replace("Packages:", "").replaceAll(/^\s+/gm, "").trim();
+    // `--output json|markdown` must stay machine-readable, so only the default
+    // plain-text output gets the visual treatment.
+    return typeof options.output === "undefined" ? this.#renderEnvinfo(info) : info;
+  }
+
+  // ─── Shared UI "chrome" ───────────────────────────────────────────────
+  // The hexagon mirrors the webpack logo and brands every help/info/version screen.
+  #uiDivider(): string {
+    return `${UI_INDENT}${this.colors.blue("─".repeat(UI_DIVIDER_WIDTH))}`;
+  }
+
+  #uiHeader(title: string): string {
+    const { bold, cyan } = this.colors;
+    return `${UI_INDENT}${bold(cyan("⬡"))} ${bold(cyan(title))}`;
+  }
+
+  /**
+   * Renders the plain-text output of `envinfo` (used by `info` and `version`)
+   * into branded sections with aligned rows. Section titles keep their trailing
+   * colon so existing tooling/assertions that grep for e.g. "System:" keep working,
+   * and "requested => resolved" version pairs are shown with a "→" arrow.
+   * @param {string} raw The raw multi-line text produced by `envinfo`.
+   * @returns {string} The styled, section-divided output.
+   */
+  #renderEnvinfo(raw: string): string {
+    const { bold, cyan, green } = this.colors;
+    const lines: string[] = [];
+    const sections: { title: string; rows: { label: string; value: string }[] }[] = [];
+    let section: (typeof sections)[number] | undefined;
+
+    for (const line of raw.split("\n")) {
+      const sectionMatch = /^ {2}(\S[^:]*):\s*$/.exec(line);
+
+      if (sectionMatch) {
+        section = { title: sectionMatch[1].trim(), rows: [] };
+        sections.push(section);
+        continue;
+      }
+
+      const rowMatch = /^ {4}([^:]+):\s*(.*)$/.exec(line);
+
+      if (rowMatch && section) {
+        section.rows.push({ label: rowMatch[1].trim(), value: rowMatch[2].trim() || "N/A" });
+      }
     }
 
-    return info;
+    for (const { title, rows } of sections) {
+      if (rows.length === 0) {
+        continue;
+      }
+
+      const labelWidth = Math.max(...rows.map((row) => row.label.length)) + 1;
+
+      lines.push("", this.#uiHeader(`${title}:`), this.#uiDivider());
+
+      for (const { label, value } of rows) {
+        const arrowIndex = value.indexOf("=>");
+        const renderedValue =
+          arrowIndex === -1
+            ? green(value)
+            : `${green(value.slice(0, arrowIndex).trim())} ${cyan("→")} ${bold(green(value.slice(arrowIndex + 2).trim()))}`;
+
+        lines.push(`${UI_INDENT}${bold(`${label}:`.padEnd(labelWidth))}  ${renderedValue}`);
+      }
+    }
+
+    return [...lines, this.#uiDivider()].join("\n");
   }
 
   async #getInfoOutput(options: {
@@ -2211,7 +2277,9 @@ class WebpackCLI {
       action: async (options: { output?: string; additionalPackage?: string[] }) => {
         const info = await this.#getInfoOutput(options);
 
-        this.logger.raw(info);
+        // `--output json|markdown` stays machine-readable; the default text output
+        // gets the branded, section-divided treatment.
+        this.logger.raw(typeof options.output === "undefined" ? this.#renderEnvinfo(info) : info);
       },
     },
     configtest: {
