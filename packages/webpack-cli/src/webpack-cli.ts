@@ -2591,63 +2591,60 @@ class WebpackCLI {
       const isFileURL = configPath.startsWith("file://");
 
       try {
-        let loadingError;
+        const ext = path.extname(configPath).toLowerCase();
+        const dataFormatLoader = DATA_FORMAT_LOADERS[ext];
 
-        try {
-          options = // eslint-disable-next-line no-eval
-            (await eval(`import("${isFileURL ? configPath : pathToFileURL(configPath)}")`)).default;
-        } catch (err) {
-          if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
-            throw err;
+        if (dataFormatLoader) {
+          // Non-JavaScript formats cannot be `import(...)`ed, so parse them
+          // directly and skip the doomed dynamic import attempt entirely.
+          const configFilePath = isFileURL ? fileURLToPath(configPath) : path.resolve(configPath);
+          let parser: Record<string, (source: string) => unknown>;
+
+          try {
+            // Resolve the parser from the configuration file's location (so it
+            // is picked up from the user's project rather than from webpack-cli),
+            // then load it asynchronously via `import(...)`.
+            const parserPath = createRequire(configFilePath).resolve(dataFormatLoader.package);
+            const parserModule = await import(pathToFileURL(parserPath).href);
+
+            parser = (parserModule.default ?? parserModule) as Record<
+              string,
+              (source: string) => unknown
+            >;
+          } catch {
+            this.logger.error(`Unable to load the '${configFilePath}' configuration file.`);
+            this.logger.error(
+              `Loading '${ext}' configuration files requires the '${dataFormatLoader.package}' package, which is not installed. Please install it, e.g. \`npm install --save-dev ${dataFormatLoader.package}\`.`,
+            );
+            process.exit(2);
           }
 
-          loadingError = err;
-        }
+          // Reading/parsing errors propagate to the handler below, which
+          // reports `Failed to load '<config>' config`.
+          const source = await fs.promises.readFile(configFilePath, "utf8");
 
-        // Fallback logic when we can't use `import(...)`
-        if (loadingError) {
-          const ext = path.extname(configPath).toLowerCase();
-          const configFilePath = isFileURL ? fileURLToPath(configPath) : path.resolve(configPath);
+          options = parser[dataFormatLoader.method](source) as LoadableWebpackConfiguration;
+        } else {
+          let loadingError;
 
-          const dataFormatLoader = DATA_FORMAT_LOADERS[ext];
-
-          if (dataFormatLoader) {
-            let parser: Record<string, (source: string) => unknown>;
-
-            try {
-              // Resolve the parser from the configuration file's location (so it
-              // is picked up from the user's project rather than from
-              // webpack-cli), then load it asynchronously via `import(...)`.
-              const parserPath = createRequire(configFilePath).resolve(dataFormatLoader.package);
-              const parserModule = await import(pathToFileURL(parserPath).href);
-
-              parser = (parserModule.default ?? parserModule) as Record<
-                string,
-                (source: string) => unknown
-              >;
-            } catch {
-              this.logger.error(`Unable to load the '${configFilePath}' configuration file.`);
-              this.logger.error(
-                `Loading '${ext}' configuration files requires the '${dataFormatLoader.package}' package, which is not installed. Please install it, e.g. \`npm install --save-dev ${dataFormatLoader.package}\`.`,
-              );
-              process.exit(2);
+          try {
+            options = // eslint-disable-next-line no-eval
+              (await eval(`import("${isFileURL ? configPath : pathToFileURL(configPath)}")`))
+                .default;
+          } catch (err) {
+            if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
+              throw err;
             }
 
-            try {
-              const source = await fs.promises.readFile(configFilePath, "utf8");
+            loadingError = err;
+          }
 
-              options = parser[dataFormatLoader.method](source) as LoadableWebpackConfiguration;
-            } catch (err) {
-              if (this.isValidationError(err)) {
-                throw err;
-              }
-
-              throw new ConfigurationLoadingError([loadingError, err]);
-            }
-          } else {
-            // `interpret`/`rechoir` still handle the JavaScript variants (`.ts`,
-            // `.coffee`, `.babel.js`, ...). This path is planned to be removed
-            // once those formats are loaded natively as well.
+          // Fallback logic when we can't use `import(...)`. `interpret`/`rechoir`
+          // still handle the JavaScript variants (`.ts`, `.coffee`,
+          // `.babel.js`, ...). This path is planned to be removed once those
+          // formats are loaded natively as well.
+          if (loadingError) {
+            const configFilePath = isFileURL ? fileURLToPath(configPath) : path.resolve(configPath);
             const { jsVariants, extensions } = await import("interpret");
 
             let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
