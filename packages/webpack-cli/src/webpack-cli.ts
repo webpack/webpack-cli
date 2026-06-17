@@ -414,16 +414,58 @@ class ConfigurationLoadingError extends Error {
   name = "ConfigurationLoadingError";
 
   constructor(errors: [unknown, unknown]) {
-    const message1 = errors[0] instanceof Error ? errors[0].message : String(errors[0]);
-    const message2 = util.stripVTControlCharacters(
-      errors[1] instanceof Error ? errors[1].message : String(errors[1]),
-    );
     const message =
-      `▶ ESM (\`import\`) failed:\n  ${message1.split("\n").join("\n  ")}\n\n▶ CJS (\`require\`) failed:\n  ${message2.split("\n").join("\n  ")}`.trim();
+      `▶ ESM (\`import\`) failed:\n${ConfigurationLoadingError.format(errors[0])}\n\n▶ CJS (\`require\`) failed:\n${ConfigurationLoadingError.format(errors[1])}`.trim();
 
     super(message);
 
     this.stack = "";
+  }
+
+  // Format a single underlying loading error as verbosely as possible. For
+  // module-loading errors (e.g. a `SyntaxError`) `error.stack` begins with a
+  // code frame (file, line, source and a caret) that points at the exact
+  // location of the problem — far more useful than `error.message` alone. We
+  // keep the full stack and surface the Node.js error `code` (e.g.
+  // `MODULE_NOT_FOUND`) when present.
+  static format(error: unknown): string {
+    return ConfigurationLoadingError.indent(ConfigurationLoadingError.describe(error));
+  }
+
+  // Build the full, un-indented description of an error, walking the `cause`
+  // chain. ES2022 error causes aren't reflected in `error.stack`, so they'd
+  // otherwise be lost. A `seen` set guards against cyclic causes.
+  static describe(error: unknown, seen = new Set<unknown>()): string {
+    if (!(error instanceof Error)) {
+      return util.stripVTControlCharacters(String(error));
+    }
+
+    seen.add(error);
+
+    let details = (error.stack ?? `${error.name}: ${error.message}`).trimEnd();
+
+    const { code } = error as NodeJS.ErrnoException;
+
+    if (code) {
+      details += `\ncode: ${code}`;
+    }
+
+    details = util.stripVTControlCharacters(details);
+
+    const { cause } = error;
+
+    if (cause !== null && cause !== undefined && !seen.has(cause)) {
+      details += `\n\nCaused by: ${ConfigurationLoadingError.describe(cause, seen)}`;
+    }
+
+    return details;
+  }
+
+  static indent(text: string): string {
+    return text
+      .split("\n")
+      .map((line) => (line ? `  ${line}` : line))
+      .join("\n");
   }
 }
 

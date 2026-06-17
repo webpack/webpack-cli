@@ -3,8 +3,10 @@
 exports[`config with errors should throw syntax error and exit with non-zero exit code 1`] = `
 "[webpack-cli] Failed to load '<cwd>/test/build/config/error-commonjs/syntax-error.js' config
 ▶ ESM (\`import\`) failed:
-  Unexpected token ';'
+  <cwd>/test/build/config/error-commonjs/syntax-error.js:4
+      target: 'node'; //SyntaxError: <error-message>
+                    ^
 
-▶ CJS (\`require\`) failed:
-  Unexpected token ';'"
+  SyntaxError: Unexpected token ';'
+    at stack"
 `;
