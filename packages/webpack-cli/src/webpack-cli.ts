@@ -429,9 +429,18 @@ class ConfigurationLoadingError extends Error {
   // keep the full stack and surface the Node.js error `code` (e.g.
   // `MODULE_NOT_FOUND`) when present.
   static format(error: unknown): string {
+    return ConfigurationLoadingError.indent(ConfigurationLoadingError.describe(error));
+  }
+
+  // Build the full, un-indented description of an error, walking the `cause`
+  // chain. ES2022 error causes aren't reflected in `error.stack`, so they'd
+  // otherwise be lost. A `seen` set guards against cyclic causes.
+  static describe(error: unknown, seen = new Set<unknown>()): string {
     if (!(error instanceof Error)) {
-      return ConfigurationLoadingError.indent(String(error));
+      return util.stripVTControlCharacters(String(error));
     }
+
+    seen.add(error);
 
     let details = (error.stack ?? `${error.name}: ${error.message}`).trimEnd();
 
@@ -441,7 +450,15 @@ class ConfigurationLoadingError extends Error {
       details += `\ncode: ${code}`;
     }
 
-    return ConfigurationLoadingError.indent(util.stripVTControlCharacters(details));
+    details = util.stripVTControlCharacters(details);
+
+    const { cause } = error;
+
+    if (cause !== null && cause !== undefined && !seen.has(cause)) {
+      details += `\n\nCaused by: ${ConfigurationLoadingError.describe(cause, seen)}`;
+    }
+
+    return details;
   }
 
   static indent(text: string): string {
