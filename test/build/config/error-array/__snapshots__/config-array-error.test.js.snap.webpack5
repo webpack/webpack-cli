@@ -8,11 +8,5 @@ exports[`config with invalid array syntax should throw syntax error and exit wit
                         ^
 
   SyntaxError: <error-message>
-
-▶ CJS (\`require\`) failed:
-  <cwd>/test/build/config/error-array/webpack.config.js:8
-          target: 'node'; // error eslint-ignore
-                        ^
-
-  SyntaxError: Unexpected token ';'"
+    at stack"
 `;

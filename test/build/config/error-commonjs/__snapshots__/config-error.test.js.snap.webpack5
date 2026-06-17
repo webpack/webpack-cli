@@ -8,11 +8,5 @@ exports[`config with errors should throw syntax error and exit with non-zero exi
                     ^
 
   SyntaxError: Unexpected token ';'
-
-▶ CJS (\`require\`) failed:
-  <cwd>/test/build/config/error-commonjs/syntax-error.js:4
-      target: 'node'; //SyntaxError: Unexpected token ';'
-                    ^
-
-  SyntaxError: Unexpected token ';'"
+    at stack"
 `;

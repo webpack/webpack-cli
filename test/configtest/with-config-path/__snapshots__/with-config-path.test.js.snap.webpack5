@@ -12,13 +12,7 @@ exports[`'configtest' command with the configuration path option should throw sy
                     ^
 
   SyntaxError: <error-message>
-
-▶ CJS (\`require\`) failed:
-  <cwd>/test/configtest/with-config-path/syntax-error.config.js:5
-      target: 'node';
-                    ^
-
-  SyntaxError: Unexpected token ';'"
+    at stack"
 `;
 
 exports[`'configtest' command with the configuration path option should throw syntax error: stdout 1`] = `""`;
