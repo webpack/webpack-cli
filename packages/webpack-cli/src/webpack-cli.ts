@@ -1361,7 +1361,17 @@ class WebpackCLI {
       value === "--version" ||
       value === "-h" ||
       value === "--help";
-    const { bold } = this.colors;
+    const { bold, cyan, blue, red } = this.colors;
+    // Shared "chrome" used to render the help screens. These are purely visual:
+    // colors collapse to plain strings when colors are disabled (e.g. piped output
+    // or `--no-color`), so the textual structure stays stable for scripts.
+    const INDENT = "  ";
+    const DIVIDER_WIDTH = 72;
+    const divider = `${INDENT}${blue("─".repeat(DIVIDER_WIDTH))}`;
+    // The hexagon mirrors the webpack logo and brands every help/info screen.
+    const header = (title: string) => `${INDENT}${bold(cyan("⬡"))} ${bold(title)}`;
+    // Section headings ("Options", "Commands", …) get a colored title and an underline.
+    const sectionTitle = (title: string) => `${INDENT}${bold(cyan(title))}\n${divider}`;
     const outputIncorrectUsageOfHelp = () => {
       this.logger.error("Incorrect use of help");
       this.logger.error(
@@ -1390,7 +1400,7 @@ class WebpackCLI {
           }
 
           if (isGlobalHelp) {
-            return `${parentCmdNames}${command.usage()}\n${bold(
+            return `${parentCmdNames}${command.usage()}\n${INDENT}${bold(
               "Alternative usage to run commands:",
             )} ${parentCmdNames}[command] [options]`;
           }
@@ -1435,18 +1445,32 @@ class WebpackCLI {
           );
         },
         formatHelp: (command, helper: Help) => {
+          // `helper.formatItem` is ANSI-aware (it pads using the visible width), so we
+          // can colorize the term and keep every description column aligned.
           const formatItem = (term: string, description: string) => {
             if (description) {
-              return helper.formatItem(term, helper.padWidth(command, helper), description, helper);
+              return helper.formatItem(
+                cyan(term),
+                helper.padWidth(command, helper),
+                description,
+                helper,
+              );
             }
 
-            return term;
+            return `${INDENT}${cyan(term)}`;
           };
 
-          const formatList = (textArray: string[]) => textArray.join("\n").replaceAll(/^/gm, "");
+          const formatList = (textArray: string[]) => textArray.join("\n");
 
-          // Usage
-          let output = [`${bold("Usage:")} ${helper.commandUsage(command)}`, ""];
+          const addSection = (output: string[], title: string, items: string[]) =>
+            items.length > 0 ? [...output, sectionTitle(title), formatList(items), ""] : output;
+
+          // Header — a branded, divided title for the screen.
+          let output = [
+            "",
+            header(isGlobalHelp ? "webpack" : `webpack ${command.name()}`),
+            divider,
+          ];
 
           // Description
           const commandDescription = isGlobalHelp
@@ -1454,50 +1478,56 @@ class WebpackCLI {
             : helper.commandDescription(command);
 
           if (commandDescription.length > 0) {
-            output = [...output, commandDescription, ""];
+            output = [...output, `${INDENT}${commandDescription}`, ""];
           }
+
+          // Usage
+          output = [...output, `${INDENT}${bold("Usage:")} ${helper.commandUsage(command)}`, ""];
 
           // Arguments
-          const argumentList = helper
-            .visibleArguments(command)
-            .map((argument) => formatItem(argument.name(), argument.description));
-
-          if (argumentList.length > 0) {
-            output = [...output, bold("Arguments:"), formatList(argumentList), ""];
-          }
-
-          // Options
-          const optionList = helper
-            .visibleOptions(command)
-            .map((option) =>
-              formatItem(helper.optionTerm(option), helper.optionDescription(option)),
-            );
-
-          if (optionList.length > 0) {
-            output = [...output, bold("Options:"), formatList(optionList), ""];
-          }
-
-          // Global options
-          const globalOptionList = program.options.map((option) =>
-            formatItem(helper.optionTerm(option), helper.optionDescription(option)),
+          output = addSection(
+            output,
+            "Arguments",
+            helper
+              .visibleArguments(command)
+              .map((argument) => formatItem(argument.name(), argument.description)),
           );
 
-          if (globalOptionList.length > 0) {
-            output = [...output, bold("Global options:"), formatList(globalOptionList), ""];
-          }
+          // Options
+          output = addSection(
+            output,
+            "Options",
+            helper
+              .visibleOptions(command)
+              .map((option) =>
+                formatItem(helper.optionTerm(option), helper.optionDescription(option)),
+              ),
+          );
+
+          // Global options
+          output = addSection(
+            output,
+            "Global options",
+            program.options.map((option) =>
+              formatItem(helper.optionTerm(option), helper.optionDescription(option)),
+            ),
+          );
 
           // Commands
-          const commandList = helper
-            .visibleCommands(isGlobalHelp ? program : command)
-            .map((command) =>
-              formatItem(helper.subcommandTerm(command), helper.subcommandDescription(command)),
-            );
+          output = addSection(
+            output,
+            "Commands",
+            helper
+              .visibleCommands(isGlobalHelp ? program : command)
+              .map((subcommand) =>
+                formatItem(
+                  helper.subcommandTerm(subcommand),
+                  helper.subcommandDescription(subcommand),
+                ),
+              ),
+          );
 
-          if (commandList.length > 0) {
-            output = [...output, bold("Commands:"), formatList(commandList), ""];
-          }
-
-          return output.join("\n");
+          return [...output, divider].join("\n");
         },
       });
 
@@ -1569,23 +1599,23 @@ class WebpackCLI {
         option.flags.replace(/^.+[[<]/, "").replace(/(\.\.\.)?[\]>].*$/, "") +
         (option.variadic === true ? "..." : "");
       const value = option.required ? `<${nameOutput}>` : option.optional ? `[${nameOutput}]` : "";
+      const scope = isCommandSpecified ? ` ${commandName}` : "";
 
+      this.logger.raw("");
+      this.logger.raw(header(option.long ?? optionName));
+      this.logger.raw(divider);
       this.logger.raw(
-        `${bold("Usage")}: webpack${isCommandSpecified ? ` ${commandName}` : ""} ${option.long}${
-          value ? ` ${value}` : ""
-        }`,
+        `${INDENT}${bold("Usage:")} webpack${scope} ${option.long}${value ? ` ${value}` : ""}`,
       );
 
       if (option.short) {
         this.logger.raw(
-          `${bold("Short:")} webpack${isCommandSpecified ? ` ${commandName}` : ""} ${
-            option.short
-          }${value ? ` ${value}` : ""}`,
+          `${INDENT}${bold("Short:")} webpack${scope} ${option.short}${value ? ` ${value}` : ""}`,
         );
       }
 
       if (option.description) {
-        this.logger.raw(`${bold("Description:")} ${option.description}`);
+        this.logger.raw(`${INDENT}${bold("Description:")} ${option.description}`);
       }
 
       const { configs } = option as Option & { configs?: ArgumentConfig[] };
@@ -1607,10 +1637,11 @@ class WebpackCLI {
             .map((value) => (typeof value === "string" ? `'${value}'` : value))
             .join(" | ");
 
-          this.logger.raw(`${bold("Possible values:")} ${possibleValuesUnionTypeString}`);
+          this.logger.raw(`${INDENT}${bold("Possible values:")} ${possibleValuesUnionTypeString}`);
         }
       }
 
+      this.logger.raw(divider);
       this.logger.raw("");
 
       // TODO implement this after refactor cli arguments
@@ -1619,12 +1650,21 @@ class WebpackCLI {
       outputIncorrectUsageOfHelp();
     }
 
+    // Footer — shared across every help screen.
+    if (!isVerbose) {
+      this.logger.raw(
+        `${INDENT}${cyan("ℹ")} Run ${bold("'webpack --help=verbose'")} to see all available commands and options.`,
+      );
+    }
+
+    this.logger.raw("");
     this.logger.raw(
-      "To see list of all supported commands and options run 'webpack --help=verbose'.\n",
+      `${INDENT}${bold("Webpack documentation:")}  ${cyan("https://webpack.js.org/")}`,
     );
-    this.logger.raw(`${bold("Webpack documentation:")} https://webpack.js.org/.`);
-    this.logger.raw(`${bold("CLI documentation:")} https://webpack.js.org/api/cli/.`);
-    this.logger.raw(`${bold("Made with ♥ by the webpack team")}.`);
+    this.logger.raw(
+      `${INDENT}${bold("CLI documentation:")}      ${cyan("https://webpack.js.org/api/cli/")}`,
+    );
+    this.logger.raw(`${INDENT}${bold("Made with")} ${red("♥")} ${bold("by the webpack team")}`);
     process.exit(0);
   }
 
