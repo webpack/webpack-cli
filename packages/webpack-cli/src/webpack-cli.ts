@@ -31,6 +31,16 @@ import {
   default as webpack,
 } from "webpack";
 import { type Configuration as DevServerConfiguration } from "webpack-dev-server";
+import {
+  type StatusKind,
+  UI_INDENT,
+  commandHeader,
+  divider as uiDivider,
+  footer as uiFooter,
+  header as uiHeader,
+  renderEnvinfo,
+  statusLine,
+} from "./ui.js";
 
 const WEBPACK_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_PACKAGE);
 const WEBPACK_PACKAGE = WEBPACK_PACKAGE_IS_CUSTOM
@@ -245,12 +255,6 @@ type Options =
     RecordAny;
 
 const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
-
-// Shared visual constants for the help/info/version "chrome" (header, dividers).
-// These are purely cosmetic — colors collapse to plain strings when output is
-// piped or `--no-color` is used, so the textual structure stays script-friendly.
-const UI_INDENT = "  ";
-const UI_DIVIDER_WIDTH = 72;
 
 // Options that get a single-character alias derived from their name.
 const FLAGS_WITH_ALIAS = new Set(["devtool", "output-path", "target", "watch", "extends"]);
@@ -1367,7 +1371,7 @@ class WebpackCLI {
       value === "--version" ||
       value === "-h" ||
       value === "--help";
-    const { bold, cyan, red } = this.colors;
+    const { bold, cyan } = this.colors;
     // Shared "chrome" used to render the help screens. These are purely visual:
     // colors collapse to plain strings when colors are disabled (e.g. piped output
     // or `--no-color`), so the textual structure stays stable for scripts.
@@ -1654,21 +1658,8 @@ class WebpackCLI {
       outputIncorrectUsageOfHelp();
     }
 
-    // Footer — shared across every help screen.
-    if (!isVerbose) {
-      this.logger.raw(
-        `${INDENT}${cyan("ℹ")} Run ${bold("'webpack --help=verbose'")} to see all available commands and options.`,
-      );
-    }
-
-    this.logger.raw("");
-    this.logger.raw(
-      `${INDENT}${bold("Webpack documentation:")}  ${cyan("https://webpack.js.org/")}`,
-    );
-    this.logger.raw(
-      `${INDENT}${bold("CLI documentation:")}      ${cyan("https://webpack.js.org/api/cli/")}`,
-    );
-    this.logger.raw(`${INDENT}${bold("Made with")} ${red("♥")} ${bold("by the webpack team")}`);
+    // Footer — shared across every help screen and framed command.
+    this.logger.raw(uiFooter(this.colors, { verbose: isVerbose }));
     process.exit(0);
   }
 
@@ -1682,71 +1673,41 @@ class WebpackCLI {
 
     // `--output json|markdown` must stay machine-readable, so only the default
     // plain-text output gets the visual treatment.
-    return typeof options.output === "undefined" ? this.#renderEnvinfo(info) : info;
+    return typeof options.output === "undefined" ? renderEnvinfo(this.colors, info) : info;
   }
 
-  // ─── Shared UI "chrome" ───────────────────────────────────────────────
-  // The hexagon mirrors the webpack logo and brands every help/info/version screen.
+  // ─── Shared UI "chrome" (thin wrappers around ./ui that bind `this.colors`) ──
   #uiDivider(): string {
-    return `${UI_INDENT}${this.colors.blue("─".repeat(UI_DIVIDER_WIDTH))}`;
+    return uiDivider(this.colors);
   }
 
   #uiHeader(title: string): string {
-    const { bold, cyan } = this.colors;
-    return `${UI_INDENT}${bold(cyan("⬡"))} ${bold(cyan(title))}`;
+    return uiHeader(this.colors, title);
   }
 
   /**
-   * Renders the plain-text output of `envinfo` (used by `info` and `version`)
-   * into branded sections with aligned rows. Section titles keep their trailing
-   * colon so existing tooling/assertions that grep for e.g. "System:" keep working,
-   * and "requested => resolved" version pairs are shown with a "→" arrow.
-   * @param {string} raw The raw multi-line text produced by `envinfo`.
-   * @returns {string} The styled, section-divided output.
+   * Prints a framed command screen: a branded header, the command body, and the
+   * shared documentation footer. Used by `info`, `version` and `configtest`.
+   * @param {object} meta The command name and a one-line description.
+   * @param {Function} body A callback that prints the command's main output.
    */
-  #renderEnvinfo(raw: string): string {
-    const { bold, cyan, green } = this.colors;
-    const lines: string[] = [];
-    const sections: { title: string; rows: { label: string; value: string }[] }[] = [];
-    let section: (typeof sections)[number] | undefined;
+  async #frame(
+    meta: { name: string; description: string },
+    body: () => void | Promise<void>,
+  ): Promise<void> {
+    this.logger.raw(commandHeader(this.colors, meta.name, meta.description));
+    await body();
+    this.logger.raw(uiFooter(this.colors));
+  }
 
-    for (const line of raw.split("\n")) {
-      const sectionMatch = /^ {2}(\S[^:]*):\s*$/.exec(line);
-
-      if (sectionMatch) {
-        section = { title: sectionMatch[1].trim(), rows: [] };
-        sections.push(section);
-        continue;
-      }
-
-      const rowMatch = /^ {4}([^:]+):\s*(.*)$/.exec(line);
-
-      if (rowMatch && section) {
-        section.rows.push({ label: rowMatch[1].trim(), value: rowMatch[2].trim() || "N/A" });
-      }
+  /** Prints a status message with an icon; errors go to stderr, the rest to stdout. */
+  #status(kind: StatusKind, message: string): void {
+    if (kind === "error") {
+      process.stderr.write(`${statusLine(this.colors, kind, message)}\n`);
+      return;
     }
 
-    for (const { title, rows } of sections) {
-      if (rows.length === 0) {
-        continue;
-      }
-
-      const labelWidth = Math.max(...rows.map((row) => row.label.length)) + 1;
-
-      lines.push("", this.#uiHeader(`${title}:`), this.#uiDivider());
-
-      for (const { label, value } of rows) {
-        const arrowIndex = value.indexOf("=>");
-        const renderedValue =
-          arrowIndex === -1
-            ? green(value)
-            : `${green(value.slice(0, arrowIndex).trim())} ${cyan("→")} ${bold(green(value.slice(arrowIndex + 2).trim()))}`;
-
-        lines.push(`${UI_INDENT}${bold(`${label}:`.padEnd(labelWidth))}  ${renderedValue}`);
-      }
-    }
-
-    return [...lines, this.#uiDivider()].join("\n");
+    this.logger.raw(statusLine(this.colors, kind, message));
   }
 
   async #getInfoOutput(options: {
@@ -2242,9 +2203,16 @@ class WebpackCLI {
         },
       ],
       action: async (options: { output?: string }) => {
-        const info = await this.#renderVersion(options);
+        // `--output json|markdown` stays machine-readable and unframed.
+        if (options.output) {
+          this.logger.raw(await this.#renderVersion(options));
+          return;
+        }
 
-        this.logger.raw(info);
+        await this.#frame(
+          { name: "version", description: "Installed package versions." },
+          async () => this.logger.raw(await this.#renderVersion(options)),
+        );
       },
     },
     info: {
@@ -2277,9 +2245,16 @@ class WebpackCLI {
       action: async (options: { output?: string; additionalPackage?: string[] }) => {
         const info = await this.#getInfoOutput(options);
 
-        // `--output json|markdown` stays machine-readable; the default text output
-        // gets the branded, section-divided treatment.
-        this.logger.raw(typeof options.output === "undefined" ? this.#renderEnvinfo(info) : info);
+        // `--output json|markdown` stays machine-readable and unframed.
+        if (options.output) {
+          this.logger.raw(info);
+          return;
+        }
+
+        await this.#frame(
+          { name: "info", description: "System and environment information." },
+          () => this.logger.raw(renderEnvinfo(this.colors, info)),
+        );
       },
     },
     configtest: {
@@ -2318,26 +2293,31 @@ class WebpackCLI {
           }
         }
 
-        if (configPaths.size === 0) {
-          this.logger.error("No configuration found.");
-          process.exit(2);
-        }
+        await this.#frame(
+          { name: "configtest", description: "Validating your webpack configuration." },
+          () => {
+            if (configPaths.size === 0) {
+              this.#status("error", "No configuration found.");
+              process.exit(2);
+            }
 
-        this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
+            this.#status("info", `Validating: ${[...configPaths].join(", ")}`);
 
-        try {
-          cmd.context.webpack.validate(config.options);
-        } catch (error) {
-          if (this.isValidationError(error as Error)) {
-            this.logger.error((error as Error).message);
-          } else {
-            this.logger.error(error);
-          }
+            try {
+              cmd.context.webpack.validate(config.options);
+            } catch (error) {
+              this.#status(
+                "error",
+                this.isValidationError(error as Error)
+                  ? (error as Error).message
+                  : String(error instanceof Error ? error.message : error),
+              );
+              process.exit(2);
+            }
 
-          process.exit(2);
-        }
-
-        this.logger.success("There are no validation errors in the given webpack configuration.");
+            this.#status("success", "No validation errors found.");
+          },
+        );
       },
     },
   };
