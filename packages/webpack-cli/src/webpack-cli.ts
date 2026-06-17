@@ -414,16 +414,43 @@ class ConfigurationLoadingError extends Error {
   name = "ConfigurationLoadingError";
 
   constructor(errors: [unknown, unknown]) {
-    const message1 = errors[0] instanceof Error ? errors[0].message : String(errors[0]);
-    const message2 = util.stripVTControlCharacters(
-      errors[1] instanceof Error ? errors[1].message : String(errors[1]),
-    );
     const message =
-      `▶ ESM (\`import\`) failed:\n  ${message1.split("\n").join("\n  ")}\n\n▶ CJS (\`require\`) failed:\n  ${message2.split("\n").join("\n  ")}`.trim();
+      `▶ ESM (\`import\`) failed:\n${ConfigurationLoadingError.format(errors[0])}\n\n▶ CJS (\`require\`) failed:\n${ConfigurationLoadingError.format(errors[1])}`.trim();
 
     super(message);
 
     this.stack = "";
+  }
+
+  // Format a single underlying loading error as verbosely as possible without
+  // the noise. For module-loading errors (e.g. a `SyntaxError`) `error.stack`
+  // begins with a code frame (file, line, source and a caret) that points at
+  // the exact location of the problem — far more useful than `error.message`
+  // alone. We keep that context (and the Node.js error `code`, e.g.
+  // `MODULE_NOT_FOUND`) but drop the noisy internal Node.js stack frames.
+  static format(error: unknown): string {
+    if (!(error instanceof Error)) {
+      return ConfigurationLoadingError.indent(String(error));
+    }
+
+    const lines = (error.stack ?? `${error.name}: ${error.message}`).split("\n");
+    const firstFrame = lines.findIndex((line) => /^\s*at\s/.test(line));
+    let details = (firstFrame === -1 ? lines : lines.slice(0, firstFrame)).join("\n").trimEnd();
+
+    const { code } = error as NodeJS.ErrnoException;
+
+    if (code) {
+      details += `\ncode: ${code}`;
+    }
+
+    return ConfigurationLoadingError.indent(util.stripVTControlCharacters(details));
+  }
+
+  static indent(text: string): string {
+    return text
+      .split("\n")
+      .map((line) => (line ? `  ${line}` : line))
+      .join("\n");
   }
 }
 
