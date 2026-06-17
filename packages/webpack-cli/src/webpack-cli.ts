@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { type Readable as ReadableType } from "node:stream";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -46,6 +47,19 @@ const DEFAULT_CONFIGURATION_FILES = [
   ".webpack/webpack.config",
   ".webpack/webpackfile",
 ];
+
+// Non-JavaScript configuration formats that Node.js cannot `import()`.
+// webpack-cli reads and parses these itself instead of relying on `interpret`.
+// The parsers are intentionally not shipped: the relevant package is imported
+// on demand from the user's project, and a helpful error is shown when it is
+// missing. `method` is the parser's entry point (`json5`/`toml` expose `parse`,
+// `js-yaml` exposes `load`). Hoisted to module scope so it is built only once.
+const DATA_FORMAT_LOADERS: Record<string, { package: string; method: "parse" | "load" }> = {
+  ".json5": { package: "json5", method: "parse" },
+  ".yaml": { package: "js-yaml", method: "load" },
+  ".yml": { package: "js-yaml", method: "load" },
+  ".toml": { package: "toml", method: "parse" },
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RecordAny = Record<string, any>;
@@ -2619,58 +2633,97 @@ class WebpackCLI {
       const isFileURL = configPath.startsWith("file://");
 
       try {
-        let loadingError;
+        const ext = path.extname(configPath).toLowerCase();
+        const dataFormatLoader = DATA_FORMAT_LOADERS[ext];
 
-        try {
-          options = // eslint-disable-next-line no-eval
-            (await eval(`import("${isFileURL ? configPath : pathToFileURL(configPath)}")`)).default;
-        } catch (err) {
-          if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
-            throw err;
-          }
-
-          loadingError = err;
-        }
-
-        // Fallback logic when we can't use `import(...)`
-        if (loadingError) {
-          const { jsVariants, extensions } = await import("interpret");
-          const ext = path.extname(configPath).toLowerCase();
-
-          let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
-
-          if (!interpreted && ext.endsWith(".cts")) {
-            interpreted = jsVariants[".ts"] as string;
-          }
-
-          if (interpreted && !disableInterpret) {
-            const rechoir: Rechoir = (await import("rechoir")).default;
-
-            try {
-              rechoir.prepare(extensions, configPath);
-            } catch (error) {
-              if ((error as RechoirError)?.failures) {
-                this.logger.error(`Unable load '${configPath}'`);
-                this.logger.error((error as RechoirError).message);
-                for (const failure of (error as RechoirError).failures) {
-                  this.logger.error(failure.error.message);
-                }
-                this.logger.error("Please install one of them");
-                process.exit(2);
-              }
-              this.logger.error(error);
-              process.exit(2);
-            }
-          }
+        if (dataFormatLoader) {
+          // Non-JavaScript formats cannot be `import(...)`ed, so parse them
+          // directly and skip the doomed dynamic import attempt entirely.
+          const configFilePath = isFileURL ? fileURLToPath(configPath) : path.resolve(configPath);
+          let parser: Record<string, (source: string) => unknown>;
 
           try {
-            options = require(isFileURL ? fileURLToPath(configPath) : path.resolve(configPath));
+            // Resolve the parser from the configuration file's location (so it
+            // is picked up from the user's project rather than from webpack-cli),
+            // then load it asynchronously via `import(...)`.
+            const parserPath = createRequire(configFilePath).resolve(dataFormatLoader.package);
+            const parserModule = await import(pathToFileURL(parserPath).href);
+
+            parser = (parserModule.default ?? parserModule) as Record<
+              string,
+              (source: string) => unknown
+            >;
+          } catch {
+            this.logger.error(`Unable to load the '${configFilePath}' configuration file.`);
+            this.logger.error(
+              `Loading '${ext}' configuration files requires the '${dataFormatLoader.package}' package, which is not installed. Please install it, e.g. \`npm install --save-dev ${dataFormatLoader.package}\`.`,
+            );
+            process.exit(2);
+          }
+
+          // Reading/parsing errors propagate to the handler below, which
+          // reports `Failed to load '<config>' config`.
+          const source = await fs.promises.readFile(configFilePath, "utf8");
+
+          options = parser[dataFormatLoader.method](source) as LoadableWebpackConfiguration;
+        } else {
+          let loadingError;
+
+          try {
+            options = // eslint-disable-next-line no-eval
+              (await eval(`import("${isFileURL ? configPath : pathToFileURL(configPath)}")`))
+                .default;
           } catch (err) {
-            if (this.isValidationError(err)) {
+            if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
               throw err;
             }
 
-            throw new ConfigurationLoadingError([loadingError, err]);
+            loadingError = err;
+          }
+
+          // Fallback logic when we can't use `import(...)`. `interpret`/`rechoir`
+          // still handle the JavaScript variants (`.ts`, `.coffee`,
+          // `.babel.js`, ...). This path is planned to be removed once those
+          // formats are loaded natively as well.
+          if (loadingError) {
+            const configFilePath = isFileURL ? fileURLToPath(configPath) : path.resolve(configPath);
+            const { jsVariants, extensions } = await import("interpret");
+
+            let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
+
+            if (!interpreted && ext.endsWith(".cts")) {
+              interpreted = jsVariants[".ts"] as string;
+            }
+
+            if (interpreted && !disableInterpret) {
+              const rechoir: Rechoir = (await import("rechoir")).default;
+
+              try {
+                rechoir.prepare(extensions, configPath);
+              } catch (error) {
+                if ((error as RechoirError)?.failures) {
+                  this.logger.error(`Unable load '${configPath}'`);
+                  this.logger.error((error as RechoirError).message);
+                  for (const failure of (error as RechoirError).failures) {
+                    this.logger.error(failure.error.message);
+                  }
+                  this.logger.error("Please install one of them");
+                  process.exit(2);
+                }
+                this.logger.error(error);
+                process.exit(2);
+              }
+            }
+
+            try {
+              options = require(configFilePath);
+            } catch (err) {
+              if (this.isValidationError(err)) {
+                throw err;
+              }
+
+              throw new ConfigurationLoadingError([loadingError, err]);
+            }
           }
         }
 
