@@ -3,10 +3,10 @@ const { resolve } = require("node:path");
 
 const { run } = require("../../../utils/test-utils");
 
-// webpack-cli supports YAML config files through `interpret`/`rechoir`, but it
-// does not ship the parser. The `yaml-hook` package has to be installed by the
-// user (here it is available as a dev dependency) and `yaml-hook/register` is
-// loaded on demand to register the `.yaml`/`.yml` extensions.
+// webpack-cli reads and parses YAML config files directly (without
+// `interpret`), but it does not ship the parser. The `js-yaml` package has to
+// be installed by the user (here it is available as a dev dependency) and is
+// imported on demand to parse `.yaml`/`.yml` files.
 describe("webpack cli", () => {
   it("should support YAML file as flag", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "webpack.config.yaml"]);
