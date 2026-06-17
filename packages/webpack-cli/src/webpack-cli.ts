@@ -426,16 +426,21 @@ class ConfigurationLoadingError extends Error {
   // the noise. For module-loading errors (e.g. a `SyntaxError`) `error.stack`
   // begins with a code frame (file, line, source and a caret) that points at
   // the exact location of the problem — far more useful than `error.message`
-  // alone. We keep that context (and the Node.js error `code`, e.g.
-  // `MODULE_NOT_FOUND`) but drop the noisy internal Node.js stack frames.
+  // alone. We keep that context, any user-land stack frames (e.g. the config
+  // line that threw) and the Node.js error `code` (e.g. `MODULE_NOT_FOUND`),
+  // but drop the noisy internal Node.js / dependency stack frames.
   static format(error: unknown): string {
     if (!(error instanceof Error)) {
       return ConfigurationLoadingError.indent(String(error));
     }
 
     const lines = (error.stack ?? `${error.name}: ${error.message}`).split("\n");
-    const firstFrame = lines.findIndex((line) => /^\s*at\s/.test(line));
-    let details = (firstFrame === -1 ? lines : lines.slice(0, firstFrame)).join("\n").trimEnd();
+    const isFrame = (line: string): boolean => /^\s*at\s/.test(line);
+    const isNoise = (line: string): boolean => /node:|node_modules/.test(line);
+    // Cut from the first internal/dependency frame onwards, keeping the code
+    // frame and any leading user-land frames above it.
+    const firstNoise = lines.findIndex((line) => isFrame(line) && isNoise(line));
+    let details = (firstNoise === -1 ? lines : lines.slice(0, firstNoise)).join("\n").trimEnd();
 
     const { code } = error as NodeJS.ErrnoException;
 
