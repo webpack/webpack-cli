@@ -48,6 +48,19 @@ const DEFAULT_CONFIGURATION_FILES = [
   ".webpack/webpackfile",
 ];
 
+// Non-JavaScript configuration formats that Node.js cannot `import()`.
+// webpack-cli reads and parses these itself instead of relying on `interpret`.
+// The parsers are intentionally not shipped: the relevant package is imported
+// on demand from the user's project, and a helpful error is shown when it is
+// missing. `method` is the parser's entry point (`json5`/`toml` expose `parse`,
+// `js-yaml` exposes `load`). Hoisted to module scope so it is built only once.
+const DATA_FORMAT_LOADERS: Record<string, { package: string; method: "parse" | "load" }> = {
+  ".json5": { package: "json5", method: "parse" },
+  ".yaml": { package: "js-yaml", method: "load" },
+  ".yml": { package: "js-yaml", method: "load" },
+  ".toml": { package: "toml", method: "parse" },
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RecordAny = Record<string, any>;
 
@@ -2596,29 +2609,22 @@ class WebpackCLI {
           const ext = path.extname(configPath).toLowerCase();
           const configFilePath = isFileURL ? fileURLToPath(configPath) : path.resolve(configPath);
 
-          // Non-JavaScript configuration formats that Node.js cannot `import()`.
-          // We read and parse these ourselves instead of relying on `interpret`.
-          // The parsers are intentionally not shipped with webpack-cli; a
-          // developer installs only the one they need and we surface a helpful
-          // error (below) when it is missing. `method` is the parser's entry
-          // point (`json5`/`toml` expose `parse`, `js-yaml` exposes `load`).
-          const dataFormatLoaders: Record<string, { package: string; method: "parse" | "load" }> = {
-            ".json5": { package: "json5", method: "parse" },
-            ".yaml": { package: "js-yaml", method: "load" },
-            ".yml": { package: "js-yaml", method: "load" },
-            ".toml": { package: "toml", method: "parse" },
-          };
-
-          const dataFormatLoader = dataFormatLoaders[ext];
+          const dataFormatLoader = DATA_FORMAT_LOADERS[ext];
 
           if (dataFormatLoader) {
-            // Resolve the parser from the configuration file's location, so it
-            // is picked up from the user's project rather than from webpack-cli.
-            const requireFromConfig = createRequire(configFilePath);
             let parser: Record<string, (source: string) => unknown>;
 
             try {
-              parser = requireFromConfig(dataFormatLoader.package);
+              // Resolve the parser from the configuration file's location (so it
+              // is picked up from the user's project rather than from
+              // webpack-cli), then load it asynchronously via `import(...)`.
+              const parserPath = createRequire(configFilePath).resolve(dataFormatLoader.package);
+              const parserModule = await import(pathToFileURL(parserPath).href);
+
+              parser = (parserModule.default ?? parserModule) as Record<
+                string,
+                (source: string) => unknown
+              >;
             } catch {
               this.logger.error(`Unable to load the '${configFilePath}' configuration file.`);
               this.logger.error(
@@ -2628,9 +2634,9 @@ class WebpackCLI {
             }
 
             try {
-              options = parser[dataFormatLoader.method](
-                fs.readFileSync(configFilePath, "utf8"),
-              ) as LoadableWebpackConfiguration;
+              const source = await fs.promises.readFile(configFilePath, "utf8");
+
+              options = parser[dataFormatLoader.method](source) as LoadableWebpackConfiguration;
             } catch (err) {
               if (this.isValidationError(err)) {
                 throw err;
