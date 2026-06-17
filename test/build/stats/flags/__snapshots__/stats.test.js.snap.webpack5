@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`stats flag should log error when an unknown flag stats value is passed: stderr 1`] = `
-"[webpack-cli] Invalid value 'foo' for the '--stats' option
-[webpack-cli] Expected: 'none | summary | errors-only | errors-warnings | minimal | normal | detailed | verbose'
-[webpack-cli] Invalid value 'foo' for the '--stats' option
-[webpack-cli] Expected: without value or negative option"
+"[webpack-cli] ✖ Invalid value 'foo' for the '--stats' option
+[webpack-cli] ✖ Expected: 'none | summary | errors-only | errors-warnings | minimal | normal | detailed | verbose'
+[webpack-cli] ✖ Invalid value 'foo' for the '--stats' option
+[webpack-cli] ✖ Expected: without value or negative option"
 `;
 
 exports[`stats flag should log error when an unknown flag stats value is passed: stdout 1`] = `""`;

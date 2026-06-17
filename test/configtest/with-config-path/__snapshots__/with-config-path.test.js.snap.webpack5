@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`'configtest' command with the configuration path option should throw error if configuration does not exist: stderr 1`] = `"[webpack-cli] Failed to load './a.js' config"`;
+exports[`'configtest' command with the configuration path option should throw error if configuration does not exist: stderr 1`] = `"[webpack-cli] ✖ Failed to load './a.js' config"`;
 
 exports[`'configtest' command with the configuration path option should throw error if configuration does not exist: stdout 1`] = `""`;
 
 exports[`'configtest' command with the configuration path option should throw syntax error: stderr 1`] = `
-"[webpack-cli] Failed to load './syntax-error.config.js' config
+"[webpack-cli] ✖ Failed to load './syntax-error.config.js' config
 ▶ ESM (\`import\`) failed:
   <cwd>/test/configtest/with-config-path/syntax-error.config.js:5
       target: 'node';

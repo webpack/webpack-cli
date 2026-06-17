@@ -578,11 +578,15 @@ class WebpackCLI {
   }
 
   getLogger(): Logger {
+    // Status icons brand every webpack-cli message (`✔`/`✖`/`⚠`/`ℹ`). They sit
+    // between the `[webpack-cli]` prefix and the unchanged message text, so
+    // tooling that greps the prefix or the message keeps working, and they
+    // collapse to plain glyphs when colors are disabled.
     return {
-      error: (val) => console.error(`[webpack-cli] ${this.colors.red(util.format(val))}`),
-      warn: (val) => console.warn(`[webpack-cli] ${this.colors.yellow(val)}`),
-      info: (val) => console.info(`[webpack-cli] ${this.colors.cyan(val)}`),
-      success: (val) => console.log(`[webpack-cli] ${this.colors.green(val)}`),
+      error: (val) => console.error(`[webpack-cli] ${this.colors.red(`✖ ${util.format(val)}`)}`),
+      warn: (val) => console.warn(`[webpack-cli] ${this.colors.yellow(`⚠ ${val}`)}`),
+      info: (val) => console.info(`[webpack-cli] ${this.colors.cyan(`ℹ ${val}`)}`),
+      success: (val) => console.log(`[webpack-cli] ${this.colors.green(`✔ ${val}`)}`),
       log: (val) => console.log(`[webpack-cli] ${val}`),
       raw: (val) => console.log(val),
     };

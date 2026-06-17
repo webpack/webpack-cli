@@ -5,7 +5,7 @@ exports[`--target flag should reset the \`target\` option when the \`--target-re
 exports[`--target flag should reset the \`target\` option when the \`--target-reset\` is used: stderr 1`] = `""`;
 
 exports[`--target flag should throw an error for incompatible multiple targets: stderr 1`] = `
-"[webpack-cli] Error: For the selected environment is no default script chunk format available:
+"[webpack-cli] ✖ Error: For the selected environment is no default script chunk format available:
 
 JSONP Array push ('array-push') can be chosen when 'document' or 'importScripts' is available.
 CommonJs exports ('commonjs') can be chosen when 'require' or node builtins are available.
@@ -16,7 +16,7 @@ Select an appropriate 'target' to allow selecting one by default, or specify the
 exports[`--target flag should throw an error for incompatible multiple targets: stdout 1`] = `""`;
 
 exports[`--target flag should throw an error for invalid target in multiple syntax: stderr 1`] = `
-"[webpack-cli] Error: Unknown target 'invalid'. The following targets are supported:
+"[webpack-cli] ✖ Error: Unknown target 'invalid'. The following targets are supported:
 * browserslist / browserslist:env / browserslist:query / browserslist:path-to-config / browserslist:path-to-config:env: Resolve features from browserslist. Will resolve browserslist config automatically. Only browser or node queries are supported (electron is not supported). Examples: 'browserslist:modern' to use 'modern' environment from browserslist config
 * web: Web browser.
 * webworker: Web Worker, SharedWorker or Service Worker.
@@ -30,14 +30,14 @@ exports[`--target flag should throw an error for invalid target in multiple synt
 exports[`--target flag should throw an error for invalid target in multiple syntax: stdout 1`] = `""`;
 
 exports[`--target flag should throw error if target is an empty array: stderr 1`] = `
-"[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
+"[webpack-cli] ✖ Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
  - configuration.target should be a non-empty array."
 `;
 
 exports[`--target flag should throw error if target is an empty array: stdout 1`] = `""`;
 
 exports[`--target flag should throw error with invalid value for --target: stderr 1`] = `
-"[webpack-cli] Error: Unknown target 'invalid'. The following targets are supported:
+"[webpack-cli] ✖ Error: Unknown target 'invalid'. The following targets are supported:
 * browserslist / browserslist:env / browserslist:query / browserslist:path-to-config / browserslist:path-to-config:env: Resolve features from browserslist. Will resolve browserslist config automatically. Only browser or node queries are supported (electron is not supported). Examples: 'browserslist:modern' to use 'modern' environment from browserslist config
 * web: Web browser.
 * webworker: Web Worker, SharedWorker or Service Worker.
