@@ -50,7 +50,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.2",
-    "@babel/register": "^7.15.8",
+    "@babel/register": "^8.0.1",
     "@changesets/cli": "^2.30.0",
     "@changesets/get-github-info": "^0.8.0",
     "@types/jest": "^30.0.0",
