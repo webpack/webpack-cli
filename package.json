@@ -48,7 +48,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^8.0.1",
     "@babel/preset-env": "^7.25.2",
     "@babel/register": "^7.15.8",
     "@changesets/cli": "^2.30.0",
