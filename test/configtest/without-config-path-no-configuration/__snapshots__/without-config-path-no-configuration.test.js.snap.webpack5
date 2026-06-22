@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`'configtest' command without the configuration path option should validate default configuration: stderr 1`] = `"  ✖ No configuration found."`;
+exports[`'configtest' command without the configuration path option should validate default configuration: stderr 1`] = `"✖ No configuration found."`;
 
 exports[`'configtest' command without the configuration path option should validate default configuration: stdout 1`] = `
 "
-  ⬡ webpack configtest
-  ────────────────────────────────────────────────────────────────────────
-  Validating your webpack configuration.
+⬡ webpack configtest
+────────────────────────────────────────────────────────────────────────
+Validating your webpack configuration.
 "
 `;

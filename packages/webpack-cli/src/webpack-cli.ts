@@ -1492,11 +1492,11 @@ class WebpackCLI {
             : helper.commandDescription(command);
 
           if (commandDescription.length > 0) {
-            output = [...output, `${INDENT}${commandDescription}`, ""];
+            output = [...output, commandDescription, ""];
           }
 
           // Usage
-          output = [...output, `${INDENT}${bold("Usage:")} ${helper.commandUsage(command)}`, ""];
+          output = [...output, `${bold("Usage:")} ${helper.commandUsage(command)}`, ""];
 
           // Arguments
           output = addSection(
@@ -1689,26 +1689,26 @@ class WebpackCLI {
 
   /** A horizontal rule used to separate sections. */
   #uiDivider(): string {
-    return `${UI_INDENT}${this.colors.blue("─".repeat(UI_DIVIDER_WIDTH))}`;
+    return this.colors.blue("─".repeat(UI_DIVIDER_WIDTH));
   }
 
   /** A branded title, e.g. `⬡ webpack build`. */
   #uiHeader(title: string): string {
     const { bold, cyan } = this.colors;
-    return `${UI_INDENT}${bold(cyan("⬡"))} ${bold(cyan(title))}`;
+    return `${bold(cyan("⬡"))} ${bold(cyan(title))}`;
   }
 
   /** A section heading with an underline, e.g. `Options` followed by a divider. */
   #uiSectionTitle(title: string): string {
     const { bold, cyan } = this.colors;
-    return `${UI_INDENT}${bold(cyan(title))}\n${this.#uiDivider()}`;
+    return `${bold(cyan(title))}\n${this.#uiDivider()}`;
   }
 
   /** A single status message prefixed with an icon (`✔`/`✖`/`⚠`/`ℹ`). */
   #uiStatusLine(kind: StatusKind, message: string): string {
     const { green, red, yellow, cyan } = this.colors;
     const color = { success: green, error: red, warning: yellow, info: cyan }[kind];
-    return `${UI_INDENT}${color(UI_STATUS_ICONS[kind])} ${message}`;
+    return `${color(UI_STATUS_ICONS[kind])} ${message}`;
   }
 
   /** The header block printed at the top of a framed command (`info`, `version`, …). */
@@ -1716,7 +1716,7 @@ class WebpackCLI {
     const lines = ["", this.#uiHeader(`webpack ${name}`), this.#uiDivider()];
 
     if (description) {
-      lines.push(`${UI_INDENT}${description}`, "");
+      lines.push(description, "");
     }
 
     return lines.join("\n");
@@ -1729,15 +1729,15 @@ class WebpackCLI {
 
     if (!options.verbose) {
       lines.push(
-        `${UI_INDENT}${cyan("ℹ")} Run ${bold("'webpack --help=verbose'")} to see all available commands and options.`,
+        `${cyan("ℹ")} Run ${bold("'webpack --help=verbose'")} to see all available commands and options.`,
       );
     }
 
     lines.push(
       "",
-      `${UI_INDENT}${bold("Webpack documentation:")}  ${cyan("https://webpack.js.org/")}`,
-      `${UI_INDENT}${bold("CLI documentation:")}      ${cyan("https://webpack.js.org/api/cli/")}`,
-      `${UI_INDENT}${bold("Made with")} ${red("♥")} ${bold("by the webpack team")}`,
+      `${bold("Webpack documentation:")}  ${cyan("https://webpack.js.org/")}`,
+      `${bold("CLI documentation:")}      ${cyan("https://webpack.js.org/api/cli/")}`,
+      `${bold("Made with")} ${red("♥")} ${bold("by the webpack team")}`,
     );
 
     return lines.join("\n");
