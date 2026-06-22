@@ -542,10 +542,13 @@ class WebpackCLI {
 
     // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
     if (!pkg || !pkg.cli || typeof pkg.cli.createColors !== "function") {
+      // webpack provides the color helpers; when it isn't available, fall back to
+      // identity functions so output is plain (uncolored) text. Returning the
+      // string unchanged (rather than an array) is important because the value is
+      // passed to consumers — e.g. commander's `formatItem` — that expect a string.
       return new Proxy({} as Colors, {
-        get() {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          return (...args: any[]) => [...args];
+        get(_target, property) {
+          return property === "isColorSupported" ? false : (value: string) => value;
         },
       });
     }
