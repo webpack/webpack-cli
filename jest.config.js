@@ -7,10 +7,18 @@ module.exports = {
   coverageReporters: ["json"],
   transform: {
     "^.+\\.tsx?$": [
-      "ts-jest",
+      "@swc/jest",
       {
-        useESM: true,
-        tsconfig: "tsconfig.json",
+        jsc: {
+          parser: {
+            syntax: "typescript",
+            tsx: true,
+          },
+          target: "es2022",
+        },
+        module: {
+          type: "es6",
+        },
       },
     ],
   },
