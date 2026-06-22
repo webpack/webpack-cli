@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`invalid schema should log webpack error and exit process on invalid config: stderr 1`] = `
-"[webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
+"[webpack-cli] ✖ Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
  - configuration.mode should be one of these:
    "development" | "production" | "none"
    -> Enable production optimizations or development hints."
@@ -10,14 +10,14 @@ exports[`invalid schema should log webpack error and exit process on invalid con
 exports[`invalid schema should log webpack error and exit process on invalid config: stdout 1`] = `""`;
 
 exports[`invalid schema should log webpack error and exit process on invalid flag: stderr 1`] = `
-"[webpack-cli] Invalid value 'Yukihira' for the '--mode' option
-[webpack-cli] Expected: 'development | production | none'"
+"[webpack-cli] ✖ Invalid value 'Yukihira' for the '--mode' option
+[webpack-cli] ✖ Expected: 'development | production | none'"
 `;
 
 exports[`invalid schema should log webpack error and exit process on invalid flag: stdout 1`] = `""`;
 
 exports[`invalid schema should log webpack-dev-server error and exit process on invalid config: stderr 1`] = `
-"[webpack-cli] Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
+"[webpack-cli] ✖ Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
  - options.bonjour should be one of these:
    boolean | object { … }
    -> Allows to broadcasts dev server via ZeroConf networking on start.
@@ -30,7 +30,7 @@ exports[`invalid schema should log webpack-dev-server error and exit process on 
 exports[`invalid schema should log webpack-dev-server error and exit process on invalid config: stdout 1`] = `""`;
 
 exports[`invalid schema should log webpack-dev-server error and exit process on invalid flag: stderr 1`] = `
-"[webpack-cli] Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
+"[webpack-cli] ✖ Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
  - options.port should be >= 0 and <= 65535."
 `;
 

@@ -246,6 +246,15 @@ type Options =
 
 const DEFAULT_WEBPACK_PACKAGES: string[] = ["webpack", "loader"];
 
+// Shared visual constants for the help/info/version/configtest "chrome".
+// Colors collapse to plain strings when disabled (piped output or `--no-color`),
+// so the textual structure stays stable and script-friendly.
+const UI_INDENT = "  ";
+const UI_DIVIDER_WIDTH = 72;
+const UI_STATUS_ICONS = { success: "✔", error: "✖", warning: "⚠", info: "ℹ" } as const;
+
+type StatusKind = keyof typeof UI_STATUS_ICONS;
+
 // Options that get a single-character alias derived from their name.
 const FLAGS_WITH_ALIAS = new Set(["devtool", "output-path", "target", "watch", "extends"]);
 
@@ -533,10 +542,13 @@ class WebpackCLI {
 
     // Some big repos can have a problem with update webpack everywhere, so let's create a simple proxy for colors
     if (!pkg || !pkg.cli || typeof pkg.cli.createColors !== "function") {
+      // webpack provides the color helpers; when it isn't available, fall back to
+      // identity functions so output is plain (uncolored) text. Returning the
+      // string unchanged (rather than an array) is important because the value is
+      // passed to consumers — e.g. commander's `formatItem` — that expect a string.
       return new Proxy({} as Colors, {
-        get() {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          return (...args: any[]) => [...args];
+        get(_target, property) {
+          return property === "isColorSupported" ? false : (value: string) => value;
         },
       });
     }
@@ -569,11 +581,15 @@ class WebpackCLI {
   }
 
   getLogger(): Logger {
+    // Status icons brand every webpack-cli message (`✔`/`✖`/`⚠`/`ℹ`). They sit
+    // between the `[webpack-cli]` prefix and the unchanged message text, so
+    // tooling that greps the prefix or the message keeps working, and they
+    // collapse to plain glyphs when colors are disabled.
     return {
-      error: (val) => console.error(`[webpack-cli] ${this.colors.red(util.format(val))}`),
-      warn: (val) => console.warn(`[webpack-cli] ${this.colors.yellow(val)}`),
-      info: (val) => console.info(`[webpack-cli] ${this.colors.cyan(val)}`),
-      success: (val) => console.log(`[webpack-cli] ${this.colors.green(val)}`),
+      error: (val) => console.error(`[webpack-cli] ${this.colors.red(`✖ ${util.format(val)}`)}`),
+      warn: (val) => console.warn(`[webpack-cli] ${this.colors.yellow(`⚠ ${val}`)}`),
+      info: (val) => console.info(`[webpack-cli] ${this.colors.cyan(`ℹ ${val}`)}`),
+      success: (val) => console.log(`[webpack-cli] ${this.colors.green(`✔ ${val}`)}`),
       log: (val) => console.log(`[webpack-cli] ${val}`),
       raw: (val) => console.log(val),
     };
@@ -1361,7 +1377,15 @@ class WebpackCLI {
       value === "--version" ||
       value === "-h" ||
       value === "--help";
-    const { bold } = this.colors;
+    const { bold, cyan } = this.colors;
+    // Shared "chrome" used to render the help screens. These are purely visual:
+    // colors collapse to plain strings when colors are disabled (e.g. piped output
+    // or `--no-color`), so the textual structure stays stable for scripts.
+    const INDENT = UI_INDENT;
+    const divider = this.#uiDivider();
+    const header = (title: string) => this.#uiHeader(title);
+    // Section headings ("Options", "Commands", …) get a colored title and an underline.
+    const sectionTitle = (title: string) => this.#uiSectionTitle(title);
     const outputIncorrectUsageOfHelp = () => {
       this.logger.error("Incorrect use of help");
       this.logger.error(
@@ -1390,7 +1414,7 @@ class WebpackCLI {
           }
 
           if (isGlobalHelp) {
-            return `${parentCmdNames}${command.usage()}\n${bold(
+            return `${parentCmdNames}${command.usage()}\n${INDENT}${bold(
               "Alternative usage to run commands:",
             )} ${parentCmdNames}[command] [options]`;
           }
@@ -1435,18 +1459,32 @@ class WebpackCLI {
           );
         },
         formatHelp: (command, helper: Help) => {
+          // `helper.formatItem` is ANSI-aware (it pads using the visible width), so we
+          // can colorize the term and keep every description column aligned.
           const formatItem = (term: string, description: string) => {
             if (description) {
-              return helper.formatItem(term, helper.padWidth(command, helper), description, helper);
+              return helper.formatItem(
+                cyan(term),
+                helper.padWidth(command, helper),
+                description,
+                helper,
+              );
             }
 
-            return term;
+            return `${INDENT}${cyan(term)}`;
           };
 
-          const formatList = (textArray: string[]) => textArray.join("\n").replaceAll(/^/gm, "");
+          const formatList = (textArray: string[]) => textArray.join("\n");
 
-          // Usage
-          let output = [`${bold("Usage:")} ${helper.commandUsage(command)}`, ""];
+          const addSection = (output: string[], title: string, items: string[]) =>
+            items.length > 0 ? [...output, sectionTitle(title), formatList(items), ""] : output;
+
+          // Header — a branded, divided title for the screen.
+          let output = [
+            "",
+            header(isGlobalHelp ? "webpack" : `webpack ${command.name()}`),
+            divider,
+          ];
 
           // Description
           const commandDescription = isGlobalHelp
@@ -1454,50 +1492,56 @@ class WebpackCLI {
             : helper.commandDescription(command);
 
           if (commandDescription.length > 0) {
-            output = [...output, commandDescription, ""];
+            output = [...output, `${INDENT}${commandDescription}`, ""];
           }
+
+          // Usage
+          output = [...output, `${INDENT}${bold("Usage:")} ${helper.commandUsage(command)}`, ""];
 
           // Arguments
-          const argumentList = helper
-            .visibleArguments(command)
-            .map((argument) => formatItem(argument.name(), argument.description));
-
-          if (argumentList.length > 0) {
-            output = [...output, bold("Arguments:"), formatList(argumentList), ""];
-          }
-
-          // Options
-          const optionList = helper
-            .visibleOptions(command)
-            .map((option) =>
-              formatItem(helper.optionTerm(option), helper.optionDescription(option)),
-            );
-
-          if (optionList.length > 0) {
-            output = [...output, bold("Options:"), formatList(optionList), ""];
-          }
-
-          // Global options
-          const globalOptionList = program.options.map((option) =>
-            formatItem(helper.optionTerm(option), helper.optionDescription(option)),
+          output = addSection(
+            output,
+            "Arguments",
+            helper
+              .visibleArguments(command)
+              .map((argument) => formatItem(argument.name(), argument.description)),
           );
 
-          if (globalOptionList.length > 0) {
-            output = [...output, bold("Global options:"), formatList(globalOptionList), ""];
-          }
+          // Options
+          output = addSection(
+            output,
+            "Options",
+            helper
+              .visibleOptions(command)
+              .map((option) =>
+                formatItem(helper.optionTerm(option), helper.optionDescription(option)),
+              ),
+          );
+
+          // Global options
+          output = addSection(
+            output,
+            "Global options",
+            program.options.map((option) =>
+              formatItem(helper.optionTerm(option), helper.optionDescription(option)),
+            ),
+          );
 
           // Commands
-          const commandList = helper
-            .visibleCommands(isGlobalHelp ? program : command)
-            .map((command) =>
-              formatItem(helper.subcommandTerm(command), helper.subcommandDescription(command)),
-            );
+          output = addSection(
+            output,
+            "Commands",
+            helper
+              .visibleCommands(isGlobalHelp ? program : command)
+              .map((subcommand) =>
+                formatItem(
+                  helper.subcommandTerm(subcommand),
+                  helper.subcommandDescription(subcommand),
+                ),
+              ),
+          );
 
-          if (commandList.length > 0) {
-            output = [...output, bold("Commands:"), formatList(commandList), ""];
-          }
-
-          return output.join("\n");
+          return [...output, divider].join("\n");
         },
       });
 
@@ -1569,23 +1613,23 @@ class WebpackCLI {
         option.flags.replace(/^.+[[<]/, "").replace(/(\.\.\.)?[\]>].*$/, "") +
         (option.variadic === true ? "..." : "");
       const value = option.required ? `<${nameOutput}>` : option.optional ? `[${nameOutput}]` : "";
+      const scope = isCommandSpecified ? ` ${commandName}` : "";
 
+      this.logger.raw("");
+      this.logger.raw(header(option.long ?? optionName));
+      this.logger.raw(divider);
       this.logger.raw(
-        `${bold("Usage")}: webpack${isCommandSpecified ? ` ${commandName}` : ""} ${option.long}${
-          value ? ` ${value}` : ""
-        }`,
+        `${INDENT}${bold("Usage:")} webpack${scope} ${option.long}${value ? ` ${value}` : ""}`,
       );
 
       if (option.short) {
         this.logger.raw(
-          `${bold("Short:")} webpack${isCommandSpecified ? ` ${commandName}` : ""} ${
-            option.short
-          }${value ? ` ${value}` : ""}`,
+          `${INDENT}${bold("Short:")} webpack${scope} ${option.short}${value ? ` ${value}` : ""}`,
         );
       }
 
       if (option.description) {
-        this.logger.raw(`${bold("Description:")} ${option.description}`);
+        this.logger.raw(`${INDENT}${bold("Description:")} ${option.description}`);
       }
 
       const { configs } = option as Option & { configs?: ArgumentConfig[] };
@@ -1607,10 +1651,11 @@ class WebpackCLI {
             .map((value) => (typeof value === "string" ? `'${value}'` : value))
             .join(" | ");
 
-          this.logger.raw(`${bold("Possible values:")} ${possibleValuesUnionTypeString}`);
+          this.logger.raw(`${INDENT}${bold("Possible values:")} ${possibleValuesUnionTypeString}`);
         }
       }
 
+      this.logger.raw(divider);
       this.logger.raw("");
 
       // TODO implement this after refactor cli arguments
@@ -1619,28 +1664,162 @@ class WebpackCLI {
       outputIncorrectUsageOfHelp();
     }
 
-    this.logger.raw(
-      "To see list of all supported commands and options run 'webpack --help=verbose'.\n",
-    );
-    this.logger.raw(`${bold("Webpack documentation:")} https://webpack.js.org/.`);
-    this.logger.raw(`${bold("CLI documentation:")} https://webpack.js.org/api/cli/.`);
-    this.logger.raw(`${bold("Made with ♥ by the webpack team")}.`);
+    // Footer — shared across every help screen and framed command.
+    this.logger.raw(this.#uiFooter({ verbose: isVerbose }));
     process.exit(0);
   }
 
   async #renderVersion(options: { output?: string } = {}): Promise<string> {
-    let info = await this.#getInfoOutput({
+    const info = await this.#getInfoOutput({
       ...options,
       information: {
         npmPackages: `{${DEFAULT_WEBPACK_PACKAGES.map((item) => `*${item}*`).join(",")}}`,
       },
     });
 
-    if (typeof options.output === "undefined") {
-      info = info.replace("Packages:", "").replaceAll(/^\s+/gm, "").trim();
+    // `--output json|markdown` must stay machine-readable, so only the default
+    // plain-text output gets the visual treatment.
+    return typeof options.output === "undefined" ? this.#renderEnvinfo(info) : info;
+  }
+
+  // ─── Shared UI "chrome" ──────────────────────────────────────────────────
+  // Small, pure(-ish) renderers for the CLI's visual structure. They read
+  // `this.colors`, which collapses to plain strings when colors are disabled,
+  // so the textual layout is identical with or without ANSI.
+
+  /** A horizontal rule used to separate sections. */
+  #uiDivider(): string {
+    return `${UI_INDENT}${this.colors.blue("─".repeat(UI_DIVIDER_WIDTH))}`;
+  }
+
+  /** A branded title, e.g. `⬡ webpack build`. */
+  #uiHeader(title: string): string {
+    const { bold, cyan } = this.colors;
+    return `${UI_INDENT}${bold(cyan("⬡"))} ${bold(cyan(title))}`;
+  }
+
+  /** A section heading with an underline, e.g. `Options` followed by a divider. */
+  #uiSectionTitle(title: string): string {
+    const { bold, cyan } = this.colors;
+    return `${UI_INDENT}${bold(cyan(title))}\n${this.#uiDivider()}`;
+  }
+
+  /** A single status message prefixed with an icon (`✔`/`✖`/`⚠`/`ℹ`). */
+  #uiStatusLine(kind: StatusKind, message: string): string {
+    const { green, red, yellow, cyan } = this.colors;
+    const color = { success: green, error: red, warning: yellow, info: cyan }[kind];
+    return `${UI_INDENT}${color(UI_STATUS_ICONS[kind])} ${message}`;
+  }
+
+  /** The header block printed at the top of a framed command (`info`, `version`, …). */
+  #uiCommandHeader(name: string, description?: string): string {
+    const lines = ["", this.#uiHeader(`webpack ${name}`), this.#uiDivider()];
+
+    if (description) {
+      lines.push(`${UI_INDENT}${description}`, "");
     }
 
-    return info;
+    return lines.join("\n");
+  }
+
+  /** The documentation footer shared by every help and framed-command screen. */
+  #uiFooter(options: { verbose?: boolean } = {}): string {
+    const { bold, cyan, red } = this.colors;
+    const lines: string[] = [];
+
+    if (!options.verbose) {
+      lines.push(
+        `${UI_INDENT}${cyan("ℹ")} Run ${bold("'webpack --help=verbose'")} to see all available commands and options.`,
+      );
+    }
+
+    lines.push(
+      "",
+      `${UI_INDENT}${bold("Webpack documentation:")}  ${cyan("https://webpack.js.org/")}`,
+      `${UI_INDENT}${bold("CLI documentation:")}      ${cyan("https://webpack.js.org/api/cli/")}`,
+      `${UI_INDENT}${bold("Made with")} ${red("♥")} ${bold("by the webpack team")}`,
+    );
+
+    return lines.join("\n");
+  }
+
+  /**
+   * Renders the plain-text output of `envinfo` (used by `info` and `version`)
+   * into branded sections with aligned rows. Section titles keep their trailing
+   * colon so existing tooling/assertions that grep for e.g. "System:" keep
+   * working, and "requested => resolved" version pairs are shown with a "→"
+   * arrow.
+   * @param {string} raw The raw multi-line text produced by `envinfo`.
+   * @returns {string} The styled, section-divided output.
+   */
+  #renderEnvinfo(raw: string): string {
+    const { bold, cyan, green } = this.colors;
+    const lines: string[] = [];
+    const sections: { title: string; rows: { label: string; value: string }[] }[] = [];
+    let section: (typeof sections)[number] | undefined;
+
+    for (const line of raw.split("\n")) {
+      const sectionMatch = /^ {2}(\S[^:]*):\s*$/.exec(line);
+
+      if (sectionMatch) {
+        section = { title: sectionMatch[1].trim(), rows: [] };
+        sections.push(section);
+        continue;
+      }
+
+      const rowMatch = /^ {4}([^:]+):\s*(.*)$/.exec(line);
+
+      if (rowMatch && section) {
+        section.rows.push({ label: rowMatch[1].trim(), value: rowMatch[2].trim() || "N/A" });
+      }
+    }
+
+    for (const { title, rows } of sections) {
+      if (rows.length === 0) {
+        continue;
+      }
+
+      const labelWidth = Math.max(...rows.map((row) => row.label.length)) + 1;
+
+      lines.push("", this.#uiHeader(`${title}:`), this.#uiDivider());
+
+      for (const { label, value } of rows) {
+        const arrowIndex = value.indexOf("=>");
+        const renderedValue =
+          arrowIndex === -1
+            ? green(value)
+            : `${green(value.slice(0, arrowIndex).trim())} ${cyan("→")} ${bold(green(value.slice(arrowIndex + 2).trim()))}`;
+
+        lines.push(`${UI_INDENT}${bold(`${label}:`.padEnd(labelWidth))}  ${renderedValue}`);
+      }
+    }
+
+    return [...lines, this.#uiDivider()].join("\n");
+  }
+
+  /**
+   * Prints a framed command screen: a branded header, the command body, and the
+   * shared documentation footer. Used by `info`, `version` and `configtest`.
+   * @param {object} meta The command name and a one-line description.
+   * @param {Function} body A callback that prints the command's main output.
+   */
+  async #frame(
+    meta: { name: string; description: string },
+    body: () => void | Promise<void>,
+  ): Promise<void> {
+    this.logger.raw(this.#uiCommandHeader(meta.name, meta.description));
+    await body();
+    this.logger.raw(this.#uiFooter());
+  }
+
+  /** Prints a status message with an icon; errors go to stderr, the rest to stdout. */
+  #status(kind: StatusKind, message: string): void {
+    if (kind === "error") {
+      process.stderr.write(`${this.#uiStatusLine(kind, message)}\n`);
+      return;
+    }
+
+    this.logger.raw(this.#uiStatusLine(kind, message));
   }
 
   async #getInfoOutput(options: {
@@ -2136,9 +2315,16 @@ class WebpackCLI {
         },
       ],
       action: async (options: { output?: string }) => {
-        const info = await this.#renderVersion(options);
+        // `--output json|markdown` stays machine-readable and unframed.
+        if (options.output) {
+          this.logger.raw(await this.#renderVersion(options));
+          return;
+        }
 
-        this.logger.raw(info);
+        await this.#frame(
+          { name: "version", description: "Installed package versions." },
+          async () => this.logger.raw(await this.#renderVersion(options)),
+        );
       },
     },
     info: {
@@ -2171,7 +2357,16 @@ class WebpackCLI {
       action: async (options: { output?: string; additionalPackage?: string[] }) => {
         const info = await this.#getInfoOutput(options);
 
-        this.logger.raw(info);
+        // `--output json|markdown` stays machine-readable and unframed.
+        if (options.output) {
+          this.logger.raw(info);
+          return;
+        }
+
+        await this.#frame(
+          { name: "info", description: "System and environment information." },
+          () => this.logger.raw(this.#renderEnvinfo(info)),
+        );
       },
     },
     configtest: {
@@ -2210,26 +2405,31 @@ class WebpackCLI {
           }
         }
 
-        if (configPaths.size === 0) {
-          this.logger.error("No configuration found.");
-          process.exit(2);
-        }
+        await this.#frame(
+          { name: "configtest", description: "Validating your webpack configuration." },
+          () => {
+            if (configPaths.size === 0) {
+              this.#status("error", "No configuration found.");
+              process.exit(2);
+            }
 
-        this.logger.info(`Validate '${[...configPaths].join(" ,")}'.`);
+            this.#status("info", `Validating: ${[...configPaths].join(", ")}`);
 
-        try {
-          cmd.context.webpack.validate(config.options);
-        } catch (error) {
-          if (this.isValidationError(error as Error)) {
-            this.logger.error((error as Error).message);
-          } else {
-            this.logger.error(error);
-          }
+            try {
+              cmd.context.webpack.validate(config.options);
+            } catch (error) {
+              this.#status(
+                "error",
+                this.isValidationError(error as Error)
+                  ? (error as Error).message
+                  : String(error instanceof Error ? error.message : error),
+              );
+              process.exit(2);
+            }
 
-          process.exit(2);
-        }
-
-        this.logger.success("There are no validation errors in the given webpack configuration.");
+            this.#status("success", "No validation errors found.");
+          },
+        );
       },
     },
   };
