@@ -98,8 +98,7 @@ exports[`help should show help information and respect the "--color" flag using 
 ────────────────────────────────────────────────────────────────────────
 The build tool for modern web applications.
 
-Usage: webpack [entries...] [options]
-  Alternative usage to run commands: webpack [command] [options]
+Usage: webpack [entries...] [options] | webpack [command] [options]
 
 Options
 ────────────────────────────────────────────────────────────────────────
@@ -158,8 +157,7 @@ exports[`help should show help information and respect the "--no-color" flag usi
 ────────────────────────────────────────────────────────────────────────
 The build tool for modern web applications.
 
-Usage: webpack [entries...] [options]
-  Alternative usage to run commands: webpack [command] [options]
+Usage: webpack [entries...] [options] | webpack [command] [options]
 
 Options
 ────────────────────────────────────────────────────────────────────────
@@ -218,8 +216,7 @@ exports[`help should show help information and taking precedence when "--help" a
 ────────────────────────────────────────────────────────────────────────
 The build tool for modern web applications.
 
-Usage: webpack [entries...] [options]
-  Alternative usage to run commands: webpack [command] [options]
+Usage: webpack [entries...] [options] | webpack [command] [options]
 
 Options
 ────────────────────────────────────────────────────────────────────────
@@ -2610,8 +2607,7 @@ exports[`help should show help information using command syntax: stdout 1`] = `
 ────────────────────────────────────────────────────────────────────────
 The build tool for modern web applications.
 
-Usage: webpack [entries...] [options]
-  Alternative usage to run commands: webpack [command] [options]
+Usage: webpack [entries...] [options] | webpack [command] [options]
 
 Options
 ────────────────────────────────────────────────────────────────────────
@@ -2700,8 +2696,7 @@ exports[`help should show help information using the "--help" option: stdout 1`]
 ────────────────────────────────────────────────────────────────────────
 The build tool for modern web applications.
 
-Usage: webpack [entries...] [options]
-  Alternative usage to run commands: webpack [command] [options]
+Usage: webpack [entries...] [options] | webpack [command] [options]
 
 Options
 ────────────────────────────────────────────────────────────────────────
@@ -3058,8 +3053,7 @@ exports[`help should show the same information using the "--help" option and com
 ────────────────────────────────────────────────────────────────────────
 The build tool for modern web applications.
 
-Usage: webpack [entries...] [options]
-  Alternative usage to run commands: webpack [command] [options]
+Usage: webpack [entries...] [options] | webpack [command] [options]
 
 Options
 ────────────────────────────────────────────────────────────────────────
@@ -3116,8 +3110,7 @@ exports[`help should show the same information using the "--help" option and com
 ────────────────────────────────────────────────────────────────────────
 The build tool for modern web applications.
 
-Usage: webpack [entries...] [options]
-  Alternative usage to run commands: webpack [command] [options]
+Usage: webpack [entries...] [options] | webpack [command] [options]
 
 Options
 ────────────────────────────────────────────────────────────────────────

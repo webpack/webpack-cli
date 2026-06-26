@@ -1377,7 +1377,7 @@ class WebpackCLI {
       value === "--version" ||
       value === "-h" ||
       value === "--help";
-    const { bold, cyan } = this.colors;
+    const { bold } = this.colors;
     // Shared "chrome" used to render the help screens. These are purely visual:
     // colors collapse to plain strings when colors are disabled (e.g. piped output
     // or `--no-color`), so the textual structure stays stable for scripts.
@@ -1414,9 +1414,8 @@ class WebpackCLI {
           }
 
           if (isGlobalHelp) {
-            return `${parentCmdNames}${command.usage()}\n${INDENT}${bold(
-              "Alternative usage to run commands:",
-            )} ${parentCmdNames}[command] [options]`;
+            // Show both supported invocation syntaxes on a single line.
+            return `${parentCmdNames}${command.usage()} | ${parentCmdNames}[command] [options]`;
           }
 
           return `${parentCmdNames}${command.name()}|${command
@@ -1464,14 +1463,14 @@ class WebpackCLI {
           const formatItem = (term: string, description: string) => {
             if (description) {
               return helper.formatItem(
-                cyan(term),
+                bold(term),
                 helper.padWidth(command, helper),
                 description,
                 helper,
               );
             }
 
-            return `${INDENT}${cyan(term)}`;
+            return `${INDENT}${bold(term)}`;
           };
 
           const formatList = (textArray: string[]) => textArray.join("\n");
