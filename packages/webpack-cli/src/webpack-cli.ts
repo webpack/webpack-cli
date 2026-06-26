@@ -1688,7 +1688,9 @@ class WebpackCLI {
 
   /** A horizontal rule used to separate sections. */
   #uiDivider(): string {
-    return this.colors.blue("─".repeat(UI_DIVIDER_WIDTH));
+    // Separators should recede behind content, so render them faint rather than
+    // in a saturated color (default-blue is the least readable hue on dark terminals).
+    return this.colors.dim("─".repeat(UI_DIVIDER_WIDTH));
   }
 
   /** A branded title, e.g. `⬡ webpack build`. */
