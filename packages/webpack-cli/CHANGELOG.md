@@ -1,5 +1,13 @@
 # Change Log
 
+## 7.1.0
+
+### Minor Changes
+
+- feat(cli): refresh the `--help` output using commander's `configureHelp` API — branded headers, section dividers, colorized terms and a clearer footer. Colors and chrome collapse to plain text when output is piped or `--no-color` is used, so scripts keep working. (by [@alexander-akait](https://github.com/alexander-akait) in [#4779](https://github.com/webpack/webpack-cli/pull/4779))
+
+- feat: support `.json5`, `.yaml`/`.yml` and `.toml` configuration files by parsing them directly, with the parser package (`json5`, `js-yaml`, `toml`) installed on demand by the user and declared as optional `peerDependencies` so the parsers resolve correctly under Yarn PnP (by [@alexander-akait](https://github.com/alexander-akait) in [#4777](https://github.com/webpack/webpack-cli/pull/4777))
+
 ## 7.0.3
 
 ### Patch Changes
