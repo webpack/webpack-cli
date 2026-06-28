@@ -1,9 +1,13 @@
 ```
-Usage: webpack serve|server|s [entries...] [options]
 
+⬡ webpack serve
+────────────────────────────────────────────────────────────────────────
 Run the webpack dev server and watch for source file changes while serving.
 
-Options:
+Usage: webpack serve|server|s [entries...] [options]
+
+Options
+────────────────────────────────────────────────────────────────────────
   -c, --config <pathToConfigFile...>                  Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".
   --config-name <name...>                             Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.
   -m, --merge                                         Merge two or more configurations using 'webpack-merge'.
@@ -99,15 +103,17 @@ Options:
   --no-web-socket-server                              Disallows to set web socket server and options.
   --web-socket-server-type <value>                    Allows to set web socket server and options (by default 'ws').
 
-Global options:
+Global options
+────────────────────────────────────────────────────────────────────────
   --color                                             Enable colors on console.
   --no-color                                          Disable colors on console.
   -v, --version                                       Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.
   -h, --help [verbose]                                Display help for commands and options.
 
-To see list of all supported commands and options run 'webpack --help=verbose'.
+────────────────────────────────────────────────────────────────────────
+ℹ Run 'webpack --help=verbose' to see all available commands and options.
 
-Webpack documentation: https://webpack.js.org/.
-CLI documentation: https://webpack.js.org/api/cli/.
-Made with ♥ by the webpack team.
+Webpack documentation:  https://webpack.js.org/
+CLI documentation:      https://webpack.js.org/api/cli/
+Made with ♥ by the webpack team
 ```

@@ -1,10 +1,13 @@
 ```
-Usage: webpack [entries...] [options]
-Alternative usage to run commands: webpack [command] [options]
 
+⬡ webpack
+────────────────────────────────────────────────────────────────────────
 The build tool for modern web applications.
 
-Options:
+Usage: webpack [entries...] [options] | webpack [command] [options]
+
+Options
+────────────────────────────────────────────────────────────────────────
   -c, --config <pathToConfigFile...>                                                 Provide path to one or more webpack configuration files to process, e.g. "./webpack.config.js".
   --config-name <name...>                                                            Name(s) of particular configuration(s) to use if configuration file exports an array of multiple configurations.
   -m, --merge                                                                        Merge two or more configurations using 'webpack-merge'.
@@ -1383,13 +1386,15 @@ Options:
   --watch-options-stdin                                                              Stop watching when stdin stream has ended.
   --no-watch-options-stdin                                                           Negative 'watch-options-stdin' option.
 
-Global options:
+Global options
+────────────────────────────────────────────────────────────────────────
   --color                                                                            Enable colors on console.
   --no-color                                                                         Disable colors on console.
   -v, --version                                                                      Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.
   -h, --help [verbose]                                                               Display help for commands and options.
 
-Commands:
+Commands
+────────────────────────────────────────────────────────────────────────
   build|bundle|b [entries...] [options]                                              Run webpack (default command, can be omitted).
   configtest|t [config-path]                                                         Validate a webpack configuration.
   help|h [command] [option]                                                          Display help for commands and options.
@@ -1398,9 +1403,9 @@ Commands:
   version|v [options]                                                                Output the version number of 'webpack', 'webpack-cli' and 'webpack-dev-server' and other packages.
   watch|w [entries...] [options]                                                     Run webpack and watch for files changes.
 
-To see list of all supported commands and options run 'webpack --help=verbose'.
+────────────────────────────────────────────────────────────────────────
 
-Webpack documentation: https://webpack.js.org/.
-CLI documentation: https://webpack.js.org/api/cli/.
-Made with ♥ by the webpack team.
+Webpack documentation:  https://webpack.js.org/
+CLI documentation:      https://webpack.js.org/api/cli/
+Made with ♥ by the webpack team
 ```
