@@ -1,0 +1,6 @@
+{
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.12.0"
+  }
+}
