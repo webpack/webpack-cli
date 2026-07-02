@@ -7,9 +7,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 describe("typescript configuration with tsx", () => {
-  it("should support typescript configuration (using `interpret` and `tsx/cjs`)", async () => {
+  it("should support `webpack --mode=production` with only `tsx` installed", async () => {
     const [major] = process.versions.node.split(".").map(Number);
-    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.ts"], {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["--mode=production"], {
       nodeOptions: [
         // Disable TypeScript strip types so this test exercises the interpret fallback.
         ...(major >= 22 ? ["--no-experimental-strip-types"] : []),

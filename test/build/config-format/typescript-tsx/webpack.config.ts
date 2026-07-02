@@ -1,15 +1,12 @@
 const path = require("node:path");
 
-/* eslint-disable no-useless-concat */
+const filename: string = "foo.bundle.js";
 
-// cspell:ignore elopment
-const mode: string = "dev" + "elopment";
 const config = {
-  mode,
   entry: "./main.ts",
   output: {
     path: path.resolve("dist"),
-    filename: "foo.bundle.js",
+    filename,
   },
 };
 
