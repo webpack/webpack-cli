@@ -14,6 +14,7 @@ import {
   program,
 } from "commander";
 import { type Config as EnvinfoConfig, type Options as EnvinfoOptions } from "envinfo";
+import { type Extensions as InterpretExtensions } from "interpret";
 import { type prepare } from "rechoir";
 import {
   type Argument as WebpackArgument,
@@ -60,6 +61,8 @@ const DATA_FORMAT_LOADERS: Record<string, { package: string; method: "parse" | "
   ".yml": { package: "js-yaml", method: "load" },
   ".toml": { package: "toml", method: "parse" },
 };
+const TSX_COMMONJS_LOADER = "tsx/cjs";
+const TSX_COMMONJS_EXTENSIONS = [".ts", ".tsx", ".cts", ".mts"] as const;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RecordAny = Record<string, any>;
@@ -578,6 +581,45 @@ class WebpackCLI {
   // Levenshtein edit distance between two strings, for "did you mean" suggestions.
   static #distance(first: string, second: string): number {
     return distance(first, second);
+  }
+
+  static #getInterpretExtensionsWithTsx(extensions: InterpretExtensions): InterpretExtensions {
+    const enhancedExtensions = { ...extensions };
+
+    // `interpret` owns the default loader table; add tsx locally until it ships
+    // there so projects with only `tsx` installed can still load TS configs.
+    for (const extension of TSX_COMMONJS_EXTENSIONS) {
+      if (!Object.prototype.hasOwnProperty.call(enhancedExtensions, extension)) {
+        enhancedExtensions[extension] = TSX_COMMONJS_LOADER;
+        continue;
+      }
+
+      const extensionLoaders = enhancedExtensions[extension];
+
+      if (extensionLoaders === null) {
+        enhancedExtensions[extension] = TSX_COMMONJS_LOADER;
+        continue;
+      }
+
+      const loaders = Array.isArray(extensionLoaders) ? extensionLoaders : [extensionLoaders];
+      const hasTsxLoader = loaders.some((loader) => {
+        if (typeof loader === "string") {
+          return loader === TSX_COMMONJS_LOADER;
+        }
+
+        return (
+          loader !== null &&
+          typeof loader === "object" &&
+          loader.module === TSX_COMMONJS_LOADER
+        );
+      });
+
+      if (!hasTsxLoader) {
+        enhancedExtensions[extension] = [...loaders, TSX_COMMONJS_LOADER];
+      }
+    }
+
+    return enhancedExtensions;
   }
 
   getLogger(): Logger {
@@ -2889,18 +2931,17 @@ class WebpackCLI {
           if (loadingError) {
             const configFilePath = isFileURL ? fileURLToPath(configPath) : path.resolve(configPath);
             const { jsVariants, extensions } = await import("interpret");
+            const interpretExtensions = WebpackCLI.#getInterpretExtensionsWithTsx(extensions);
 
-            let interpreted = Object.keys(jsVariants).find((variant) => variant === ext);
-
-            if (!interpreted && ext.endsWith(".cts")) {
-              interpreted = jsVariants[".ts"] as string;
-            }
+            const interpreted =
+              Object.prototype.hasOwnProperty.call(jsVariants, ext) ||
+              Object.prototype.hasOwnProperty.call(interpretExtensions, ext);
 
             if (interpreted && !disableInterpret) {
               const rechoir: Rechoir = (await import("rechoir")).default;
 
               try {
-                rechoir.prepare(extensions, configPath);
+                rechoir.prepare(interpretExtensions, configPath);
               } catch (error) {
                 if ((error as RechoirError)?.failures) {
                   this.logger.error(`Unable load '${configPath}'`);
