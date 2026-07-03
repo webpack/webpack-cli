@@ -83,4 +83,19 @@ describe("serve recompilation", () => {
 
     expect(updatedBody).toContain("serve rebuild test updated");
   });
+
+  it("should watch every compiler of a multi compiler with its own watch options", async () => {
+    const { stderr, stdout } = await runWatch(
+      __dirname,
+      ["serve", "--config", "multi.config.js", "--port", port],
+      {
+        stdoutKillStr: /compiled successfully/,
+        stderrKillStr: /Project is running at:/,
+      },
+    );
+
+    expect(stdout).toContain("app:");
+    expect(stdout).toContain("worker:");
+    expect(stderr).toContain("Project is running at:");
+  });
 });
