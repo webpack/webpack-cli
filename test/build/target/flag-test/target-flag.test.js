@@ -66,7 +66,7 @@ describe("--target flag", () => {
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
   });
 
-  it("should throw an error for incompatible multiple targets", async () => {
+  it("should allow multiple different targets", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
       "--target",
       "node",
@@ -74,9 +74,9 @@ describe("--target flag", () => {
       "web",
     ]);
 
-    expect(exitCode).toBe(2);
-    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(stdout).toContain("target: [ 'node', 'web' ]");
   });
 
   it("should reset the `target` option when the `--target-reset` is used", async () => {
