@@ -61,11 +61,11 @@ const DATA_FORMAT_LOADERS: Record<string, { package: string; method: "parse" | "
   ".toml": { package: "toml", method: "parse" },
 };
 
-// TypeScript configuration files that `tsx` can load through its CommonJS
-// require hook (`tsx/cjs`). Used as a fallback when the loaders listed in
-// `interpret` are unavailable (for `.mts` there is no `interpret` entry at
-// all, so `tsx` is the only fallback).
-const TSX_LOADABLE_EXTENSIONS = new Set([".ts", ".tsx", ".cts", ".mts"]);
+// TypeScript and JSX configuration files that `tsx` can load through its
+// CommonJS require hook (`tsx/cjs`). Used as a fallback when the loaders
+// listed in `interpret` are unavailable (for `.mts` there is no `interpret`
+// entry at all, so `tsx` is the only fallback).
+const TSX_LOADABLE_EXTENSIONS = new Set([".ts", ".tsx", ".cts", ".mts", ".jsx"]);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RecordAny = Record<string, any>;
