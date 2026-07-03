@@ -148,7 +148,7 @@ describe("invalid schema", () => {
 
     expect(exitCode).toBe(2);
     expect(stderr).toContain("Invalid value 'Yukihira' for the '--server-type' option");
-    expect(stderr).toContain("Expected: 'http | https | spdy | http2'");
+    expect(stderr).toContain("Expected: 'http | https | http2'");
     expect(stdout).toBeFalsy();
   });
 
