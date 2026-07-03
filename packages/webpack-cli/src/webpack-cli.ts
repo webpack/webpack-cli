@@ -133,8 +133,16 @@ interface WebpackContext {
   webpack: typeof webpack;
 }
 
+// `webpack-dev-server@6` ships ESM typings (`export default Server`) while
+// v5 uses `export =`, so unwrap `default` only when it exists.
+type WebpackDevServerClass = typeof import("webpack-dev-server") extends {
+  default: infer T;
+}
+  ? T
+  : typeof import("webpack-dev-server");
+
 interface WebpackDevServerContext {
-  devServer: typeof import("webpack-dev-server").default;
+  devServer: WebpackDevServerClass;
 }
 
 interface KnownWebpackCLICommands {
@@ -1907,7 +1915,7 @@ class WebpackCLI {
     return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
   }
 
-  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server").default> {
+  async loadWebpackDevServer(): Promise<WebpackDevServerClass> {
     return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
   }
 
@@ -2205,8 +2213,10 @@ class WebpackCLI {
 
         const DevServer = devServer;
         // `webpack-dev-server@6` can run as a webpack plugin, older versions
-        // own the compilation and are started imperatively.
-        const isDevServerPlugin = typeof DevServer.prototype.apply === "function";
+        // own the compilation and are started imperatively. The prototype is
+        // widened because v5 typings do not know the `apply` method.
+        const isDevServerPlugin =
+          typeof (DevServer.prototype as { apply?: unknown }).apply === "function";
         const servers: InstanceType<typeof DevServer>[] = [];
 
         if (!isDevServerPlugin && this.#needWatchStdin(compiler)) {
@@ -2223,8 +2233,7 @@ class WebpackCLI {
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const usedPorts: number[] = [];
-        // @ts-expect-error different versions of the `Schema` type
-        const devServerArgs = this.#getArguments(webpack, devServer.schema);
+        const devServerArgs = this.#getArguments(webpack, devServer.schema as unknown as Schema);
         let appliedDevServers = 0;
 
         for (const compilerForDevServer of compilersForDevServer) {
@@ -2275,7 +2284,13 @@ class WebpackCLI {
               // The whole compiler is passed (not just the child config the
               // `devServer` options came from) so a multi compiler is served
               // completely, as it was when the server owned the compilation.
-              new DevServer(devServerConfiguration).apply(compiler);
+              // The construct signature is widened because v5 typings neither
+              // know the plugin mode nor the optional compiler argument.
+              const DevServerPlugin = DevServer as unknown as new (
+                options: DevServerConfiguration,
+              ) => { apply(compiler: Compiler | MultiCompiler): void };
+
+              new DevServerPlugin(devServerConfiguration).apply(compiler);
             } else {
               const server = new DevServer(devServerConfiguration, compiler);
 
