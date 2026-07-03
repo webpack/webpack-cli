@@ -14,6 +14,7 @@ const __dirname = dirname(__filename);
 const loaderStubs = [
   "ts-node/register.js",
   "sucrase/register/ts.js",
+  "sucrase/register/tsx.js",
   "sucrase/register/jsx.js",
   "@babel/register/index.js",
   "esbuild-register/dist/node.js",
@@ -58,6 +59,30 @@ describe("typescript configuration with tsx", () => {
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
     expect(existsSync(resolve(__dirname, "dist/bar.bundle.js"))).toBeTruthy();
+  });
+
+  it("should load a `.cts` configuration through the `tsx` fallback", async () => {
+    const [major] = process.versions.node.split(".").map(Number);
+    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.cts"], {
+      nodeOptions: [
+        // Disable built-in type stripping so the `interpret`/`tsx` fallback is exercised
+        ...(major >= 22 ? ["--no-experimental-strip-types"] : []),
+      ],
+    });
+
+    expect(stderr).toBeFalsy();
+    expect(stdout).toBeTruthy();
+    expect(exitCode).toBe(0);
+    expect(existsSync(resolve(__dirname, "dist/qux.bundle.js"))).toBeTruthy();
+  });
+
+  it("should load a `.tsx` configuration through the `tsx` fallback", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.tsx"]);
+
+    expect(stderr).toBeFalsy();
+    expect(stdout).toBeTruthy();
+    expect(exitCode).toBe(0);
+    expect(existsSync(resolve(__dirname, "dist/quux.bundle.js"))).toBeTruthy();
   });
 
   it("should load a `.jsx` configuration through the `tsx` fallback", async () => {

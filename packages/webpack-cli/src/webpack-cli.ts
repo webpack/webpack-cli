@@ -2914,7 +2914,9 @@ class WebpackCLI {
 
                 return undefined;
               } catch (err) {
-                return err as Error;
+                // `throw` may raise non-`Error` values; normalize so the
+                // error-reporting path can rely on `.message`.
+                return err instanceof Error ? err : new Error(String(err));
               }
             };
 
@@ -2931,7 +2933,7 @@ class WebpackCLI {
 
                 if (!isTsxLoadable || tsxFailure) {
                   if ((error as RechoirError)?.failures) {
-                    this.logger.error(`Unable load '${configPath}'`);
+                    this.logger.error(`Unable to load '${configPath}'`);
                     this.logger.error((error as RechoirError).message);
                     for (const failure of (error as RechoirError).failures) {
                       this.logger.error(failure.error.message);
