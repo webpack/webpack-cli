@@ -3250,7 +3250,10 @@ class WebpackCLI {
       process.exit(2);
     }
 
-    const { default: CLIPlugin } = (await import("./plugins/cli-plugin.js")).default;
+    // Node's CJS interop nests the class under `.default.default`; Bun honors
+    // `__esModule` and unwraps once already, leaving the class one level up.
+    const cliPluginModule = (await import("./plugins/cli-plugin.js")).default;
+    const CLIPlugin = cliPluginModule.default ?? cliPluginModule;
 
     // `getArguments()` already returns a name-keyed map of exactly the argument
     // metadata `processArguments` consumes, so use it directly (cached) instead
