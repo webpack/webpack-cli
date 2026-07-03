@@ -2878,7 +2878,7 @@ exports[`help should show help information using the "help --server-type" option
 ────────────────────────────────────────────────────────────────────────
   Usage: webpack serve --server-type <value>
   Description: Allows to set server and options (by default 'http').
-  Possible values: 'http' | 'https' | 'spdy' | 'http2'
+  Possible values: 'http' | 'https' | 'http2'
 ────────────────────────────────────────────────────────────────────────
 
 ℹ Run 'webpack --help=verbose' to see all available commands and options.
