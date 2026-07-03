@@ -61,6 +61,12 @@ const DATA_FORMAT_LOADERS: Record<string, { package: string; method: "parse" | "
   ".toml": { package: "toml", method: "parse" },
 };
 
+// TypeScript and JSX configuration files that `tsx` can load through its
+// CommonJS require hook (`tsx/cjs`). Used as a fallback when the loaders
+// listed in `interpret` are unavailable (for `.mts` there is no `interpret`
+// entry at all, so `tsx` is the only fallback).
+const TSX_LOADABLE_EXTENSIONS = new Set([".ts", ".tsx", ".cts", ".mts", ".jsx"]);
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RecordAny = Record<string, any>;
 
@@ -2896,24 +2902,61 @@ class WebpackCLI {
               interpreted = jsVariants[".ts"] as string;
             }
 
+            // `tsx` is missing from `interpret`'s loader tables, and it cannot
+            // be added there: its `tsx/cjs` entry point exists only in the
+            // package's `exports` map, which `rechoir`'s resolver does not
+            // support. Register it manually instead, resolved from the
+            // configuration file's location so the user's copy is picked up.
+            // Requiring `tsx/cjs` installs its require hook as a side effect.
+            const registerTsxLoader = (): Error | undefined => {
+              try {
+                createRequire(configFilePath)("tsx/cjs");
+
+                return undefined;
+              } catch (err) {
+                // `throw` may raise non-`Error` values; normalize so the
+                // error-reporting path can rely on `.message`.
+                return err instanceof Error ? err : new Error(String(err));
+              }
+            };
+
             if (interpreted && !disableInterpret) {
               const rechoir: Rechoir = (await import("rechoir")).default;
 
               try {
                 rechoir.prepare(extensions, configPath);
               } catch (error) {
-                if ((error as RechoirError)?.failures) {
-                  this.logger.error(`Unable load '${configPath}'`);
-                  this.logger.error((error as RechoirError).message);
-                  for (const failure of (error as RechoirError).failures) {
-                    this.logger.error(failure.error.message);
+                // The loaders known to `interpret` take priority; `tsx` is
+                // only tried once all of them have failed.
+                const isTsxLoadable = TSX_LOADABLE_EXTENSIONS.has(ext);
+                const tsxFailure = isTsxLoadable ? registerTsxLoader() : undefined;
+
+                if (!isTsxLoadable || tsxFailure) {
+                  if ((error as RechoirError)?.failures) {
+                    this.logger.error(`Unable to load '${configPath}'`);
+                    this.logger.error((error as RechoirError).message);
+                    for (const failure of (error as RechoirError).failures) {
+                      this.logger.error(failure.error.message);
+                    }
+                    if (tsxFailure) {
+                      // Only the first line — `require` errors append a noisy
+                      // "Require stack" to the message.
+                      const [tsxFailureReason] = tsxFailure.message.split("\n");
+                      this.logger.error(tsxFailureReason);
+                    }
+                    this.logger.error("Please install one of them");
+                    process.exit(2);
                   }
-                  this.logger.error("Please install one of them");
+                  this.logger.error(error);
                   process.exit(2);
                 }
-                this.logger.error(error);
-                process.exit(2);
               }
+            } else if (TSX_LOADABLE_EXTENSIONS.has(ext) && !disableInterpret) {
+              // `.mts` has no entry in `interpret`'s tables, so `tsx` is the
+              // only loader we can offer. Best effort: when it is missing, the
+              // `require()` below fails and the original errors are reported,
+              // exactly as before.
+              registerTsxLoader();
             }
 
             try {
