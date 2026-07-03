@@ -63,7 +63,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [20.x, 22.x, 24.x, 25.x]
         webpack-version: [latest]
-        dev-server-version: [latest]
+        dev-server-version: [5, latest]
 
     steps:
       - name: Checkout code
@@ -84,6 +84,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci --ignore-scripts
+
+      - name: Install webpack-dev-server ${{ matrix.dev-server-version }}
+        if: matrix.dev-server-version == '5'
+        run: npm install webpack-dev-server@${{ matrix.dev-server-version }} --no-save --ignore-scripts
 
       - name: Prepare environment for tests
         run: npm run build -- --sourceMap true

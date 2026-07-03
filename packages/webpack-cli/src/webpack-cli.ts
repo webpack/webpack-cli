@@ -2204,6 +2204,19 @@ class WebpackCLI {
         }
 
         const DevServer = devServer;
+        // `webpack-dev-server@6` can run as a webpack plugin, older versions
+        // own the compilation and are started imperatively.
+        const isDevServerPlugin = typeof DevServer.prototype.apply === "function";
+        const servers: InstanceType<typeof DevServer>[] = [];
+
+        if (!isDevServerPlugin && this.#needWatchStdin(compiler)) {
+          process.stdin.on("end", () => {
+            Promise.all(servers.map((server) => server.stop())).then(() => {
+              process.exit(0);
+            });
+          });
+          process.stdin.resume();
+        }
 
         const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
         const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
@@ -2256,12 +2269,20 @@ class WebpackCLI {
           }
 
           try {
-            // Each dev server hooks into the compiler as a plugin and starts
-            // listening once the first build of the watch run below is done.
-            // The whole compiler is passed (not just the child config the
-            // `devServer` options came from) so a multi compiler is served
-            // completely, as it was when the server owned the compilation.
-            new DevServer(devServerConfiguration).apply(compiler);
+            if (isDevServerPlugin) {
+              // Each dev server hooks into the compiler as a plugin and starts
+              // listening once the first build of the watch run below is done.
+              // The whole compiler is passed (not just the child config the
+              // `devServer` options came from) so a multi compiler is served
+              // completely, as it was when the server owned the compilation.
+              new DevServer(devServerConfiguration).apply(compiler);
+            } else {
+              const server = new DevServer(devServerConfiguration, compiler);
+
+              await server.start();
+
+              servers.push(server as unknown as InstanceType<typeof DevServer>);
+            }
 
             appliedDevServers += 1;
           } catch (error) {
@@ -2278,6 +2299,12 @@ class WebpackCLI {
         if (appliedDevServers === 0) {
           this.logger.error("No dev server configurations to run");
           process.exit(2);
+        }
+
+        // Older dev servers drive the compilation themselves and handle
+        // process signals on their own, so the CLI is done at this point.
+        if (!isDevServerPlugin) {
+          return;
         }
 
         // In plugin mode the dev server leaves signal handling to the host and
