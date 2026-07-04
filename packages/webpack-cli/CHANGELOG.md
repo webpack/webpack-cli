@@ -1,5 +1,11 @@
 # Change Log
 
+## 7.2.1
+
+### Patch Changes
+
+- fix: `CLIPlugin` dynamic import interop under Bun (by [@alexander-akait](https://github.com/alexander-akait) in [#4799](https://github.com/webpack/webpack-cli/pull/4799))
+
 ## 7.2.0
 
 ### Minor Changes
