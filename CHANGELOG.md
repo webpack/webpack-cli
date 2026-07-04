@@ -1,5 +1,13 @@
 # Change Log
 
+## 7.2.0
+
+### Minor Changes
+
+- feat: allow `webpack-dev-server` v6 as an optional peer dependency (`^5.0.0 || ^6.0.0`) (by [@bjohansebas](https://github.com/bjohansebas) in [#4793](https://github.com/webpack/webpack-cli/pull/4793))
+
+- Support `tsx` as a fallback loader for TypeScript and JSX configuration files (`.ts`, `.tsx`, `.cts`, `.mts` and `.jsx`), used when none of the loaders known to `interpret` (such as `ts-node`) are installed. (by [@alexander-akait](https://github.com/alexander-akait) in [#4796](https://github.com/webpack/webpack-cli/pull/4796))
+
 ## 7.1.0
 
 ### Minor Changes
