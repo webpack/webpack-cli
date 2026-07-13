@@ -1,5 +1,6 @@
 "use strict";
 
+const [devServerVersion] = require("webpack-dev-server/package.json").version;
 const { run } = require("../../../utils/test-utils");
 
 describe("invalid schema", () => {
@@ -148,7 +149,11 @@ describe("invalid schema", () => {
 
     expect(exitCode).toBe(2);
     expect(stderr).toContain("Invalid value 'Yukihira' for the '--server-type' option");
-    expect(stderr).toContain("Expected: 'http | https | spdy | http2'");
+    expect(stderr).toContain(
+      devServerVersion === "5"
+        ? "Expected: 'http | https | spdy | http2'"
+        : "Expected: 'http | https | http2'",
+    );
     expect(stdout).toBeFalsy();
   });
 

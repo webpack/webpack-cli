@@ -17,6 +17,7 @@ export default defineConfig([
     "test/configtest/with-config-path/syntax-error.config.js",
     "test/build/config-format/auto/webpack.config.js",
     "test/build/config-format/typescript-tsx/webpack.config.jsx",
+    "test/serve/error-handling/src/syntax-error.js",
   ]),
   {
     extends: [config],

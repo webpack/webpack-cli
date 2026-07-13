@@ -133,8 +133,16 @@ interface WebpackContext {
   webpack: typeof webpack;
 }
 
+// `webpack-dev-server@6` ships ESM typings (`export default Server`) while
+// v5 uses `export =`, so unwrap `default` only when it exists.
+type WebpackDevServerClass = typeof import("webpack-dev-server") extends {
+  default: infer T;
+}
+  ? T
+  : typeof import("webpack-dev-server");
+
 interface WebpackDevServerContext {
-  devServer: typeof import("webpack-dev-server");
+  devServer: WebpackDevServerClass;
 }
 
 interface KnownWebpackCLICommands {
@@ -1907,7 +1915,7 @@ class WebpackCLI {
     return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
   }
 
-  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server")> {
+  async loadWebpackDevServer(): Promise<WebpackDevServerClass> {
     return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
   }
 
@@ -2172,7 +2180,6 @@ class WebpackCLI {
       action: async (entries: string[], options: CommanderArgs, cmd) => {
         const { webpack, devServer } = cmd.context;
         const webpackCLIOptions: Options = { webpack, isWatchingLikeCommand: true };
-        const devServerCLIOptions: CommanderArgs = {};
         // Derive the built-in option names from the cached argument metadata
         // instead of retaining the full option arrays for the whole session.
         const webpackOptionNames = new Set([
@@ -2186,8 +2193,6 @@ class WebpackCLI {
 
           if (isBuiltInOption) {
             webpackCLIOptions[optionName as keyof Options] = options[optionName];
-          } else {
-            devServerCLIOptions[optionName] = options[optionName];
           }
         }
 
@@ -2206,12 +2211,15 @@ class WebpackCLI {
           return;
         }
 
-        type DevServerConstructor = typeof import("webpack-dev-server");
+        const DevServer = devServer;
+        // `webpack-dev-server@6` can run as a webpack plugin, older versions
+        // own the compilation and are started imperatively. The prototype is
+        // widened because v5 typings do not know the `apply` method.
+        const isDevServerPlugin =
+          typeof (DevServer.prototype as { apply?: unknown }).apply === "function";
+        const servers: InstanceType<typeof DevServer>[] = [];
 
-        const DevServer: DevServerConstructor = cmd.context.devServer;
-        const servers: InstanceType<DevServerConstructor>[] = [];
-
-        if (this.#needWatchStdin(compiler)) {
+        if (!isDevServerPlugin && this.#needWatchStdin(compiler)) {
           process.stdin.on("end", () => {
             Promise.all(servers.map((server) => server.stop())).then(() => {
               process.exit(0);
@@ -2225,8 +2233,8 @@ class WebpackCLI {
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const usedPorts: number[] = [];
-        // @ts-expect-error different versions of the `Schema` type
-        const devServerArgs = this.#getArguments(webpack, devServer.schema);
+        const devServerArgs = this.#getArguments(webpack, devServer.schema as unknown as Schema);
+        let appliedDevServers = 0;
 
         for (const compilerForDevServer of compilersForDevServer) {
           if (compilerForDevServer.options.devServer === false) {
@@ -2270,11 +2278,28 @@ class WebpackCLI {
           }
 
           try {
-            const server = new DevServer(devServerConfiguration, compiler);
+            if (isDevServerPlugin) {
+              // Each dev server hooks into the compiler as a plugin and starts
+              // listening once the first build of the watch run below is done.
+              // The whole compiler is passed (not just the child config the
+              // `devServer` options came from) so a multi compiler is served
+              // completely, as it was when the server owned the compilation.
+              // The construct signature is widened because v5 typings neither
+              // know the plugin mode nor the optional compiler argument.
+              const DevServerPlugin = DevServer as unknown as new (
+                options: DevServerConfiguration,
+              ) => { apply(compiler: Compiler | MultiCompiler): void };
 
-            await server.start();
+              new DevServerPlugin(devServerConfiguration).apply(compiler);
+            } else {
+              const server = new DevServer(devServerConfiguration, compiler);
 
-            servers.push(server as unknown as InstanceType<DevServerConstructor>);
+              await server.start();
+
+              servers.push(server as unknown as InstanceType<typeof DevServer>);
+            }
+
+            appliedDevServers += 1;
           } catch (error) {
             if (this.isValidationError(error as Error)) {
               this.logger.error((error as Error).message);
@@ -2286,9 +2311,73 @@ class WebpackCLI {
           }
         }
 
-        if (servers.length === 0) {
+        if (appliedDevServers === 0) {
           this.logger.error("No dev server configurations to run");
           process.exit(2);
+        }
+
+        // Older dev servers drive the compilation themselves and handle
+        // process signals on their own, so the CLI is done at this point.
+        if (!isDevServerPlugin) {
+          return;
+        }
+
+        // In plugin mode the dev server leaves signal handling to the host and
+        // tears itself down through the compiler's `shutdown` hook, so
+        // `compiler.close()` is the single shutdown path here.
+        this.#setupGracefulShutdown(compiler);
+
+        if (this.#needWatchStdin(compiler)) {
+          process.stdin.on("end", () => {
+            compiler.close(() => {
+              process.exit(0);
+            });
+          });
+          process.stdin.resume();
+        }
+
+        const watchCallback = (error: Error | null, stats?: Stats | MultiStats): void => {
+          if (error) {
+            if (this.isValidationError(error)) {
+              this.logger.error(error.message);
+            } else {
+              this.logger.error(error);
+            }
+
+            process.exit(2);
+          }
+
+          if (!stats) {
+            return;
+          }
+
+          if (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings())) {
+            process.exitCode = 1;
+          }
+
+          // In plugin mode `webpack-dev-middleware` prints nothing, the host
+          // owns the stats output.
+          const statsOptions = this.isMultipleCompiler(compiler)
+            ? {
+                children: compiler.compilers.map((compiler) => compiler.options.stats),
+              }
+            : compiler.options.stats;
+
+          const printedStats = stats.toString(statsOptions as StatsOptions);
+
+          // Avoid extra empty line when `stats: 'none'`
+          if (printedStats) {
+            this.logger.raw(printedStats);
+          }
+        };
+
+        if (this.isMultipleCompiler(compiler)) {
+          compiler.watch(
+            compiler.compilers.map((compiler) => compiler.options.watchOptions || {}),
+            watchCallback,
+          );
+        } else {
+          compiler.watch(compiler.options.watchOptions || {}, watchCallback);
         }
       },
     },
@@ -3460,6 +3549,35 @@ class WebpackCLI {
     return Boolean(compiler.options.watchOptions?.stdin);
   }
 
+  #setupGracefulShutdown(compiler: Compiler | MultiCompiler): void {
+    let needForceShutdown = false;
+
+    for (const signal of EXIT_SIGNALS) {
+      // eslint-disable-next-line @typescript-eslint/no-loop-func
+      const listener = () => {
+        if (needForceShutdown) {
+          process.exit(0);
+        }
+
+        // Output message after delay to avoid extra logging
+        const timeout = setTimeout(() => {
+          this.logger.info(
+            "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+          );
+        }, 2000);
+
+        needForceShutdown = true;
+
+        compiler.close(() => {
+          clearTimeout(timeout);
+          process.exit(0);
+        });
+      };
+
+      process.on(signal, listener);
+    }
+  }
+
   async runWebpack(options: Options, isWatchCommand: boolean): Promise<void> {
     let compiler: Compiler | MultiCompiler;
     let stringifyChunked: typeof stringifyChunkedType;
@@ -3557,32 +3675,7 @@ class WebpackCLI {
       );
 
     if (needGracefulShutdown(compiler)) {
-      let needForceShutdown = false;
-
-      for (const signal of EXIT_SIGNALS) {
-        // eslint-disable-next-line @typescript-eslint/no-loop-func
-        const listener = () => {
-          if (needForceShutdown) {
-            process.exit(0);
-          }
-
-          // Output message after delay to avoid extra logging
-          const timeout = setTimeout(() => {
-            this.logger.info(
-              "Gracefully shutting down. To force exit, press ^C again. Please wait...",
-            );
-          }, 2000);
-
-          needForceShutdown = true;
-
-          compiler.close(() => {
-            clearTimeout(timeout);
-            process.exit(0);
-          });
-        };
-
-        process.on(signal, listener);
-      }
+      this.#setupGracefulShutdown(compiler);
 
       if (this.#needWatchStdin(compiler)) {
         process.stdin.on("end", () => {
