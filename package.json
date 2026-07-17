@@ -69,7 +69,7 @@
     "del-cli": "^7.0.0",
     "eslint": "^10.5.0",
     "eslint-config-webpack": "^4.9.6",
-    "execa": "^9.6.1",
+    "execa": "^10.0.0",
     "get-port": "^7.2.0",
     "husky": "^9.1.7",
     "jest": "^30.4.2",
