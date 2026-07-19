@@ -94,7 +94,7 @@ Options
   --no-experiments-defer-import                                                      Negative 'experiments-defer-import' option.
   --experiments-future-defaults                                                      Apply defaults of next major version.
   --no-experiments-future-defaults                                                   Negative 'experiments-future-defaults' option.
-  --experiments-html                                                                 Enable experimental HTML support. This flag does not by itself make `.html` files usable directly as entry points without additional HTML handling.
+  --experiments-html                                                                 Enable HTML entry support. Treats `.html` files as a first-class module type so they can be used directly as entry points.
   --no-experiments-html                                                              Negative 'experiments-html' option.
   --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
   --no-experiments-lazy-compilation                                                  Negative 'experiments-lazy-compilation' option.
@@ -120,6 +120,10 @@ Options
   --extends-reset                                                                    Clear all items provided in 'extends' configuration. Extend configuration from another configuration (only works when using webpack-cli).
   --externals <value...>                                                             Every matched dependency becomes external. An exact matched dependency becomes external. The same string is used as external dependency.
   --externals-reset                                                                  Clear all items provided in 'externals' configuration. Specify dependencies that shouldn't be resolved by webpack, but should become dependencies of the resulting bundle. The kind of the dependency depends on `output.libraryTarget`.
+  --externals-presets-bun                                                            Treat bun built-in modules like 'bun', 'bun:sqlite' or 'bun:ffi' and node.js built-in modules as external and load them via import when used (for the Bun runtime).
+  --no-externals-presets-bun                                                         Negative 'externals-presets-bun' option.
+  --externals-presets-deno                                                           Treat node.js built-in modules like fs, path or vm as external and load them via the required 'node:' specifier when used (for the Deno runtime).
+  --no-externals-presets-deno                                                        Negative 'externals-presets-deno' option.
   --externals-presets-electron                                                       Treat common electron built-in modules in main and preload context like 'electron', 'ipc' or 'shell' as external and load them via require() when used.
   --no-externals-presets-electron                                                    Negative 'externals-presets-electron' option.
   --externals-presets-electron-main                                                  Treat electron built-in modules in the main context like 'app', 'ipc-main' or 'shell' as external and load them via require() when used.
@@ -217,13 +221,14 @@ Options
   --module-generator-css-module-local-ident-hash-function <value>                    Algorithm used for generation the hash (see node.js crypto package).
   --module-generator-css-module-local-ident-hash-salt <value>                        Any string which is added to the hash to salt it.
   --module-generator-css-module-local-ident-name <value>                             Configure the generated local ident name.
-  --module-generator-html-extract                                                    Emit the parsed and URL-rewritten HTML as a standalone `.html` output file alongside the module's JavaScript export. When unset, extraction defaults to `true` for HTML modules used as compilation entries (HTML entry points) and `false` for HTML modules imported from JavaScript. Filenames follow `output.htmlFilename` / `output.htmlChunkFilename`.
+  --module-generator-html-extract [value]                                            Emit the parsed and URL-rewritten HTML as a standalone `.html` output file alongside the module's JavaScript export. `true` always emits the file; `false` never does; `"inline"` exposes the processed HTML for inline write-back (e.g. `<iframe srcdoc>`) without emitting a standalone file. When unset, extraction defaults to `true` for HTML modules used as compilation entries (HTML entry points) and `false` for HTML modules imported from JavaScript. Filenames follow `output.htmlFilename` / `output.htmlChunkFilename`.
   --no-module-generator-html-extract                                                 Negative 'module-generator-html-extract' option.
   --module-generator-json-json-parse                                                 Use `JSON.parse` when the JSON string is longer than 20 characters.
   --no-module-generator-json-json-parse                                              Negative 'module-generator-json-json-parse' option.
   --module-no-parse <value...>                                                       A regular expression, when matched the module is not parsed. An absolute path, when the module starts with this path it is not parsed.
   --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
+  --module-parser-css-as <value>                                                     Configure how the CSS source is parsed: as a full stylesheet (default) or as a block's contents (e.g. the content of an HTML `style` attribute).
   --module-parser-css-export-type <value>                                            Configure how CSS content is exported as default.
   --module-parser-css-import                                                         Enable/disable `@import` at-rules handling.
   --no-module-parser-css-import                                                      Negative 'module-parser-css-import' option.
@@ -233,6 +238,7 @@ Options
   --no-module-parser-css-url                                                         Negative 'module-parser-css-url' option.
   --module-parser-css-auto-animation                                                 Enable/disable renaming of `@keyframes`.
   --no-module-parser-css-auto-animation                                              Negative 'module-parser-css-auto-animation' option.
+  --module-parser-css-auto-as <value>                                                Configure how the CSS source is parsed: as a full stylesheet (default) or as a block's contents (e.g. the content of an HTML `style` attribute).
   --module-parser-css-auto-container                                                 Enable/disable renaming of `@container` names.
   --no-module-parser-css-auto-container                                              Negative 'module-parser-css-auto-container' option.
   --module-parser-css-auto-custom-idents                                             Enable/disable renaming of custom identifiers.
@@ -254,6 +260,7 @@ Options
   --no-module-parser-css-auto-url                                                    Negative 'module-parser-css-auto-url' option.
   --module-parser-css-global-animation                                               Enable/disable renaming of `@keyframes`.
   --no-module-parser-css-global-animation                                            Negative 'module-parser-css-global-animation' option.
+  --module-parser-css-global-as <value>                                              Configure how the CSS source is parsed: as a full stylesheet (default) or as a block's contents (e.g. the content of an HTML `style` attribute).
   --module-parser-css-global-container                                               Enable/disable renaming of `@container` names.
   --no-module-parser-css-global-container                                            Negative 'module-parser-css-global-container' option.
   --module-parser-css-global-custom-idents                                           Enable/disable renaming of custom identifiers.
@@ -273,6 +280,7 @@ Options
   --no-module-parser-css-global-url                                                  Negative 'module-parser-css-global-url' option.
   --module-parser-css-module-animation                                               Enable/disable renaming of `@keyframes`.
   --no-module-parser-css-module-animation                                            Negative 'module-parser-css-module-animation' option.
+  --module-parser-css-module-as <value>                                              Configure how the CSS source is parsed: as a full stylesheet (default) or as a block's contents (e.g. the content of an HTML `style` attribute).
   --module-parser-css-module-container                                               Enable/disable renaming of `@container` names.
   --no-module-parser-css-module-container                                            Negative 'module-parser-css-module-container' option.
   --module-parser-css-module-custom-idents                                           Enable/disable renaming of custom identifiers.
@@ -292,6 +300,12 @@ Options
   --no-module-parser-css-module-pure                                                 Negative 'module-parser-css-module-pure' option.
   --module-parser-css-module-url                                                     Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-module-url                                                  Negative 'module-parser-css-module-url' option.
+  --module-parser-html-sources [value...]                                            A source entry: either the string `"..."` to inline the built-in default sources, or an object describing a `tag`/`attribute` pair to extract and how to bundle it. Configure extraction of URL-like attribute values (e.g. `<img src>`, `<link href>`, `<script src>`) as webpack dependencies. `true` (default) uses the built-in source list; `false` disables extraction entirely so attributes are left untouched and `<script src>` / `<link rel="modulepreload">` / `<link rel="stylesheet">` no longer become compilation entries; an array lets you customize which `tag`/`attribute` pairs are treated as URLs and how they are bundled. Use the string `"..."` inside the array to inline the defaults. Inline `<script>` and `<style>` bodies are always processed. Use `webpackIgnore` comments or `IgnorePlugin` to skip individual URLs.
+  --no-module-parser-html-sources                                                    Negative 'module-parser-html-sources' option.
+  --module-parser-html-sources-attribute <value...>                                  Attribute name whose value is treated as a URL.
+  --module-parser-html-sources-tag <value...>                                        Tag name to match. Omit to match any tag.
+  --module-parser-html-sources-type <value...>                                       How the attribute value should be parsed and bundled. `src` extracts a single URL as a plain asset; `srcset` parses a `srcset`-style list of candidate URLs as plain assets; `css-url` extracts `url(...)` references from a CSS value (like an SVG presentation attribute such as `fill`) as plain assets; `script` and `script-module` emit a classic / ES-module chunk entry like `<script src>` and `<script type="module" src>`; `stylesheet` emits a CSS chunk entry like `<link rel="stylesheet">`; `stylesheet-style` treats the attribute value as a full stylesheet (like a `<style>` body) and `stylesheet-style-attribute` as a CSS block's contents (a declaration list, like a `style` attribute) — both bundle it through the CSS pipeline and replace the attribute's content with the processed CSS at render time; `srcdoc` treats the attribute value as an entity-encoded HTML document (like `<iframe srcdoc>`), bundling it through the HTML pipeline and replacing the attribute's content with the processed HTML at render time.
+  --module-parser-html-sources-reset                                                 Clear all items provided in 'module.parser.html.sources' configuration. Sources to extract as webpack dependencies. Use `"..."` to inline the default source list.
   --no-module-parser-javascript-amd                                                  Negative 'module-parser-javascript-amd' option.
   --module-parser-javascript-anonymous-default-export-name                           Set .name to "default" for anonymous default export functions and classes per ES spec. Disable to reduce output size when .name is not needed.
   --no-module-parser-javascript-anonymous-default-export-name                        Negative 'module-parser-javascript-anonymous-default-export-name' option.
@@ -341,6 +355,8 @@ Options
   --module-parser-javascript-node-global [value]                                     Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-node-global                                          Negative 'module-parser-javascript-node-global' option.
   --module-parser-javascript-override-strict <value>                                 Override the module to strict or non-strict. This may affect the behavior of the module (some behaviors differ between strict and non-strict), so please configure this option carefully.
+  --module-parser-javascript-pure-functions <value...>                               A top-level function name in the module to treat as side-effect-free when called.
+  --module-parser-javascript-pure-functions-reset                                    Clear all items provided in 'module.parser.javascript.pureFunctions' configuration. Mark the listed top-level function names for pure-function-based tree shaking.
   --module-parser-javascript-reexport-exports-presence <value>                       Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
   --no-module-parser-javascript-reexport-exports-presence                            Negative 'module-parser-javascript-reexport-exports-presence' option.
   --module-parser-javascript-require-context                                         Enable/disable parsing of require.context syntax.
@@ -427,6 +443,8 @@ Options
   --module-parser-javascript-auto-node-global [value]                                Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-auto-node-global                                     Negative 'module-parser-javascript-auto-node-global' option.
   --module-parser-javascript-auto-override-strict <value>                            Override the module to strict or non-strict. This may affect the behavior of the module (some behaviors differ between strict and non-strict), so please configure this option carefully.
+  --module-parser-javascript-auto-pure-functions <value...>                          A top-level function name in the module to treat as side-effect-free when called.
+  --module-parser-javascript-auto-pure-functions-reset                               Clear all items provided in 'module.parser.javascript/auto.pureFunctions' configuration. Mark the listed top-level function names for pure-function-based tree shaking.
   --module-parser-javascript-auto-reexport-exports-presence <value>                  Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
   --no-module-parser-javascript-auto-reexport-exports-presence                       Negative 'module-parser-javascript-auto-reexport-exports-presence' option.
   --module-parser-javascript-auto-require-context                                    Enable/disable parsing of require.context syntax.
@@ -513,6 +531,8 @@ Options
   --module-parser-javascript-dynamic-node-global [value]                             Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-dynamic-node-global                                  Negative 'module-parser-javascript-dynamic-node-global' option.
   --module-parser-javascript-dynamic-override-strict <value>                         Override the module to strict or non-strict. This may affect the behavior of the module (some behaviors differ between strict and non-strict), so please configure this option carefully.
+  --module-parser-javascript-dynamic-pure-functions <value...>                       A top-level function name in the module to treat as side-effect-free when called.
+  --module-parser-javascript-dynamic-pure-functions-reset                            Clear all items provided in 'module.parser.javascript/dynamic.pureFunctions' configuration. Mark the listed top-level function names for pure-function-based tree shaking.
   --module-parser-javascript-dynamic-reexport-exports-presence <value>               Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
   --no-module-parser-javascript-dynamic-reexport-exports-presence                    Negative 'module-parser-javascript-dynamic-reexport-exports-presence' option.
   --module-parser-javascript-dynamic-require-context                                 Enable/disable parsing of require.context syntax.
@@ -597,6 +617,8 @@ Options
   --module-parser-javascript-esm-node-global [value]                                 Include a polyfill for the 'global' variable.
   --no-module-parser-javascript-esm-node-global                                      Negative 'module-parser-javascript-esm-node-global' option.
   --module-parser-javascript-esm-override-strict <value>                             Override the module to strict or non-strict. This may affect the behavior of the module (some behaviors differ between strict and non-strict), so please configure this option carefully.
+  --module-parser-javascript-esm-pure-functions <value...>                           A top-level function name in the module to treat as side-effect-free when called.
+  --module-parser-javascript-esm-pure-functions-reset                                Clear all items provided in 'module.parser.javascript/esm.pureFunctions' configuration. Mark the listed top-level function names for pure-function-based tree shaking.
   --module-parser-javascript-esm-reexport-exports-presence <value>                   Specifies the behavior of invalid export names in "export ... from ...". This might be useful to disable during the migration from "export ... from ..." to "export type ... from ..." when reexporting types in TypeScript.
   --no-module-parser-javascript-esm-reexport-exports-presence                        Negative 'module-parser-javascript-esm-reexport-exports-presence' option.
   --module-parser-javascript-esm-require-context                                     Enable/disable parsing of require.context syntax.
@@ -716,6 +738,8 @@ Options
   --no-optimization-emit-on-errors                                                   Negative 'optimization-emit-on-errors' option.
   --optimization-flag-included-chunks                                                Also flag chunks as loaded which contain a subset of the modules.
   --no-optimization-flag-included-chunks                                             Negative 'optimization-flag-included-chunks' option.
+  --optimization-inline-exports                                                      Inline ESM exports that bind to small primitive constants (≤6-byte null/undefined/boolean/number/string). Inlining makes the import dependency inactive so DCE can drop the export and possibly the module.
+  --no-optimization-inline-exports                                                   Negative 'optimization-inline-exports' option.
   --optimization-inner-graph                                                         Creates a module-internal dependency graph for top level symbols, exports and imports, to improve unused exports detection.
   --no-optimization-inner-graph                                                      Negative 'optimization-inner-graph' option.
   --optimization-mangle-exports [value]                                              Rename exports when possible to generate shorter code (depends on optimization.usedExports and optimization.providedExports, true/"deterministic": generate short deterministic names optimized for caching, "size": generate the shortest possible names).
@@ -828,16 +852,28 @@ Options
   --no-output-environment-for-of                                                     Negative 'output-environment-for-of' option.
   --output-environment-global-this                                                   The environment supports 'globalThis'.
   --no-output-environment-global-this                                                Negative 'output-environment-global-this' option.
+  --output-environment-has-own                                                       The environment supports 'Object.hasOwn'.
+  --no-output-environment-has-own                                                    Negative 'output-environment-has-own' option.
   --output-environment-import-meta-dirname-and-filename                              The environment supports `import.meta.dirname` and `import.meta.filename`.
   --no-output-environment-import-meta-dirname-and-filename                           Negative 'output-environment-import-meta-dirname-and-filename' option.
+  --output-environment-let                                                           The environment supports let for variable declarations.
+  --no-output-environment-let                                                        Negative 'output-environment-let' option.
+  --output-environment-logical-assignment                                            The environment supports logical assignment operators ('a ||= b', 'a &&= b', 'a ??= b').
+  --no-output-environment-logical-assignment                                         Negative 'output-environment-logical-assignment' option.
   --output-environment-method-shorthand                                              The environment supports object method shorthand ('{ module() {} }').
   --no-output-environment-method-shorthand                                           Negative 'output-environment-method-shorthand' option.
   --output-environment-module                                                        The environment supports EcmaScript Module syntax to import EcmaScript modules (import ... from '...').
   --no-output-environment-module                                                     Negative 'output-environment-module' option.
+  --output-environment-node-builtin-module-getter                                    The environment supports `process.getBuiltinModule()` to synchronously load Node.js core modules.
+  --no-output-environment-node-builtin-module-getter                                 Negative 'output-environment-node-builtin-module-getter' option.
   --output-environment-node-prefix-for-core-modules                                  The environment supports `node:` prefix for Node.js core modules.
   --no-output-environment-node-prefix-for-core-modules                               Negative 'output-environment-node-prefix-for-core-modules' option.
   --output-environment-optional-chaining                                             The environment supports optional chaining ('obj?.a' or 'obj?.()').
   --no-output-environment-optional-chaining                                          Negative 'output-environment-optional-chaining' option.
+  --output-environment-spread                                                        The environment supports spread and rest in array/object literals and calls ('{ ...obj }', 'fn(...args)').
+  --no-output-environment-spread                                                     Negative 'output-environment-spread' option.
+  --output-environment-symbol                                                        The environment supports 'Symbol' (and well-known symbols like 'Symbol.toStringTag').
+  --no-output-environment-symbol                                                     Negative 'output-environment-symbol' option.
   --output-environment-template-literal                                              The environment supports template literals.
   --no-output-environment-template-literal                                           Negative 'output-environment-template-literal' option.
   --output-filename <value>                                                          Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
@@ -849,6 +885,9 @@ Options
   --output-hot-update-chunk-filename <value>                                         The filename of the Hot Update Chunks. They are inside the output.path directory.
   --output-hot-update-global <value>                                                 The global variable used by webpack for loading of hot update chunks.
   --output-hot-update-main-filename <value>                                          The filename of the Hot Update Main File. It is inside the 'output.path' directory.
+  --output-html                                                                      Generate an HTML file for each non-HTML entrypoint with its JS and CSS output chunks injected. Can be overridden per entry via the entry descriptor `html` option.
+  --no-output-html                                                                   Negative 'output-html' option.
+  --output-html-script-loading <value>                                               How injected `<script>` tags load. `auto` (default) emits a module script for ES module output and `defer` otherwise; `defer` forces a deferred script; `blocking` emits a plain blocking script.
   --output-html-chunk-filename <value>                                               Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-html-filename <value>                                                     Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-ignore-browser-warnings                                                   Ignore warnings in the browser.
@@ -894,6 +933,8 @@ Options
   --no-output-strict-module-error-handling                                           Negative 'output-strict-module-error-handling' option.
   --output-strict-module-exception-handling                                          Handles exceptions in module loading correctly at a performance cost (Deprecated). This will handle module error compatible with the Node.js CommonJS way.
   --no-output-strict-module-exception-handling                                       Negative 'output-strict-module-exception-handling' option.
+  --output-strict-module-resolution                                                  Emit a runtime check that throws a 'MODULE_NOT_FOUND' error when a required module id is missing from the bundle.
+  --no-output-strict-module-resolution                                               Negative 'output-strict-module-resolution' option.
   --output-trusted-types [value]                                                     Use a Trusted Types policy to create urls for chunks. 'output.uniqueName' is used a default policy name. Passing a string sets a custom policy name. The name of the Trusted Types policy created by webpack to serve bundle chunks.
   --output-trusted-types-on-policy-creation-failure <value>                          If the call to `trustedTypes.createPolicy(...)` fails -- e.g., due to the policy name missing from the CSP `trusted-types` list, or it being a duplicate name, etc. -- controls whether to continue with loading in the hope that `require-trusted-types-for 'script'` isn't enforced yet, versus fail immediately. Default behavior is 'stop'.
   --output-trusted-types-policy-name <value>                                         The name of the Trusted Types policy created by webpack to serve bundle chunks.
@@ -901,6 +942,7 @@ Options
   --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --no-output-wasm-loading                                                           Negative 'output-wasm-loading' option.
   --output-webassembly-module-filename <value>                                       The filename of WebAssembly modules as relative path inside the 'output.path' directory.
+  --output-worker-chunk-filename <value>                                             Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-worker-chunk-loading <value>                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
   --no-output-worker-chunk-loading                                                   Negative 'output-worker-chunk-loading' option.
   --output-worker-public-path <value>                                                Worker public path. Much like the public path, this sets the location where the worker script file is intended to be found. If not set, webpack will use the publicPath. Don't set this option unless your worker scripts are located at a different path from your other script files.
