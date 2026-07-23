@@ -96,9 +96,9 @@
     "node": ">=20.9.0"
   },
   "allowScripts": {
-    "@parcel/watcher@2.5.6": true,
-    "@swc/core@1.15.43": true,
-    "esbuild@0.28.1": true,
-    "unrs-resolver@1.11.1": true
+    "@parcel/watcher": true,
+    "esbuild": true,
+    "@swc/core": true,
+    "unrs-resolver": true
   }
 }
