@@ -94,5 +94,11 @@
   },
   "engines": {
     "node": ">=20.9.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher": true,
+    "esbuild": true,
+    "@swc/core": true,
+    "unrs-resolver": true
   }
 }
