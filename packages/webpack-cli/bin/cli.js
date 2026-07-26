@@ -3,6 +3,7 @@
 "use strict";
 
 // `module.enableCompileCache` is only available on Node.js >= 22.8.0
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
 const { enableCompileCache } = require("node:module");
 
 if (enableCompileCache) {
