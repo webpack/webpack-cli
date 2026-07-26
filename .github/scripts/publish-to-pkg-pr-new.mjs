@@ -1,9 +1,9 @@
-/* eslint-disable no-console */
+/* eslint-disable camelcase */
 
-import fs from "fs";
+import fs from "node:fs";
 
 /**
- * @param {{ github: any, context: any }} params params
+ * @param {{ github: EXPECTED_ANY, context: EXPECTED_ANY }} params params
  */
 export async function run({ github, context }) {
   const output = JSON.parse(fs.readFileSync("output.json", "utf8"));
@@ -13,7 +13,7 @@ export async function run({ github, context }) {
 
   const commitUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${sha}`;
 
-  const packages = output.packages.map((p) => `${p.name}@${p.url}`).join(" ");
+  const packages = output.packages.map((pkg) => `${pkg.name}@${pkg.url}`).join(" ");
 
   const botCommentIdentifier = "<!-- posted by pkg.pr.new -->";
   const body = `${botCommentIdentifier}
@@ -42,7 +42,7 @@ pnpm add -D ${packages}
 
   /**
    * @param {number=} issueNumber PR number
-   * @returns {Promise<any>} the existing bot comment, if any
+   * @returns {Promise<EXPECTED_ANY>} the existing bot comment, if any
    */
   async function findBotComment(issueNumber) {
     if (!issueNumber) return null;
