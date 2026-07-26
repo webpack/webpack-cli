@@ -1,0 +1,64 @@
+name: Publish to pkg.pr.new
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    tags: ["!**"]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  publish:
+    if: |
+      github.repository == 'webpack/webpack-cli' &&
+      (github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository)
+    name: Publish to pkg.pr.new
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.publish.outputs.sha }}
+      urls: ${{ steps.publish.outputs.urls }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Changeset needs access to the main branch to find pending changesets
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: lts/*
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Compute affected packages
+        id: affected
+        run: |
+          npx changeset status --output changes.json || true
+          npm query .workspace > workspaces.json
+          packages=$(jq -r --slurpfile ws workspaces.json '[.releases[] | select(.type != "none") | .name] as $names | $ws[0][] | select(.name | IN($names[])) | "./" + .location' changes.json 2>/dev/null | tr '\n' ' ' || true)
+          echo "packages=$packages" >> "$GITHUB_OUTPUT"
+          echo "Affected packages: ${packages:-none}"
+
+      - name: Publish
+        if: steps.affected.outputs.packages != ''
+        run: npx pkg-pr-new publish --compact --json output.json --comment=off ${{ steps.affected.outputs.packages }}
+
+      - name: Add metadata to output
+        if: steps.affected.outputs.packages != ''
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { run } = await import('${{ github.workspace }}/.github/scripts/publish-to-pkg-pr-new.mjs');
+            await run({ github, context });
