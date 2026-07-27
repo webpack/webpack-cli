@@ -1,5 +1,11 @@
 # Change Log
 
+## 7.2.2
+
+### Patch Changes
+
+- perf: enable the Node.js compile cache (`module.enableCompileCache`, available on Node.js >= 22.8.0) to speed up CLI startup (by [@bjohansebas](https://github.com/bjohansebas) in [#4818](https://github.com/webpack/webpack-cli/pull/4818))
+
 ## 7.2.1
 
 ### Patch Changes
