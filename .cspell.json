@@ -10,6 +10,7 @@
     "chuntaro",
     "CLIAPI",
     "cobertura",
+    "gcov",
     "codecov",
     "colorette",
     "commitlint",
