@@ -4,6 +4,7 @@ import path from "node:path";
 import { type Readable as ReadableType } from "node:stream";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import util from "node:util";
+import { type RootCommand } from "@bomb.sh/tab";
 import { type stringifyChunked as stringifyChunkedType } from "@discoveryjs/json-ext";
 import {
   type Command as CommanderCommand,
@@ -149,6 +150,7 @@ interface KnownWebpackCLICommands {
   help: CommandOptions<void, CommanderArgs, Context>;
   info: CommandOptions<void, CommanderArgs, Context>;
   configtest: CommandOptions<string | undefined, CommanderArgs, WebpackContext & Context>;
+  complete: CommandOptions<void, CommanderArgs, Context>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -575,6 +577,12 @@ class WebpackCLI {
 
   capitalizeFirstLetter(str: string): string {
     return str.length > 0 ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+  }
+
+  #commandTerm(command: CommanderCommand): string {
+    const aliases = command.aliases().filter(Boolean);
+
+    return aliases.length > 0 ? `${command.name()}|${aliases.join("|")}` : command.name();
   }
 
   toKebabCase(str: string): string {
@@ -1424,14 +1432,12 @@ class WebpackCLI {
             return `${parentCmdNames}${command.usage()} | ${parentCmdNames}[command] [options]`;
           }
 
-          return `${parentCmdNames}${command.name()}|${command
-            .aliases()
-            .join("|")} ${command.usage()}`;
+          return `${parentCmdNames}${this.#commandTerm(command)} ${command.usage()}`;
         },
         // Support multiple aliases
         subcommandTerm: (command) => {
           const usage = command.usage();
-          return `${command.name()}|${command.aliases().join("|")}${usage.length > 0 ? ` ${usage}` : ""}`;
+          return `${this.#commandTerm(command)}${usage.length > 0 ? ` ${usage}` : ""}`;
         },
         visibleOptions: function visibleOptions(command) {
           return command.options.filter((option) => {
@@ -2439,6 +2445,16 @@ class WebpackCLI {
         );
       },
     },
+    complete: {
+      rawName: "complete",
+      name: "complete [shell]",
+      alias: [],
+      description: "Generate shell completion scripts.",
+      action: () => {
+        // Display-only stub for `--help`. Completion requests are handled in `run()`
+        // before parse so the completion adapter can inspect the loaded command tree.
+      },
+    },
   };
 
   #isCommand<A = void, O extends CommanderArgs = CommanderArgs, C extends Context = Context>(
@@ -2483,6 +2499,8 @@ class WebpackCLI {
       return await this.makeCommand(this.#commands.info);
     } else if (this.#isCommand(commandName, this.#commands.configtest)) {
       return await this.makeCommand(this.#commands.configtest);
+    } else if (this.#isCommand(commandName, this.#commands.complete)) {
+      return await this.makeCommand(this.#commands.complete);
     }
 
     const pkg: string = commandName;
@@ -2521,7 +2539,125 @@ class WebpackCLI {
     return externalCommand;
   }
 
-  async run(args: readonly string[], parseOptions: ParseOptions) {
+  #isCompletionRequest(args: readonly string[], parseOptions?: ParseOptions): boolean {
+    const userArgs = parseOptions?.from === "user" ? args : args.slice(2);
+
+    return userArgs.find((arg) => arg !== "--" && !arg.startsWith("-")) === "complete";
+  }
+
+  async #prepareCompletions(): Promise<void> {
+    // Register every option (same as `--help`) so tab can inspect the full tree.
+    this.program.forHelp = true;
+
+    await Promise.all(
+      Object.values(this.#commands)
+        .filter((command) => command.rawName !== "complete")
+        .map((command) => this.#loadCommandByName(command.rawName)),
+    );
+
+    const { default: tab } = await import("@bomb.sh/tab/commander");
+
+    this.#attachCompletionHandlers(tab(this.program));
+  }
+
+  #attachCompletionHandlers(completion: RootCommand): void {
+    const helpOption = completion.options.get("help");
+
+    if (helpOption) {
+      helpOption.handler = (complete) => {
+        complete("verbose", "Show all available commands and options");
+      };
+    }
+
+    const outputHandler = (complete: (value: string, description: string) => void) => {
+      complete("json", "JSON output");
+      complete("markdown", "Markdown output");
+    };
+
+    for (const name of ["info", "version"]) {
+      const outputOption = completion.commands.get(name)?.options.get("output");
+
+      if (outputOption) {
+        outputOption.handler = outputHandler;
+      }
+    }
+
+    const progressHandler = (complete: (value: string, description: string) => void) => {
+      complete("profile", "Capture profiling data");
+    };
+
+    for (const name of ["build", "watch", "serve"]) {
+      const progressOption = completion.commands.get(name)?.options.get("progress");
+
+      if (progressOption) {
+        progressOption.handler = progressHandler;
+      }
+    }
+
+    const completeCommand = completion.commands.get("complete");
+    const shellArg = completeCommand?.arguments.get("shell");
+
+    if (shellArg) {
+      shellArg.handler = (complete) => {
+        complete("zsh", "Zsh");
+        complete("bash", "Bash");
+        complete("fish", "Fish");
+        complete("powershell", "PowerShell");
+      };
+    }
+
+    for (const command of this.program.commands) {
+      const tabCommand = completion.commands.get(command.name());
+
+      if (!tabCommand) {
+        continue;
+      }
+
+      for (const option of command.options) {
+        const longName = option.long?.slice(2);
+
+        if (!longName) {
+          continue;
+        }
+
+        const { configs } = option as Option & { configs?: ArgumentConfig[] };
+
+        if (!configs) {
+          continue;
+        }
+
+        const values: string[] = [];
+
+        for (const config of configs) {
+          if (config.type !== "enum" || !config.values) {
+            continue;
+          }
+
+          for (const value of config.values) {
+            if (typeof value === "string") {
+              values.push(value);
+            }
+          }
+        }
+
+        if (values.length === 0) {
+          continue;
+        }
+
+        const tabOption = tabCommand.options.get(longName);
+
+        if (tabOption) {
+          tabOption.handler = (complete) => {
+            for (const value of values) {
+              complete(value, "");
+            }
+          };
+        }
+      }
+    }
+  }
+
+  async run(args: readonly string[], parseOptions?: ParseOptions) {
     // Default `--color` and `--no-color` options
 
     const self: WebpackCLI = this;
@@ -2728,6 +2864,10 @@ class WebpackCLI {
 
       await command.parseAsync([...commandOperands, ...unknown], { from: "user" });
     });
+
+    if (this.#isCompletionRequest(args, parseOptions)) {
+      await this.#prepareCompletions();
+    }
 
     await this.program.parseAsync(args, parseOptions);
   }
