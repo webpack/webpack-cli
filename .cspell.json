@@ -106,7 +106,8 @@
     "Zenitsu",
     "quickstart",
     "pinia",
-    "watchpack"
+    "watchpack",
+    "zsh"
   ],
   "dictionaries": ["npm", "software-terms"],
   "ignorePaths": [
