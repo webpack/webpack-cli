@@ -6,7 +6,8 @@
     </head>
     <body>
         <h1>Hello world!</h1>
-        <h2>Tip: Check your console</h2>
+        <h2>Tip: Check your console</h2><% if (html) { %>
+        <script src="<%= entryPoint %>"></script><% } %>
     </body>
     <% if (workboxWebpackPlugin) { %>
     <script>
