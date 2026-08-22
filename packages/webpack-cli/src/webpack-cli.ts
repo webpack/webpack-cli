@@ -41,6 +41,14 @@ const WEBPACK_DEV_SERVER_PACKAGE = WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM
   ? (process.env.WEBPACK_DEV_SERVER_PACKAGE as string)
   : "webpack-dev-server";
 
+// `webpack-dev-server` v6 is ESM and exposes the server as its `default` export,
+// while v5 exports it directly
+type DevServerConstructor = typeof import("webpack-dev-server") extends {
+  default: infer Server;
+}
+  ? Server
+  : typeof import("webpack-dev-server");
+
 const EXIT_SIGNALS = ["SIGINT", "SIGTERM"];
 const DEFAULT_CONFIGURATION_FILES = [
   "webpack.config",
@@ -134,7 +142,7 @@ interface WebpackContext {
 }
 
 interface WebpackDevServerContext {
-  devServer: typeof import("webpack-dev-server");
+  devServer: DevServerConstructor;
 }
 
 interface KnownWebpackCLICommands {
@@ -1907,7 +1915,7 @@ class WebpackCLI {
     return this.#loadPackage(WEBPACK_PACKAGE, WEBPACK_PACKAGE_IS_CUSTOM);
   }
 
-  async loadWebpackDevServer(): Promise<typeof import("webpack-dev-server")> {
+  async loadWebpackDevServer(): Promise<DevServerConstructor> {
     return this.#loadPackage(WEBPACK_DEV_SERVER_PACKAGE, WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM);
   }
 
@@ -2205,8 +2213,6 @@ class WebpackCLI {
         if (!compiler) {
           return;
         }
-
-        type DevServerConstructor = typeof import("webpack-dev-server");
 
         const DevServer: DevServerConstructor = cmd.context.devServer;
         const servers: InstanceType<DevServerConstructor>[] = [];
