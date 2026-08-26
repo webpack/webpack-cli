@@ -32,7 +32,7 @@ describe("typescript ecma modules configuration", () => {
       // Fallback to `ts-node/esm` for old Node.js versions
       nodeOptions:
         major >= 22
-          ? ["--experimental-transform-types", "--no-warnings"]
+          ? ["--no-warnings", ...(major < 26 ? ["--experimental-transform-types"] : [""])]
           : [
               "--no-deprecation",
               "--import=data:text/javascript,import { register } from 'node:module'; import { pathToFileURL } from 'node:url'; register('ts-node/esm', pathToFileURL('./'));",
