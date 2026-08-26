@@ -3,7 +3,7 @@ const { run } = require("../utils/test-utils");
 describe("external command", () => {
   it("should work", async () => {
     const { exitCode, stdout, stderr } = await run(__dirname, ["custom-command"], {
-      nodeOptions: ["--import=./register-loader.mjs"],
+      nodeOptions: ["--no-deprecation", "--import=./register-loader.mjs"],
     });
 
     expect(exitCode).toBe(0);
@@ -13,7 +13,7 @@ describe("external command", () => {
 
   it("should work with options", async () => {
     const { exitCode, stdout, stderr } = await run(__dirname, ["custom-command", "--output=json"], {
-      nodeOptions: ["--import=./register-loader.mjs"],
+      nodeOptions: ["--no-deprecation", "--import=./register-loader.mjs"],
     });
 
     expect(exitCode).toBe(0);
@@ -23,7 +23,7 @@ describe("external command", () => {
 
   it("should work with help", async () => {
     const { exitCode, stdout, stderr } = await run(__dirname, ["help", "custom-command"], {
-      nodeOptions: ["--import=./register-loader.mjs"],
+      nodeOptions: ["--no-deprecation", "--import=./register-loader.mjs"],
     });
 
     expect(exitCode).toBe(0);
@@ -37,7 +37,7 @@ describe("external command", () => {
       __dirname,
       ["help", "custom-command", "--output"],
       {
-        nodeOptions: ["--import=./register-loader.mjs"],
+        nodeOptions: ["--no-deprecation", "--import=./register-loader.mjs"],
       },
     );
 
@@ -49,7 +49,7 @@ describe("external command", () => {
 
   it("should handle errors in external commands", async () => {
     const { exitCode, stdout, stderr } = await run(__dirname, ["errored-custom-command"], {
-      nodeOptions: ["--import=./register-loader.mjs"],
+      nodeOptions: ["--no-deprecation", "--import=./register-loader.mjs"],
     });
 
     expect(exitCode).toBe(2);
@@ -60,7 +60,7 @@ describe("external command", () => {
 
   it("should handle errors in external commands when loading", async () => {
     const { exitCode, stdout, stderr } = await run(__dirname, ["errored-loading-custom-command"], {
-      nodeOptions: ["--import=./register-loader.mjs"],
+      nodeOptions: ["--no-deprecation", "--import=./register-loader.mjs"],
     });
 
     expect(exitCode).toBe(2);
