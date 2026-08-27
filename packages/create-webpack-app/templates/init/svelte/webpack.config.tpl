@@ -12,15 +12,14 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
-    entry: <% if (html) { %>"./index.html"<% } else { %>"<%= entry %>"<% } %>,
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as `dist/index.html`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },<% if (devServer) { %>
     devServer: {
         open: true,
-    },<% } %><% if (isCSS && isPostCSS) { %>
-    experiments: {
-        css: true,
     },<% } %>
     plugins: [
         // Add your plugins here
@@ -55,26 +54,21 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
                 options: {
                     appendTsSuffixTo: [/\.svelte$/],
                 },
-            },<% } %><%  if (isCSS && isPostCSS) { %>
-            {
-                test: /\.css$/i,
-                type: "css/auto",
-                use: ["postcss-loader"],
-            },<% } %><%  if (cssType == "SASS") { %>
+            },<% } %><%  if (cssPreprocessor == "SASS") { %>
             {
                 test: /\.s[ac]ss$/i,
                 type: "css/auto",
-                use: [<% if (isPostCSS) { %>"postcss-loader", <% } %>"sass-loader"],
-            },<% } %><%  if (cssType == "LESS") { %>
+                use: ["sass-loader"],
+            },<% } %><%  if (cssPreprocessor == "LESS") { %>
             {
                 test: /\.less$/i,
                 type: "css/auto",
-                use: [<% if (isPostCSS) { %>"postcss-loader", <% } %>"less-loader"],
-            },<% } %><%  if (cssType == "Stylus") { %>
+                use: ["less-loader"],
+            },<% } %><%  if (cssPreprocessor == "Stylus") { %>
             {
                 test: /\.styl$/i,
                 type: "css/auto",
-                use: [<% if (isPostCSS) { %>"postcss-loader", <% } %>"stylus-loader"],
+                use: ["stylus-loader"],
             },<% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,

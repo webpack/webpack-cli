@@ -14,6 +14,7 @@
     "erasableSyntaxOnly": true,
     "isolatedModules": true,
     "rewriteRelativeImportExtensions": true,
+    "baseUrl": ".",
     "types": [
       "webpack-env",
       "vue-router"

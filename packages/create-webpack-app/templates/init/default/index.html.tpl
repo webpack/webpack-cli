@@ -3,11 +3,12 @@
     <head>
         <meta charset="utf-8" />
         <title>Webpack App</title>
+        <link rel="stylesheet" href="./src/styles.<%= styleExtension %>" />
+        <script defer src="<%= entryPoint %>"></script>
     </head>
     <body>
         <h1>Hello world!</h1>
-        <h2>Tip: Check your console</h2><% if (html) { %>
-        <script src="<%= entryPoint %>"></script><% } %>
+        <h2>Tip: Check your console</h2>
     </body>
     <% if (workboxWebpackPlugin) { %>
     <script>

@@ -35,45 +35,16 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
       },
       {
         type: "confirm",
-        name: "html",
-        message: "Do you want to simplify the creation of HTML files for your bundle?",
-        default: true,
-      },
-      {
-        type: "confirm",
         name: "workboxWebpackPlugin",
         message: "Do you want to add PWA support?",
         default: true,
       },
       {
         type: "list",
-        name: "cssType",
-        message: "Which of the following CSS solution do you want to use?",
-        choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "CSS only",
-        filter: (input: string, answers: Answers) => {
-          if (input === "none") {
-            answers.isCSS = false;
-            answers.isPostCSS = false;
-          } else if (input === "CSS only") {
-            answers.isCSS = true;
-          }
-          return input;
-        },
-      },
-      {
-        type: "confirm",
-        name: "isCSS",
-        message: (answers: Answers) =>
-          `Will you be using CSS styles along with ${answers.cssType} in your project?`,
-        when: (answers: Answers) => answers.cssType !== "CSS only",
-        default: true,
-      },
-      {
-        type: "confirm",
-        name: "isPostCSS",
-        message: "Do you want to use PostCSS in your project?",
-        default: (answers: Answers) => answers.cssType === "CSS only",
+        name: "cssPreprocessor",
+        message: "Which CSS preprocessor do you want to use?",
+        choices: ["none", "SASS", "LESS", "Stylus"],
+        default: "none",
       },
       {
         type: "list",
@@ -109,22 +80,22 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
         devDependencies.push("workbox-webpack-plugin");
       }
 
-      if (answers.isPostCSS) {
-        devDependencies.push("postcss-loader", "postcss", "autoprefixer");
-      }
-
-      if (answers.cssType !== "none") {
-        switch (answers.cssType) {
-          case "SASS":
-            devDependencies.push("sass-loader", "sass");
-            break;
-          case "LESS":
-            devDependencies.push("less-loader", "less");
-            break;
-          case "Stylus":
-            devDependencies.push("stylus-loader", "stylus");
-            break;
-        }
+      switch (answers.cssPreprocessor) {
+        case "SASS":
+          answers.styleExtension = "scss";
+          devDependencies.push("sass-loader", "sass");
+          break;
+        case "LESS":
+          answers.styleExtension = "less";
+          devDependencies.push("less-loader", "less");
+          break;
+        case "Stylus":
+          answers.styleExtension = "styl";
+          devDependencies.push("stylus-loader", "stylus");
+          break;
+        default:
+          answers.styleExtension = "css";
+          break;
       }
 
       const files: FileRecord[] = [
@@ -158,9 +129,10 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
           break;
       }
 
-      if (answers.isPostCSS) {
-        files.push({ filePath: "postcss.config.js", fileType: "text" });
-      }
+      files.push({
+        filePath: `./src/styles.${answers.styleExtension}`,
+        fileType: "text",
+      });
 
       for (const file of files) {
         actions.push({

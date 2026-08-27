@@ -9,7 +9,6 @@ jest.setTimeout(480000);
 const { run, runPromptWithAnswers } = createPathDependentUtils("create-webpack-app");
 
 const ENTER = "\u000D";
-const UP = "\u001B\u005B\u0041";
 const DOWN = "\u001B\u005B\u0042";
 
 const defaultTemplateFiles = [
@@ -167,8 +166,7 @@ describe("create-webpack-app cli", () => {
         `${DOWN}${ENTER}`,
         `n${ENTER}`,
         `n${ENTER}`,
-        `n${ENTER}`,
-        `${UP}${ENTER}`,
+        ENTER,
         ENTER,
         // test for conflicts
         `y${ENTER}`,
@@ -299,7 +297,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],
-      [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
+      [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -331,7 +329,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],
-      [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
+      [`${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -352,77 +350,11 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
-  it("should use css preprocessor with postcss in project when selected", async () => {
-    const { stdout } = await runPromptWithAnswers(
-      dir,
-      ["init", "."],
-      [
-        ENTER,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `${DOWN}${ENTER}`,
-        `n${ENTER}`,
-        `y${ENTER}`,
-        ENTER,
-        ENTER,
-      ],
-    );
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    // Test files
-    for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(dir, file))).toBeTruthy();
-    }
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(dir)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
-  });
-
-  it("should use css preprocessor and css with postcss in project when selected", async () => {
-    const { stdout } = await runPromptWithAnswers(
-      dir,
-      ["init", "."],
-      [
-        `${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `n${ENTER}`,
-        `${DOWN}${ENTER}`,
-        `y${ENTER}`,
-        `y${ENTER}`,
-        ENTER,
-        ENTER,
-      ],
-    );
-
-    expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
-
-    // Test files
-    const files = [...defaultTemplateFiles, "postcss.config.js"];
-
-    for (const file of files) {
-      expect(existsSync(resolve(dir, file))).toBeTruthy();
-    }
-
-    // Check if the generated package.json file content matches the snapshot
-    expect(readFromPkgJSON(dir)).toMatchSnapshot();
-
-    // Check if the generated webpack configuration matches the snapshot
-    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
-  });
-
   it("should configure WDS as opted", async () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],
-      [ENTER, ENTER, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
+      [ENTER, ENTER, `n${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Would you like to use Webpack Dev server?");
@@ -441,21 +373,54 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
-  it("should configure native HTML support as opted", async () => {
+  it("should not ask about HTML and CSS, which webpack supports out of the box", async () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],
-      [ENTER, `n${ENTER}`, ENTER, `n${ENTER}`, `${UP}${ENTER}`, ENTER],
+      [ENTER, ENTER, ENTER, ENTER, ENTER],
     );
 
-    expect(stdout).toContain("Do you want to simplify the creation of HTML files for your bundle?");
     expect(stdout).toContain("Project has been initialised with webpack!");
-    expect(stdout).toContain("webpack.config.js");
+    expect(stdout).not.toContain(
+      "Do you want to simplify the creation of HTML files for your bundle?",
+    );
+    expect(stdout).not.toContain("Which of the following CSS solution do you want to use?");
+    expect(stdout).not.toContain("Do you want to use PostCSS in your project?");
+    expect(stdout).not.toContain("Do you want to extract CSS into separate files?");
 
-    // Test files
-    for (const file of defaultTemplateFiles) {
-      expect(existsSync(resolve(dir, file))).toBeTruthy();
-    }
+    // The page is the entry, and nothing loads HTML or CSS
+    const config = readFromWebpackConfig(dir);
+
+    expect(config).toContain('entry: { index: "./index.html" }');
+    expect(config).not.toContain("html-webpack-plugin");
+    expect(config).not.toContain("css-loader");
+    expect(config).not.toContain("mini-css-extract-plugin");
+
+    const { devDependencies } = readFromPkgJSON(dir);
+
+    expect(Object.keys(devDependencies)).not.toContain("html-webpack-plugin");
+    expect(Object.keys(devDependencies)).not.toContain("css-loader");
+    expect(existsSync(resolve(dir, "src/styles.css"))).toBeTruthy();
+    expect(existsSync(resolve(dir, "postcss.config.js"))).toBeFalsy();
+  });
+
+  it("should scaffold a preprocessor through the built-in CSS support when selected", async () => {
+    const { stdout } = await runPromptWithAnswers(
+      dir,
+      ["init", "."],
+      [ENTER, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER],
+    );
+
+    expect(stdout).toContain("Which CSS preprocessor do you want to use?");
+    expect(stdout).toContain("Project has been initialised with webpack!");
+
+    // Sass is wired as a `css/auto` rule, so it needs no css-loader
+    const config = readFromWebpackConfig(dir);
+
+    expect(config).toContain('type: "css/auto"');
+    expect(config).toContain('use: ["sass-loader"]');
+    expect(config).not.toContain("css-loader");
+    expect(existsSync(resolve(dir, "src/styles.scss"))).toBeTruthy();
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(dir)).toMatchSnapshot();
@@ -468,7 +433,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],
-      [ENTER, `n${ENTER}`, ENTER, ENTER, `${UP}${ENTER}`, ENTER],
+      [ENTER, `n${ENTER}`, ENTER, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Do you want to add PWA support?");
@@ -491,7 +456,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],
-      [ENTER, `n${ENTER}`, `n${ENTER}`, `n${ENTER}`, `${UP}${ENTER}`, `${DOWN}${ENTER}`],
+      [ENTER, `n${ENTER}`, `n${ENTER}`, ENTER, `${DOWN}${ENTER}`],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -515,7 +480,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", ".", "--template=react"],
-      [ENTER, `y${ENTER}`, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -537,7 +502,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", ".", "--template=react"],
-      [`${DOWN}${ENTER}`, `y${ENTER}`, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER, ENTER],
+      [`${DOWN}${ENTER}`, `y${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -555,7 +520,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", ".", "--template=vue"],
-      [ENTER, `y${ENTER}`, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -579,7 +544,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", ".", "--template=vue"],
-      [`${DOWN}${ENTER}`, `y${ENTER}`, `y${ENTER}`, `${ENTER}`, `y${ENTER}`, ENTER, ENTER],
+      [`${DOWN}${ENTER}`, `y${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -597,7 +562,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", ".", "--template=svelte"],
-      [ENTER, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER],
+      [ENTER, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");
@@ -619,7 +584,7 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", ".", "--template=svelte"],
-      [`${DOWN}${ENTER}`, `y${ENTER}`, ENTER, `y${ENTER}`, ENTER, ENTER],
+      [`${DOWN}${ENTER}`, `y${ENTER}`, ENTER, ENTER],
     );
 
     expect(stdout).toContain("Project has been initialised with webpack!");

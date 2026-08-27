@@ -48,33 +48,10 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
       },
       {
         type: "list",
-        name: "cssType",
-        message: "Which of the following CSS solution do you want to use?",
-        choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "CSS only",
-        filter: (input: string, answers: Answers) => {
-          if (input === "none") {
-            answers.isCSS = false;
-            answers.isPostCSS = false;
-          } else if (input === "CSS only") {
-            answers.isCSS = true;
-          }
-          return input;
-        },
-      },
-      {
-        type: "confirm",
-        name: "isCSS",
-        message: (answers: Answers) =>
-          `Will you be using CSS styles along with ${answers.cssType} in your project?`,
-        when: (answers: Answers) => answers.cssType !== "CSS only",
-        default: true,
-      },
-      {
-        type: "confirm",
-        name: "isPostCSS",
-        message: "Do you want to use PostCSS in your project?",
-        default: (answers: Answers) => answers.cssType === "CSS only",
+        name: "cssPreprocessor",
+        message: "Which CSS preprocessor do you want to use?",
+        choices: ["none", "SASS", "LESS", "Stylus"],
+        default: "none",
       },
       {
         type: "list",
@@ -93,7 +70,6 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
     actions: function actions(answers: Answers) {
       // setting some default values based on the answers
       const actions: ActionType[] = [];
-      answers.html = true;
       answers.devServer = true;
 
       switch (answers.langType) {
@@ -109,32 +85,26 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
         devDependencies.push("pinia");
       }
 
-      if (answers.isPostCSS) {
-        devDependencies.push("postcss-loader", "postcss", "autoprefixer");
-      }
-
       if (answers.workboxWebpackPlugin) {
         devDependencies.push("workbox-webpack-plugin");
       }
 
-      if (answers.cssType === "none") {
-        answers.isCSS = false;
-        answers.isPostCSS = false;
-      } else {
-        switch (answers.cssType) {
-          case "CSS only":
-            answers.isCSS = true;
-            break;
-          case "SASS":
-            devDependencies.push("sass-loader", "sass");
-            break;
-          case "LESS":
-            devDependencies.push("less-loader", "less");
-            break;
-          case "Stylus":
-            devDependencies.push("stylus-loader", "stylus");
-            break;
-        }
+      switch (answers.cssPreprocessor) {
+        case "SASS":
+          answers.styleExtension = "scss";
+          devDependencies.push("sass-loader", "sass");
+          break;
+        case "LESS":
+          answers.styleExtension = "less";
+          devDependencies.push("less-loader", "less");
+          break;
+        case "Stylus":
+          answers.styleExtension = "styl";
+          devDependencies.push("stylus-loader", "stylus");
+          break;
+        default:
+          answers.styleExtension = "css";
+          break;
       }
 
       const files: FileRecord[] = [
@@ -181,20 +151,10 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
         }
       }
 
-      switch (answers.cssType) {
-        case "CSS only":
-          files.push({ filePath: "./src/styles/global.css", fileType: "text" });
-          break;
-        case "SASS":
-          files.push({ filePath: "./src/styles/global.scss", fileType: "text" });
-          break;
-        case "LESS":
-          files.push({ filePath: "./src/styles/global.less", fileType: "text" });
-          break;
-        case "Stylus":
-          files.push({ filePath: "./src/styles/global.styl", fileType: "text" });
-          break;
-      }
+      files.push({
+        filePath: `./src/styles/global.${answers.styleExtension}`,
+        fileType: "text",
+      });
 
       for (const file of files) {
         actions.push({

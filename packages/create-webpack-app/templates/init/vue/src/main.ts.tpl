@@ -5,11 +5,7 @@ import router from './router'
   import { createPinia } from 'pinia'
   const store = createPinia()
 <% } %>
-<%  if (cssType == 'CSS only') { %>
-import "./styles/global.css";<% } if (cssType == 'SASS') { %>
-import "./styles/global.scss";<% } if (cssType == 'LESS') { %>
-import "./styles/global.less";<% } if (cssType == 'Stylus') { %>
-import "./styles/global.styl";<% } %>
+import "./styles/global.<%= styleExtension %>";
 
 
 const app = createApp(App)
