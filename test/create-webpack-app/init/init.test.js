@@ -385,6 +385,7 @@ describe("create-webpack-app cli", () => {
       "Do you want to simplify the creation of HTML files for your bundle?",
     );
     expect(stdout).not.toContain("Which of the following CSS solution do you want to use?");
+    expect(stdout).not.toContain("Will you be using CSS styles along with");
     expect(stdout).not.toContain("Do you want to use PostCSS in your project?");
     expect(stdout).not.toContain("Do you want to extract CSS into separate files?");
 
@@ -393,7 +394,7 @@ describe("create-webpack-app cli", () => {
 
     expect(config).toContain('entry: { index: "./index.html" }');
     expect(config).not.toContain("html-webpack-plugin");
-    expect(config).not.toContain("css-loader");
+    expect(config).not.toContain('"css-loader"');
     expect(config).not.toContain("mini-css-extract-plugin");
 
     const { devDependencies } = readFromPkgJSON(dir);
@@ -408,10 +409,10 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],
-      [ENTER, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER],
+      [ENTER, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${ENTER}`, ENTER],
     );
 
-    expect(stdout).toContain("Which CSS preprocessor do you want to use?");
+    expect(stdout).toContain("Which CSS tool do you want to use?");
     expect(stdout).toContain("Project has been initialised with webpack!");
 
     // Sass is wired as a `css/auto` rule, so it needs no css-loader
@@ -419,8 +420,69 @@ describe("create-webpack-app cli", () => {
 
     expect(config).toContain('type: "css/auto"');
     expect(config).toContain('use: ["sass-loader"]');
-    expect(config).not.toContain("css-loader");
+    expect(config).not.toContain('"css-loader"');
     expect(existsSync(resolve(dir, "src/styles.scss"))).toBeTruthy();
+
+    // Check if the generated package.json file content matches the snapshot
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
+
+    // Check if the generated webpack configuration matches the snapshot
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
+  });
+
+  it("should scaffold PostCSS on top of the built-in CSS support when selected", async () => {
+    const { stdout } = await runPromptWithAnswers(
+      dir,
+      ["init", "."],
+      [ENTER, `n${ENTER}`, `n${ENTER}`, `${DOWN}${ENTER}`, ENTER],
+    );
+
+    expect(stdout).toContain("Project has been initialised with webpack!");
+
+    // A loader for `.css` turns the auto detection off, so the config asks for
+    // the built-in CSS support explicitly
+    const config = readFromWebpackConfig(dir);
+
+    expect(config).toContain("experiments: {");
+    expect(config).toContain("css: true");
+    expect(config).toContain('use: ["postcss-loader"]');
+    expect(config).not.toContain('"css-loader"');
+    expect(existsSync(resolve(dir, "postcss.config.js"))).toBeTruthy();
+
+    const { devDependencies } = readFromPkgJSON(dir);
+
+    expect(Object.keys(devDependencies)).toContain("postcss-loader");
+    expect(Object.keys(devDependencies)).toContain("autoprefixer");
+
+    // Check if the generated package.json file content matches the snapshot
+    expect(readFromPkgJSON(dir)).toMatchSnapshot();
+
+    // Check if the generated webpack configuration matches the snapshot
+    expect(readFromWebpackConfig(dir)).toMatchSnapshot();
+  });
+
+  it("should chain PostCSS after a preprocessor when both are selected", async () => {
+    const { stdout } = await runPromptWithAnswers(
+      dir,
+      ["init", "."],
+      [ENTER, `n${ENTER}`, `n${ENTER}`, `${DOWN}${DOWN}${DOWN}${ENTER}`, ENTER],
+    );
+
+    expect(stdout).toContain("Project has been initialised with webpack!");
+
+    // `use` is applied right to left, so Sass compiles first and PostCSS runs over it
+    const config = readFromWebpackConfig(dir);
+
+    expect(config).toContain('use: ["postcss-loader", "sass-loader"]');
+    expect(config).toContain('use: ["postcss-loader"]');
+    expect(config).toContain("css: true");
+    expect(existsSync(resolve(dir, "src/styles.scss"))).toBeTruthy();
+    expect(existsSync(resolve(dir, "postcss.config.js"))).toBeTruthy();
+
+    const { devDependencies } = readFromPkgJSON(dir);
+
+    expect(Object.keys(devDependencies)).toContain("sass-loader");
+    expect(Object.keys(devDependencies)).toContain("postcss-loader");
 
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(dir)).toMatchSnapshot();

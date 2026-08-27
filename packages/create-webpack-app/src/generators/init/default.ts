@@ -3,6 +3,12 @@ import { fileURLToPath } from "node:url";
 import { type DynamicActionsFunction, type NodePlopAPI } from "node-plop";
 import { type ActionType, type Answers, type FileRecord } from "../../types.js";
 
+const STYLE_EXTENSIONS: Record<string, string> = {
+  SASS: "scss",
+  LESS: "less",
+  Stylus: "styl",
+};
+
 export default async function defaultInitGenerator(plop: NodePlopAPI) {
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -41,9 +47,18 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
       },
       {
         type: "list",
-        name: "cssPreprocessor",
-        message: "Which CSS preprocessor do you want to use?",
-        choices: ["none", "SASS", "LESS", "Stylus"],
+        name: "cssTool",
+        message: "Which CSS tool do you want to use?",
+        choices: [
+          "none",
+          "PostCSS",
+          "SASS",
+          "SASS with PostCSS",
+          "LESS",
+          "LESS with PostCSS",
+          "Stylus",
+          "Stylus with PostCSS",
+        ],
         default: "none",
       },
       {
@@ -80,22 +95,31 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
         devDependencies.push("workbox-webpack-plugin");
       }
 
-      switch (answers.cssPreprocessor) {
-        case "SASS":
-          answers.styleExtension = "scss";
-          devDependencies.push("sass-loader", "sass");
-          break;
-        case "LESS":
-          answers.styleExtension = "less";
-          devDependencies.push("less-loader", "less");
-          break;
-        case "Stylus":
-          answers.styleExtension = "styl";
-          devDependencies.push("stylus-loader", "stylus");
-          break;
-        default:
-          answers.styleExtension = "css";
-          break;
+      const cssTool = (answers.cssTool as string | undefined) ?? "none";
+      // PostCSS runs on its own or over a preprocessor, so both are read off the answer
+      const preprocessor = Object.keys(STYLE_EXTENSIONS).find((name) => cssTool.startsWith(name));
+
+      answers.usePostCSS = cssTool.includes("PostCSS");
+      answers.useSASS = preprocessor === "SASS";
+      answers.useLESS = preprocessor === "LESS";
+      answers.useStylus = preprocessor === "Stylus";
+      // The starter stylesheet is written in the language that was picked
+      answers.styleExtension = preprocessor ? STYLE_EXTENSIONS[preprocessor] : "css";
+
+      if (answers.usePostCSS) {
+        devDependencies.push("postcss-loader", "postcss", "autoprefixer");
+      }
+
+      if (answers.useSASS) {
+        devDependencies.push("sass-loader", "sass");
+      }
+
+      if (answers.useLESS) {
+        devDependencies.push("less-loader", "less");
+      }
+
+      if (answers.useStylus) {
+        devDependencies.push("stylus-loader", "stylus");
       }
 
       const files: FileRecord[] = [
@@ -127,6 +151,10 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
           answers.entryPoint = "./src/index.js";
           files.push({ filePath: answers.entryPoint as string, fileType: "text" });
           break;
+      }
+
+      if (answers.usePostCSS) {
+        files.push({ filePath: "postcss.config.js", fileType: "text" });
       }
 
       files.push({

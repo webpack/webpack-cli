@@ -42,6 +42,90 @@ exports[`create-webpack-app cli should ask question when wrong template is suppl
 }
 `;
 
+exports[`create-webpack-app cli should chain PostCSS after a preprocessor when both are selected 1`] = `
+{
+  "description": "My webpack project",
+  "devDependencies": {
+    "autoprefixer": "x.x.x",
+    "postcss": "x.x.x",
+    "postcss-loader": "x.x.x",
+    "sass": "x.x.x",
+    "sass-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+  },
+  "name": "webpack-project",
+  "scripts": {
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
+  },
+  "type": "module",
+  "version": "1.0.0",
+}
+`;
+
+exports[`create-webpack-app cli should chain PostCSS after a preprocessor when both are selected 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const isProduction = process.env.NODE_ENV === "production";
+
+/** @type {import("webpack").Configuration} */
+const config = {
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
+    output: {
+        path: path.resolve(__dirname, "dist"),
+    },
+    // The PostCSS rule registers a loader for \`.css\`, which turns off the
+    // automatic detection of webpack's built-in CSS support — ask for it
+    experiments: {
+        css: true,
+    },
+    plugins: [
+        // Add your plugins here
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\.css$/i,
+                type: "css/auto",
+                use: ["postcss-loader"],
+            },
+            {
+                test: /\\.s[ac]ss$/i,
+                type: "css/auto",
+                use: ["postcss-loader", "sass-loader"],
+            },
+            {
+                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: "asset",
+            },
+
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+};
+
+export default () => {
+    if (isProduction) {
+        config.mode = "production";
+    } else {
+        config.mode = "development";
+    }
+    return config;
+};
+"
+`;
+
 exports[`create-webpack-app cli should configure WDS as opted 1`] = `
 {
   "description": "My webpack project",
@@ -1334,6 +1418,83 @@ export default () => {
     if (isProduction) {
         config.mode = "production";
         config.plugins?.push(new WorkboxWebpackPlugin.GenerateSW());
+    } else {
+        config.mode = "development";
+    }
+    return config;
+};
+"
+`;
+
+exports[`create-webpack-app cli should scaffold PostCSS on top of the built-in CSS support when selected 1`] = `
+{
+  "description": "My webpack project",
+  "devDependencies": {
+    "autoprefixer": "x.x.x",
+    "postcss": "x.x.x",
+    "postcss-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+  },
+  "name": "webpack-project",
+  "scripts": {
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
+  },
+  "type": "module",
+  "version": "1.0.0",
+}
+`;
+
+exports[`create-webpack-app cli should scaffold PostCSS on top of the built-in CSS support when selected 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const isProduction = process.env.NODE_ENV === "production";
+
+/** @type {import("webpack").Configuration} */
+const config = {
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
+    output: {
+        path: path.resolve(__dirname, "dist"),
+    },
+    // The PostCSS rule registers a loader for \`.css\`, which turns off the
+    // automatic detection of webpack's built-in CSS support — ask for it
+    experiments: {
+        css: true,
+    },
+    plugins: [
+        // Add your plugins here
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\.css$/i,
+                type: "css/auto",
+                use: ["postcss-loader"],
+            },
+            {
+                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: "asset",
+            },
+
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+};
+
+export default () => {
+    if (isProduction) {
+        config.mode = "production";
     } else {
         config.mode = "development";
     }

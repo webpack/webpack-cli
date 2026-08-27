@@ -20,6 +20,11 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
     },<% if (devServer) { %>
     devServer: {
         open: true,
+    },<% } %><% if (usePostCSS) { %>
+    // The PostCSS rule registers a loader for `.css`, which turns off the
+    // automatic detection of webpack's built-in CSS support — ask for it
+    experiments: {
+        css: true,
     },<% } %>
     plugins: [
         // Add your plugins here
@@ -41,21 +46,26 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
                 test: /\.(ts|tsx)$/i,
                 loader: "ts-loader",
                 exclude: ["/node_modules/"],
-            },<% } %><%  if (cssPreprocessor == "SASS") { %>
+            },<% } %><%  if (usePostCSS) { %>
+            {
+                test: /\.css$/i,
+                type: "css/auto",
+                use: ["postcss-loader"],
+            },<% } %><%  if (useSASS) { %>
             {
                 test: /\.s[ac]ss$/i,
                 type: "css/auto",
-                use: ["sass-loader"],
-            },<% } %><%  if (cssPreprocessor == "LESS") { %>
+                use: [<% if (usePostCSS) { %>"postcss-loader", <% } %>"sass-loader"],
+            },<% } %><%  if (useLESS) { %>
             {
                 test: /\.less$/i,
                 type: "css/auto",
-                use: ["less-loader"],
-            },<% } %><%  if (cssPreprocessor == "Stylus") { %>
+                use: [<% if (usePostCSS) { %>"postcss-loader", <% } %>"less-loader"],
+            },<% } %><%  if (useStylus) { %>
             {
                 test: /\.styl$/i,
                 type: "css/auto",
-                use: ["stylus-loader"],
+                use: [<% if (usePostCSS) { %>"postcss-loader", <% } %>"stylus-loader"],
             },<% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,

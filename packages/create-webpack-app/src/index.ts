@@ -18,7 +18,7 @@ const baseAnswers: Answers = {
   langType: "none",
   devServer: true,
   workboxWebpackPlugin: true,
-  cssPreprocessor: "none",
+  cssTool: "none",
   packageManager: "npm",
 };
 const initValues: Record<string, Answers> = {

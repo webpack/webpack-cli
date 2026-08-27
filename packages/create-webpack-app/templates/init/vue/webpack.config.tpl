@@ -60,21 +60,26 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
                     transpileOnly: true,
                 },
                 exclude: ["/node_modules/"],
-            },<% } %><%  if (cssPreprocessor == "SASS") { %>
+            },<% } %><%  if (usePostCSS) { %>
+            {
+                test: /\.css$/i,
+                type: "css/auto",
+                use: ["postcss-loader"],
+            },<% } %><%  if (useSASS) { %>
             {
                 test: /\.s[ac]ss$/i,
                 type: "css/auto",
-                use: ["sass-loader"],
-            },<% } %><%  if (cssPreprocessor == "LESS") { %>
+                use: [<% if (usePostCSS) { %>"postcss-loader", <% } %>"sass-loader"],
+            },<% } %><%  if (useLESS) { %>
             {
                 test: /\.less$/i,
                 type: "css/auto",
-                use: ["less-loader"],
-            },<% } %><%  if (cssPreprocessor == "Stylus") { %>
+                use: [<% if (usePostCSS) { %>"postcss-loader", <% } %>"less-loader"],
+            },<% } %><%  if (useStylus) { %>
             {
                 test: /\.styl$/i,
                 type: "css/auto",
-                use: ["stylus-loader"],
+                use: [<% if (usePostCSS) { %>"postcss-loader", <% } %>"stylus-loader"],
             },<% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
