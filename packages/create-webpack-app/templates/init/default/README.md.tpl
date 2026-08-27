@@ -34,3 +34,20 @@ top of it, as a `css/auto` rule:
 
 They combine, too: webpack applies `use` right to left, so `["postcss-loader",
 "sass-loader"]` compiles the Sass first and runs PostCSS over the result.
+<% if (langType === "Typescript") { %>
+## TypeScript
+
+webpack strips the types itself (it needs Node.js >= 22.6), so this project has no
+TypeScript loader. Stripping is erasable syntax only — types, generics, `import type`
+and casts — so `enum`, `namespace`, parameter properties and `.tsx` need a loader such
+as `ts-loader` or `swc-loader` instead.
+
+Nothing is type checked during the build. `tsconfig.json` is what your editor reads,
+and:
+
+```bash
+npm run check:types
+```
+
+runs `tsc --noEmit` over the project.
+<% } %>

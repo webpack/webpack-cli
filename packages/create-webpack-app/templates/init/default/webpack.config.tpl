@@ -35,11 +35,6 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
             {
                 test: /\.(js|jsx)$/i,
                 loader: "babel-loader",
-            },<% } %><% if (langType == "Typescript") { %>
-            {
-                test: /\.(ts|tsx)$/i,
-                loader: "ts-loader",
-                exclude: ["/node_modules/"],
             },<% } %><%  if (usePostCSS) { %>
             {
                 test: /\.css$/i,
@@ -66,6 +61,7 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
                 type: "asset",
             },
 
+            // HTML, CSS<% if (langType == "Typescript") { %> and TypeScript<% } %> need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],

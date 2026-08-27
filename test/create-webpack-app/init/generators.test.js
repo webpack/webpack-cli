@@ -119,12 +119,25 @@ describe("create-webpack-app generators", () => {
     }
   }
 
-  it("keeps the TypeScript entry point and its config", async () => {
+  it("scaffolds TypeScript on webpack's own support, with a tsconfig to check against", async () => {
     const actions = await actionsFor("default", { langType: "Typescript", cssTool: "none" });
     const files = filesFrom(actions);
+    const installed = packagesFrom(actions);
 
     expect(files).toContain("index.ts");
     expect(files).toContain("tsconfig.json");
-    expect(packagesFrom(actions)).toContain("ts-loader");
+    // `typescript` is for the editor and `check:types`, not for the build
+    expect(installed).toContain("typescript");
+    expect(installed).not.toContain("ts-loader");
   });
+
+  // Only the default template can lean on webpack: type stripping handles neither
+  // `.tsx` nor the single-file components the framework loaders produce.
+  for (const template of ["react", "vue", "svelte"]) {
+    it(`keeps a TypeScript loader for the ${template} template`, async () => {
+      const actions = await actionsFor(template, { langType: "Typescript", cssTool: "none" });
+
+      expect(packagesFrom(actions)).toContain("ts-loader");
+    });
+  }
 });

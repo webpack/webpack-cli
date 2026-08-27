@@ -83,7 +83,9 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
           devDependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
           break;
         case "Typescript":
-          devDependencies.push("typescript", "ts-loader");
+          // webpack strips the types itself; `typescript` is here for the editor
+          // and for the `check:types` script, not for the build
+          devDependencies.push("typescript");
           break;
       }
 

@@ -72,6 +72,7 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
                 type: "asset",
             },
 
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],

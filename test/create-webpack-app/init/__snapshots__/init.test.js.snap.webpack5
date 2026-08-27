@@ -109,6 +109,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -178,6 +179,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -244,6 +246,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -316,6 +319,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -387,6 +391,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -459,6 +464,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -531,6 +537,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -603,6 +610,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -675,6 +683,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -807,6 +816,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -900,6 +910,7 @@ const config : Configuration = {
                 type: "asset",
             },
 
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1002,6 +1013,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1106,6 +1118,7 @@ const config : Configuration = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1136,15 +1149,18 @@ exports[`create-webpack-app cli should generate typescript project correctly 1`]
 {
   "description": "My webpack project",
   "devDependencies": {
-    "ts-loader": "x.x.x",
     "typescript": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+  },
+  "engines": {
+    "node": ">=22.6.0",
   },
   "name": "webpack-project",
   "scripts": {
     "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
+    "check:types": "tsc --noEmit",
     "watch": "webpack --watch",
   },
   "type": "module",
@@ -1178,15 +1194,11 @@ const config : Configuration = {
     module: {
         rules: [
             {
-                test: /\\.(ts|tsx)$/i,
-                loader: "ts-loader",
-                exclude: ["/node_modules/"],
-            },
-            {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
 
+            // HTML, CSS and TypeScript need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1293,6 +1305,7 @@ const config = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1402,6 +1415,7 @@ const config : Configuration = {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1486,6 +1500,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1557,6 +1572,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],

@@ -318,6 +318,13 @@ describe("create-webpack-app cli", () => {
       expect(existsSync(resolve(dir, file))).toBeTruthy();
     }
 
+    // webpack strips the types itself, so the project carries no TypeScript loader
+    const { devDependencies } = readFromPkgJSON(dir);
+
+    expect(readFromWebpackConfig(dir, "webpack.config.ts")).not.toContain("ts-loader");
+    expect(Object.keys(devDependencies)).not.toContain("ts-loader");
+    expect(Object.keys(devDependencies)).toContain("typescript");
+
     // Check if the generated package.json file content matches the snapshot
     expect(readFromPkgJSON(dir)).toMatchSnapshot();
 
