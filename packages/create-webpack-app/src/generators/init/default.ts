@@ -35,7 +35,7 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
       },
       {
         type: "confirm",
-        name: "htmlWebpackPlugin",
+        name: "html",
         message: "Do you want to simplify the creation of HTML files for your bundle?",
         default: true,
       },
@@ -55,7 +55,6 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
           if (input === "none") {
             answers.isCSS = false;
             answers.isPostCSS = false;
-            answers.extractPlugin = "No";
           } else if (input === "CSS only") {
             answers.isCSS = true;
           }
@@ -75,13 +74,6 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
         name: "isPostCSS",
         message: "Do you want to use PostCSS in your project?",
         default: (answers: Answers) => answers.cssType === "CSS only",
-      },
-      {
-        type: "list",
-        name: "extractPlugin",
-        message: "Do you want to extract CSS into separate files?",
-        choices: ["No", "Only for Production", "Yes"],
-        default: "Only for Production",
       },
       {
         type: "list",
@@ -113,10 +105,6 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
         devDependencies.push("webpack-dev-server");
       }
 
-      if (answers.htmlWebpackPlugin) {
-        devDependencies.push("html-webpack-plugin", "html-loader");
-      }
-
       if (answers.workboxWebpackPlugin) {
         devDependencies.push("workbox-webpack-plugin");
       }
@@ -125,12 +113,7 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
         devDependencies.push("postcss-loader", "postcss", "autoprefixer");
       }
 
-      if (answers.extractPlugin !== "No") {
-        devDependencies.push("mini-css-extract-plugin");
-      }
-
       if (answers.cssType !== "none") {
-        devDependencies.push("style-loader", "css-loader");
         switch (answers.cssType) {
           case "SASS":
             devDependencies.push("sass-loader", "sass");
@@ -142,9 +125,6 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
             devDependencies.push("stylus-loader", "stylus");
             break;
         }
-      }
-      if (answers.extractPlugin !== "No") {
-        devDependencies.push("mini-css-extract-plugin");
       }
 
       const files: FileRecord[] = [

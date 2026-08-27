@@ -352,7 +352,7 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
-  it("should use to use css preprocessor with postcss with mini-css-extract-plugin in project when selected", async () => {
+  it("should use css preprocessor with postcss in project when selected", async () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],
@@ -441,7 +441,7 @@ describe("create-webpack-app cli", () => {
     expect(readFromWebpackConfig(dir)).toMatchSnapshot();
   });
 
-  it("should configure html-webpack-plugin as opted", async () => {
+  it("should configure native HTML support as opted", async () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],

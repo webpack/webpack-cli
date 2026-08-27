@@ -17,12 +17,11 @@ const baseAnswers: Answers = {
   projectPath: process.cwd(),
   langType: "none",
   devServer: true,
-  htmlWebpackPlugin: true,
+  html: true,
   workboxWebpackPlugin: true,
   cssType: "none",
   isCSS: false,
   isPostCSS: false,
-  extractPlugin: "No",
   packageManager: "npm",
 };
 const initValues: Record<string, Answers> = {

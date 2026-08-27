@@ -3,32 +3,26 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";<% if (langType === "Typescript") { %>
 import { type Configuration } from "webpack";<% if (devServer) { %>
-import "webpack-dev-server";<% } %><% } %><% if (htmlWebpackPlugin) { %>
-import HtmlWebpackPlugin from "html-webpack-plugin";<% } %><% if (extractPlugin !== "No") { %>
-import MiniCssExtractPlugin from "mini-css-extract-plugin";<% } %><% if (workboxWebpackPlugin) { %>
+import "webpack-dev-server";<% } %><% } %><% if (workboxWebpackPlugin) { %>
 import WorkboxWebpackPlugin from "workbox-webpack-plugin";<% } %>
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === "production";<% if (cssType !== "none") { %><% if (extractPlugin === "Yes") { %>
-const stylesHandler = MiniCssExtractPlugin.loader;<% } else if (extractPlugin === "Only for Production") { %>
-const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";<% } else { %>
-const stylesHandler = "style-loader";<% } %><% } %>
+const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
-    entry: "<%= entryPoint %>",
+    entry: <% if (html) { %>"./index.html"<% } else { %>"<%= entryPoint %>"<% } %>,
     output: {
         path: path.resolve(__dirname, "dist"),
     },<% if (devServer) { %>
     devServer: {
         open: true,
+    },<% } %><% if (isCSS && isPostCSS) { %>
+    experiments: {
+        css: true,
     },<% } %>
-    plugins: [<% if (htmlWebpackPlugin) { %>
-        new HtmlWebpackPlugin({
-            template: "index.html",
-        }),<% } %><% if (extractPlugin === "Yes") { %>
-        new MiniCssExtractPlugin(),<% } %>
+    plugins: [
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
@@ -42,36 +36,31 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
                 test: /\.(ts|tsx)$/i,
                 loader: "ts-loader",
                 exclude: ["/node_modules/"],
-            },<% } %><%  if (isCSS && !isPostCSS) { %>
+            },<% } %><%  if (isCSS && isPostCSS) { %>
             {
                 test: /\.css$/i,
-                use: [stylesHandler,"css-loader"],
+                type: "css/auto",
+                use: ["postcss-loader"],
             },<% } %><%  if (cssType == "SASS") { %>
             {
                 test: /\.s[ac]ss$/i,
-                use: [stylesHandler, "css-loader", <% if (isPostCSS) { %>"postcss-loader", <% } %>"sass-loader"],
+                type: "css/auto",
+                use: [<% if (isPostCSS) { %>"postcss-loader", <% } %>"sass-loader"],
             },<% } %><%  if (cssType == "LESS") { %>
             {
                 test: /\.less$/i,
-                use: [stylesHandler, "css-loader", <% if (isPostCSS) { %>"postcss-loader", <% } %>"less-loader"],
+                type: "css/auto",
+                use: [<% if (isPostCSS) { %>"postcss-loader", <% } %>"less-loader"],
             },<% } %><%  if (cssType == "Stylus") { %>
             {
                 test: /\.styl$/i,
-                use: [stylesHandler, "css-loader", <% if (isPostCSS) { %>"postcss-loader", <% } %>"stylus-loader"],
-            },<% } %><%  if (isPostCSS && isCSS) { %>
-            {
-                test: /\.css$/i,
-                use: [stylesHandler, "css-loader", "postcss-loader"],
+                type: "css/auto",
+                use: [<% if (isPostCSS) { %>"postcss-loader", <% } %>"stylus-loader"],
             },<% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
-            %><%  if (htmlWebpackPlugin) { %>
-            {
-                test: /\.html$/i,
-                use: ["html-loader"],
-            },<% } %>
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
@@ -84,8 +73,7 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
 
 export default () => {
     if (isProduction) {
-        config.mode = "production";<% if (extractPlugin === "Only for Production") { %>
-        config.plugins?.push(new MiniCssExtractPlugin());<% } %><% if (workboxWebpackPlugin) { %>
+        config.mode = "production";<% if (workboxWebpackPlugin) { %>
         config.plugins?.push(new WorkboxWebpackPlugin.GenerateSW());<% } %>
     } else {
         config.mode = "development";

@@ -7,6 +7,6 @@
 </head>
 <body>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
+    <script src="<%= entry %>"></script>
 </body>
 </html>

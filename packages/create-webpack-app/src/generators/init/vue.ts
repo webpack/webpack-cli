@@ -12,7 +12,6 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
     "webpack-cli",
     "vue@3",
     "webpack-dev-server",
-    "html-webpack-plugin",
     "vue-loader@next",
     "@vue/compiler-sfc",
     "vue-router@4",
@@ -57,7 +56,6 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
           if (input === "none") {
             answers.isCSS = false;
             answers.isPostCSS = false;
-            answers.extractPlugin = "No";
           } else if (input === "CSS only") {
             answers.isCSS = true;
           }
@@ -80,13 +78,6 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
       },
       {
         type: "list",
-        name: "extractPlugin",
-        message: "Do you want to extract CSS into separate files?",
-        choices: ["No", "Only for Production", "Yes"],
-        default: "Only for Production",
-      },
-      {
-        type: "list",
         name: "packageManager",
         message: "Which package manager do you want to use?",
         choices: ["npm", "yarn", "pnpm"],
@@ -102,7 +93,7 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
     actions: function actions(answers: Answers) {
       // setting some default values based on the answers
       const actions: ActionType[] = [];
-      answers.htmlWebpackPlugin = true;
+      answers.html = true;
       answers.devServer = true;
 
       switch (answers.langType) {
@@ -129,9 +120,7 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
       if (answers.cssType === "none") {
         answers.isCSS = false;
         answers.isPostCSS = false;
-        answers.extractPlugin = "No";
       } else {
-        devDependencies.push("vue-style-loader", "style-loader", "css-loader");
         switch (answers.cssType) {
           case "CSS only":
             answers.isCSS = true;
@@ -146,10 +135,6 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
             devDependencies.push("stylus-loader", "stylus");
             break;
         }
-      }
-
-      if (answers.extractPlugin !== "No") {
-        devDependencies.push("mini-css-extract-plugin");
       }
 
       const files: FileRecord[] = [

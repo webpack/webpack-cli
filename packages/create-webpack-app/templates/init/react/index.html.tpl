@@ -8,5 +8,6 @@
     </head>
     <body>
         <div id="root"></div>
+        <script src="<%= entry %>"></script>
     </body>
 </html>
