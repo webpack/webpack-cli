@@ -97,7 +97,8 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
           );
           break;
         case "Typescript":
-          devDependencies.push("typescript", "ts-loader", "@types/react", "@types/react-dom");
+          // ts-loader 9 (its latest) throws on TypeScript 7, so pin what it supports
+          devDependencies.push("typescript@5", "ts-loader", "@types/react", "@types/react-dom");
           break;
       }
       if (answers.workboxWebpackPlugin) {

@@ -84,7 +84,8 @@ export default async function svelteInitGenerator(plop: NodePlopAPI) {
           devDependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
           break;
         case "Typescript":
-          devDependencies.push("typescript", "ts-loader", "@tsconfig/svelte");
+          // ts-loader 9 (its latest) throws on TypeScript 7, so pin what it supports
+          devDependencies.push("typescript@5", "ts-loader", "@tsconfig/svelte");
           break;
       }
 

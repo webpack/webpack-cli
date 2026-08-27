@@ -37,13 +37,19 @@ They combine, too: webpack applies `use` right to left, so `["postcss-loader",
 <% if (langType === "Typescript") { %>
 ## TypeScript
 
-webpack strips the types itself (it needs Node.js >= 22.6), so this project has no
-TypeScript loader. Stripping is erasable syntax only — types, generics, `import type`
-and casts — so `enum`, `namespace`, parameter properties and `.tsx` need a loader such
-as `ts-loader` or `swc-loader` instead.
+<% if (useTsLoader) { %>This project compiles TypeScript with `ts-loader`, which type
+checks as it builds and handles every TypeScript feature, `.tsx` included.
 
-Nothing is type checked during the build. `tsconfig.json` is what your editor reads,
-and:
+webpack can also strip the types itself, with no loader at all — it is faster, but it
+covers erasable syntax only (types, generics, `import type`, casts) and checks nothing.
+Re-run `create-webpack-app` and answer `built-in` to that question to try it.<% } else { %>webpack strips the types itself (it needs Node.js >= 22.6), so this project has no
+TypeScript loader. Stripping is erasable syntax only — types, generics, `import type`
+and casts — so `enum`, `namespace`, parameter properties, decorator metadata and `.tsx`
+need a loader instead: re-run `create-webpack-app` and answer `ts-loader` to that
+question, which also type checks as it builds.<% } %>
+
+<% if (useTsLoader) { %>Either way, `tsconfig.json` is what your editor reads, and:<% } else { %>Nothing is type checked during the build. `tsconfig.json` is what your editor reads,
+and:<% } %>
 
 ```bash
 npm run check:types

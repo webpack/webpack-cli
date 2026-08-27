@@ -131,6 +131,20 @@ describe("create-webpack-app generators", () => {
     expect(installed).not.toContain("ts-loader");
   });
 
+  it("keeps ts-loader reachable for what type stripping cannot do", async () => {
+    const actions = await actionsFor("default", {
+      langType: "Typescript",
+      cssTool: "none",
+      tsCompiler: "ts-loader",
+    });
+    const installed = packagesFrom(actions);
+
+    expect(installed).toContain("ts-loader");
+    // ts-loader 9 throws on TypeScript 7, so the compiler is pinned with it
+    expect(installed).toContain("typescript@5");
+    expect(installed).not.toContain("typescript");
+  });
+
   // Only the default template can lean on webpack: type stripping handles neither
   // `.tsx` nor the single-file components the framework loaders produce.
   for (const template of ["react", "vue", "svelte"]) {

@@ -34,6 +34,14 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
         default: "none",
       },
       {
+        type: "list",
+        name: "tsCompiler",
+        message: "How should TypeScript be compiled?",
+        choices: ["built-in", "ts-loader"],
+        default: "built-in",
+        when: (answers: Answers) => answers.langType === "Typescript",
+      },
+      {
         type: "confirm",
         name: "devServer",
         message: "Would you like to use Webpack Dev server?",
@@ -78,14 +86,24 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
     actions: function actions(answers: Answers) {
       const actions: ActionType[] = [];
 
+      // the config template reads this, so it has to be set whatever the language is
+      answers.useTsLoader = false;
+
       switch (answers.langType) {
         case "ES6":
           devDependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
           break;
         case "Typescript":
-          // webpack strips the types itself; `typescript` is here for the editor
-          // and for the `check:types` script, not for the build
-          devDependencies.push("typescript");
+          // Type stripping covers erasable syntax only, so ts-loader stays on
+          // offer; either way `typescript` backs the editor and `check:types`
+          answers.useTsLoader = answers.tsCompiler === "ts-loader";
+
+          if (answers.useTsLoader) {
+            // ts-loader 9 (its latest) throws on TypeScript 7, so pin what it supports
+            devDependencies.push("typescript@5", "ts-loader");
+          } else {
+            devDependencies.push("typescript");
+          }
           break;
       }
 

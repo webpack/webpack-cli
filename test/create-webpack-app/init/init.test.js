@@ -297,9 +297,10 @@ describe("create-webpack-app cli", () => {
     const { stdout } = await runPromptWithAnswers(
       dir,
       ["init", "."],
-      [`${DOWN}${DOWN}${ENTER}`, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
+      [`${DOWN}${DOWN}${ENTER}`, ENTER, `n${ENTER}`, `n${ENTER}`, ENTER, ENTER],
     );
 
+    expect(stdout).toContain("How should TypeScript be compiled?");
     expect(stdout).toContain("Project has been initialised with webpack!");
     expect(stdout).toContain("webpack.config.ts");
     expect(stdout).toContain("tsconfig.json");

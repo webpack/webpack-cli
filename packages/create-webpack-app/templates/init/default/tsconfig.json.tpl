@@ -11,7 +11,6 @@
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
     "isolatedModules": true,
-    "noEmit": true,
     "rewriteRelativeImportExtensions": true
   },
   "include": ["./src/**/*"],

@@ -31,7 +31,12 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
-        rules: [<% if (langType == "ES6") { %>
+        rules: [<% if (useTsLoader) { %>
+            {
+                test: /\.(ts|tsx)$/i,
+                loader: "ts-loader",
+                exclude: ["/node_modules/"],
+            },<% } %><% if (langType == "ES6") { %>
             {
                 test: /\.(js|jsx)$/i,
                 loader: "babel-loader",
@@ -61,7 +66,7 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
                 type: "asset",
             },
 
-            // HTML, CSS<% if (langType == "Typescript") { %> and TypeScript<% } %> need no loader — webpack supports them out of the box
+            // HTML, CSS<% if (langType == "Typescript" && !useTsLoader) { %> and TypeScript<% } %> need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
