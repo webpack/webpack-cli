@@ -109,6 +109,50 @@ describe("complete", () => {
     );
   });
 
+  it("should suggest option values for build --progress", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "complete",
+      "--",
+      "build",
+      "--progress=",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(parseCompletions(stdout)).toEqual(expect.arrayContaining(["profile"]));
+  });
+
+  it("should suggest option values for version --output", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, [
+      "complete",
+      "--",
+      "version",
+      "--output=",
+    ]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(parseCompletions(stdout)).toEqual(expect.arrayContaining(["json", "markdown"]));
+  });
+
+  it("should suggest option values for --help", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", "--help="]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(parseCompletions(stdout)).toEqual(expect.arrayContaining(["verbose"]));
+  });
+
+  it("should suggest shells for the complete command", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", "complete", ""]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(parseCompletions(stdout)).toEqual(
+      expect.arrayContaining(["zsh", "bash", "fish", "powershell"]),
+    );
+  });
+
   it("should suggest global options after a command", async () => {
     for (const command of ["build", "serve", "help"]) {
       const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", command, "--"]);
