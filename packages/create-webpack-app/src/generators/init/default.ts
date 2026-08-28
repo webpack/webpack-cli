@@ -110,8 +110,9 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
           answers.useTsLoader = answers.tsCompiler === "ts-loader";
 
           if (answers.useTsLoader) {
-            // ts-loader 9 (its latest) throws on TypeScript 7, so pin what it supports
-            devDependencies.push("typescript@5", "ts-loader");
+            // ts-loader 9 (its latest) throws on TypeScript 7, the native port,
+            // so pin the last JavaScript-line release it still works with
+            devDependencies.push("typescript@6", "ts-loader");
           } else {
             devDependencies.push("typescript");
           }

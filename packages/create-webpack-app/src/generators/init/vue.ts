@@ -92,8 +92,9 @@ export default async function vueInitGenerator(plop: NodePlopAPI) {
           devDependencies.push("babel-loader", "@babel/core", "@babel/preset-env");
           break;
         case "Typescript":
-          // ts-loader 9 (its latest) throws on TypeScript 7, so pin what it supports
-          devDependencies.push("typescript@5", "ts-loader");
+          // ts-loader 9 (its latest) throws on TypeScript 7, the native port, so pin
+          // the last release of the JavaScript line it still works with
+          devDependencies.push("typescript@6", "ts-loader");
           break;
       }
 

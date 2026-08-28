@@ -140,8 +140,8 @@ describe("create-webpack-app generators", () => {
     const installed = packagesFrom(actions);
 
     expect(installed).toContain("ts-loader");
-    // ts-loader 9 throws on TypeScript 7, so the compiler is pinned with it
-    expect(installed).toContain("typescript@5");
+    // ts-loader 9 throws on TypeScript 7, so it pins the last 6.x with it
+    expect(installed).toContain("typescript@6");
     expect(installed).not.toContain("typescript");
   });
 
