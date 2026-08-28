@@ -37,7 +37,18 @@ export default async function defaultInitGenerator(plop: NodePlopAPI) {
         type: "list",
         name: "tsCompiler",
         message: "How should TypeScript be compiled?",
-        choices: ["built-in", "ts-loader"],
+        // The labels spell out the trade-off; a label must not end with `)`,
+        // which is what the prompt tests watch for to send the next answer
+        choices: [
+          {
+            name: "webpack itself: strips types, no type checking, needs Node.js >= 22.6",
+            value: "built-in",
+          },
+          {
+            name: "ts-loader: type checks while it builds, and handles .tsx, enums and decorators",
+            value: "ts-loader",
+          },
+        ],
         default: "built-in",
         when: (answers: Answers) => answers.langType === "Typescript",
       },
