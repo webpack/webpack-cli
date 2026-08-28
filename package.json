@@ -48,6 +48,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@bomb.sh/tab": "^0.0.22",
     "@babel/core": "^8.0.1",
     "@babel/preset-env": "^8.0.2",
     "@babel/register": "^8.0.1",

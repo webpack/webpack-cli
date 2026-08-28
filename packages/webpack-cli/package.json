@@ -44,6 +44,7 @@
     "@types/envinfo": "^7.8.4"
   },
   "peerDependencies": {
+    "@bomb.sh/tab": "^0.0.22",
     "js-yaml": "^4.0.0 || ^5.0.0",
     "json5": "^2.2.3",
     "toml": "^3.0.0 || ^4.0.0 || ^5.0.0",
@@ -52,6 +53,9 @@
     "webpack-dev-server": "^5.0.0 || ^6.0.0"
   },
   "peerDependenciesMeta": {
+    "@bomb.sh/tab": {
+      "optional": true
+    },
     "js-yaml": {
       "optional": true
     },

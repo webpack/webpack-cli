@@ -4,6 +4,7 @@ import path from "node:path";
 import { type Readable as ReadableType } from "node:stream";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import util from "node:util";
+import { type RootCommand } from "@bomb.sh/tab";
 import { type stringifyChunked as stringifyChunkedType } from "@discoveryjs/json-ext";
 import {
   type Command as CommanderCommand,
@@ -40,6 +41,7 @@ const WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_DEV_SER
 const WEBPACK_DEV_SERVER_PACKAGE = WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM
   ? (process.env.WEBPACK_DEV_SERVER_PACKAGE as string)
   : "webpack-dev-server";
+const COMPLETION_PACKAGE = "@bomb.sh/tab";
 
 // `webpack-dev-server` v6 is ESM and exposes the server as its `default` export,
 // while v5 exports it directly
@@ -157,6 +159,7 @@ interface KnownWebpackCLICommands {
   help: CommandOptions<void, CommanderArgs, Context>;
   info: CommandOptions<void, CommanderArgs, Context>;
   configtest: CommandOptions<string | undefined, CommanderArgs, WebpackContext & Context>;
+  complete: CommandOptions<void, CommanderArgs, Context>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -583,6 +586,12 @@ class WebpackCLI {
 
   capitalizeFirstLetter(str: string): string {
     return str.length > 0 ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+  }
+
+  #commandTerm(command: CommanderCommand): string {
+    const aliases = command.aliases().filter(Boolean);
+
+    return aliases.length > 0 ? `${command.name()}|${aliases.join("|")}` : command.name();
   }
 
   toKebabCase(str: string): string {
@@ -1432,14 +1441,12 @@ class WebpackCLI {
             return `${parentCmdNames}${command.usage()} | ${parentCmdNames}[command] [options]`;
           }
 
-          return `${parentCmdNames}${command.name()}|${command
-            .aliases()
-            .join("|")} ${command.usage()}`;
+          return `${parentCmdNames}${this.#commandTerm(command)} ${command.usage()}`;
         },
         // Support multiple aliases
         subcommandTerm: (command) => {
           const usage = command.usage();
-          return `${command.name()}|${command.aliases().join("|")}${usage.length > 0 ? ` ${usage}` : ""}`;
+          return `${this.#commandTerm(command)}${usage.length > 0 ? ` ${usage}` : ""}`;
         },
         visibleOptions: function visibleOptions(command) {
           return command.options.filter((option) => {
@@ -2445,6 +2452,16 @@ class WebpackCLI {
         );
       },
     },
+    complete: {
+      rawName: "complete",
+      name: "complete [shell]",
+      alias: [],
+      description: "Generate shell completion scripts.",
+      action: () => {
+        // Display-only stub for `--help`. Completion requests are handled in `run()`
+        // before parse so the completion adapter can inspect the loaded command tree.
+      },
+    },
   };
 
   #isCommand<A = void, O extends CommanderArgs = CommanderArgs, C extends Context = Context>(
@@ -2489,6 +2506,8 @@ class WebpackCLI {
       return await this.makeCommand(this.#commands.info);
     } else if (this.#isCommand(commandName, this.#commands.configtest)) {
       return await this.makeCommand(this.#commands.configtest);
+    } else if (this.#isCommand(commandName, this.#commands.complete)) {
+      return await this.makeCommand(this.#commands.complete);
     }
 
     const pkg: string = commandName;
@@ -2527,7 +2546,174 @@ class WebpackCLI {
     return externalCommand;
   }
 
-  async run(args: readonly string[], parseOptions: ParseOptions) {
+  #completionRequest(
+    args: readonly string[],
+    parseOptions?: ParseOptions,
+  ): { words: string[] } | undefined {
+    const userArgs = parseOptions?.from === "user" ? args : args.slice(2);
+
+    if (userArgs.find((arg) => arg !== "--" && !arg.startsWith("-")) !== "complete") {
+      return;
+    }
+
+    // `complete -- <words>` asks what to suggest for `<words>`; `complete <shell>`
+    // only prints a script and has no words to resolve.
+    const separator = userArgs.indexOf("--");
+
+    return { words: separator === -1 ? [] : userArgs.slice(separator + 1) };
+  }
+
+  async #prepareCompletions(words: string[]): Promise<void> {
+    // Register every option (same as `--help`) so tab can inspect the full tree.
+    this.program.forHelp = true;
+
+    await Promise.all(
+      Object.values(this.#commands)
+        .filter((command) => command.rawName !== "complete")
+        .map((command) => this.#loadCommandByName(command.rawName)),
+    );
+
+    let tab: typeof import("@bomb.sh/tab/commander").default;
+
+    try {
+      ({ default: tab } = await import("@bomb.sh/tab/commander"));
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ERR_MODULE_NOT_FOUND") {
+        throw error;
+      }
+
+      // The shell runs `complete -- <words>` on every keypress, so a missing
+      // optional package stays silent there and only reports when asked for a script.
+      if (words.length === 0) {
+        this.logger.error(
+          `For using '${this.colors.green("complete")}' command you need to install: '${this.colors.green(COMPLETION_PACKAGE)}' package.`,
+        );
+        process.exit(2);
+      }
+
+      process.exit(0);
+    }
+
+    this.#attachCompletionHandlers(tab(this.program), words);
+  }
+
+  #attachCompletionHandlers(completion: RootCommand, words: string[]): void {
+    const helpOption = completion.options.get("help");
+
+    if (helpOption) {
+      helpOption.handler = (complete) => {
+        complete("verbose", "Show all available commands and options");
+      };
+    }
+
+    const outputHandler = (complete: (value: string, description: string) => void) => {
+      complete("json", "JSON output");
+      complete("markdown", "Markdown output");
+    };
+
+    for (const name of ["info", "version"]) {
+      const outputOption = completion.commands.get(name)?.options.get("output");
+
+      if (outputOption) {
+        outputOption.handler = outputHandler;
+      }
+    }
+
+    const progressHandler = (complete: (value: string, description: string) => void) => {
+      complete("profile", "Capture profiling data");
+    };
+
+    for (const name of ["build", "watch", "serve"]) {
+      const progressOption = completion.commands.get(name)?.options.get("progress");
+
+      if (progressOption) {
+        progressOption.handler = progressHandler;
+      }
+    }
+
+    const completeCommand = completion.commands.get("complete");
+    const shellArg = completeCommand?.arguments.get("shell");
+
+    if (shellArg) {
+      shellArg.handler = (complete) => {
+        complete("zsh", "Zsh");
+        complete("bash", "Bash");
+        complete("fish", "Fish");
+        complete("powershell", "PowerShell");
+      };
+    }
+
+    // The command already typed, e.g. `b` in `complete -- b --mode=`. The last word
+    // is still being written — `complete -- b` is completing `b` itself, which must
+    // stay a prefix of `build` so the shell expands it instead of matching an alias.
+    const requested = words.slice(0, -1).find((word) => word !== "--" && !word.startsWith("-"));
+
+    for (const command of this.program.commands) {
+      const tabCommand = completion.commands.get(command.name());
+
+      if (!tabCommand) {
+        continue;
+      }
+
+      // Commands are registered under their name, so an alias resolves to nothing.
+      // Only the requested one is registered, to keep aliases out of the suggestions.
+      if (requested && requested !== command.name() && command.aliases().includes(requested)) {
+        completion.commands.set(requested, tabCommand);
+      }
+
+      // Global options stay on the root command, yet they are accepted after a
+      // command too, so offer them there as well (e.g. `webpack build --col`).
+      for (const [name, option] of completion.options) {
+        if (!tabCommand.options.has(name)) {
+          tabCommand.options.set(name, option);
+        }
+      }
+
+      for (const option of command.options) {
+        const longName = option.long?.slice(2);
+
+        if (!longName) {
+          continue;
+        }
+
+        const { configs } = option as Option & { configs?: ArgumentConfig[] };
+
+        if (!configs) {
+          continue;
+        }
+
+        const values: string[] = [];
+
+        for (const config of configs) {
+          if (config.type !== "enum" || !config.values) {
+            continue;
+          }
+
+          for (const value of config.values) {
+            if (typeof value === "string") {
+              values.push(value);
+            }
+          }
+        }
+
+        if (values.length === 0) {
+          continue;
+        }
+
+        const tabOption = tabCommand.options.get(longName);
+
+        if (tabOption) {
+          tabOption.handler = (complete) => {
+            for (const value of values) {
+              complete(value, "");
+            }
+          };
+        }
+      }
+    }
+  }
+
+  async run(args: readonly string[], parseOptions?: ParseOptions) {
     // Default `--color` and `--no-color` options
 
     const self: WebpackCLI = this;
@@ -2734,6 +2920,12 @@ class WebpackCLI {
 
       await command.parseAsync([...commandOperands, ...unknown], { from: "user" });
     });
+
+    const completionRequest = this.#completionRequest(args, parseOptions);
+
+    if (completionRequest) {
+      await this.#prepareCompletions(completionRequest.words);
+    }
 
     await this.program.parseAsync(args, parseOptions);
   }

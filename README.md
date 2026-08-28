@@ -26,6 +26,7 @@
 - [Packages](#packages)
   - [Commands](#commands)
 - [Getting started](#getting-started)
+- [Shell completion](#shell-completion)
 - [Exit codes and their meanings](#exit-codes-and-their-meanings)
 - [Contributing and Internal Documentation](#contributing-and-internal-documentation)
 - [Funding](#funding)
@@ -58,6 +59,7 @@ Supporting developers is an important task for webpack CLI.
 Thus, webpack CLI provides different commands for many common tasks.
 
 - [`build|bundle|b [entries...] [options]`](https://webpack.js.org/api/cli/#build) - Run webpack (default command, can be omitted).
+- `complete [shell]` - Print a shell completion script, see [Shell completion](#shell-completion).
 - [`configtest|t [config-path]`](https://webpack.js.org/api/cli/#configtest) - Validate a webpack configuration.
 - [`help|h [command] [option]`](https://webpack.js.org/api/cli/#help) - Display help for commands and options.
 - [`info|i [options]`](https://webpack.js.org/api/cli/#info) - Returns information related to the local environment.
@@ -78,6 +80,41 @@ npx create-webpack-app init
 ```
 
 You will then be prompted for some questions about which features you want to use, such as `scss`, `typescript`, `PWA` support or other features.
+
+## Shell completion
+
+Commands, their options and the values those options accept can be completed in `zsh`, `bash`, `fish` and `powershell`. The completions are read from webpack's own schema, so they cover whatever your webpack and `webpack-dev-server` versions support.
+
+Completion is served by [`@bomb.sh/tab`](https://www.npmjs.com/package/@bomb.sh/tab), which is optional and not installed with `webpack-cli`:
+
+```sh
+npm install --save-dev @bomb.sh/tab
+```
+
+Then load the script for your shell:
+
+```sh
+# zsh
+echo 'source <(webpack complete zsh)' >> ~/.zshrc
+
+# bash
+echo 'source <(webpack complete bash)' >> ~/.bashrc
+
+# fish
+webpack complete fish > ~/.config/fish/completions/webpack.fish
+
+# powershell
+webpack complete powershell > ~/.webpack-completion.ps1
+echo '. ~/.webpack-completion.ps1' >> $PROFILE
+```
+
+Once the shell is restarted, `Tab` completes commands, their aliases, options and option values:
+
+```sh
+webpack b<Tab>              # webpack build
+webpack build --mode=<Tab>  # development, production, none
+webpack serve --his<Tab>    # webpack serve --history-api-fallback
+```
 
 ## Exit codes and their meanings
 
