@@ -34,10 +34,10 @@ jobs:
         id: changesets
         uses: changesets/action@198f833dd7d863100ea6e28967bc9a9fdefadb0a # v2.1.0
         with:
-          version: npm run version
-          publish: npm run release
-          commit: "chore(release): new release"
-          title: "chore(release): new release"
+          version-script: npm run version
+          publish-script: npm run release
+          commit-message: "chore(release): new release"
+          pr-title: "chore(release): new release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: "" # https://github.com/changesets/changesets/issues/1152#issuecomment-3190884868
