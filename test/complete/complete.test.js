@@ -70,6 +70,55 @@ describe("complete", () => {
     expect(suggestions).toEqual(expect.arrayContaining(["json", "markdown"]));
   });
 
+  it("should suggest the same options for a command alias", async () => {
+    const { stdout: canonical } = await run(__dirname, ["complete", "--", "build", "--"]);
+
+    for (const alias of ["b", "bundle"]) {
+      const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", alias, "--"]);
+
+      expect(exitCode).toBe(0);
+      expect(stderr).toBeFalsy();
+      expect(parseCompletions(stdout)).toEqual(parseCompletions(canonical));
+    }
+  });
+
+  it("should suggest option values for a command alias", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", "b", "--mode="]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+    expect(parseCompletions(stdout)).toEqual(
+      expect.arrayContaining(["development", "production", "none"]),
+    );
+  });
+
+  it("should suggest global options after a command", async () => {
+    for (const command of ["build", "serve", "help"]) {
+      const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", command, "--"]);
+
+      expect(exitCode).toBe(0);
+      expect(stderr).toBeFalsy();
+      expect(parseCompletions(stdout)).toEqual(
+        expect.arrayContaining(["--color", "--no-color", "--help"]),
+      );
+    }
+  });
+
+  it("should not suggest aliases as commands", async () => {
+    const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", ""]);
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBeFalsy();
+
+    const suggestions = parseCompletions(stdout);
+
+    expect(suggestions).toEqual(expect.arrayContaining(["build", "watch", "serve"]));
+
+    for (const alias of ["b", "bundle", "w", "s", "server"]) {
+      expect(suggestions).not.toContain(alias);
+    }
+  });
+
   it("should suggest flags for the build command", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", "build", "--"]);
 

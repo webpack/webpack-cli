@@ -41,6 +41,7 @@ const WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM = Boolean(process.env.WEBPACK_DEV_SER
 const WEBPACK_DEV_SERVER_PACKAGE = WEBPACK_DEV_SERVER_PACKAGE_IS_CUSTOM
   ? (process.env.WEBPACK_DEV_SERVER_PACKAGE as string)
   : "webpack-dev-server";
+const COMPLETION_PACKAGE = "@bomb.sh/tab";
 
 // `webpack-dev-server` v6 is ESM and exposes the server as its `default` export,
 // while v5 exports it directly
@@ -2545,13 +2546,24 @@ class WebpackCLI {
     return externalCommand;
   }
 
-  #isCompletionRequest(args: readonly string[], parseOptions?: ParseOptions): boolean {
+  #completionRequest(
+    args: readonly string[],
+    parseOptions?: ParseOptions,
+  ): { words: string[] } | undefined {
     const userArgs = parseOptions?.from === "user" ? args : args.slice(2);
 
-    return userArgs.find((arg) => arg !== "--" && !arg.startsWith("-")) === "complete";
+    if (userArgs.find((arg) => arg !== "--" && !arg.startsWith("-")) !== "complete") {
+      return;
+    }
+
+    // `complete -- <words>` asks what to suggest for `<words>`; `complete <shell>`
+    // only prints a script and has no words to resolve.
+    const separator = userArgs.indexOf("--");
+
+    return { words: separator === -1 ? [] : userArgs.slice(separator + 1) };
   }
 
-  async #prepareCompletions(): Promise<void> {
+  async #prepareCompletions(words: string[]): Promise<void> {
     // Register every option (same as `--help`) so tab can inspect the full tree.
     this.program.forHelp = true;
 
@@ -2561,12 +2573,31 @@ class WebpackCLI {
         .map((command) => this.#loadCommandByName(command.rawName)),
     );
 
-    const { default: tab } = await import("@bomb.sh/tab/commander");
+    let tab: typeof import("@bomb.sh/tab/commander").default;
 
-    this.#attachCompletionHandlers(tab(this.program));
+    try {
+      ({ default: tab } = await import("@bomb.sh/tab/commander"));
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ERR_MODULE_NOT_FOUND") {
+        throw error;
+      }
+
+      // The shell runs `complete -- <words>` on every keypress, so a missing
+      // optional package stays silent there and only reports when asked for a script.
+      if (words.length === 0) {
+        this.logger.error(
+          `For using '${this.colors.green("complete")}' command you need to install: '${this.colors.green(COMPLETION_PACKAGE)}' package.`,
+        );
+        process.exit(2);
+      }
+
+      process.exit(0);
+    }
+
+    this.#attachCompletionHandlers(tab(this.program), words);
   }
 
-  #attachCompletionHandlers(completion: RootCommand): void {
+  #attachCompletionHandlers(completion: RootCommand, words: string[]): void {
     const helpOption = completion.options.get("help");
 
     if (helpOption) {
@@ -2612,11 +2643,28 @@ class WebpackCLI {
       };
     }
 
+    // The command being completed, e.g. `b` in `complete -- b --mode=`.
+    const requested = words.find((word) => word !== "--" && !word.startsWith("-"));
+
     for (const command of this.program.commands) {
       const tabCommand = completion.commands.get(command.name());
 
       if (!tabCommand) {
         continue;
+      }
+
+      // Commands are registered under their name, so an alias resolves to nothing.
+      // Only the requested one is registered, to keep aliases out of the suggestions.
+      if (requested && requested !== command.name() && command.aliases().includes(requested)) {
+        completion.commands.set(requested, tabCommand);
+      }
+
+      // Global options stay on the root command, yet they are accepted after a
+      // command too, so offer them there as well (e.g. `webpack build --col`).
+      for (const [name, option] of completion.options) {
+        if (!tabCommand.options.has(name)) {
+          tabCommand.options.set(name, option);
+        }
       }
 
       for (const option of command.options) {
@@ -2871,8 +2919,10 @@ class WebpackCLI {
       await command.parseAsync([...commandOperands, ...unknown], { from: "user" });
     });
 
-    if (this.#isCompletionRequest(args, parseOptions)) {
-      await this.#prepareCompletions();
+    const completionRequest = this.#completionRequest(args, parseOptions);
+
+    if (completionRequest) {
+      await this.#prepareCompletions(completionRequest.words);
     }
 
     await this.program.parseAsync(args, parseOptions);
