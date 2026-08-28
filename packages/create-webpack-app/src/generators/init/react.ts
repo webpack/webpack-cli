@@ -3,6 +3,12 @@ import { fileURLToPath } from "node:url";
 import { type DynamicActionsFunction, type NodePlopAPI } from "node-plop";
 import { type ActionType, type Answers, type FileRecord } from "../../types.js";
 
+const STYLE_EXTENSIONS: Record<string, string> = {
+  SASS: "scss",
+  LESS: "less",
+  Stylus: "styl",
+};
+
 export default async function reactInitGenerator(plop: NodePlopAPI) {
   const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -49,33 +55,19 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
       },
       {
         type: "list",
-        name: "cssType",
-        message: "Which of the following CSS solution do you want to use?",
-        choices: ["none", "CSS only", "SASS", "LESS", "Stylus"],
-        default: "CSS only",
-        filter: (input: string, answers: Answers) => {
-          if (input === "none") {
-            answers.isCSS = false;
-            answers.isPostCSS = false;
-          } else if (input === "CSS only") {
-            answers.isCSS = true;
-          }
-          return input;
-        },
-      },
-      {
-        type: "confirm",
-        name: "isCSS",
-        message: (answers: Answers) =>
-          `Will you be using CSS styles along with ${answers.cssType} in your project?`,
-        when: (answers: Answers) => answers.cssType !== "CSS only",
-        default: true,
-      },
-      {
-        type: "confirm",
-        name: "isPostCSS",
-        message: "Do you want to use PostCSS in your project?",
-        default: (answers: Answers) => answers.cssType === "CSS only",
+        name: "cssTool",
+        message: "Which CSS tool do you want to use?",
+        choices: [
+          "none",
+          "PostCSS",
+          "SASS",
+          "SASS with PostCSS",
+          "LESS",
+          "LESS with PostCSS",
+          "Stylus",
+          "Stylus with PostCSS",
+        ],
+        default: "none",
       },
       {
         type: "list",
@@ -94,7 +86,6 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
     actions: function actions(answers: Answers) {
       // setting some default values based on the answers
       const actions: ActionType[] = [];
-      answers.html = true;
       answers.devServer = true;
       switch (answers.langType) {
         case "ES6":
@@ -106,33 +97,40 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
           );
           break;
         case "Typescript":
-          devDependencies.push("typescript", "ts-loader", "@types/react", "@types/react-dom");
+          // ts-loader 9 (its latest) throws on TypeScript 7, the native port, so pin
+          // the last release of the JavaScript line it still works with
+          devDependencies.push("typescript@6", "ts-loader", "@types/react", "@types/react-dom");
           break;
-      }
-      if (answers.isPostCSS) {
-        devDependencies.push("postcss-loader", "postcss", "autoprefixer");
-      }
-      if (answers.cssType === "none") {
-        answers.isCSS = false;
-        answers.isPostCSS = false;
-      } else {
-        switch (answers.cssType) {
-          case "CSS only":
-            answers.isCSS = true;
-            break;
-          case "SASS":
-            devDependencies.push("sass-loader", "sass");
-            break;
-          case "LESS":
-            devDependencies.push("less-loader", "less");
-            break;
-          case "Stylus":
-            devDependencies.push("stylus-loader", "stylus");
-            break;
-        }
       }
       if (answers.workboxWebpackPlugin) {
         devDependencies.push("workbox-webpack-plugin");
+      }
+
+      const cssTool = (answers.cssTool as string | undefined) ?? "none";
+      // PostCSS runs on its own or over a preprocessor, so both are read off the answer
+      const preprocessor = Object.keys(STYLE_EXTENSIONS).find((name) => cssTool.startsWith(name));
+
+      answers.usePostCSS = cssTool.includes("PostCSS");
+      answers.useSASS = preprocessor === "SASS";
+      answers.useLESS = preprocessor === "LESS";
+      answers.useStylus = preprocessor === "Stylus";
+      // The starter stylesheet is written in the language that was picked
+      answers.styleExtension = preprocessor ? STYLE_EXTENSIONS[preprocessor] : "css";
+
+      if (answers.usePostCSS) {
+        devDependencies.push("postcss-loader", "postcss", "autoprefixer");
+      }
+
+      if (answers.useSASS) {
+        devDependencies.push("sass-loader", "sass");
+      }
+
+      if (answers.useLESS) {
+        devDependencies.push("less-loader", "less");
+      }
+
+      if (answers.useStylus) {
+        devDependencies.push("stylus-loader", "stylus");
       }
 
       const files: FileRecord[] = [
@@ -173,20 +171,14 @@ export default async function reactInitGenerator(plop: NodePlopAPI) {
           break;
       }
 
-      switch (answers.cssType) {
-        case "CSS only":
-          files.push({ filePath: "./src/styles/global.css", fileType: "text" });
-          break;
-        case "SASS":
-          files.push({ filePath: "./src/styles/global.scss", fileType: "text" });
-          break;
-        case "LESS":
-          files.push({ filePath: "./src/styles/global.less", fileType: "text" });
-          break;
-        case "Stylus":
-          files.push({ filePath: "./src/styles/global.styl", fileType: "text" });
-          break;
+      if (answers.usePostCSS) {
+        files.push({ filePath: "postcss.config.js", fileType: "text" });
       }
+
+      files.push({
+        filePath: `./src/styles/global.${answers.styleExtension}`,
+        fileType: "text",
+      });
 
       for (const file of files) {
         actions.push({

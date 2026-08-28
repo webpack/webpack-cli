@@ -65,6 +65,11 @@ Available templates:
 - [`vue`](https://vuejs.org/)
 - [`svelte`](https://svelte.dev/)
 
+Every template scaffolds `index.html` as the entry point of the project and relies on
+webpack's built-in HTML and CSS support (webpack >= 5.109), so the generated projects
+carry no `html-webpack-plugin`, `css-loader`, `style-loader` or `mini-css-extract-plugin`.
+Picking Sass, Less, Stylus or PostCSS adds only that tool's loader on top.
+
 Available templates for `loader` and `plugin` generators:
 
 - `default` (used by default when nothing specified) - generate bootstrap code

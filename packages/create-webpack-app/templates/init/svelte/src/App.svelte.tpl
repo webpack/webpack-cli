@@ -15,7 +15,6 @@
   </div>
 </main>
 
-<% if (isCSS) { %>
 <style>
   :root {
     --color-primary: #1C78C0;
@@ -46,4 +45,3 @@
     background-color: #6EB8E0;
   }
 </style>
-<% } %>

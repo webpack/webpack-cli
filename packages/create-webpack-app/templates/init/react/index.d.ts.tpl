@@ -1,3 +1,7 @@
+declare module "*.css";
+declare module "*.scss";
+declare module "*.less";
+declare module "*.styl";
 declare module "*.png";
 declare module "*.jpg";
 declare module "*.gif";

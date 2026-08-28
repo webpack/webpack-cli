@@ -17,11 +17,9 @@ const baseAnswers: Answers = {
   projectPath: process.cwd(),
   langType: "none",
   devServer: true,
-  html: true,
   workboxWebpackPlugin: true,
-  cssType: "none",
-  isCSS: false,
-  isPostCSS: false,
+  cssTool: "none",
+  tsCompiler: "built-in",
   packageManager: "npm",
 };
 const initValues: Record<string, Answers> = {
@@ -32,18 +30,15 @@ const initValues: Record<string, Answers> = {
     ...baseAnswers,
     langType: "ES6",
     useReactState: true,
-    cssType: "CSS only",
   },
   vue: {
     ...baseAnswers,
     langType: "ES6",
     useVueStore: true,
-    cssType: "CSS only",
   },
   svelte: {
     ...baseAnswers,
     langType: "ES6",
-    cssType: "CSS only",
   },
 };
 

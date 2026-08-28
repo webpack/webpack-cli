@@ -12,13 +12,17 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
-    entry: <% if (html) { %>"./index.html"<% } else { %>"<%= entryPoint %>"<% } %>,
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as `dist/index.html`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },<% if (devServer) { %>
     devServer: {
         open: true,
-    },<% } %><% if (isCSS && isPostCSS) { %>
+    },<% } %><% if (usePostCSS) { %>
+    // The PostCSS rule registers a loader for `.css`, which turns off the
+    // automatic detection of webpack's built-in CSS support — ask for it
     experiments: {
         css: true,
     },<% } %>
@@ -27,41 +31,42 @@ const config <% if (langType === "Typescript") { %>: Configuration <% } %>= {
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
-        rules: [<% if (langType == "ES6") { %>
-            {
-                test: /\.(js|jsx)$/i,
-                loader: "babel-loader",
-            },<% } %><% if (langType == "Typescript") { %>
+        rules: [<% if (useTsLoader) { %>
             {
                 test: /\.(ts|tsx)$/i,
                 loader: "ts-loader",
                 exclude: ["/node_modules/"],
-            },<% } %><%  if (isCSS && isPostCSS) { %>
+            },<% } %><% if (langType == "ES6") { %>
+            {
+                test: /\.(js|jsx)$/i,
+                loader: "babel-loader",
+            },<% } %><%  if (usePostCSS) { %>
             {
                 test: /\.css$/i,
                 type: "css/auto",
                 use: ["postcss-loader"],
-            },<% } %><%  if (cssType == "SASS") { %>
+            },<% } %><%  if (useSASS) { %>
             {
                 test: /\.s[ac]ss$/i,
                 type: "css/auto",
-                use: [<% if (isPostCSS) { %>"postcss-loader", <% } %>"sass-loader"],
-            },<% } %><%  if (cssType == "LESS") { %>
+                use: [<% if (usePostCSS) { %>"postcss-loader", <% } %>"sass-loader"],
+            },<% } %><%  if (useLESS) { %>
             {
                 test: /\.less$/i,
                 type: "css/auto",
-                use: [<% if (isPostCSS) { %>"postcss-loader", <% } %>"less-loader"],
-            },<% } %><%  if (cssType == "Stylus") { %>
+                use: [<% if (usePostCSS) { %>"postcss-loader", <% } %>"less-loader"],
+            },<% } %><%  if (useStylus) { %>
             {
                 test: /\.styl$/i,
                 type: "css/auto",
-                use: [<% if (isPostCSS) { %>"postcss-loader", <% } %>"stylus-loader"],
+                use: [<% if (usePostCSS) { %>"postcss-loader", <% } %>"stylus-loader"],
             },<% } %>
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
 
+            // HTML, CSS<% if (langType == "Typescript" && !useTsLoader) { %> and TypeScript<% } %> need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],

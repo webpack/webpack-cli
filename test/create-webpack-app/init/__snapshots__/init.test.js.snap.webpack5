@@ -42,6 +42,91 @@ exports[`create-webpack-app cli should ask question when wrong template is suppl
 }
 `;
 
+exports[`create-webpack-app cli should chain PostCSS after a preprocessor when both are selected 1`] = `
+{
+  "description": "My webpack project",
+  "devDependencies": {
+    "autoprefixer": "x.x.x",
+    "postcss": "x.x.x",
+    "postcss-loader": "x.x.x",
+    "sass": "x.x.x",
+    "sass-loader": "x.x.x",
+    "webpack": "x.x.x",
+    "webpack-cli": "x.x.x",
+  },
+  "name": "webpack-project",
+  "scripts": {
+    "build": "webpack --mode=production --config-node-env=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --watch",
+  },
+  "type": "module",
+  "version": "1.0.0",
+}
+`;
+
+exports[`create-webpack-app cli should chain PostCSS after a preprocessor when both are selected 2`] = `
+"// Generated using webpack-cli https://github.com/webpack/webpack-cli
+
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const isProduction = process.env.NODE_ENV === "production";
+
+/** @type {import("webpack").Configuration} */
+const config = {
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
+    output: {
+        path: path.resolve(__dirname, "dist"),
+    },
+    // The PostCSS rule registers a loader for \`.css\`, which turns off the
+    // automatic detection of webpack's built-in CSS support — ask for it
+    experiments: {
+        css: true,
+    },
+    plugins: [
+        // Add your plugins here
+        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    ],
+    module: {
+        rules: [
+            {
+                test: /\\.css$/i,
+                type: "css/auto",
+                use: ["postcss-loader"],
+            },
+            {
+                test: /\\.s[ac]ss$/i,
+                type: "css/auto",
+                use: ["postcss-loader", "sass-loader"],
+            },
+            {
+                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: "asset",
+            },
+
+            // HTML, CSS need no loader — webpack supports them out of the box
+            // Add your rules for custom modules here
+            // Learn more about loaders from https://webpack.js.org/loaders/
+        ],
+    },
+};
+
+export default () => {
+    if (isProduction) {
+        config.mode = "production";
+    } else {
+        config.mode = "development";
+    }
+    return config;
+};
+"
+`;
+
 exports[`create-webpack-app cli should configure WDS as opted 1`] = `
 {
   "description": "My webpack project",
@@ -74,7 +159,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./src/index.js",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -92,68 +179,7 @@ const config = {
                 type: "asset",
             },
 
-            // Add your rules for custom modules here
-            // Learn more about loaders from https://webpack.js.org/loaders/
-        ],
-    },
-};
-
-export default () => {
-    if (isProduction) {
-        config.mode = "production";
-    } else {
-        config.mode = "development";
-    }
-    return config;
-};
-"
-`;
-
-exports[`create-webpack-app cli should configure native HTML support as opted 1`] = `
-{
-  "description": "My webpack project",
-  "devDependencies": {
-    "webpack": "x.x.x",
-    "webpack-cli": "x.x.x",
-  },
-  "name": "webpack-project",
-  "scripts": {
-    "build": "webpack --mode=production --config-node-env=production",
-    "build:dev": "webpack --mode=development",
-    "watch": "webpack --watch",
-  },
-  "type": "module",
-  "version": "1.0.0",
-}
-`;
-
-exports[`create-webpack-app cli should configure native HTML support as opted 2`] = `
-"// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const isProduction = process.env.NODE_ENV === "production";
-
-/** @type {import("webpack").Configuration} */
-const config = {
-    entry: "./index.html",
-    output: {
-        path: path.resolve(__dirname, "dist"),
-    },
-    plugins: [
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
-    ],
-    module: {
-        rules: [
-            {
-                test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: "asset",
-            },
-
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -203,7 +229,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -218,6 +246,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -269,7 +298,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./src/index.js",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -288,6 +319,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -339,7 +371,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -357,6 +391,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -409,7 +444,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -427,6 +464,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -479,7 +517,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -497,6 +537,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -549,7 +590,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -567,6 +610,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -619,7 +663,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -637,6 +683,7 @@ const config = {
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -705,10 +752,7 @@ exports[`create-webpack-app cli should generate react template with state and ro
     "@babel/preset-env": "x.x.x",
     "@babel/preset-react": "x.x.x",
     "@types/react-router-dom": "x.x.x",
-    "autoprefixer": "x.x.x",
     "babel-loader": "x.x.x",
-    "postcss": "x.x.x",
-    "postcss-loader": "x.x.x",
     "react": "x.x.x",
     "react-dom": "x.x.x",
     "react-router-dom": "x.x.x",
@@ -742,15 +786,14 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-    },
-    experiments: {
-        css: true,
     },
     plugins: [
         // Add your plugins here
@@ -769,15 +812,11 @@ const config = {
                 },
             },
             {
-                test: /\\.css$/i,
-                type: "css/auto",
-                use: ["postcss-loader"],
-            },
-            {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
 
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -809,9 +848,6 @@ exports[`create-webpack-app cli should generate react template with typescript 1
     "@types/react": "x.x.x",
     "@types/react-dom": "x.x.x",
     "@types/react-router-dom": "x.x.x",
-    "autoprefixer": "x.x.x",
-    "postcss": "x.x.x",
-    "postcss-loader": "x.x.x",
     "react": "x.x.x",
     "react-dom": "x.x.x",
     "react-router-dom": "x.x.x",
@@ -849,15 +885,14 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config : Configuration = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-    },
-    experiments: {
-        css: true,
     },
     plugins: [
         // Add your plugins here
@@ -871,15 +906,11 @@ const config : Configuration = {
                 exclude: ["/node_modules/"],
             },
             {
-                test: /\\.css$/i,
-                type: "css/auto",
-                use: ["postcss-loader"],
-            },
-            {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
 
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -910,10 +941,7 @@ exports[`create-webpack-app cli should generate svelte template with prompt answ
   "devDependencies": {
     "@babel/core": "x.x.x",
     "@babel/preset-env": "x.x.x",
-    "autoprefixer": "x.x.x",
     "babel-loader": "x.x.x",
-    "postcss": "x.x.x",
-    "postcss-loader": "x.x.x",
     "svelte": "x.x.x",
     "svelte-loader": "x.x.x",
     "webpack": "x.x.x",
@@ -946,15 +974,14 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-    },
-    experiments: {
-        css: true,
     },
     plugins: [
         // Add your plugins here
@@ -983,14 +1010,10 @@ const config = {
                 },
             },
             {
-                test: /\\.css$/i,
-                type: "css/auto",
-                use: ["postcss-loader"],
-            },
-            {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1022,9 +1045,6 @@ exports[`create-webpack-app cli should generate svelte template with typescript 
   "description": "My webpack project",
   "devDependencies": {
     "@tsconfig/svelte": "x.x.x",
-    "autoprefixer": "x.x.x",
-    "postcss": "x.x.x",
-    "postcss-loader": "x.x.x",
     "svelte": "x.x.x",
     "svelte-loader": "x.x.x",
     "ts-loader": "x.x.x",
@@ -1061,15 +1081,14 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config : Configuration = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
-    },
-    experiments: {
-        css: true,
     },
     plugins: [
         // Add your plugins here
@@ -1096,14 +1115,10 @@ const config : Configuration = {
                 },
             },
             {
-                test: /\\.css$/i,
-                type: "css/auto",
-                use: ["postcss-loader"],
-            },
-            {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1134,15 +1149,18 @@ exports[`create-webpack-app cli should generate typescript project correctly 1`]
 {
   "description": "My webpack project",
   "devDependencies": {
-    "ts-loader": "x.x.x",
     "typescript": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
+  },
+  "engines": {
+    "node": ">=22.6.0",
   },
   "name": "webpack-project",
   "scripts": {
     "build": "webpack --mode=production --config-node-env=production",
     "build:dev": "webpack --mode=development",
+    "check:types": "tsc --noEmit",
     "watch": "webpack --watch",
   },
   "type": "module",
@@ -1163,7 +1181,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config : Configuration = {
-    entry: "./src/index.ts",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -1174,15 +1194,11 @@ const config : Configuration = {
     module: {
         rules: [
             {
-                test: /\\.(ts|tsx)$/i,
-                loader: "ts-loader",
-                exclude: ["/node_modules/"],
-            },
-            {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
 
+            // HTML, CSS and TypeScript need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1210,11 +1226,8 @@ exports[`create-webpack-app cli should generate vue template with store and rout
     "@babel/core": "x.x.x",
     "@babel/preset-env": "x.x.x",
     "@vue/compiler-sfc": "x.x.x",
-    "autoprefixer": "x.x.x",
     "babel-loader": "x.x.x",
     "pinia": "x.x.x",
-    "postcss": "x.x.x",
-    "postcss-loader": "x.x.x",
     "vue": "x.x.x",
     "vue-loader": "x.x.x",
     "vue-router": "x.x.x",
@@ -1249,13 +1262,17 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
     },
+    // vue-loader rewrites \`module.rules\`, which hides from webpack that no rule
+    // handles \`.html\`/\`.css\` — so ask for the built-in support explicitly
     experiments: {
         css: true,
         html: true,
@@ -1285,14 +1302,10 @@ const config = {
                 },
             },
             {
-                test: /\\.css$/i,
-                type: "css/auto",
-                use: ["postcss-loader"],
-            },
-            {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1321,10 +1334,7 @@ exports[`create-webpack-app cli should generate vue template with typescript 1`]
   "description": "My webpack project",
   "devDependencies": {
     "@vue/compiler-sfc": "x.x.x",
-    "autoprefixer": "x.x.x",
     "pinia": "x.x.x",
-    "postcss": "x.x.x",
-    "postcss-loader": "x.x.x",
     "ts-loader": "x.x.x",
     "typescript": "x.x.x",
     "vue": "x.x.x",
@@ -1363,13 +1373,17 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config : Configuration = {
-    entry: "./index.html",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         open: true,
     },
+    // vue-loader rewrites \`module.rules\`, which hides from webpack that no rule
+    // handles \`.html\`/\`.css\` — so ask for the built-in support explicitly
     experiments: {
         css: true,
         html: true,
@@ -1398,14 +1412,10 @@ const config : Configuration = {
                 exclude: ["/node_modules/"],
             },
             {
-                test: /\\.css$/i,
-                type: "css/auto",
-                use: ["postcss-loader"],
-            },
-            {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
+            // HTML and CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1430,15 +1440,13 @@ export default () => {
 "
 `;
 
-exports[`create-webpack-app cli should use css preprocessor and css with postcss in project when selected 1`] = `
+exports[`create-webpack-app cli should scaffold PostCSS on top of the built-in CSS support when selected 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
     "autoprefixer": "x.x.x",
     "postcss": "x.x.x",
     "postcss-loader": "x.x.x",
-    "sass": "x.x.x",
-    "sass-loader": "x.x.x",
     "webpack": "x.x.x",
     "webpack-cli": "x.x.x",
   },
@@ -1453,7 +1461,7 @@ exports[`create-webpack-app cli should use css preprocessor and css with postcss
 }
 `;
 
-exports[`create-webpack-app cli should use css preprocessor and css with postcss in project when selected 2`] = `
+exports[`create-webpack-app cli should scaffold PostCSS on top of the built-in CSS support when selected 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 import path from "node:path";
@@ -1465,10 +1473,14 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./src/index.js",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
+    // The PostCSS rule registers a loader for \`.css\`, which turns off the
+    // automatic detection of webpack's built-in CSS support — ask for it
     experiments: {
         css: true,
     },
@@ -1484,15 +1496,11 @@ const config = {
                 use: ["postcss-loader"],
             },
             {
-                test: /\\.s[ac]ss$/i,
-                type: "css/auto",
-                use: ["postcss-loader", "sass-loader"],
-            },
-            {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
@@ -1510,13 +1518,10 @@ export default () => {
 "
 `;
 
-exports[`create-webpack-app cli should use css preprocessor with postcss in project when selected 1`] = `
+exports[`create-webpack-app cli should scaffold a preprocessor through the built-in CSS support when selected 1`] = `
 {
   "description": "My webpack project",
   "devDependencies": {
-    "autoprefixer": "x.x.x",
-    "postcss": "x.x.x",
-    "postcss-loader": "x.x.x",
     "sass": "x.x.x",
     "sass-loader": "x.x.x",
     "webpack": "x.x.x",
@@ -1533,7 +1538,7 @@ exports[`create-webpack-app cli should use css preprocessor with postcss in proj
 }
 `;
 
-exports[`create-webpack-app cli should use css preprocessor with postcss in project when selected 2`] = `
+exports[`create-webpack-app cli should scaffold a preprocessor through the built-in CSS support when selected 2`] = `
 "// Generated using webpack-cli https://github.com/webpack/webpack-cli
 
 import path from "node:path";
@@ -1545,7 +1550,9 @@ const isProduction = process.env.NODE_ENV === "production";
 
 /** @type {import("webpack").Configuration} */
 const config = {
-    entry: "./src/index.js",
+    // The page itself is the entry: webpack bundles the scripts and stylesheets
+    // it references and emits it as \`dist/index.html\`.
+    entry: { index: "./index.html" },
     output: {
         path: path.resolve(__dirname, "dist"),
     },
@@ -1558,13 +1565,14 @@ const config = {
             {
                 test: /\\.s[ac]ss$/i,
                 type: "css/auto",
-                use: ["postcss-loader", "sass-loader"],
+                use: ["sass-loader"],
             },
             {
                 test: /\\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
                 type: "asset",
             },
 
+            // HTML, CSS need no loader — webpack supports them out of the box
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],

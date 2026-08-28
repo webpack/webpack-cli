@@ -1,13 +1,10 @@
+import { mount } from 'svelte';
 import App from './App.svelte';
 
-<%  if (cssType == 'CSS only') { %>
-import "./styles/global.css";<% } if (cssType == 'SASS') { %>
-import "./styles/global.scss";<% } if (cssType == 'LESS') { %>
-import "./styles/global.less";<% } if (cssType == 'Stylus') { %>
-import "./styles/global.styl";<% } %>
+import "./styles/global.<%= styleExtension %>";
 
 
-const app = new App({
+const app = mount(App, {
   target: document.getElementById('app'),
 });
 
