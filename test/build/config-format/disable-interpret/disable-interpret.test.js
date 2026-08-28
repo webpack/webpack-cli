@@ -1,7 +1,7 @@
 const { existsSync, unlinkSync } = require("node:fs");
 const { resolve } = require("node:path");
 
-const { run } = require("../../../utils/test-utils");
+const { run, withoutExperimentalWarnings } = require("../../../utils/test-utils");
 
 describe("webpack cli", () => {
   it('should work with the "disable-interpret" option from flags', async () => {
@@ -13,7 +13,7 @@ describe("webpack cli", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--disable-interpret"]);
     unlinkSync(resolve(__dirname, `${configFileName}.js`));
 
-    expect(stderr).toBeFalsy();
+    expect(withoutExperimentalWarnings(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
     expect(existsSync(resolve(__dirname, "dist/foo.bundle.js"))).toBeTruthy();

@@ -370,6 +370,14 @@ const uuid = (size = 21) => {
   return id;
 };
 
+const EXPERIMENTAL_WARNING_RE =
+  /^\(node:\d+\) ExperimentalWarning:.*\n(?:\(Use `node --trace-warnings \.\.\.` to show where the warning was created\)\n?)?/gm;
+
+// webpack >= 5.110 strips types through `module.stripTypeScriptTypes`, which
+// Node.js flags as experimental — upstream noise the CLI does not control.
+const withoutExperimentalWarnings = (stderr) =>
+  typeof stderr === "string" ? stderr.replaceAll(EXPERIMENTAL_WARNING_RE, "") : stderr;
+
 const uniqueDirectoryForTest = async () => {
   const result = path.resolve(path.resolve(__dirname, "../create-webpack-app-testing"), uuid());
 
@@ -393,4 +401,5 @@ module.exports = {
   runPromptWithAnswers,
   runWatch,
   uniqueDirectoryForTest,
+  withoutExperimentalWarnings,
 };
