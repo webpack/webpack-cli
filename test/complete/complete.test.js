@@ -1,6 +1,16 @@
 "use strict";
 
+const path = require("node:path");
+const { pathToFileURL } = require("node:url");
 const { run } = require("../utils/test-utils");
+
+// Hides `@bomb.sh/tab` from the CLI, the way a project that never installed the
+// optional package sees it.
+const withoutParser = {
+  nodeOptions: [
+    `--import=${pathToFileURL(path.resolve(__dirname, "no-completion-parser.mjs")).href}`,
+  ],
+};
 
 const parseCompletions = (stdout) =>
   stdout
@@ -107,6 +117,26 @@ describe("complete", () => {
     expect(parseCompletions(stdout)).toEqual(
       expect.arrayContaining(["development", "production", "none"]),
     );
+  });
+
+  it("should stay silent for a completion request without the parser", async () => {
+    const { exitCode, stderr, stdout } = await run(
+      __dirname,
+      ["complete", "--", "build", "--"],
+      withoutParser,
+    );
+
+    // A shell asks for this on every keypress, so it must print nothing at all.
+    expect(exitCode).toBe(0);
+    expect(stdout).toBeFalsy();
+    expect(stderr).toBeFalsy();
+  });
+
+  it("should ask to install the parser when generating a script", async () => {
+    const { exitCode, stderr } = await run(__dirname, ["complete", "zsh"], withoutParser);
+
+    expect(exitCode).toBe(2);
+    expect(stderr).toContain("@bomb.sh/tab");
   });
 
   it("should suggest option values for build --progress", async () => {
