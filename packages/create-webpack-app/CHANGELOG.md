@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.2.0
+
+### Minor Changes
+
+- feat: stop asking about HTML and CSS in `init`, scaffold TypeScript on webpack's own support, and keep one question for the CSS tools webpack does not cover (PostCSS, Sass, Less, Stylus, and each preprocessor with PostCSS) (by [@alexander-akait](https://github.com/alexander-akait) in [#4836](https://github.com/webpack/webpack-cli/pull/4836))
+
+- feat: use webpack's native CSS and HTML support in the `init` templates (by [@bjohansebas](https://github.com/bjohansebas) in [#4833](https://github.com/webpack/webpack-cli/pull/4833))
+
 ## 2.1.0
 
 ### Minor Changes

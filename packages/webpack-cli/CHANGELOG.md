@@ -1,5 +1,13 @@
 # Change Log
 
+## 7.2.3
+
+### Patch Changes
+
+- fix: resolve the `webpack-dev-server` type from its default export, so the types work with both v5 and v6 (by [@bjohansebas](https://github.com/bjohansebas) in [#4834](https://github.com/webpack/webpack-cli/pull/4834))
+
+- feat: allow `toml@5` as a peer dependency for TOML configuration files (by [@alexander-akait](https://github.com/alexander-akait) in [#4837](https://github.com/webpack/webpack-cli/pull/4837))
+
 ## 7.2.2
 
 ### Patch Changes
