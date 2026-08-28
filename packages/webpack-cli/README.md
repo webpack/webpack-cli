@@ -64,6 +64,7 @@ npx webpack-cli --help verbose
 
 ```
   build|bundle|b [entries...] [options]  Run webpack (default command, can be omitted).
+  complete [shell]                       Generate shell completion scripts.
   configtest|t [config-path]             Validate a webpack configuration.
   help|h [command] [option]              Display help for commands and options.
   info|i [options]                       Outputs information about your system.
