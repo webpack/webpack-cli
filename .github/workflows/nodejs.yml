@@ -94,6 +94,10 @@ jobs:
 
       - name: Run tests and generate coverage
         run: npm run test:coverage -- --ci
+        env:
+          # c8 remaps every script V8 reported before applying its include
+          # filter, which exceeds Node.js 20's default heap on macOS runners
+          NODE_OPTIONS: --max-old-space-size=4096
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0

@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { run } from "../../../utils/test-utils.js";
+import { run, withoutExperimentalWarnings } from "../../../utils/test-utils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -40,7 +40,7 @@ describe("typescript configuration with tsx", () => {
       ],
     });
 
-    expect(stderr).toBeFalsy();
+    expect(withoutExperimentalWarnings(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
     expect(existsSync(resolve(__dirname, "dist/foo.bundle.js"))).toBeTruthy();
@@ -55,7 +55,7 @@ describe("typescript configuration with tsx", () => {
       ],
     });
 
-    expect(stderr).toBeFalsy();
+    expect(withoutExperimentalWarnings(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
     expect(existsSync(resolve(__dirname, "dist/bar.bundle.js"))).toBeTruthy();
@@ -70,7 +70,7 @@ describe("typescript configuration with tsx", () => {
       ],
     });
 
-    expect(stderr).toBeFalsy();
+    expect(withoutExperimentalWarnings(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
     expect(existsSync(resolve(__dirname, "dist/qux.bundle.js"))).toBeTruthy();
@@ -79,7 +79,7 @@ describe("typescript configuration with tsx", () => {
   it("should load a `.tsx` configuration through the `tsx` fallback", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.tsx"]);
 
-    expect(stderr).toBeFalsy();
+    expect(withoutExperimentalWarnings(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
     expect(existsSync(resolve(__dirname, "dist/quux.bundle.js"))).toBeTruthy();
@@ -88,7 +88,7 @@ describe("typescript configuration with tsx", () => {
   it("should load a `.jsx` configuration through the `tsx` fallback", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.jsx"]);
 
-    expect(stderr).toBeFalsy();
+    expect(withoutExperimentalWarnings(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(exitCode).toBe(0);
     expect(existsSync(resolve(__dirname, "dist/baz.bundle.js"))).toBeTruthy();
