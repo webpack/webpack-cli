@@ -70,6 +70,23 @@ describe("complete", () => {
     expect(suggestions).toEqual(expect.arrayContaining(["json", "markdown"]));
   });
 
+  it("should expand a partial command to a single suggestion", async () => {
+    // `webpack b<TAB>` has to offer `build` alone, so the shell writes it out;
+    // suggesting the alias `b` next to it would leave the word as typed.
+    for (const [typed, command] of [
+      ["b", "build"],
+      ["w", "watch"],
+      ["s", "serve"],
+      ["i", "info"],
+    ]) {
+      const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", typed]);
+
+      expect(exitCode).toBe(0);
+      expect(stderr).toBeFalsy();
+      expect(parseCompletions(stdout)).toEqual([command]);
+    }
+  });
+
   it("should suggest the same options for a command alias", async () => {
     const { stdout: canonical } = await run(__dirname, ["complete", "--", "build", "--"]);
 

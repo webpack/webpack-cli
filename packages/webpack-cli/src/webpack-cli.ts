@@ -2643,8 +2643,10 @@ class WebpackCLI {
       };
     }
 
-    // The command being completed, e.g. `b` in `complete -- b --mode=`.
-    const requested = words.find((word) => word !== "--" && !word.startsWith("-"));
+    // The command already typed, e.g. `b` in `complete -- b --mode=`. The last word
+    // is still being written — `complete -- b` is completing `b` itself, which must
+    // stay a prefix of `build` so the shell expands it instead of matching an alias.
+    const requested = words.slice(0, -1).find((word) => word !== "--" && !word.startsWith("-"));
 
     for (const command of this.program.commands) {
       const tabCommand = completion.commands.get(command.name());
