@@ -72,7 +72,7 @@ Options
   --dotenv-template-reset                                                            Clear all items provided in 'dotenv.template' configuration. Template patterns for .env file names. Use [mode] as placeholder for the webpack mode. Defaults to ['.env', '.env.local', '.env.[mode]', '.env.[mode].local'].
   --entry <value...>                                                                 A module that is loaded upon startup. Only the last one is exported.
   --entry-reset                                                                      Clear all items provided in 'entry' configuration. All modules are loaded upon startup. The last one is exported.
-  --experiments-async-web-assembly                                                   Support WebAssembly as asynchronous EcmaScript Module.
+  --experiments-async-web-assembly [value]                                           Enable the built-in async WebAssembly support only when no loader is registered for WebAssembly files. Enable/disable the built-in async WebAssembly support.
   --no-experiments-async-web-assembly                                                Negative 'experiments-async-web-assembly' option.
   --experiments-back-compat                                                          Enable backward-compat layer with deprecation warnings for many webpack 4 APIs.
   --no-experiments-back-compat                                                       Negative 'experiments-back-compat' option.
@@ -88,13 +88,13 @@ Options
   --no-experiments-build-http-upgrade                                                Negative 'experiments-build-http-upgrade' option.
   --experiments-cache-unaffected                                                     Enable additional in memory caching of modules that are unchanged and reference only unchanged modules.
   --no-experiments-cache-unaffected                                                  Negative 'experiments-cache-unaffected' option.
-  --experiments-css                                                                  Enable css support.
+  --experiments-css [value]                                                          Enable the built-in CSS support only when no loader is registered for CSS files. Enable/disable the built-in CSS support.
   --no-experiments-css                                                               Negative 'experiments-css' option.
   --experiments-defer-import                                                         Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
   --no-experiments-defer-import                                                      Negative 'experiments-defer-import' option.
   --experiments-future-defaults                                                      Apply defaults of next major version.
   --no-experiments-future-defaults                                                   Negative 'experiments-future-defaults' option.
-  --experiments-html                                                                 Enable HTML entry support. Treats `.html` files as a first-class module type so they can be used directly as entry points.
+  --experiments-html [value]                                                         Enable the built-in HTML support only when no loader is registered for HTML files. Enable/disable the built-in HTML support.
   --no-experiments-html                                                              Negative 'experiments-html' option.
   --experiments-lazy-compilation                                                     Compile entrypoints and import()s only when they are accessed.
   --no-experiments-lazy-compilation                                                  Negative 'experiments-lazy-compilation' option.
@@ -114,7 +114,7 @@ Options
   --no-experiments-source-import                                                     Negative 'experiments-source-import' option.
   --experiments-sync-web-assembly                                                    Support WebAssembly as synchronous EcmaScript Module (outdated).
   --no-experiments-sync-web-assembly                                                 Negative 'experiments-sync-web-assembly' option.
-  --experiments-typescript                                                           Enable typescript support.
+  --experiments-typescript [value]                                                   Enable the built-in TypeScript support only when Node.js supports it (>= 22.6) and no loader is registered for TypeScript files. Enable/disable the built-in TypeScript support.
   --no-experiments-typescript                                                        Negative 'experiments-typescript' option.
   -e, --extends <value...>                                                           Path to the configuration to be extended (only works when using webpack-cli).
   --extends-reset                                                                    Clear all items provided in 'extends' configuration. Extend configuration from another configuration (only works when using webpack-cli).
@@ -134,6 +134,10 @@ Options
   --no-externals-presets-electron-renderer                                           Negative 'externals-presets-electron-renderer' option.
   --externals-presets-node                                                           Treat node.js built-in modules like fs, path or vm as external and load them via require() when used.
   --no-externals-presets-node                                                        Negative 'externals-presets-node' option.
+  --externals-presets-node-modules                                                   Enable or disable externalizing installed packages.
+  --no-externals-presets-node-modules                                                Negative 'externals-presets-node-modules' option.
+  --externals-presets-node-modules-allowlist <value...>                              Requests matching the RegExp stay bundled. An exact request that should stay bundled.
+  --externals-presets-node-modules-allowlist-reset                                   Clear all items provided in 'externalsPresets.nodeModules.allowlist' configuration. Keep these requests bundled instead of externalizing them.
   --externals-presets-nwjs                                                           Treat NW.js legacy nw.gui module as external and load it via require() when used.
   --no-externals-presets-nwjs                                                        Negative 'externals-presets-nwjs' option.
   --externals-presets-web                                                            Treat references to 'http(s)://...' and 'std:...' as external and load them via import when used (Note that this changes execution order as externals are executed before any other code in the chunk).
@@ -154,6 +158,8 @@ Options
   --no-infrastructure-logging-debug                                                  Negative 'infrastructure-logging-debug' option.
   --infrastructure-logging-debug-reset                                               Clear all items provided in 'infrastructureLogging.debug' configuration. Enable debug logging for specific loggers.
   --infrastructure-logging-level <value>                                             Log level.
+  --infrastructure-logging-progress [value]                                          Show build progress. `"auto"` shows it only for interactive terminals. This option is only used when no custom console is provided.
+  --no-infrastructure-logging-progress                                               Negative 'infrastructure-logging-progress' option.
   --mode <value>                                                                     Enable production optimizations or development hints.
   --module-expr-context-critical                                                     Enable warnings for full dynamic dependencies.
   --no-module-expr-context-critical                                                  Negative 'module-expr-context-critical' option.
@@ -229,13 +235,41 @@ Options
   --module-no-parse-reset                                                            Clear all items provided in 'module.noParse' configuration. Don't parse files matching. It's matched against the full resolved request.
   --module-parser-asset-data-url-condition-max-size <value>                          Maximum size of asset that should be inline as modules. Default: 8kb.
   --module-parser-css-as <value>                                                     Configure how the CSS source is parsed: as a full stylesheet (default) or as a block's contents (e.g. the content of an HTML `style` attribute).
+  --module-parser-css-custom-media                                                   Enable/disable resolution of `@custom-media` at-rules (file-local build-time substitution).
+  --no-module-parser-css-custom-media                                                Negative 'module-parser-css-custom-media' option.
+  --module-parser-css-custom-selectors                                               Enable/disable resolution of `@custom-selector` at-rules (file-local build-time expansion to `:is(...)`).
+  --no-module-parser-css-custom-selectors                                            Negative 'module-parser-css-custom-selectors' option.
   --module-parser-css-export-type <value>                                            Configure how CSS content is exported as default.
+  --module-parser-css-font-preload                                                   Auto-emit `<link rel="preload" as="font">` for the primary `src` URL of each `@font-face` reachable from an HTML entry's initial CSS. Only the first URL per `@font-face` is preloaded (preloading every format would double-download). Off by default; `parser.css.urlHints` rules and per-URL magic comments still override the seeded defaults. Set `output.crossOriginLoading` so the preload matches the font's CORS fetch.
+  --no-module-parser-css-font-preload                                                Negative 'module-parser-css-font-preload' option.
   --module-parser-css-import                                                         Enable/disable `@import` at-rules handling.
   --no-module-parser-css-import                                                      Negative 'module-parser-css-import' option.
   --module-parser-css-named-exports                                                  Use ES modules named export for css exports.
   --no-module-parser-css-named-exports                                               Negative 'module-parser-css-named-exports' option.
   --module-parser-css-url                                                            Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-url                                                         Negative 'module-parser-css-url' option.
+  --module-parser-css-url-hints-as <value...>                                        Default `as` attribute (script / style / font / image / …).
+  --module-parser-css-url-hints-exclude <value...>                                   One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-url-hints-exclude-glob <value...>                              A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-url-hints-exclude-not <value...>                               Logical NOT.
+  --module-parser-css-url-hints-exclude-not-glob <value...>                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-url-hints-fetch-priority <value...>                            Default fetchpriority for prefetch / preload links.
+  --no-module-parser-css-url-hints-fetch-priority                                    Negative 'module-parser-css-url-hints-fetch-priority' option.
+  --module-parser-css-url-hints-include <value...>                                   One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-url-hints-include-glob <value...>                              A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-url-hints-include-not <value...>                               Logical NOT.
+  --module-parser-css-url-hints-include-not-glob <value...>                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-url-hints-media <value...>                                     Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --module-parser-css-url-hints-prefetch                                             When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-module-parser-css-url-hints-prefetch                                          Negative 'module-parser-css-url-hints-prefetch' option.
+  --module-parser-css-url-hints-preload                                              When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-module-parser-css-url-hints-preload                                           Negative 'module-parser-css-url-hints-preload' option.
+  --module-parser-css-url-hints-test <value...>                                      One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-url-hints-test-glob <value...>                                 A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-url-hints-test-not <value...>                                  Logical NOT.
+  --module-parser-css-url-hints-test-not-glob <value...>                             A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-url-hints-type <value...>                                      Default `type` attribute (MIME).
+  --module-parser-css-url-hints-reset                                                Clear all items provided in 'module.parser.css.urlHints' configuration. URL-referenced-asset default hint rules for this parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`).
   --module-parser-css-auto-animation                                                 Enable/disable renaming of `@keyframes`.
   --no-module-parser-css-auto-animation                                              Negative 'module-parser-css-auto-animation' option.
   --module-parser-css-auto-as <value>                                                Configure how the CSS source is parsed: as a full stylesheet (default) or as a block's contents (e.g. the content of an HTML `style` attribute).
@@ -243,9 +277,15 @@ Options
   --no-module-parser-css-auto-container                                              Negative 'module-parser-css-auto-container' option.
   --module-parser-css-auto-custom-idents                                             Enable/disable renaming of custom identifiers.
   --no-module-parser-css-auto-custom-idents                                          Negative 'module-parser-css-auto-custom-idents' option.
+  --module-parser-css-auto-custom-media                                              Enable/disable resolution of `@custom-media` at-rules (file-local build-time substitution).
+  --no-module-parser-css-auto-custom-media                                           Negative 'module-parser-css-auto-custom-media' option.
+  --module-parser-css-auto-custom-selectors                                          Enable/disable resolution of `@custom-selector` at-rules (file-local build-time expansion to `:is(...)`).
+  --no-module-parser-css-auto-custom-selectors                                       Negative 'module-parser-css-auto-custom-selectors' option.
   --module-parser-css-auto-dashed-idents                                             Enable/disable renaming of dashed identifiers, e. g. custom properties.
   --no-module-parser-css-auto-dashed-idents                                          Negative 'module-parser-css-auto-dashed-idents' option.
   --module-parser-css-auto-export-type <value>                                       Configure how CSS content is exported as default.
+  --module-parser-css-auto-font-preload                                              Auto-emit `<link rel="preload" as="font">` for the primary `src` URL of each `@font-face` reachable from an HTML entry's initial CSS. Only the first URL per `@font-face` is preloaded (preloading every format would double-download). Off by default; `parser.css.urlHints` rules and per-URL magic comments still override the seeded defaults. Set `output.crossOriginLoading` so the preload matches the font's CORS fetch.
+  --no-module-parser-css-auto-font-preload                                           Negative 'module-parser-css-auto-font-preload' option.
   --module-parser-css-auto-function                                                  Enable/disable renaming of `@function` names.
   --no-module-parser-css-auto-function                                               Negative 'module-parser-css-auto-function' option.
   --module-parser-css-auto-grid                                                      Enable/disable renaming of grid identifiers.
@@ -258,6 +298,28 @@ Options
   --no-module-parser-css-auto-pure                                                   Negative 'module-parser-css-auto-pure' option.
   --module-parser-css-auto-url                                                       Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-auto-url                                                    Negative 'module-parser-css-auto-url' option.
+  --module-parser-css-auto-url-hints-as <value...>                                   Default `as` attribute (script / style / font / image / …).
+  --module-parser-css-auto-url-hints-exclude <value...>                              One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-auto-url-hints-exclude-glob <value...>                         A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-auto-url-hints-exclude-not <value...>                          Logical NOT.
+  --module-parser-css-auto-url-hints-exclude-not-glob <value...>                     A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-auto-url-hints-fetch-priority <value...>                       Default fetchpriority for prefetch / preload links.
+  --no-module-parser-css-auto-url-hints-fetch-priority                               Negative 'module-parser-css-auto-url-hints-fetch-priority' option.
+  --module-parser-css-auto-url-hints-include <value...>                              One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-auto-url-hints-include-glob <value...>                         A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-auto-url-hints-include-not <value...>                          Logical NOT.
+  --module-parser-css-auto-url-hints-include-not-glob <value...>                     A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-auto-url-hints-media <value...>                                Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --module-parser-css-auto-url-hints-prefetch                                        When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-module-parser-css-auto-url-hints-prefetch                                     Negative 'module-parser-css-auto-url-hints-prefetch' option.
+  --module-parser-css-auto-url-hints-preload                                         When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-module-parser-css-auto-url-hints-preload                                      Negative 'module-parser-css-auto-url-hints-preload' option.
+  --module-parser-css-auto-url-hints-test <value...>                                 One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-auto-url-hints-test-glob <value...>                            A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-auto-url-hints-test-not <value...>                             Logical NOT.
+  --module-parser-css-auto-url-hints-test-not-glob <value...>                        A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-auto-url-hints-type <value...>                                 Default `type` attribute (MIME).
+  --module-parser-css-auto-url-hints-reset                                           Clear all items provided in 'module.parser.css/auto.urlHints' configuration. URL-referenced-asset default hint rules for this parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`).
   --module-parser-css-global-animation                                               Enable/disable renaming of `@keyframes`.
   --no-module-parser-css-global-animation                                            Negative 'module-parser-css-global-animation' option.
   --module-parser-css-global-as <value>                                              Configure how the CSS source is parsed: as a full stylesheet (default) or as a block's contents (e.g. the content of an HTML `style` attribute).
@@ -265,9 +327,15 @@ Options
   --no-module-parser-css-global-container                                            Negative 'module-parser-css-global-container' option.
   --module-parser-css-global-custom-idents                                           Enable/disable renaming of custom identifiers.
   --no-module-parser-css-global-custom-idents                                        Negative 'module-parser-css-global-custom-idents' option.
+  --module-parser-css-global-custom-media                                            Enable/disable resolution of `@custom-media` at-rules (file-local build-time substitution).
+  --no-module-parser-css-global-custom-media                                         Negative 'module-parser-css-global-custom-media' option.
+  --module-parser-css-global-custom-selectors                                        Enable/disable resolution of `@custom-selector` at-rules (file-local build-time expansion to `:is(...)`).
+  --no-module-parser-css-global-custom-selectors                                     Negative 'module-parser-css-global-custom-selectors' option.
   --module-parser-css-global-dashed-idents                                           Enable/disable renaming of dashed identifiers, e. g. custom properties.
   --no-module-parser-css-global-dashed-idents                                        Negative 'module-parser-css-global-dashed-idents' option.
   --module-parser-css-global-export-type <value>                                     Configure how CSS content is exported as default.
+  --module-parser-css-global-font-preload                                            Auto-emit `<link rel="preload" as="font">` for the primary `src` URL of each `@font-face` reachable from an HTML entry's initial CSS. Only the first URL per `@font-face` is preloaded (preloading every format would double-download). Off by default; `parser.css.urlHints` rules and per-URL magic comments still override the seeded defaults. Set `output.crossOriginLoading` so the preload matches the font's CORS fetch.
+  --no-module-parser-css-global-font-preload                                         Negative 'module-parser-css-global-font-preload' option.
   --module-parser-css-global-function                                                Enable/disable renaming of `@function` names.
   --no-module-parser-css-global-function                                             Negative 'module-parser-css-global-function' option.
   --module-parser-css-global-grid                                                    Enable/disable renaming of grid identifiers.
@@ -278,6 +346,28 @@ Options
   --no-module-parser-css-global-named-exports                                        Negative 'module-parser-css-global-named-exports' option.
   --module-parser-css-global-url                                                     Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-global-url                                                  Negative 'module-parser-css-global-url' option.
+  --module-parser-css-global-url-hints-as <value...>                                 Default `as` attribute (script / style / font / image / …).
+  --module-parser-css-global-url-hints-exclude <value...>                            One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-global-url-hints-exclude-glob <value...>                       A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-global-url-hints-exclude-not <value...>                        Logical NOT.
+  --module-parser-css-global-url-hints-exclude-not-glob <value...>                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-global-url-hints-fetch-priority <value...>                     Default fetchpriority for prefetch / preload links.
+  --no-module-parser-css-global-url-hints-fetch-priority                             Negative 'module-parser-css-global-url-hints-fetch-priority' option.
+  --module-parser-css-global-url-hints-include <value...>                            One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-global-url-hints-include-glob <value...>                       A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-global-url-hints-include-not <value...>                        Logical NOT.
+  --module-parser-css-global-url-hints-include-not-glob <value...>                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-global-url-hints-media <value...>                              Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --module-parser-css-global-url-hints-prefetch                                      When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-module-parser-css-global-url-hints-prefetch                                   Negative 'module-parser-css-global-url-hints-prefetch' option.
+  --module-parser-css-global-url-hints-preload                                       When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-module-parser-css-global-url-hints-preload                                    Negative 'module-parser-css-global-url-hints-preload' option.
+  --module-parser-css-global-url-hints-test <value...>                               One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-global-url-hints-test-glob <value...>                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-global-url-hints-test-not <value...>                           Logical NOT.
+  --module-parser-css-global-url-hints-test-not-glob <value...>                      A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-global-url-hints-type <value...>                               Default `type` attribute (MIME).
+  --module-parser-css-global-url-hints-reset                                         Clear all items provided in 'module.parser.css/global.urlHints' configuration. URL-referenced-asset default hint rules for this parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`).
   --module-parser-css-module-animation                                               Enable/disable renaming of `@keyframes`.
   --no-module-parser-css-module-animation                                            Negative 'module-parser-css-module-animation' option.
   --module-parser-css-module-as <value>                                              Configure how the CSS source is parsed: as a full stylesheet (default) or as a block's contents (e.g. the content of an HTML `style` attribute).
@@ -285,9 +375,15 @@ Options
   --no-module-parser-css-module-container                                            Negative 'module-parser-css-module-container' option.
   --module-parser-css-module-custom-idents                                           Enable/disable renaming of custom identifiers.
   --no-module-parser-css-module-custom-idents                                        Negative 'module-parser-css-module-custom-idents' option.
+  --module-parser-css-module-custom-media                                            Enable/disable resolution of `@custom-media` at-rules (file-local build-time substitution).
+  --no-module-parser-css-module-custom-media                                         Negative 'module-parser-css-module-custom-media' option.
+  --module-parser-css-module-custom-selectors                                        Enable/disable resolution of `@custom-selector` at-rules (file-local build-time expansion to `:is(...)`).
+  --no-module-parser-css-module-custom-selectors                                     Negative 'module-parser-css-module-custom-selectors' option.
   --module-parser-css-module-dashed-idents                                           Enable/disable renaming of dashed identifiers, e. g. custom properties.
   --no-module-parser-css-module-dashed-idents                                        Negative 'module-parser-css-module-dashed-idents' option.
   --module-parser-css-module-export-type <value>                                     Configure how CSS content is exported as default.
+  --module-parser-css-module-font-preload                                            Auto-emit `<link rel="preload" as="font">` for the primary `src` URL of each `@font-face` reachable from an HTML entry's initial CSS. Only the first URL per `@font-face` is preloaded (preloading every format would double-download). Off by default; `parser.css.urlHints` rules and per-URL magic comments still override the seeded defaults. Set `output.crossOriginLoading` so the preload matches the font's CORS fetch.
+  --no-module-parser-css-module-font-preload                                         Negative 'module-parser-css-module-font-preload' option.
   --module-parser-css-module-function                                                Enable/disable renaming of `@function` names.
   --no-module-parser-css-module-function                                             Negative 'module-parser-css-module-function' option.
   --module-parser-css-module-grid                                                    Enable/disable renaming of grid identifiers.
@@ -300,12 +396,58 @@ Options
   --no-module-parser-css-module-pure                                                 Negative 'module-parser-css-module-pure' option.
   --module-parser-css-module-url                                                     Enable/disable `url()`/`image-set()`/`src()`/`image()` functions handling.
   --no-module-parser-css-module-url                                                  Negative 'module-parser-css-module-url' option.
+  --module-parser-css-module-url-hints-as <value...>                                 Default `as` attribute (script / style / font / image / …).
+  --module-parser-css-module-url-hints-exclude <value...>                            One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-module-url-hints-exclude-glob <value...>                       A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-module-url-hints-exclude-not <value...>                        Logical NOT.
+  --module-parser-css-module-url-hints-exclude-not-glob <value...>                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-module-url-hints-fetch-priority <value...>                     Default fetchpriority for prefetch / preload links.
+  --no-module-parser-css-module-url-hints-fetch-priority                             Negative 'module-parser-css-module-url-hints-fetch-priority' option.
+  --module-parser-css-module-url-hints-include <value...>                            One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-module-url-hints-include-glob <value...>                       A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-module-url-hints-include-not <value...>                        Logical NOT.
+  --module-parser-css-module-url-hints-include-not-glob <value...>                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-module-url-hints-media <value...>                              Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --module-parser-css-module-url-hints-prefetch                                      When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-module-parser-css-module-url-hints-prefetch                                   Negative 'module-parser-css-module-url-hints-prefetch' option.
+  --module-parser-css-module-url-hints-preload                                       When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-module-parser-css-module-url-hints-preload                                    Negative 'module-parser-css-module-url-hints-preload' option.
+  --module-parser-css-module-url-hints-test <value...>                               One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-css-module-url-hints-test-glob <value...>                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-module-url-hints-test-not <value...>                           Logical NOT.
+  --module-parser-css-module-url-hints-test-not-glob <value...>                      A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-css-module-url-hints-type <value...>                               Default `type` attribute (MIME).
+  --module-parser-css-module-url-hints-reset                                         Clear all items provided in 'module.parser.css/module.urlHints' configuration. URL-referenced-asset default hint rules for this parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`).
+  --module-parser-html-as <value>                                                    Configure how the HTML source is parsed: `"document"` (the default) parses a full page; any other value is the tag name of the context element to parse the source as that element's inner HTML (a fragment) — e.g. `"template"` for a neutral fragment, or `"tbody"` so context-sensitive tags like a bare `<tr>`/`<td>` are kept instead of dropped.
   --module-parser-html-sources [value...]                                            A source entry: either the string `"..."` to inline the built-in default sources, or an object describing a `tag`/`attribute` pair to extract and how to bundle it. Configure extraction of URL-like attribute values (e.g. `<img src>`, `<link href>`, `<script src>`) as webpack dependencies. `true` (default) uses the built-in source list; `false` disables extraction entirely so attributes are left untouched and `<script src>` / `<link rel="modulepreload">` / `<link rel="stylesheet">` no longer become compilation entries; an array lets you customize which `tag`/`attribute` pairs are treated as URLs and how they are bundled. Use the string `"..."` inside the array to inline the defaults. Inline `<script>` and `<style>` bodies are always processed. Use `webpackIgnore` comments or `IgnorePlugin` to skip individual URLs.
   --no-module-parser-html-sources                                                    Negative 'module-parser-html-sources' option.
   --module-parser-html-sources-attribute <value...>                                  Attribute name whose value is treated as a URL.
   --module-parser-html-sources-tag <value...>                                        Tag name to match. Omit to match any tag.
-  --module-parser-html-sources-type <value...>                                       How the attribute value should be parsed and bundled. `src` extracts a single URL as a plain asset; `srcset` parses a `srcset`-style list of candidate URLs as plain assets; `css-url` extracts `url(...)` references from a CSS value (like an SVG presentation attribute such as `fill`) as plain assets; `script` and `script-module` emit a classic / ES-module chunk entry like `<script src>` and `<script type="module" src>`; `stylesheet` emits a CSS chunk entry like `<link rel="stylesheet">`; `stylesheet-style` treats the attribute value as a full stylesheet (like a `<style>` body) and `stylesheet-style-attribute` as a CSS block's contents (a declaration list, like a `style` attribute) — both bundle it through the CSS pipeline and replace the attribute's content with the processed CSS at render time; `srcdoc` treats the attribute value as an entity-encoded HTML document (like `<iframe srcdoc>`), bundling it through the HTML pipeline and replacing the attribute's content with the processed HTML at render time.
+  --module-parser-html-sources-type <value...>                                       How the attribute value should be parsed and bundled, or `false` to disable a built-in source for this `tag`/`attribute` (use together with `"..."` to drop a default, e.g. stop treating `<img src>` as a URL). `src` extracts a single URL as a plain asset; `srcset` parses a `srcset`-style list of candidate URLs as plain assets; `css-url` extracts `url(...)` references from a CSS value (like an SVG presentation attribute such as `fill`) as plain assets; `script` and `script-module` emit a classic / ES-module chunk entry like `<script src>` and `<script type="module" src>`; `stylesheet` emits a CSS chunk entry like `<link rel="stylesheet">`; `html` treats the URL as a link to another HTML file that is bundled as its own emitted page (its assets extracted) and rewrites the attribute to the page's output filename (like Parcel's `<a href="page.html">`); `stylesheet-style` treats the attribute value as a full stylesheet (like a `<style>` body) and `stylesheet-style-attribute` as a CSS block's contents (a declaration list, like a `style` attribute) — both bundle it through the CSS pipeline and replace the attribute's content with the processed CSS at render time; `srcdoc` treats the attribute value as an entity-encoded HTML document (like `<iframe srcdoc>`), bundling it through the HTML pipeline and replacing the attribute's content with the processed HTML at render time.
+  --no-module-parser-html-sources-type                                               Negative 'module-parser-html-sources-type' option.
   --module-parser-html-sources-reset                                                 Clear all items provided in 'module.parser.html.sources' configuration. Sources to extract as webpack dependencies. Use `"..."` to inline the default source list.
+  --module-parser-html-url-hints-as <value...>                                       Default `as` attribute (script / style / font / image / …).
+  --module-parser-html-url-hints-exclude <value...>                                  One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-html-url-hints-exclude-glob <value...>                             A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-html-url-hints-exclude-not <value...>                              Logical NOT.
+  --module-parser-html-url-hints-exclude-not-glob <value...>                         A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-html-url-hints-fetch-priority <value...>                           Default fetchpriority for prefetch / preload links.
+  --no-module-parser-html-url-hints-fetch-priority                                   Negative 'module-parser-html-url-hints-fetch-priority' option.
+  --module-parser-html-url-hints-include <value...>                                  One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-html-url-hints-include-glob <value...>                             A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-html-url-hints-include-not <value...>                              Logical NOT.
+  --module-parser-html-url-hints-include-not-glob <value...>                         A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-html-url-hints-media <value...>                                    Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --module-parser-html-url-hints-prefetch                                            When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-module-parser-html-url-hints-prefetch                                         Negative 'module-parser-html-url-hints-prefetch' option.
+  --module-parser-html-url-hints-preload                                             When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-module-parser-html-url-hints-preload                                          Negative 'module-parser-html-url-hints-preload' option.
+  --module-parser-html-url-hints-test <value...>                                     One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-html-url-hints-test-glob <value...>                                A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-html-url-hints-test-not <value...>                                 Logical NOT.
+  --module-parser-html-url-hints-test-not-glob <value...>                            A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-html-url-hints-type <value...>                                     Default `type` attribute (MIME).
+  --module-parser-html-url-hints-reset                                               Clear all items provided in 'module.parser.html.urlHints' configuration. URL-referenced-asset default hint rules for this parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`).
   --no-module-parser-javascript-amd                                                  Negative 'module-parser-javascript-amd' option.
   --module-parser-javascript-anonymous-default-export-name                           Set .name to "default" for anonymous default export functions and classes per ES spec. Disable to reduce output size when .name is not needed.
   --no-module-parser-javascript-anonymous-default-export-name                        Negative 'module-parser-javascript-anonymous-default-export-name' option.
@@ -319,6 +461,8 @@ Options
   --no-module-parser-javascript-create-require                                       Negative 'module-parser-javascript-create-require' option.
   --module-parser-javascript-defer-import                                            Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
   --no-module-parser-javascript-defer-import                                         Negative 'module-parser-javascript-defer-import' option.
+  --module-parser-javascript-dynamic-import-css-preload [value]                      Auto-emit `<link rel="preload" as="style">` for the CSS of every dynamically imported (`import()`) chunk, so the stylesheet fetches in parallel with the chunk's JavaScript instead of after it parses. Unlike `dynamicImportPreload`, the JavaScript itself is not preloaded. `true` uses the default order; a number sets the preload order.
+  --no-module-parser-javascript-dynamic-import-css-preload                           Negative 'module-parser-javascript-dynamic-import-css-preload' option.
   --module-parser-javascript-dynamic-import-fetch-priority <value>                   Specifies global fetchPriority for dynamic import.
   --no-module-parser-javascript-dynamic-import-fetch-priority                        Negative 'module-parser-javascript-dynamic-import-fetch-priority' option.
   --module-parser-javascript-dynamic-import-mode <value>                             Specifies global mode for dynamic import.
@@ -343,9 +487,27 @@ Options
   --no-module-parser-javascript-import                                               Negative 'module-parser-javascript-import' option.
   --module-parser-javascript-import-exports-presence <value>                         Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-import-exports-presence                              Negative 'module-parser-javascript-import-exports-presence' option.
-  --module-parser-javascript-import-meta [value]                                     Enable/disable evaluating import.meta. Set to 'preserve-unknown' to preserve unknown properties for runtime evaluation.
+  --module-parser-javascript-import-meta [value]                                     Enable/disable evaluating import.meta. Set to 'preserve-unknown' or an object to preserve unknown properties for runtime evaluation.
   --no-module-parser-javascript-import-meta                                          Negative 'module-parser-javascript-import-meta' option.
-  --module-parser-javascript-import-meta-context                                     Enable/disable evaluating import.meta.webpackContext.
+  --module-parser-javascript-import-meta-dirname                                     Enable/disable evaluating import.meta.dirname.
+  --no-module-parser-javascript-import-meta-dirname                                  Negative 'module-parser-javascript-import-meta-dirname' option.
+  --module-parser-javascript-import-meta-env                                         Enable/disable evaluating import.meta.env.
+  --no-module-parser-javascript-import-meta-env                                      Negative 'module-parser-javascript-import-meta-env' option.
+  --module-parser-javascript-import-meta-filename                                    Enable/disable evaluating import.meta.filename.
+  --no-module-parser-javascript-import-meta-filename                                 Negative 'module-parser-javascript-import-meta-filename' option.
+  --module-parser-javascript-import-meta-main                                        Enable/disable evaluating import.meta.main.
+  --no-module-parser-javascript-import-meta-main                                     Negative 'module-parser-javascript-import-meta-main' option.
+  --module-parser-javascript-import-meta-resolve                                     Enable/disable evaluating import.meta.resolve.
+  --no-module-parser-javascript-import-meta-resolve                                  Negative 'module-parser-javascript-import-meta-resolve' option.
+  --module-parser-javascript-import-meta-url                                         Enable/disable evaluating import.meta.url.
+  --no-module-parser-javascript-import-meta-url                                      Negative 'module-parser-javascript-import-meta-url' option.
+  --module-parser-javascript-import-meta-webpack                                     Enable/disable evaluating import.meta.webpack.
+  --no-module-parser-javascript-import-meta-webpack                                  Negative 'module-parser-javascript-import-meta-webpack' option.
+  --module-parser-javascript-import-meta-webpack-context                             Enable/disable evaluating import.meta.webpackContext.
+  --no-module-parser-javascript-import-meta-webpack-context                          Negative 'module-parser-javascript-import-meta-webpack-context' option.
+  --module-parser-javascript-import-meta-webpack-hot                                 Enable/disable evaluating import.meta.webpackHot.
+  --no-module-parser-javascript-import-meta-webpack-hot                              Negative 'module-parser-javascript-import-meta-webpack-hot' option.
+  --module-parser-javascript-import-meta-context                                     Deprecated in favor of "importMeta" object option with a "webpackContext" field. Enable/disable evaluating import.meta.webpackContext.
   --no-module-parser-javascript-import-meta-context                                  Negative 'module-parser-javascript-import-meta-context' option.
   --no-module-parser-javascript-node                                                 Negative 'module-parser-javascript-node' option.
   --module-parser-javascript-node-dirname [value]                                    Include a polyfill for the '__dirname' variable.
@@ -371,6 +533,8 @@ Options
   --no-module-parser-javascript-source-import                                        Negative 'module-parser-javascript-source-import' option.
   --module-parser-javascript-strict-export-presence                                  Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-strict-export-presence                               Negative 'module-parser-javascript-strict-export-presence' option.
+  --module-parser-javascript-strict-mode-violations <value>                          Specifies the behavior of constructs that break at runtime in strict mode (e.g. 'with', 'arguments.callee', assigning to read-only globals) when modules are emitted as ES module output.
+  --no-module-parser-javascript-strict-mode-violations                               Negative 'module-parser-javascript-strict-mode-violations' option.
   --module-parser-javascript-strict-this-context-on-imports                          Handle the this context correctly according to the spec for namespace objects.
   --no-module-parser-javascript-strict-this-context-on-imports                       Negative 'module-parser-javascript-strict-this-context-on-imports' option.
   --module-parser-javascript-system                                                  Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
@@ -386,9 +550,34 @@ Options
   --module-parser-javascript-unknown-context-request <value>                         Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-url [value]                                             Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-url                                                  Negative 'module-parser-javascript-url' option.
+  --module-parser-javascript-url-hints-as <value...>                                 Default `as` attribute (script / style / font / image / …).
+  --module-parser-javascript-url-hints-exclude <value...>                            One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-url-hints-exclude-glob <value...>                       A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-url-hints-exclude-not <value...>                        Logical NOT.
+  --module-parser-javascript-url-hints-exclude-not-glob <value...>                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-url-hints-fetch-priority <value...>                     Default fetchpriority for prefetch / preload links.
+  --no-module-parser-javascript-url-hints-fetch-priority                             Negative 'module-parser-javascript-url-hints-fetch-priority' option.
+  --module-parser-javascript-url-hints-include <value...>                            One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-url-hints-include-glob <value...>                       A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-url-hints-include-not <value...>                        Logical NOT.
+  --module-parser-javascript-url-hints-include-not-glob <value...>                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-url-hints-media <value...>                              Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --module-parser-javascript-url-hints-prefetch                                      When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-module-parser-javascript-url-hints-prefetch                                   Negative 'module-parser-javascript-url-hints-prefetch' option.
+  --module-parser-javascript-url-hints-preload                                       When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-module-parser-javascript-url-hints-preload                                    Negative 'module-parser-javascript-url-hints-preload' option.
+  --module-parser-javascript-url-hints-test <value...>                               One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-url-hints-test-glob <value...>                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-url-hints-test-not <value...>                           Logical NOT.
+  --module-parser-javascript-url-hints-test-not-glob <value...>                      A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-url-hints-type <value...>                               Default `type` attribute (MIME).
+  --module-parser-javascript-url-hints-reset                                         Clear all items provided in 'module.parser.javascript.urlHints' configuration. URL-referenced-asset default hint rules for this parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`).
   --module-parser-javascript-worker [value...]                                       Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --no-module-parser-javascript-worker                                               Negative 'module-parser-javascript-worker' option.
   --module-parser-javascript-worker-reset                                            Clear all items provided in 'module.parser.javascript.worker' configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-worklet [value...]                                      Specify a syntax that should be parsed as Worklet reference. '*context.audioWorklet.addModule()' handles 'context.audioWorklet.addModule()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of Worklet syntax like context.audioWorklet.addModule() or CSS.paintWorklet.addModule().
+  --no-module-parser-javascript-worklet                                              Negative 'module-parser-javascript-worklet' option.
+  --module-parser-javascript-worklet-reset                                           Clear all items provided in 'module.parser.javascript.worklet' configuration. Disable or configure parsing of Worklet syntax like context.audioWorklet.addModule() or CSS.paintWorklet.addModule().
   --module-parser-javascript-wrapped-context-critical                                Enable warnings for partial dynamic dependencies.
   --no-module-parser-javascript-wrapped-context-critical                             Negative 'module-parser-javascript-wrapped-context-critical' option.
   --module-parser-javascript-wrapped-context-recursive                               Enable recursive directory lookup for partial dynamic dependencies.
@@ -407,6 +596,8 @@ Options
   --no-module-parser-javascript-auto-create-require                                  Negative 'module-parser-javascript-auto-create-require' option.
   --module-parser-javascript-auto-defer-import                                       Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
   --no-module-parser-javascript-auto-defer-import                                    Negative 'module-parser-javascript-auto-defer-import' option.
+  --module-parser-javascript-auto-dynamic-import-css-preload [value]                 Auto-emit `<link rel="preload" as="style">` for the CSS of every dynamically imported (`import()`) chunk, so the stylesheet fetches in parallel with the chunk's JavaScript instead of after it parses. Unlike `dynamicImportPreload`, the JavaScript itself is not preloaded. `true` uses the default order; a number sets the preload order.
+  --no-module-parser-javascript-auto-dynamic-import-css-preload                      Negative 'module-parser-javascript-auto-dynamic-import-css-preload' option.
   --module-parser-javascript-auto-dynamic-import-fetch-priority <value>              Specifies global fetchPriority for dynamic import.
   --no-module-parser-javascript-auto-dynamic-import-fetch-priority                   Negative 'module-parser-javascript-auto-dynamic-import-fetch-priority' option.
   --module-parser-javascript-auto-dynamic-import-mode <value>                        Specifies global mode for dynamic import.
@@ -431,9 +622,27 @@ Options
   --no-module-parser-javascript-auto-import                                          Negative 'module-parser-javascript-auto-import' option.
   --module-parser-javascript-auto-import-exports-presence <value>                    Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-auto-import-exports-presence                         Negative 'module-parser-javascript-auto-import-exports-presence' option.
-  --module-parser-javascript-auto-import-meta [value]                                Enable/disable evaluating import.meta. Set to 'preserve-unknown' to preserve unknown properties for runtime evaluation.
+  --module-parser-javascript-auto-import-meta [value]                                Enable/disable evaluating import.meta. Set to 'preserve-unknown' or an object to preserve unknown properties for runtime evaluation.
   --no-module-parser-javascript-auto-import-meta                                     Negative 'module-parser-javascript-auto-import-meta' option.
-  --module-parser-javascript-auto-import-meta-context                                Enable/disable evaluating import.meta.webpackContext.
+  --module-parser-javascript-auto-import-meta-dirname                                Enable/disable evaluating import.meta.dirname.
+  --no-module-parser-javascript-auto-import-meta-dirname                             Negative 'module-parser-javascript-auto-import-meta-dirname' option.
+  --module-parser-javascript-auto-import-meta-env                                    Enable/disable evaluating import.meta.env.
+  --no-module-parser-javascript-auto-import-meta-env                                 Negative 'module-parser-javascript-auto-import-meta-env' option.
+  --module-parser-javascript-auto-import-meta-filename                               Enable/disable evaluating import.meta.filename.
+  --no-module-parser-javascript-auto-import-meta-filename                            Negative 'module-parser-javascript-auto-import-meta-filename' option.
+  --module-parser-javascript-auto-import-meta-main                                   Enable/disable evaluating import.meta.main.
+  --no-module-parser-javascript-auto-import-meta-main                                Negative 'module-parser-javascript-auto-import-meta-main' option.
+  --module-parser-javascript-auto-import-meta-resolve                                Enable/disable evaluating import.meta.resolve.
+  --no-module-parser-javascript-auto-import-meta-resolve                             Negative 'module-parser-javascript-auto-import-meta-resolve' option.
+  --module-parser-javascript-auto-import-meta-url                                    Enable/disable evaluating import.meta.url.
+  --no-module-parser-javascript-auto-import-meta-url                                 Negative 'module-parser-javascript-auto-import-meta-url' option.
+  --module-parser-javascript-auto-import-meta-webpack                                Enable/disable evaluating import.meta.webpack.
+  --no-module-parser-javascript-auto-import-meta-webpack                             Negative 'module-parser-javascript-auto-import-meta-webpack' option.
+  --module-parser-javascript-auto-import-meta-webpack-context                        Enable/disable evaluating import.meta.webpackContext.
+  --no-module-parser-javascript-auto-import-meta-webpack-context                     Negative 'module-parser-javascript-auto-import-meta-webpack-context' option.
+  --module-parser-javascript-auto-import-meta-webpack-hot                            Enable/disable evaluating import.meta.webpackHot.
+  --no-module-parser-javascript-auto-import-meta-webpack-hot                         Negative 'module-parser-javascript-auto-import-meta-webpack-hot' option.
+  --module-parser-javascript-auto-import-meta-context                                Deprecated in favor of "importMeta" object option with a "webpackContext" field. Enable/disable evaluating import.meta.webpackContext.
   --no-module-parser-javascript-auto-import-meta-context                             Negative 'module-parser-javascript-auto-import-meta-context' option.
   --no-module-parser-javascript-auto-node                                            Negative 'module-parser-javascript-auto-node' option.
   --module-parser-javascript-auto-node-dirname [value]                               Include a polyfill for the '__dirname' variable.
@@ -459,6 +668,8 @@ Options
   --no-module-parser-javascript-auto-source-import                                   Negative 'module-parser-javascript-auto-source-import' option.
   --module-parser-javascript-auto-strict-export-presence                             Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-auto-strict-export-presence                          Negative 'module-parser-javascript-auto-strict-export-presence' option.
+  --module-parser-javascript-auto-strict-mode-violations <value>                     Specifies the behavior of constructs that break at runtime in strict mode (e.g. 'with', 'arguments.callee', assigning to read-only globals) when modules are emitted as ES module output.
+  --no-module-parser-javascript-auto-strict-mode-violations                          Negative 'module-parser-javascript-auto-strict-mode-violations' option.
   --module-parser-javascript-auto-strict-this-context-on-imports                     Handle the this context correctly according to the spec for namespace objects.
   --no-module-parser-javascript-auto-strict-this-context-on-imports                  Negative 'module-parser-javascript-auto-strict-this-context-on-imports' option.
   --module-parser-javascript-auto-system                                             Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
@@ -474,9 +685,34 @@ Options
   --module-parser-javascript-auto-unknown-context-request <value>                    Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-auto-url [value]                                        Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-auto-url                                             Negative 'module-parser-javascript-auto-url' option.
+  --module-parser-javascript-auto-url-hints-as <value...>                            Default `as` attribute (script / style / font / image / …).
+  --module-parser-javascript-auto-url-hints-exclude <value...>                       One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-auto-url-hints-exclude-glob <value...>                  A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-auto-url-hints-exclude-not <value...>                   Logical NOT.
+  --module-parser-javascript-auto-url-hints-exclude-not-glob <value...>              A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-auto-url-hints-fetch-priority <value...>                Default fetchpriority for prefetch / preload links.
+  --no-module-parser-javascript-auto-url-hints-fetch-priority                        Negative 'module-parser-javascript-auto-url-hints-fetch-priority' option.
+  --module-parser-javascript-auto-url-hints-include <value...>                       One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-auto-url-hints-include-glob <value...>                  A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-auto-url-hints-include-not <value...>                   Logical NOT.
+  --module-parser-javascript-auto-url-hints-include-not-glob <value...>              A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-auto-url-hints-media <value...>                         Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --module-parser-javascript-auto-url-hints-prefetch                                 When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-module-parser-javascript-auto-url-hints-prefetch                              Negative 'module-parser-javascript-auto-url-hints-prefetch' option.
+  --module-parser-javascript-auto-url-hints-preload                                  When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-module-parser-javascript-auto-url-hints-preload                               Negative 'module-parser-javascript-auto-url-hints-preload' option.
+  --module-parser-javascript-auto-url-hints-test <value...>                          One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-auto-url-hints-test-glob <value...>                     A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-auto-url-hints-test-not <value...>                      Logical NOT.
+  --module-parser-javascript-auto-url-hints-test-not-glob <value...>                 A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-auto-url-hints-type <value...>                          Default `type` attribute (MIME).
+  --module-parser-javascript-auto-url-hints-reset                                    Clear all items provided in 'module.parser.javascript/auto.urlHints' configuration. URL-referenced-asset default hint rules for this parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`).
   --module-parser-javascript-auto-worker [value...]                                  Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --no-module-parser-javascript-auto-worker                                          Negative 'module-parser-javascript-auto-worker' option.
   --module-parser-javascript-auto-worker-reset                                       Clear all items provided in 'module.parser.javascript/auto.worker' configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-auto-worklet [value...]                                 Specify a syntax that should be parsed as Worklet reference. '*context.audioWorklet.addModule()' handles 'context.audioWorklet.addModule()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of Worklet syntax like context.audioWorklet.addModule() or CSS.paintWorklet.addModule().
+  --no-module-parser-javascript-auto-worklet                                         Negative 'module-parser-javascript-auto-worklet' option.
+  --module-parser-javascript-auto-worklet-reset                                      Clear all items provided in 'module.parser.javascript/auto.worklet' configuration. Disable or configure parsing of Worklet syntax like context.audioWorklet.addModule() or CSS.paintWorklet.addModule().
   --module-parser-javascript-auto-wrapped-context-critical                           Enable warnings for partial dynamic dependencies.
   --no-module-parser-javascript-auto-wrapped-context-critical                        Negative 'module-parser-javascript-auto-wrapped-context-critical' option.
   --module-parser-javascript-auto-wrapped-context-recursive                          Enable recursive directory lookup for partial dynamic dependencies.
@@ -495,6 +731,8 @@ Options
   --no-module-parser-javascript-dynamic-create-require                               Negative 'module-parser-javascript-dynamic-create-require' option.
   --module-parser-javascript-dynamic-defer-import                                    Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
   --no-module-parser-javascript-dynamic-defer-import                                 Negative 'module-parser-javascript-dynamic-defer-import' option.
+  --module-parser-javascript-dynamic-dynamic-import-css-preload [value]              Auto-emit `<link rel="preload" as="style">` for the CSS of every dynamically imported (`import()`) chunk, so the stylesheet fetches in parallel with the chunk's JavaScript instead of after it parses. Unlike `dynamicImportPreload`, the JavaScript itself is not preloaded. `true` uses the default order; a number sets the preload order.
+  --no-module-parser-javascript-dynamic-dynamic-import-css-preload                   Negative 'module-parser-javascript-dynamic-dynamic-import-css-preload' option.
   --module-parser-javascript-dynamic-dynamic-import-fetch-priority <value>           Specifies global fetchPriority for dynamic import.
   --no-module-parser-javascript-dynamic-dynamic-import-fetch-priority                Negative 'module-parser-javascript-dynamic-dynamic-import-fetch-priority' option.
   --module-parser-javascript-dynamic-dynamic-import-mode <value>                     Specifies global mode for dynamic import.
@@ -519,9 +757,27 @@ Options
   --no-module-parser-javascript-dynamic-import                                       Negative 'module-parser-javascript-dynamic-import' option.
   --module-parser-javascript-dynamic-import-exports-presence <value>                 Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-dynamic-import-exports-presence                      Negative 'module-parser-javascript-dynamic-import-exports-presence' option.
-  --module-parser-javascript-dynamic-import-meta [value]                             Enable/disable evaluating import.meta. Set to 'preserve-unknown' to preserve unknown properties for runtime evaluation.
+  --module-parser-javascript-dynamic-import-meta [value]                             Enable/disable evaluating import.meta. Set to 'preserve-unknown' or an object to preserve unknown properties for runtime evaluation.
   --no-module-parser-javascript-dynamic-import-meta                                  Negative 'module-parser-javascript-dynamic-import-meta' option.
-  --module-parser-javascript-dynamic-import-meta-context                             Enable/disable evaluating import.meta.webpackContext.
+  --module-parser-javascript-dynamic-import-meta-dirname                             Enable/disable evaluating import.meta.dirname.
+  --no-module-parser-javascript-dynamic-import-meta-dirname                          Negative 'module-parser-javascript-dynamic-import-meta-dirname' option.
+  --module-parser-javascript-dynamic-import-meta-env                                 Enable/disable evaluating import.meta.env.
+  --no-module-parser-javascript-dynamic-import-meta-env                              Negative 'module-parser-javascript-dynamic-import-meta-env' option.
+  --module-parser-javascript-dynamic-import-meta-filename                            Enable/disable evaluating import.meta.filename.
+  --no-module-parser-javascript-dynamic-import-meta-filename                         Negative 'module-parser-javascript-dynamic-import-meta-filename' option.
+  --module-parser-javascript-dynamic-import-meta-main                                Enable/disable evaluating import.meta.main.
+  --no-module-parser-javascript-dynamic-import-meta-main                             Negative 'module-parser-javascript-dynamic-import-meta-main' option.
+  --module-parser-javascript-dynamic-import-meta-resolve                             Enable/disable evaluating import.meta.resolve.
+  --no-module-parser-javascript-dynamic-import-meta-resolve                          Negative 'module-parser-javascript-dynamic-import-meta-resolve' option.
+  --module-parser-javascript-dynamic-import-meta-url                                 Enable/disable evaluating import.meta.url.
+  --no-module-parser-javascript-dynamic-import-meta-url                              Negative 'module-parser-javascript-dynamic-import-meta-url' option.
+  --module-parser-javascript-dynamic-import-meta-webpack                             Enable/disable evaluating import.meta.webpack.
+  --no-module-parser-javascript-dynamic-import-meta-webpack                          Negative 'module-parser-javascript-dynamic-import-meta-webpack' option.
+  --module-parser-javascript-dynamic-import-meta-webpack-context                     Enable/disable evaluating import.meta.webpackContext.
+  --no-module-parser-javascript-dynamic-import-meta-webpack-context                  Negative 'module-parser-javascript-dynamic-import-meta-webpack-context' option.
+  --module-parser-javascript-dynamic-import-meta-webpack-hot                         Enable/disable evaluating import.meta.webpackHot.
+  --no-module-parser-javascript-dynamic-import-meta-webpack-hot                      Negative 'module-parser-javascript-dynamic-import-meta-webpack-hot' option.
+  --module-parser-javascript-dynamic-import-meta-context                             Deprecated in favor of "importMeta" object option with a "webpackContext" field. Enable/disable evaluating import.meta.webpackContext.
   --no-module-parser-javascript-dynamic-import-meta-context                          Negative 'module-parser-javascript-dynamic-import-meta-context' option.
   --no-module-parser-javascript-dynamic-node                                         Negative 'module-parser-javascript-dynamic-node' option.
   --module-parser-javascript-dynamic-node-dirname [value]                            Include a polyfill for the '__dirname' variable.
@@ -547,6 +803,8 @@ Options
   --no-module-parser-javascript-dynamic-source-import                                Negative 'module-parser-javascript-dynamic-source-import' option.
   --module-parser-javascript-dynamic-strict-export-presence                          Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-dynamic-strict-export-presence                       Negative 'module-parser-javascript-dynamic-strict-export-presence' option.
+  --module-parser-javascript-dynamic-strict-mode-violations <value>                  Specifies the behavior of constructs that break at runtime in strict mode (e.g. 'with', 'arguments.callee', assigning to read-only globals) when modules are emitted as ES module output.
+  --no-module-parser-javascript-dynamic-strict-mode-violations                       Negative 'module-parser-javascript-dynamic-strict-mode-violations' option.
   --module-parser-javascript-dynamic-strict-this-context-on-imports                  Handle the this context correctly according to the spec for namespace objects.
   --no-module-parser-javascript-dynamic-strict-this-context-on-imports               Negative 'module-parser-javascript-dynamic-strict-this-context-on-imports' option.
   --module-parser-javascript-dynamic-system                                          Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
@@ -560,9 +818,34 @@ Options
   --module-parser-javascript-dynamic-unknown-context-reg-exp [value]                 Sets the regular expression when using the require function in a not statically analyse-able way.
   --no-module-parser-javascript-dynamic-unknown-context-reg-exp                      Negative 'module-parser-javascript-dynamic-unknown-context-reg-exp' option.
   --module-parser-javascript-dynamic-unknown-context-request <value>                 Sets the request when using the require function in a not statically analyse-able way.
+  --module-parser-javascript-dynamic-url-hints-as <value...>                         Default `as` attribute (script / style / font / image / …).
+  --module-parser-javascript-dynamic-url-hints-exclude <value...>                    One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-dynamic-url-hints-exclude-glob <value...>               A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-dynamic-url-hints-exclude-not <value...>                Logical NOT.
+  --module-parser-javascript-dynamic-url-hints-exclude-not-glob <value...>           A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-dynamic-url-hints-fetch-priority <value...>             Default fetchpriority for prefetch / preload links.
+  --no-module-parser-javascript-dynamic-url-hints-fetch-priority                     Negative 'module-parser-javascript-dynamic-url-hints-fetch-priority' option.
+  --module-parser-javascript-dynamic-url-hints-include <value...>                    One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-dynamic-url-hints-include-glob <value...>               A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-dynamic-url-hints-include-not <value...>                Logical NOT.
+  --module-parser-javascript-dynamic-url-hints-include-not-glob <value...>           A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-dynamic-url-hints-media <value...>                      Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --module-parser-javascript-dynamic-url-hints-prefetch                              When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-module-parser-javascript-dynamic-url-hints-prefetch                           Negative 'module-parser-javascript-dynamic-url-hints-prefetch' option.
+  --module-parser-javascript-dynamic-url-hints-preload                               When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-module-parser-javascript-dynamic-url-hints-preload                            Negative 'module-parser-javascript-dynamic-url-hints-preload' option.
+  --module-parser-javascript-dynamic-url-hints-test <value...>                       One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-dynamic-url-hints-test-glob <value...>                  A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-dynamic-url-hints-test-not <value...>                   Logical NOT.
+  --module-parser-javascript-dynamic-url-hints-test-not-glob <value...>              A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-dynamic-url-hints-type <value...>                       Default `type` attribute (MIME).
+  --module-parser-javascript-dynamic-url-hints-reset                                 Clear all items provided in 'module.parser.javascript/dynamic.urlHints' configuration. URL-referenced-asset default hint rules for this parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`).
   --module-parser-javascript-dynamic-worker [value...]                               Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --no-module-parser-javascript-dynamic-worker                                       Negative 'module-parser-javascript-dynamic-worker' option.
   --module-parser-javascript-dynamic-worker-reset                                    Clear all items provided in 'module.parser.javascript/dynamic.worker' configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-dynamic-worklet [value...]                              Specify a syntax that should be parsed as Worklet reference. '*context.audioWorklet.addModule()' handles 'context.audioWorklet.addModule()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of Worklet syntax like context.audioWorklet.addModule() or CSS.paintWorklet.addModule().
+  --no-module-parser-javascript-dynamic-worklet                                      Negative 'module-parser-javascript-dynamic-worklet' option.
+  --module-parser-javascript-dynamic-worklet-reset                                   Clear all items provided in 'module.parser.javascript/dynamic.worklet' configuration. Disable or configure parsing of Worklet syntax like context.audioWorklet.addModule() or CSS.paintWorklet.addModule().
   --module-parser-javascript-dynamic-wrapped-context-critical                        Enable warnings for partial dynamic dependencies.
   --no-module-parser-javascript-dynamic-wrapped-context-critical                     Negative 'module-parser-javascript-dynamic-wrapped-context-critical' option.
   --module-parser-javascript-dynamic-wrapped-context-recursive                       Enable recursive directory lookup for partial dynamic dependencies.
@@ -581,6 +864,8 @@ Options
   --no-module-parser-javascript-esm-create-require                                   Negative 'module-parser-javascript-esm-create-require' option.
   --module-parser-javascript-esm-defer-import                                        Enable experimental tc39 proposal https://github.com/tc39/proposal-defer-import-eval. This allows to defer execution of a module until it's first use.
   --no-module-parser-javascript-esm-defer-import                                     Negative 'module-parser-javascript-esm-defer-import' option.
+  --module-parser-javascript-esm-dynamic-import-css-preload [value]                  Auto-emit `<link rel="preload" as="style">` for the CSS of every dynamically imported (`import()`) chunk, so the stylesheet fetches in parallel with the chunk's JavaScript instead of after it parses. Unlike `dynamicImportPreload`, the JavaScript itself is not preloaded. `true` uses the default order; a number sets the preload order.
+  --no-module-parser-javascript-esm-dynamic-import-css-preload                       Negative 'module-parser-javascript-esm-dynamic-import-css-preload' option.
   --module-parser-javascript-esm-dynamic-import-fetch-priority <value>               Specifies global fetchPriority for dynamic import.
   --no-module-parser-javascript-esm-dynamic-import-fetch-priority                    Negative 'module-parser-javascript-esm-dynamic-import-fetch-priority' option.
   --module-parser-javascript-esm-dynamic-import-mode <value>                         Specifies global mode for dynamic import.
@@ -605,9 +890,27 @@ Options
   --no-module-parser-javascript-esm-import                                           Negative 'module-parser-javascript-esm-import' option.
   --module-parser-javascript-esm-import-exports-presence <value>                     Specifies the behavior of invalid export names in "import ... from ...".
   --no-module-parser-javascript-esm-import-exports-presence                          Negative 'module-parser-javascript-esm-import-exports-presence' option.
-  --module-parser-javascript-esm-import-meta [value]                                 Enable/disable evaluating import.meta. Set to 'preserve-unknown' to preserve unknown properties for runtime evaluation.
+  --module-parser-javascript-esm-import-meta [value]                                 Enable/disable evaluating import.meta. Set to 'preserve-unknown' or an object to preserve unknown properties for runtime evaluation.
   --no-module-parser-javascript-esm-import-meta                                      Negative 'module-parser-javascript-esm-import-meta' option.
-  --module-parser-javascript-esm-import-meta-context                                 Enable/disable evaluating import.meta.webpackContext.
+  --module-parser-javascript-esm-import-meta-dirname                                 Enable/disable evaluating import.meta.dirname.
+  --no-module-parser-javascript-esm-import-meta-dirname                              Negative 'module-parser-javascript-esm-import-meta-dirname' option.
+  --module-parser-javascript-esm-import-meta-env                                     Enable/disable evaluating import.meta.env.
+  --no-module-parser-javascript-esm-import-meta-env                                  Negative 'module-parser-javascript-esm-import-meta-env' option.
+  --module-parser-javascript-esm-import-meta-filename                                Enable/disable evaluating import.meta.filename.
+  --no-module-parser-javascript-esm-import-meta-filename                             Negative 'module-parser-javascript-esm-import-meta-filename' option.
+  --module-parser-javascript-esm-import-meta-main                                    Enable/disable evaluating import.meta.main.
+  --no-module-parser-javascript-esm-import-meta-main                                 Negative 'module-parser-javascript-esm-import-meta-main' option.
+  --module-parser-javascript-esm-import-meta-resolve                                 Enable/disable evaluating import.meta.resolve.
+  --no-module-parser-javascript-esm-import-meta-resolve                              Negative 'module-parser-javascript-esm-import-meta-resolve' option.
+  --module-parser-javascript-esm-import-meta-url                                     Enable/disable evaluating import.meta.url.
+  --no-module-parser-javascript-esm-import-meta-url                                  Negative 'module-parser-javascript-esm-import-meta-url' option.
+  --module-parser-javascript-esm-import-meta-webpack                                 Enable/disable evaluating import.meta.webpack.
+  --no-module-parser-javascript-esm-import-meta-webpack                              Negative 'module-parser-javascript-esm-import-meta-webpack' option.
+  --module-parser-javascript-esm-import-meta-webpack-context                         Enable/disable evaluating import.meta.webpackContext.
+  --no-module-parser-javascript-esm-import-meta-webpack-context                      Negative 'module-parser-javascript-esm-import-meta-webpack-context' option.
+  --module-parser-javascript-esm-import-meta-webpack-hot                             Enable/disable evaluating import.meta.webpackHot.
+  --no-module-parser-javascript-esm-import-meta-webpack-hot                          Negative 'module-parser-javascript-esm-import-meta-webpack-hot' option.
+  --module-parser-javascript-esm-import-meta-context                                 Deprecated in favor of "importMeta" object option with a "webpackContext" field. Enable/disable evaluating import.meta.webpackContext.
   --no-module-parser-javascript-esm-import-meta-context                              Negative 'module-parser-javascript-esm-import-meta-context' option.
   --no-module-parser-javascript-esm-node                                             Negative 'module-parser-javascript-esm-node' option.
   --module-parser-javascript-esm-node-dirname [value]                                Include a polyfill for the '__dirname' variable.
@@ -633,6 +936,8 @@ Options
   --no-module-parser-javascript-esm-source-import                                    Negative 'module-parser-javascript-esm-source-import' option.
   --module-parser-javascript-esm-strict-export-presence                              Deprecated in favor of "exportsPresence". Emit errors instead of warnings when imported names don't exist in imported module.
   --no-module-parser-javascript-esm-strict-export-presence                           Negative 'module-parser-javascript-esm-strict-export-presence' option.
+  --module-parser-javascript-esm-strict-mode-violations <value>                      Specifies the behavior of constructs that break at runtime in strict mode (e.g. 'with', 'arguments.callee', assigning to read-only globals) when modules are emitted as ES module output.
+  --no-module-parser-javascript-esm-strict-mode-violations                           Negative 'module-parser-javascript-esm-strict-mode-violations' option.
   --module-parser-javascript-esm-strict-this-context-on-imports                      Handle the this context correctly according to the spec for namespace objects.
   --no-module-parser-javascript-esm-strict-this-context-on-imports                   Negative 'module-parser-javascript-esm-strict-this-context-on-imports' option.
   --module-parser-javascript-esm-system                                              Enable/disable parsing of System.js special syntax like System.import, System.get, System.set and System.register.
@@ -648,9 +953,34 @@ Options
   --module-parser-javascript-esm-unknown-context-request <value>                     Sets the request when using the require function in a not statically analyse-able way.
   --module-parser-javascript-esm-url [value]                                         Enable/disable parsing of new URL() syntax.
   --no-module-parser-javascript-esm-url                                              Negative 'module-parser-javascript-esm-url' option.
+  --module-parser-javascript-esm-url-hints-as <value...>                             Default `as` attribute (script / style / font / image / …).
+  --module-parser-javascript-esm-url-hints-exclude <value...>                        One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-esm-url-hints-exclude-glob <value...>                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-esm-url-hints-exclude-not <value...>                    Logical NOT.
+  --module-parser-javascript-esm-url-hints-exclude-not-glob <value...>               A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-esm-url-hints-fetch-priority <value...>                 Default fetchpriority for prefetch / preload links.
+  --no-module-parser-javascript-esm-url-hints-fetch-priority                         Negative 'module-parser-javascript-esm-url-hints-fetch-priority' option.
+  --module-parser-javascript-esm-url-hints-include <value...>                        One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-esm-url-hints-include-glob <value...>                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-esm-url-hints-include-not <value...>                    Logical NOT.
+  --module-parser-javascript-esm-url-hints-include-not-glob <value...>               A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-esm-url-hints-media <value...>                          Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --module-parser-javascript-esm-url-hints-prefetch                                  When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-module-parser-javascript-esm-url-hints-prefetch                               Negative 'module-parser-javascript-esm-url-hints-prefetch' option.
+  --module-parser-javascript-esm-url-hints-preload                                   When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-module-parser-javascript-esm-url-hints-preload                                Negative 'module-parser-javascript-esm-url-hints-preload' option.
+  --module-parser-javascript-esm-url-hints-test <value...>                           One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --module-parser-javascript-esm-url-hints-test-glob <value...>                      A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-esm-url-hints-test-not <value...>                       Logical NOT.
+  --module-parser-javascript-esm-url-hints-test-not-glob <value...>                  A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-parser-javascript-esm-url-hints-type <value...>                           Default `type` attribute (MIME).
+  --module-parser-javascript-esm-url-hints-reset                                     Clear all items provided in 'module.parser.javascript/esm.urlHints' configuration. URL-referenced-asset default hint rules for this parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`).
   --module-parser-javascript-esm-worker [value...]                                   Specify a syntax that should be parsed as WebWorker reference. 'Abc' handles 'new Abc()', 'Abc from xyz' handles 'import { Abc } from "xyz"; new Abc()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
   --no-module-parser-javascript-esm-worker                                           Negative 'module-parser-javascript-esm-worker' option.
   --module-parser-javascript-esm-worker-reset                                        Clear all items provided in 'module.parser.javascript/esm.worker' configuration. Disable or configure parsing of WebWorker syntax like new Worker() or navigator.serviceWorker.register().
+  --module-parser-javascript-esm-worklet [value...]                                  Specify a syntax that should be parsed as Worklet reference. '*context.audioWorklet.addModule()' handles 'context.audioWorklet.addModule()', 'abc()' handles 'abc()', and combinations are also possible. Disable or configure parsing of Worklet syntax like context.audioWorklet.addModule() or CSS.paintWorklet.addModule().
+  --no-module-parser-javascript-esm-worklet                                          Negative 'module-parser-javascript-esm-worklet' option.
+  --module-parser-javascript-esm-worklet-reset                                       Clear all items provided in 'module.parser.javascript/esm.worklet' configuration. Disable or configure parsing of Worklet syntax like context.audioWorklet.addModule() or CSS.paintWorklet.addModule().
   --module-parser-javascript-esm-wrapped-context-critical                            Enable warnings for partial dynamic dependencies.
   --no-module-parser-javascript-esm-wrapped-context-critical                         Negative 'module-parser-javascript-esm-wrapped-context-critical' option.
   --module-parser-javascript-esm-wrapped-context-recursive                           Enable recursive directory lookup for partial dynamic dependencies.
@@ -660,40 +990,73 @@ Options
   --module-parser-json-named-exports                                                 Allow named exports for json of object type.
   --no-module-parser-json-named-exports                                              Negative 'module-parser-json-named-exports' option.
   --module-rules-compiler <value...>                                                 Match the child compiler name.
+  --module-rules-compiler-glob <value...>                                            A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-compiler-not <value...>                                             Logical NOT.
+  --module-rules-compiler-not-glob <value...>                                        A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-dependency <value...>                                               Match dependency type.
+  --module-rules-dependency-glob <value...>                                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-dependency-not <value...>                                           Logical NOT.
+  --module-rules-dependency-not-glob <value...>                                      A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-rules-description-relative-path <value...>                                Match the path of the module relative to the directory of the description file (usually package.json), i.e. './lib/button.js'. Always uses forward slashes.
+  --module-rules-description-relative-path-glob <value...>                           A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --module-rules-description-relative-path-not <value...>                            Logical NOT.
+  --module-rules-description-relative-path-not-glob <value...>                       A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-enforce <value...>                                                  Enforce this rule as pre or post step.
   --module-rules-exclude <value...>                                                  Shortcut for resource.exclude.
+  --module-rules-exclude-glob <value...>                                             A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-exclude-not <value...>                                              Logical NOT.
+  --module-rules-exclude-not-glob <value...>                                         A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-extract-source-map                                                  Enable/Disable extracting source map.
   --no-module-rules-extract-source-map                                               Negative 'module-rules-extract-source-map' option.
+  --module-rules-glob <value...>                                                     A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-include <value...>                                                  Shortcut for resource.include.
+  --module-rules-include-glob <value...>                                             A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-include-not <value...>                                              Logical NOT.
+  --module-rules-include-not-glob <value...>                                         A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-issuer <value...>                                                   Match the issuer of the module (The module pointing to this module).
+  --module-rules-issuer-glob <value...>                                              A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-issuer-not <value...>                                               Logical NOT.
+  --module-rules-issuer-not-glob <value...>                                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-issuer-layer <value...>                                             Match layer of the issuer of this module (The module pointing to this module).
+  --module-rules-issuer-layer-glob <value...>                                        A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-issuer-layer-not <value...>                                         Logical NOT.
+  --module-rules-issuer-layer-not-glob <value...>                                    A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-layer <value...>                                                    Specifies the layer in which the module should be placed in.
   --module-rules-loader <value...>                                                   A loader request.
   --module-rules-mimetype <value...>                                                 Match module mimetype when load from Data URI.
+  --module-rules-mimetype-glob <value...>                                            A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-mimetype-not <value...>                                             Logical NOT.
+  --module-rules-mimetype-not-glob <value...>                                        A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-phase <value...>                                                    Match the import phase of the dependency.
+  --module-rules-phase-glob <value...>                                               A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-phase-not <value...>                                                Logical NOT.
+  --module-rules-phase-not-glob <value...>                                           A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-real-resource <value...>                                            Match the real resource path of the module.
+  --module-rules-real-resource-glob <value...>                                       A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-real-resource-not <value...>                                        Logical NOT.
+  --module-rules-real-resource-not-glob <value...>                                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-resource <value...>                                                 Match the resource path of the module.
+  --module-rules-resource-glob <value...>                                            A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-resource-not <value...>                                             Logical NOT.
+  --module-rules-resource-not-glob <value...>                                        A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-resource-fragment <value...>                                        Match the resource fragment of the module.
+  --module-rules-resource-fragment-glob <value...>                                   A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-resource-fragment-not <value...>                                    Logical NOT.
+  --module-rules-resource-fragment-not-glob <value...>                               A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-resource-query <value...>                                           Match the resource query of the module.
+  --module-rules-resource-query-glob <value...>                                      A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-resource-query-not <value...>                                       Logical NOT.
+  --module-rules-resource-query-not-glob <value...>                                  A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-scheme <value...>                                                   Match module scheme.
+  --module-rules-scheme-glob <value...>                                              A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-scheme-not <value...>                                               Logical NOT.
+  --module-rules-scheme-not-glob <value...>                                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-side-effects                                                        Flags a module as with or without side effects.
   --no-module-rules-side-effects                                                     Negative 'module-rules-side-effects' option.
   --module-rules-test <value...>                                                     Shortcut for resource.test.
+  --module-rules-test-glob <value...>                                                A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-test-not <value...>                                                 Logical NOT.
+  --module-rules-test-not-glob <value...>                                            A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
   --module-rules-type <value...>                                                     Module type to use for the module.
   --module-rules-use-ident <value...>                                                Unique loader options identifier.
   --module-rules-use-loader <value...>                                               A loader request.
@@ -732,8 +1095,10 @@ Options
   --no-optimization-check-wasm-types                                                 Negative 'optimization-check-wasm-types' option.
   --optimization-chunk-ids <value>                                                   Define the algorithm to choose chunk ids (named: readable ids for better debugging, deterministic: numeric hash ids for better long term caching, size: numeric ids focused on minimal initial download size, total-size: numeric ids focused on minimal total download size, false: no algorithm used, as custom one can be provided via plugin).
   --no-optimization-chunk-ids                                                        Negative 'optimization-chunk-ids' option.
-  --optimization-concatenate-modules                                                 Concatenate modules when possible to generate less modules, more efficient code and enable more optimizations by the minimizer.
+  --optimization-concatenate-modules                                                 Concatenate modules when possible to generate less modules, more efficient code and enable more optimizations by the minimizer. An options object implies 'true'.
   --no-optimization-concatenate-modules                                              Negative 'optimization-concatenate-modules' option.
+  --optimization-concatenate-modules-commonjs                                        Also concatenate CommonJS modules with statically analyzable exports. Defaults to 'true'.
+  --no-optimization-concatenate-modules-commonjs                                     Negative 'optimization-concatenate-modules-commonjs' option.
   --optimization-emit-on-errors                                                      Emit assets even when errors occur. Critical errors are emitted into the generated code and will cause errors at runtime.
   --no-optimization-emit-on-errors                                                   Negative 'optimization-emit-on-errors' option.
   --optimization-flag-included-chunks                                                Also flag chunks as loaded which contain a subset of the modules.
@@ -748,8 +1113,77 @@ Options
   --no-optimization-mangle-wasm-imports                                              Negative 'optimization-mangle-wasm-imports' option.
   --optimization-merge-duplicate-chunks                                              Merge chunks which contain the same modules.
   --no-optimization-merge-duplicate-chunks                                           Negative 'optimization-merge-duplicate-chunks' option.
-  --optimization-minimize                                                            Enable minimizing the output. Uses optimization.minimizer.
+  --optimization-minimize                                                            Enable minimizing the output. Uses optimization.minimizer. An object enables it and configures the built-in minimizer per asset type.
   --no-optimization-minimize                                                         Negative 'optimization-minimize' option.
+  --no-optimization-minimize-css                                                     Negative 'optimization-minimize-css' option.
+  --optimization-minimize-css-comments [value]                                       Which comments survive. `"some"`, the default, keeps a `/*!` banner and a comment annotated `@license` or `@preserve`; `true` (or `"all"`) keeps every comment and `false` keeps none; a string is read as a regular expression source, and it, a `RegExp` or a `(comment) => boolean` predicate is asked about each comment's own text and keeps the ones it accepts — standing in for the default rule rather than beside it, as terser's `format.comments` does, so a pattern that names nothing else drops the ones `"some"` would have kept. A `/*#` source-map pragma is a link rather than a comment, so `"some"` and `"all"` keep it; `false`, a pattern or a predicate decides it like any other. A predicate is handed to the minimizer's worker pool as source, so it must not close over anything.
+  --no-optimization-minimize-css-comments                                            Negative 'optimization-minimize-css-comments' option.
+  --optimization-minimize-css-convert-length-units                                   Rewrite a length into a shorter unit it is exactly equal in (`16px` -> `1pc`). Off by default: the authored unit is lost, and once the asset is compressed the rewrite rarely earns anything.
+  --no-optimization-minimize-css-convert-length-units                                Negative 'optimization-minimize-css-convert-length-units' option.
+  --optimization-minimize-css-merge-longhands                                        Write a family of longhands as the one shorthand that sets them — four sides or corners, the two a pair shorthand sets, or the slots of an order-free one — even where unrelated declarations stand between them. On by default.
+  --no-optimization-minimize-css-merge-longhands                                     Negative 'optimization-minimize-css-merge-longhands' option.
+  --optimization-minimize-css-merge-rules                                            Join rules nothing stands between: adjacent rules that print the same block become one selector list, at-rules that share a prelude become one rule, and a named `@layer` block a later sibling opens again is folded into the first. On by default.
+  --no-optimization-minimize-css-merge-rules                                         Negative 'optimization-minimize-css-merge-rules' option.
+  --optimization-minimize-css-normalize-quotes                                       Normalize quoting: a string takes whichever quote needs fewer escapes, a `url()` and an attribute selector's value drop theirs where the content is still one token, and a font family whose name is a run of identifiers is written unquoted. On by default.
+  --no-optimization-minimize-css-normalize-quotes                                    Negative 'optimization-minimize-css-normalize-quotes' option.
+  --optimization-minimize-css-reduce-functions                                       Compute a call into the shorter call naming the same value: `calc()` and every math function over constants, a transform naming one axis or an identity, a gradient's default direction and its implied stops, an easing function that has a keyword, and a filter function given the amount an omitted argument already means. On by default.
+  --no-optimization-minimize-css-reduce-functions                                    Negative 'optimization-minimize-css-reduce-functions' option.
+  --optimization-minimize-css-remove-dead-rules                                      Drop a rule or declaration nothing can read: a rule whose block ends up empty, a declaration an identical later one in the same block makes dead, and a rule an identical later sibling makes dead. On by default. Joining rules that are not dead is `mergeRules`.
+  --no-optimization-minimize-css-remove-dead-rules                                   Negative 'optimization-minimize-css-remove-dead-rules' option.
+  --optimization-minimize-css-rewrite-custom-properties                              Shorten the values of custom properties (`--x: #ffffff` -> `#fff`, `--y: 0.5rem` -> `.5rem`), which are otherwise written back exactly as authored. Off by default: `getComputedStyle().getPropertyValue()` hands this text back, so a rewritten value is a different CSSOM — the one place a declaration's authored text survives. What it may rewrite is exactly what any other value's tokens may be, a color in a substitution's fallback included — that fallback being the property's value rather than the function's own argument.
+  --no-optimization-minimize-css-rewrite-custom-properties                           Negative 'optimization-minimize-css-rewrite-custom-properties' option.
+  --optimization-minimize-css-shorten-colors                                         Write each color in the shortest spelling of the same value: `#ffffff` -> `#fff`, `rgb(1 2 3)` -> `#010203`, a named color where the property takes no identifier of the author's own, and every polar and Lab function the target agrees with hex on. On by default.
+  --no-optimization-minimize-css-shorten-colors                                      Negative 'optimization-minimize-css-shorten-colors' option.
+  --optimization-minimize-css-shorten-media-queries                                  Write a media feature in its range spelling where the target reads one (`(min-width:100px)` -> `(width>=100px)`), and collapse an `and` of two one-sided ranges into the interval it describes. On by default.
+  --no-optimization-minimize-css-shorten-media-queries                               Negative 'optimization-minimize-css-shorten-media-queries' option.
+  --optimization-minimize-css-shorten-numbers                                        Write each number in its shortest equal spelling — dropping a leading zero, a trailing fraction and a `+`, rounding to the six significant digits a stylesheet can observe, dropping the unit a zero does not need, and writing an alpha and a ratio the one way its grammar spells them. On by default.
+  --no-optimization-minimize-css-shorten-numbers                                     Negative 'optimization-minimize-css-shorten-numbers' option.
+  --optimization-minimize-css-shorten-selectors                                      Rewrite a selector into an equal one: a selector list deduplicated and ordered, a CSS2 pseudo-element's second colon dropped, the universal a compound already implies dropped, an `An+B` written the shortest way its microsyntax allows, and a `from` / `100%` keyframe selector written as the shorter of the pair. On by default.
+  --no-optimization-minimize-css-shorten-selectors                                   Negative 'optimization-minimize-css-shorten-selectors' option.
+  --optimization-minimize-css-shorten-values                                         Write a value the shortest way its property's own grammar allows: a `{1,4}` box or corner notation collapsed, a slot holding its own initial dropped, and `flex` / `font-weight` / `display` / `transition` / `<position>` / `<repeat-style>` written the short way. On by default. Merging separate longhand declarations is `mergeLonghands`.
+  --no-optimization-minimize-css-shorten-values                                      Negative 'optimization-minimize-css-shorten-values' option.
+  --optimization-minimize-css-vendor-prefixes                                        Maintain vendor prefixes for the `browserslist` target: add the `-webkit-` / `-moz-` / `-ms-` spelling of a property, at-rule or pseudo-selector that a selected browser still needs, and drop one none of them does. On by default, and only in effect for a `browserslist` target — any other target names no browsers to prefix for. A browserslist name no compat dataset covers (`op_mini`, `and_uc`, `and_qq`, `baidu`, `kaios`, `bb`) is skipped, and a selection of nothing but those prefixes for no one.
+  --no-optimization-minimize-css-vendor-prefixes                                     Negative 'optimization-minimize-css-vendor-prefixes' option.
+  --no-optimization-minimize-html                                                    Negative 'optimization-minimize-html' option.
+  --optimization-minimize-html-collapse-boolean-attributes                           Write a boolean attribute spelled with its own name (`disabled="disabled"`) as the bare name the spec canonicalizes it to. On by default.
+  --no-optimization-minimize-html-collapse-boolean-attributes                        Negative 'optimization-minimize-html-collapse-boolean-attributes' option.
+  --optimization-minimize-html-collapse-whitespace [value]                           Collapse each run of whitespace in text to a single space. Left alone inside `pre`, `textarea` and `listing`, where whitespace renders verbatim. `true` (or `"conservative"`) never removes whitespace entirely — dropping it would join two inline elements that render apart. `"smart"` also drops the whitespace that sits against a block element's edge, where no line box reaches it. `"all"` drops the whitespace at every text node's edges, which does change how adjacent inline elements render.
+  --no-optimization-minimize-html-collapse-whitespace                                Negative 'optimization-minimize-html-collapse-whitespace' option.
+  --optimization-minimize-html-comments [value]                                      Which comments survive. `"some"`, the default, keeps nothing: every comment an HTML parser reads is inert; `true` (or `"all"`) keeps every comment and `false` keeps none; a string is read as a regular expression source, and it, a `RegExp` or a `(comment) => boolean` predicate is asked about each comment's own text and keeps the ones it accepts — standing in for the default rule rather than beside it, as terser's `format.comments` does, so a pattern that names nothing else drops the ones `"some"` would have kept. A downlevel conditional comment, a server-side include and a `<?…?>` template directive are code rather than comments and stay whatever this says. A predicate is handed to the minimizer's worker pool as source, so it must not close over anything.
+  --no-optimization-minimize-html-comments                                           Negative 'optimization-minimize-html-comments' option.
+  --optimization-minimize-html-merge-styles                                          Print a run of adjacent `<style>` elements as one sheet. Off by default: it removes elements, so `document.styleSheets`, a `style:nth-child()` selector and `querySelectorAll("style").length` all read a different document. A sheet the CSS minifier does not accept is never folded — appending to one that may be unterminated would make the next sheet part of its last rule — and neither is one led by `@import` / `@charset` / `@namespace`, which apply only at the top of a sheet.
+  --no-optimization-minimize-html-merge-styles                                       Negative 'optimization-minimize-html-merge-styles' option.
+  --optimization-minimize-html-minify-conditional-comments                           Minify the markup inside a downlevel-hidden conditional comment (`<!--[if IE]> … <![endif]-->`). Off by default: the body is minified on its own, so a context-sensitive decision inside it — which end tags are optional, where a table cell may sit — is taken as though it started a document rather than where the comment sits. Only browsers older than IE10 read these at all.
+  --no-optimization-minimize-html-minify-conditional-comments                        Negative 'optimization-minimize-html-minify-conditional-comments' option.
+  --optimization-minimize-html-minify-json                                           Strip the whitespace between the tokens of a `<script>` whose type is a JSON MIME type. Every literal is copied byte for byte, so no number is rounded and no escape rewritten. On by default.
+  --no-optimization-minimize-html-minify-json                                        Negative 'optimization-minimize-html-minify-json' option.
+  --optimization-minimize-html-minify-srcdoc                                         Minify the document held in an `<iframe srcdoc>` attribute. Off by default: the body is a whole document of its own (its base URL is `about:srcdoc`), so minifying it is safe, but the attribute is readable from script and a consumer comparing `iframe.srcdoc` byte for byte would see it change.
+  --no-optimization-minimize-html-minify-srcdoc                                      Negative 'optimization-minimize-html-minify-srcdoc' option.
+  --optimization-minimize-html-minify-styles                                         Run the CSS minimizer over an inline `<style>` element and every `style=""` attribute, with the options `optimization.minimize.css` names. On by default.
+  --no-optimization-minimize-html-minify-styles                                      Negative 'optimization-minimize-html-minify-styles' option.
+  --optimization-minimize-html-normalize-attribute-quotes                            Write an attribute value with whichever delimiters cost least — bare where the grammar allows it, else under the quote that needs fewer character references. On by default: the DOM reads the same value either way.
+  --no-optimization-minimize-html-normalize-attribute-quotes                         Negative 'optimization-minimize-html-normalize-attribute-quotes' option.
+  --optimization-minimize-html-normalize-enumerated-attributes                       Fold an enumerated attribute's value to the keyword it names (`type="TEXT"` -> `type=text`), which the DOM matches ASCII case-insensitively. A value the spec does not enumerate is left as written. On by default.
+  --no-optimization-minimize-html-normalize-enumerated-attributes                    Negative 'optimization-minimize-html-normalize-enumerated-attributes' option.
+  --optimization-minimize-html-normalize-list-attributes                             Normalize a list-shaped attribute value: a space-separated token list (`class`, `rel`, `part`, …), a comma-separated one (`accept`, `sizes`, …), a `srcset` and the viewport `<meta content>`. On by default. Reordering a token list is `sortTokenLists`, which is separate and off by default.
+  --no-optimization-minimize-html-normalize-list-attributes                          Negative 'optimization-minimize-html-normalize-list-attributes' option.
+  --optimization-minimize-html-normalize-numeric-attributes                          Write an integer attribute (`tabindex`, `colspan`, `width`, …) the one way its own rules read it — leading whitespace, a `+` and leading zeros all go. On by default.
+  --no-optimization-minimize-html-normalize-numeric-attributes                       Negative 'optimization-minimize-html-normalize-numeric-attributes' option.
+  --optimization-minimize-html-remove-empty-attributes                               Drop an attribute whose empty or all-whitespace value leaves it in the state its absence gives: the globals `class`, `id`, `style`, `dir`, `accesskey`, `itemprop`, `itemref`, `itemtype` and `part`, and every attribute reflecting a token list on the elements the spec defines it for — `rel` on `<a>`, `<area>`, `<form>` and `<link>`, `ping` on `<a>` and `<area>`, `headers` on `<td>` and `<th>`, `blocking` on `<link>`, `<script>` and `<style>`, `sizes` on `<link>`, `for` on `<output>` — where an empty list is no tokens. Anywhere else that spelling is an author attribute whose meaning is a script's, so `<x-foo rel="">` and `<label for="">` keep it. Off by default: an attribute selector matches on presence, so `[class]` stops matching. Never dropped: `title` and `lang`, whose empty value means what absence does not; `sandbox`, whose empty list is the most restrictive state an `<iframe>` has; and an event handler, whose empty body still compiles to a function where absence reads null.
+  --no-optimization-minimize-html-remove-empty-attributes                            Negative 'optimization-minimize-html-remove-empty-attributes' option.
+  --optimization-minimize-html-remove-empty-elements                                 Drop an element that has no children and no attributes. Kept anyway when its bare form is still doing a job (`canvas`, `slot`, `template`, `textarea`, `progress`, `meter`, `output`, `dialog`, and the table structure), when it is a void element, or when it is foreign content. Off by default: CSS can give an empty element a size or a `::before`, and the minifier cannot see the stylesheet. Emptiness is read off the output rather than the source, so a run of nested empties goes together and an element left empty only by a dropped comment or by whitespace `collapseWhitespace` deletes goes with them.
+  --no-optimization-minimize-html-remove-empty-elements                              Negative 'optimization-minimize-html-remove-empty-elements' option.
+  --optimization-minimize-html-remove-implied-tags [value]                           How much of the `<html>` / `<head>` / `<body>` shell §13.1.2.4 lets the parser imply may be left out. Every other optional tag goes unconditionally — nothing can observe that — but these six are what a consumer reading the page with a regexp rather than a parser looks for. `"smart"`, the default, leaves out the one such a reader never matches: the `<html>` start tag, which is omittable only when it carries no attribute at all, so the `<html lang=en>` anyone greps for keeps its tag anyway. `</html>` stays with it, since a truncation check reads a page as complete by finding one. `true` (or `"all"`) leaves out all six, which is where a crawler matching on `<body>` stops finding one; `false` leaves out none. A tag also stays wherever the spec keeps it: an attribute to carry, a comment minifying does not drop, whitespace opening the element, or a `meta` / `noscript` / `link` / `script` / `style` / `template` element opening the body.
+  --no-optimization-minimize-html-remove-implied-tags                                Negative 'optimization-minimize-html-remove-implied-tags' option.
+  --optimization-minimize-html-remove-optional-tags                                  Leave out a tag §13.1.2.4 lets the parser imply, other than the `<html>` / `<head>` / `<body>` shell, which `removeImpliedTags` decides on its own. On by default: nothing can observe the difference, the tree parses the same either way. A tag still stays wherever the spec keeps it — a comment or whitespace behind it, or a following element the insertion mode does not close it through.
+  --no-optimization-minimize-html-remove-optional-tags                               Negative 'optimization-minimize-html-remove-optional-tags' option.
+  --optimization-minimize-html-remove-redundant-attributes [value]                   Drop an attribute whose value is the one the element already defaults to. Off by default: an attribute a page no longer carries is one `getAttribute` and every attribute selector read differently, whichever tier dropped it. `true` (or `"smart"`) drops only markers on elements that render nothing — `<script type=text/javascript>`, `<script language=javascript>`, `<script charset=utf-8>`, `<style type=text/css>`, `<link type=text/css>`, `<link media=all>` — so no rule that styles the page stops applying, which is what `@swc/html` does by default. `"all"` also drops spec defaults such as `<input type=text>` and `<form method=get>`, which reaches further still: an attribute selector matches the content attribute, not the reflected default, so `input[type=text]` stops matching.
+  --no-optimization-minimize-html-remove-redundant-attributes                        Negative 'optimization-minimize-html-remove-redundant-attributes' option.
+  --optimization-minimize-html-sort-attributes                                       Print an element's attributes in a fixed order: the document's commonest attribute names first, ties by name. Nothing in HTML reads attribute order, so this only makes the same markup compress better across pages — the run of attributes two elements share becomes the same run of bytes. Off by default: a script reading `element.attributes` back, or a snapshot of the emitted HTML, sees the new order.
+  --no-optimization-minimize-html-sort-attributes                                    Negative 'optimization-minimize-html-sort-attributes' option.
+  --optimization-minimize-html-sort-token-lists                                      Print every space-separated token list the DOM reads as a set — `class`, `rel`, `part`, `sandbox`, `blocking`, `itemprop` / `itemref` / `itemtype`, `<output for>` and `<link sizes>` — in token order. Nothing matching those reads order, so this only makes the same markup compress better across pages. Off by default: a script reading `className` or `rel` back sees the new order. The lists the DOM does not read as a set are left alone whatever this says — `ping` is the order its requests go out in and `accesskey` the order its keys are tried.
+  --no-optimization-minimize-html-sort-token-lists                                   Negative 'optimization-minimize-html-sort-token-lists' option.
+  --no-optimization-minimize-javascript                                              Negative 'optimization-minimize-javascript' option.
   --optimization-module-ids <value>                                                  Define the algorithm to choose module ids (natural: numeric ids in order of usage, named: readable ids for better debugging, hashed: (deprecated) short hashes as ids for better long term caching, deterministic: numeric hash ids for better long term caching, size: numeric ids focused on minimal initial download size, false: no algorithm used, as custom one can be provided via plugin).
   --no-optimization-module-ids                                                       Negative 'optimization-module-ids' option.
   --optimization-node-env <value>                                                    Set process.env.NODE_ENV to a specific value.
@@ -840,6 +1274,8 @@ Options
   --no-output-environment-big-int-literal                                            Negative 'output-environment-big-int-literal' option.
   --output-environment-const                                                         The environment supports const and let for variable declarations.
   --no-output-environment-const                                                      Negative 'output-environment-const' option.
+  --output-environment-defer-import                                                  The environment supports deferred module evaluation ('import defer * as ns from "..."', 'import.defer("...")').
+  --no-output-environment-defer-import                                               Negative 'output-environment-defer-import' option.
   --output-environment-destructuring                                                 The environment supports destructuring ('{ a, b } = obj').
   --no-output-environment-destructuring                                              Negative 'output-environment-destructuring' option.
   --output-environment-document                                                      The environment supports 'document'.
@@ -850,6 +1286,8 @@ Options
   --no-output-environment-dynamic-import-in-worker                                   Negative 'output-environment-dynamic-import-in-worker' option.
   --output-environment-for-of                                                        The environment supports 'for of' iteration ('for (const x of array) { ... }').
   --no-output-environment-for-of                                                     Negative 'output-environment-for-of' option.
+  --output-environment-generator                                                     The environment supports generator functions and yield ('function* () { yield ... }').
+  --no-output-environment-generator                                                  Negative 'output-environment-generator' option.
   --output-environment-global-this                                                   The environment supports 'globalThis'.
   --no-output-environment-global-this                                                Negative 'output-environment-global-this' option.
   --output-environment-has-own                                                       The environment supports 'Object.hasOwn'.
@@ -864,12 +1302,16 @@ Options
   --no-output-environment-method-shorthand                                           Negative 'output-environment-method-shorthand' option.
   --output-environment-module                                                        The environment supports EcmaScript Module syntax to import EcmaScript modules (import ... from '...').
   --no-output-environment-module                                                     Negative 'output-environment-module' option.
+  --output-environment-module-preload                                                The environment supports `<link rel="modulepreload">` to preload EcmaScript modules.
+  --no-output-environment-module-preload                                             Negative 'output-environment-module-preload' option.
   --output-environment-node-builtin-module-getter                                    The environment supports `process.getBuiltinModule()` to synchronously load Node.js core modules.
   --no-output-environment-node-builtin-module-getter                                 Negative 'output-environment-node-builtin-module-getter' option.
   --output-environment-node-prefix-for-core-modules                                  The environment supports `node:` prefix for Node.js core modules.
   --no-output-environment-node-prefix-for-core-modules                               Negative 'output-environment-node-prefix-for-core-modules' option.
   --output-environment-optional-chaining                                             The environment supports optional chaining ('obj?.a' or 'obj?.()').
   --no-output-environment-optional-chaining                                          Negative 'output-environment-optional-chaining' option.
+  --output-environment-source-import                                                 The environment supports source phase imports ('import source m from "..."', 'import.source("...")').
+  --no-output-environment-source-import                                              Negative 'output-environment-source-import' option.
   --output-environment-spread                                                        The environment supports spread and rest in array/object literals and calls ('{ ...obj }', 'fn(...args)').
   --no-output-environment-spread                                                     Negative 'output-environment-spread' option.
   --output-environment-symbol                                                        The environment supports 'Symbol' (and well-known symbols like 'Symbol.toStringTag').
@@ -887,7 +1329,27 @@ Options
   --output-hot-update-main-filename <value>                                          The filename of the Hot Update Main File. It is inside the 'output.path' directory.
   --output-html                                                                      Generate an HTML file for each non-HTML entrypoint with its JS and CSS output chunks injected. Can be overridden per entry via the entry descriptor `html` option.
   --no-output-html                                                                   Negative 'output-html' option.
+  --output-html-base <value>                                                         Inject a `<base>` element into the page `<head>`. A string sets `href`; an object sets both `href` and optionally `target`. Skipped if the HTML already contains a `<base>` element.
+  --output-html-base-href <value>                                                    Value for the `href` attribute of the `<base>` element.
+  --output-html-base-target <value>                                                  Value for the `target` attribute of the `<base>` element (e.g. `"_blank"`).
+  --output-html-csp                                                                  Inject a `<meta http-equiv="Content-Security-Policy">` into every webpack-emitted HTML page. `false` (default) does nothing; `true` uses a strict baseline (`script-src 'self'`, `style-src 'self'`, `object-src 'none'`, `base-uri 'self'`) and appends a `sha256` hash of every inline `<script>`/`<style>` to `script-src`/`style-src`. An object customizes it. Skipped when the page already declares a CSP.
+  --no-output-html-csp                                                               Negative 'output-html-csp' option.
+  --output-html-csp-hash-function <value>                                            Hash algorithm used for inline `<script>`/`<style>` sources.
+  --output-html-csp-nonce <value>                                                    Placeholder nonce added to injected `<script>`/`<style>` tags and as a `'nonce-…'` source; rewrite it per request server-side.
+  --output-html-favicon [value]                                                      Favicon(s) for webpack-generated HTML (authored pages are left untouched). `false` (default) injects nothing; `true` injects the webpack logo; a string is a path to an icon; an object maps each `<link rel>` to an icon — a path string, an object with the icon `href` plus extra link attributes (`sizes`, `media`, `color`, `type`, `crossorigin`), or an array of these for multiple icons under the same `rel` (e.g. several `sizes`, or light/dark `media` variants); a function receives the page name and returns one of these. Every icon is emitted as a hashed asset.
+  --no-output-html-favicon                                                           Negative 'output-html-favicon' option.
+  --output-html-inject <value>                                                       Where to place injected chunk `<script>`/`<link>` tags. `"body"` (default; `"head"` with `output.module`) keeps them next to the entry tag — end of `<body>` on generated pages; `"head"` moves them into `<head>`; `false` suppresses sibling-chunk injection (entry tags and resource hints remain).
+  --no-output-html-inject                                                            Negative 'output-html-inject' option.
+  --output-html-inline [value...]                                                    A regular expression matched against the chunk name; matching chunks are inlined. Inline the content of matching chunks directly into the HTML instead of emitting a separate `<script>`/`<link>` tag. `true` inlines every chunk; `"script"` inlines only JavaScript, `"style"` only CSS; an array of `RegExp` patterns matches against the chunk name.
+  --no-output-html-inline                                                            Negative 'output-html-inline' option.
+  --output-html-inline-reset                                                         Clear all items provided in 'output.html.inline' configuration. Inline the content of matching chunks directly into the HTML instead of emitting a separate `<script>`/`<link>` tag. `true` inlines every chunk; `"script"` inlines only JavaScript, `"style"` only CSS; an array of `RegExp` patterns matches against the chunk name.
+  --output-html-integrity [value...]                                                 A hash algorithm name passed to Node.js `crypto.createHash` (e.g. 'sha256', 'sha384', 'sha512'). Add Subresource Integrity (SRI) `integrity` attributes to injected `<script>`/`<link>` tags. `true` uses `['sha384']`; an array sets the hash algorithms; a function receives each referenced asset and returns the algorithms to use or `false` to skip it.
+  --no-output-html-integrity                                                         Negative 'output-html-integrity' option.
+  --output-html-integrity-reset                                                      Clear all items provided in 'output.html.integrity' configuration. Add Subresource Integrity (SRI) `integrity` attributes to injected `<script>`/`<link>` tags. `true` uses `['sha384']`; an array sets the hash algorithms; a function receives each referenced asset and returns the algorithms to use or `false` to skip it.
+  --output-html-manifest <value>                                                     Web app manifest for webpack-generated HTML (authored pages are left untouched). `false` (default) injects nothing. A string is a path to an existing `.webmanifest` file to link. An object is the manifest contents — serialized, emitted as a hashed `.webmanifest` and linked with `<link rel="manifest">`; its `icons`/`screenshots` `src` paths resolve like any request and are emitted as hashed assets. A function receives the page name and returns one of these.
+  --no-output-html-manifest                                                          Negative 'output-html-manifest' option.
   --output-html-script-loading <value>                                               How injected `<script>` tags load. `auto` (default) emits a module script for ES module output and `defer` otherwise; `defer` forces a deferred script; `blocking` emits a plain blocking script.
+  --output-html-title <value>                                                        Sets the `<title>` of the generated HTML page. Skipped if the HTML already contains a `<title>` element.
   --output-html-chunk-filename <value>                                               Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-html-filename <value>                                                     Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-ignore-browser-warnings                                                   Ignore warnings in the browser.
@@ -917,6 +1379,7 @@ Options
   --output-library-name-root <value...>                                              Part of the name of the property exposed globally by a UMD library.
   --output-library-name-root-reset                                                   Clear all items provided in 'output.library.name.root' configuration. Name of the property exposed globally by a UMD library.
   --output-library-type <value>                                                      Type of library (types included by default are 'var', 'module', 'assign', 'assign-properties', 'this', 'window', 'self', 'global', 'commonjs', 'commonjs2', 'commonjs-module', 'commonjs-static', 'amd', 'amd-require', 'umd', 'umd2', 'jsonp', 'system', but others might be added by plugins).
+  --output-library-umd-amd-container <value>                                         Add a branch to the UMD wrapper for an AMD-style loader exposing `define` on a container object, given as a dot-separated path, after the `define.amd` branch.
   --output-library-umd-named-define                                                  If `output.libraryTarget` is set to umd and `output.library` is set, setting this to true will name the AMD module.
   --no-output-library-umd-named-define                                               Negative 'output-library-umd-named-define' option.
   --output-module                                                                    Output javascript files as module source type.
@@ -925,6 +1388,65 @@ Options
   --output-pathinfo [value]                                                          Include comments with information about the modules.
   --no-output-pathinfo                                                               Negative 'output-pathinfo' option.
   --output-public-path <value>                                                       The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
+  --output-resource-hints-as <value...>                                              The `as` attribute (`script`, `style`, `font`, …); defaults to `script` for chunk/entry references.
+  --output-resource-hints-chunk <value...>                                           Name of a chunk to hint; its emitted URL is resolved automatically.
+  --output-resource-hints-crossorigin [value...]                                     The CORS mode; `true` maps to `anonymous`.
+  --no-output-resource-hints-crossorigin                                             Negative 'output-resource-hints-crossorigin' option.
+  --output-resource-hints-entry <value...>                                           Name of an entrypoint to hint; expands to one hint per initial chunk.
+  --output-resource-hints-fetch-priority <value...>                                  The `fetchpriority` attribute. Emitted on `preload` / `modulepreload` and on `prefetch` (the spec now permits it there).
+  --output-resource-hints-href <value...>                                            A literal URL used verbatim (external resource, `preconnect` origin, or an already-hashed asset).
+  --output-resource-hints-integrity                                                  Subresource Integrity for a chunk/entry reference. Follows `output.html.integrity` by default; set `false` to opt this hint out.
+  --no-output-resource-hints-integrity                                               Negative 'output-resource-hints-integrity' option.
+  --output-resource-hints-media <value...>                                           The `media` attribute.
+  --output-resource-hints-rel <value...>                                             The `rel` of the resource hint.
+  --output-resource-hints-type <value...>                                            The `type` attribute (MIME type).
+  --output-resource-hints-reset                                                      Clear all items provided in 'output.resourceHints' configuration. Initial dependency-graph chunk hints. `true` auto-emits `<link rel="modulepreload">` (ESM output) or `<link rel="preload" as="script">` (classic) for each of the entry's initial dependency chunks; `"prefetch"` uses `<link rel="prefetch">`; `"preload"` is an alias of `true`; `false` disables chunk hints (URL-asset hints from magic comments / `urlHints` still fire); `"none"` is a hard off switch (no `<link>` anywhere, empty stats / manifest); an array of `HtmlResourceHint` descriptors replaces the auto set; a function receives the auto `defaultHints` plus context (`entryName`, `entrypoint`, `hostType: "html" | "js"`, `compilation`) and returns the final list (replaces the removed `resolveDependencies` hook).
+  --output-resource-hints [value]                                                    Initial dependency-graph chunk hints. `true` auto-emits `<link rel="modulepreload">` (ESM output) or `<link rel="preload" as="script">` (classic) for each of the entry's initial dependency chunks; `"prefetch"` uses `<link rel="prefetch">`; `"preload"` is an alias of `true`; `false` disables chunk hints (URL-asset hints from magic comments / `urlHints` still fire); `"none"` is a hard off switch (no `<link>` anywhere, empty stats / manifest); an array of `HtmlResourceHint` descriptors replaces the auto set; a function receives the auto `defaultHints` plus context (`entryName`, `entrypoint`, `hostType: "html" | "js"`, `compilation`) and returns the final list (replaces the removed `resolveDependencies` hook).
+  --no-output-resource-hints                                                         Negative 'output-resource-hints' option.
+  --output-resource-hints-dedupe                                                     Skip the runtime-injected `<link rel="prefetch">` for a chunk that is already preloaded or prefetched in the document (avoids a duplicate request in some browsers such as Chrome).
+  --no-output-resource-hints-dedupe                                                  Negative 'output-resource-hints-dedupe' option.
+  --output-resource-hints-initial-as <value...>                                      The `as` attribute (`script`, `style`, `font`, …); defaults to `script` for chunk/entry references.
+  --output-resource-hints-initial-chunk <value...>                                   Name of a chunk to hint; its emitted URL is resolved automatically.
+  --output-resource-hints-initial-crossorigin [value...]                             The CORS mode; `true` maps to `anonymous`.
+  --no-output-resource-hints-initial-crossorigin                                     Negative 'output-resource-hints-initial-crossorigin' option.
+  --output-resource-hints-initial-entry <value...>                                   Name of an entrypoint to hint; expands to one hint per initial chunk.
+  --output-resource-hints-initial-fetch-priority <value...>                          The `fetchpriority` attribute. Emitted on `preload` / `modulepreload` and on `prefetch` (the spec now permits it there).
+  --output-resource-hints-initial-href <value...>                                    A literal URL used verbatim (external resource, `preconnect` origin, or an already-hashed asset).
+  --output-resource-hints-initial-integrity                                          Subresource Integrity for a chunk/entry reference. Follows `output.html.integrity` by default; set `false` to opt this hint out.
+  --no-output-resource-hints-initial-integrity                                       Negative 'output-resource-hints-initial-integrity' option.
+  --output-resource-hints-initial-media <value...>                                   The `media` attribute.
+  --output-resource-hints-initial-rel <value...>                                     The `rel` of the resource hint.
+  --output-resource-hints-initial-type <value...>                                    The `type` attribute (MIME type).
+  --output-resource-hints-initial-reset                                              Clear all items provided in 'output.resourceHints.initial' configuration. Initial dependency-graph chunk hints. `true` auto-emits `<link rel="modulepreload">` (ESM output) or `<link rel="preload" as="script">` (classic) for each of the entry's initial dependency chunks; `"prefetch"` uses `<link rel="prefetch">`; `"preload"` is an alias of `true`; `false` disables chunk hints (URL-asset hints from magic comments / `urlHints` still fire); `"none"` is a hard off switch (no `<link>` anywhere, empty stats / manifest); an array of `HtmlResourceHint` descriptors replaces the auto set; a function receives the auto `defaultHints` plus context (`entryName`, `entrypoint`, `hostType: "html" | "js"`, `compilation`) and returns the final list (replaces the removed `resolveDependencies` hook).
+  --output-resource-hints-initial [value]                                            Initial dependency-graph chunk hints. `true` auto-emits `<link rel="modulepreload">` (ESM output) or `<link rel="preload" as="script">` (classic) for each of the entry's initial dependency chunks; `"prefetch"` uses `<link rel="prefetch">`; `"preload"` is an alias of `true`; `false` disables chunk hints (URL-asset hints from magic comments / `urlHints` still fire); `"none"` is a hard off switch (no `<link>` anywhere, empty stats / manifest); an array of `HtmlResourceHint` descriptors replaces the auto set; a function receives the auto `defaultHints` plus context (`entryName`, `entrypoint`, `hostType: "html" | "js"`, `compilation`) and returns the final list (replaces the removed `resolveDependencies` hook).
+  --no-output-resource-hints-initial                                                 Negative 'output-resource-hints-initial' option.
+  --output-resource-hints-manifest <value>                                           Emit a JSON manifest of the resolved resource hints for each entrypoint (the same descriptors as `stats.entrypoints[].resourceHints`) as an output asset at this path. Lets an SSR server inject the `<link>` tags itself without walking the chunk graph — webpack's analogue of Vite's `build.ssrManifest`. Empty when `initial` is `"none"`.
+  --output-resource-hints-module-preload-polyfill                                    Inject a tiny inline `<script>` polyfill for `<link rel="modulepreload">` into extracted HTML pages. Defaults from the target's modulepreload support (`output.environment.modulePreload`) — `true` when the environment lacks native support, `false` when it has it. Set `false` to never inject (the `<link>` tags are still emitted but do nothing on browsers without support — useful under a strict CSP that forbids inline scripts).
+  --no-output-resource-hints-module-preload-polyfill                                 Negative 'output-resource-hints-module-preload-polyfill' option.
+  --output-resource-hints-preconnect                                                 Auto-emit `<link rel="preconnect">` for the origin of a cross-origin `output.publicPath` (the origin bundles and assets are served from) into extracted HTML entries and the resource-hint stats / manifest. Mirrors `output.crossOriginLoading`. No-op when `publicPath` is relative or `"auto"`.
+  --no-output-resource-hints-preconnect                                              Negative 'output-resource-hints-preconnect' option.
+  --output-resource-hints-url-hints-as <value...>                                    Default `as` attribute (script / style / font / image / …).
+  --output-resource-hints-url-hints-exclude <value...>                               One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --output-resource-hints-url-hints-exclude-glob <value...>                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --output-resource-hints-url-hints-exclude-not <value...>                           Logical NOT.
+  --output-resource-hints-url-hints-exclude-not-glob <value...>                      A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --output-resource-hints-url-hints-fetch-priority <value...>                        Default fetchpriority for prefetch / preload links.
+  --no-output-resource-hints-url-hints-fetch-priority                                Negative 'output-resource-hints-url-hints-fetch-priority' option.
+  --output-resource-hints-url-hints-include <value...>                               One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --output-resource-hints-url-hints-include-glob <value...>                          A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --output-resource-hints-url-hints-include-not <value...>                           Logical NOT.
+  --output-resource-hints-url-hints-include-not-glob <value...>                      A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --output-resource-hints-url-hints-media <value...>                                 Default `media` attribute (e.g. `"(min-width: 800px)"`).
+  --output-resource-hints-url-hints-prefetch                                         When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+  --no-output-resource-hints-url-hints-prefetch                                      Negative 'output-resource-hints-url-hints-prefetch' option.
+  --output-resource-hints-url-hints-preload                                          When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+  --no-output-resource-hints-url-hints-preload                                       Negative 'output-resource-hints-url-hints-preload' option.
+  --output-resource-hints-url-hints-test <value...>                                  One default-hint rule for URL-referenced assets emitted by this parser (JS `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>` / `<script src>`). `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset. Matching rules set the same fields a `webpackPrefetch` / `webpackPreload` / `webpackAs` / `webpackType` / `webpackMedia` / `webpackFetchPriority` magic comment would; explicit magic comments on the same URL still win.
+  --output-resource-hints-url-hints-test-glob <value...>                             A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --output-resource-hints-url-hints-test-not <value...>                              Logical NOT.
+  --output-resource-hints-url-hints-test-not-glob <value...>                         A glob pattern matched against a path, using `/` as path separator on every OS; a `!` prefix excludes what it matches.
+  --output-resource-hints-url-hints-type <value...>                                  Default `type` attribute (MIME).
+  --output-resource-hints-url-hints-reset                                            Clear all items provided in 'output.resourceHints.urlHints' configuration. Project-wide URL-referenced-asset hint rules, applied as the base `urlHints` of every parser (JavaScript `new URL(...)`, CSS `url(...)`, HTML `<img src>` / `<link href>`). Parser-scoped `module.parser.<type>.urlHints` rules and per-URL magic comments still override these.
   --output-script-type <value>                                                       This option enables loading async chunks via a custom script type, such as script type="module".
   --no-output-script-type                                                            Negative 'output-script-type' option.
   --output-source-map-filename <value>                                               The filename of the SourceMaps for the JavaScript files. They are inside the 'output.path' directory.
@@ -941,6 +1463,8 @@ Options
   --output-unique-name <value>                                                       A unique name of the webpack build to avoid multiple webpack runtimes to conflict when using globals.
   --output-wasm-loading <value>                                                      The method of loading WebAssembly Modules (methods included by default are 'fetch' (web/WebWorker), 'async-node' (node.js), but others might be added by plugins).
   --no-output-wasm-loading                                                           Negative 'output-wasm-loading' option.
+  --output-wasm-streaming-fallback                                                   Fall back to non-streaming WebAssembly instantiation when streaming compilation fails because the server does not serve `.wasm` files with the `application/wasm` MIME type.
+  --no-output-wasm-streaming-fallback                                                Negative 'output-wasm-streaming-fallback' option.
   --output-webassembly-module-filename <value>                                       The filename of WebAssembly modules as relative path inside the 'output.path' directory.
   --output-worker-chunk-filename <value>                                             Specifies the filename template of output files on disk. You must **not** specify an absolute path here, but the path may contain folders separated by '/'! The specified path is joined with the value of the 'output.path' option to determine the location on disk.
   --output-worker-chunk-loading <value>                                              The method of loading chunks (methods included by default are 'jsonp' (web), 'import' (ESM), 'importScripts' (WebWorker), 'require' (sync node.js), 'async-node' (async node.js), but others might be added by plugins).
@@ -950,10 +1474,72 @@ Options
   --no-output-worker-wasm-loading                                                    Negative 'output-worker-wasm-loading' option.
   --parallelism <value>                                                              The number of parallel processed modules in the compilation.
   --no-performance                                                                   Negative 'performance' option.
-  --performance-hints <value>                                                        Sets the format of the hints: warnings, errors or nothing at all.
+  --performance-all                                                                  Fallback value for the performance checks that are not set individually (has precedence over local webpack defaults). Does not apply to 'hints', 'maxAssetSize' or 'maxEntrypointSize'.
+  --no-performance-all                                                               Negative 'performance-all' option.
+  --performance-async-chunk-waterfalls                                               Report chains of 'import()' calls where each chunk can only be requested once the one before it has arrived, so the levels cost round trips in series (requires 'hints' to be enabled).
+  --no-performance-async-chunk-waterfalls                                            Negative 'performance-async-chunk-waterfalls' option.
+  --performance-broad-contexts                                                       Report 'require.context' calls with no filter, which bundle every file under a directory (requires 'hints' to be enabled).
+  --no-performance-broad-contexts                                                    Negative 'performance-broad-contexts' option.
+  --performance-cache-effectiveness                                                  Report how much of the module graph the cache reused, and the modules that can never be reused (requires 'hints' to be enabled).
+  --no-performance-cache-effectiveness                                               Negative 'performance-cache-effectiveness' option.
+  --performance-circular-dependencies                                                Report groups of modules that import each other synchronously (requires 'hints' to be enabled).
+  --no-performance-circular-dependencies                                             Negative 'performance-circular-dependencies' option.
+  --performance-conflicting-resource-hints                                           Report chunks asked for as both prefetch and preload from the same place, where the two directives contradict each other.
+  --no-performance-conflicting-resource-hints                                        Negative 'performance-conflicting-resource-hints' option.
+  --performance-duplicate-modules                                                    Report modules emitted into more than one chunk, and the bytes the extra copies cost (requires 'hints' to be enabled).
+  --no-performance-duplicate-modules                                                 Negative 'performance-duplicate-modules' option.
+  --performance-duplicate-packages                                                   Report packages which are included more than once, in different versions or as multiple copies of the same version (requires 'hints' to be enabled).
+  --no-performance-duplicate-packages                                                Negative 'performance-duplicate-packages' option.
+  --performance-dynamic-exports                                                      Report modules whose exports cannot be read statically, which stops anything importing them from being tree-shaken (requires 'hints' to be enabled).
+  --no-performance-dynamic-exports                                                   Negative 'performance-dynamic-exports' option.
+  --performance-embedded-source-maps                                                 Report a production build whose 'devtool' writes the source map into the JavaScript, so everyone loading the page downloads it (requires 'hints' to be enabled).
+  --no-performance-embedded-source-maps                                              Negative 'performance-embedded-source-maps' option.
+  --performance-entrypoint-overlap                                                   Report modules shipped by more than one entrypoint, which every page that loads them downloads again (requires 'hints' to be enabled).
+  --no-performance-entrypoint-overlap                                                Negative 'performance-entrypoint-overlap' option.
+  --performance-eval-usage                                                           Report modules that call 'eval' directly, which stops minification, scope hoisting and tree shaking (requires 'hints' to be enabled).
+  --no-performance-eval-usage                                                        Negative 'performance-eval-usage' option.
+  --performance-hints <value>                                                        Sets the format of the hints: warnings, errors, stats-only or nothing at all.
   --no-performance-hints                                                             Negative 'performance-hints' option.
+  --performance-hotspots                                                             Report the loaders, plugins and hooks that hold the main thread, timing each one's own code rather than what it waited for (requires 'hints' to be enabled).
+  --no-performance-hotspots                                                          Negative 'performance-hotspots' option.
+  --performance-inlined-assets                                                       Report assets inlined as data urls that are large enough for the base64 cost and the lost caching to outweigh the request they save (requires 'hints' to be enabled).
+  --no-performance-inlined-assets                                                    Negative 'performance-inlined-assets' option.
+  --performance-large-modules                                                        Report a single module that makes up most of the chunk it is in (requires 'hints' to be enabled).
+  --no-performance-large-modules                                                     Negative 'performance-large-modules' option.
+  --performance-legacy-javascript                                                    Report polyfill packages that emulate language features the target already supports natively (requires 'hints' to be enabled).
+  --no-performance-legacy-javascript                                                 Negative 'performance-legacy-javascript' option.
   --performance-max-asset-size <value>                                               File size limit (in bytes) when exceeded, that webpack will provide performance hints.
   --performance-max-entrypoint-size <value>                                          Total size of an entry point (in bytes).
+  --performance-missing-side-effects                                                 Report packages that keep unused code in the bundle because their package.json does not declare 'sideEffects' (requires 'hints' to be enabled).
+  --no-performance-missing-side-effects                                              Negative 'performance-missing-side-effects' option.
+  --performance-mixed-exports                                                        Report an entry that exports a default beside named exports for a CommonJS library, where a consumer receives the namespace object (requires 'hints' to be enabled).
+  --no-performance-mixed-exports                                                     Negative 'performance-mixed-exports' option.
+  --performance-os-dependent-rules                                                   Report conditions in 'module.rules' that hardcode a path separator, so they only match on one operating system.
+  --no-performance-os-dependent-rules                                                Negative 'performance-os-dependent-rules' option.
+  --performance-pure-annotations                                                     Report '/*#__PURE__*/' annotations that sit somewhere the parser does not read them (requires 'hints' to be enabled).
+  --no-performance-pure-annotations                                                  Negative 'performance-pure-annotations' option.
+  --performance-redundant-dynamic-imports                                            Report 'import()' calls whose module is already loaded where the call runs, so they defer nothing (requires 'hints' to be enabled).
+  --no-performance-redundant-dynamic-imports                                         Negative 'performance-redundant-dynamic-imports' option.
+  --performance-scope-hoisting-bailouts                                              Report modules that could not be merged into their importer's scope, and why (requires 'hints' to be enabled).
+  --no-performance-scope-hoisting-bailouts                                           Negative 'performance-scope-hoisting-bailouts' option.
+  --performance-split-chunks-capped                                                  Report splits 'optimization.splitChunks' refused because 'maxInitialRequests' or 'maxAsyncRequests' was already reached (requires 'hints' to be enabled).
+  --no-performance-split-chunks-capped                                               Negative 'performance-split-chunks-capped' option.
+  --performance-tiny-chunks                                                          Report chunks loaded on demand that carry less than 'optimization.splitChunks.minSize' (requires 'hints' to be enabled).
+  --no-performance-tiny-chunks                                                       Negative 'performance-tiny-chunks' option.
+  --performance-top-level-this                                                       Report modules that read 'this' at the top level of an ES module, where it is 'undefined' rather than the module object or the global one (requires 'hints' to be enabled).
+  --no-performance-top-level-this                                                    Negative 'performance-top-level-this' option.
+  --performance-unsplit-vendors                                                      Report initial chunks that mix 'node_modules' code with application code, so every application change re-downloads the dependencies too (requires 'hints' to be enabled).
+  --no-performance-unsplit-vendors                                                   Negative 'performance-unsplit-vendors' option.
+  --performance-unused-aliases                                                       Report 'resolve.alias' entries that no request matched.
+  --no-performance-unused-aliases                                                    Negative 'performance-unused-aliases' option.
+  --performance-unused-defines                                                       Report keys defined by 'DefinePlugin' that no module ever referenced, which cost a parser hook per module and invalidate the build when their value changes.
+  --no-performance-unused-defines                                                    Negative 'performance-unused-defines' option.
+  --performance-unused-externals                                                     Report requests listed in 'externals' that no module ever imported, which usually means the request is misspelled and the real one got bundled instead.
+  --no-performance-unused-externals                                                  Negative 'performance-unused-externals' option.
+  --performance-unused-reexports                                                     Report modules bundled although nothing uses what they export, pulled in by a re-export (requires 'hints' to be enabled).
+  --no-performance-unused-reexports                                                  Negative 'performance-unused-reexports' option.
+  --performance-unused-rules                                                         Report rules in 'module.rules' that never matched a module, which cost condition evaluation on every build. Note that plugins may add rules too, so a reported rule is not necessarily one you wrote.
+  --no-performance-unused-rules                                                      Negative 'performance-unused-rules' option.
   --profile                                                                          Capture timing information for each module.
   --no-profile                                                                       Negative 'profile' option.
   --records-input-path <value>                                                       Store compiler state to a json file.
@@ -1139,6 +1725,8 @@ Options
   --stats-children-chunk-group-children                                              Display children of chunk groups.
   --no-stats-children-chunk-group-children                                           Negative 'stats-children-chunk-group-children' option.
   --stats-children-chunk-group-max-assets <value...>                                 Limit of assets displayed in chunk groups.
+  --stats-children-chunk-group-resource-hints                                        Include the resolved `<link>` resource-hint descriptors for each entrypoint (`entrypoints[name].resourceHints`). Combines `output.resourceHints.chunks` (initial-graph modulepreload/preload/prefetch) with `output.resourceHints.assets` (URL-referenced fonts / images / …). Lets SSR frameworks inject the hints server-side without walking the chunk graph themselves; the analogue of Vite's `build.ssrManifest`.
+  --no-stats-children-chunk-group-resource-hints                                     Negative 'stats-children-chunk-group-resource-hints' option.
   --stats-children-chunk-groups                                                      Display all chunk groups with the corresponding bundles.
   --no-stats-children-chunk-groups                                                   Negative 'stats-children-chunk-groups' option.
   --stats-children-chunk-modules                                                     Add built modules information to chunk information.
@@ -1211,6 +1799,10 @@ Options
   --no-stats-children-group-reasons-by-origin                                        Negative 'stats-children-group-reasons-by-origin' option.
   --stats-children-hash                                                              Add the hash of the compilation.
   --no-stats-children-hash                                                           Negative 'stats-children-hash' option.
+  --stats-children-hints                                                             Add performance hints reported with 'performance.hints: "stats"'.
+  --no-stats-children-hints                                                          Negative 'stats-children-hints' option.
+  --stats-children-hints-count                                                       Add the number of performance hints.
+  --no-stats-children-hints-count                                                    Negative 'stats-children-hints-count' option.
   --stats-children-ids                                                               Add ids.
   --no-stats-children-ids                                                            Negative 'stats-children-ids' option.
   --stats-children-logging [value...]                                                Specify log level of logging output. Enable/disable logging output (`true`: shows normal logging output, loglevel: log).
@@ -1278,6 +1870,8 @@ Options
   --stats-chunk-group-children                                                       Display children of chunk groups.
   --no-stats-chunk-group-children                                                    Negative 'stats-chunk-group-children' option.
   --stats-chunk-group-max-assets <value>                                             Limit of assets displayed in chunk groups.
+  --stats-chunk-group-resource-hints                                                 Include the resolved `<link>` resource-hint descriptors for each entrypoint (`entrypoints[name].resourceHints`). Combines `output.resourceHints.chunks` (initial-graph modulepreload/preload/prefetch) with `output.resourceHints.assets` (URL-referenced fonts / images / …). Lets SSR frameworks inject the hints server-side without walking the chunk graph themselves; the analogue of Vite's `build.ssrManifest`.
+  --no-stats-chunk-group-resource-hints                                              Negative 'stats-chunk-group-resource-hints' option.
   --stats-chunk-groups                                                               Display all chunk groups with the corresponding bundles.
   --no-stats-chunk-groups                                                            Negative 'stats-chunk-groups' option.
   --stats-chunk-modules                                                              Add built modules information to chunk information.
@@ -1352,6 +1946,10 @@ Options
   --no-stats-group-reasons-by-origin                                                 Negative 'stats-group-reasons-by-origin' option.
   --stats-hash                                                                       Add the hash of the compilation.
   --no-stats-hash                                                                    Negative 'stats-hash' option.
+  --stats-hints                                                                      Add performance hints reported with 'performance.hints: "stats"'.
+  --no-stats-hints                                                                   Negative 'stats-hints' option.
+  --stats-hints-count                                                                Add the number of performance hints.
+  --no-stats-hints-count                                                             Negative 'stats-hints-count' option.
   --stats-ids                                                                        Add ids.
   --no-stats-ids                                                                     Negative 'stats-ids' option.
   --stats-logging [value]                                                            Specify log level of logging output. Enable/disable logging output (`true`: shows normal logging output, loglevel: log).
@@ -1438,6 +2036,7 @@ Global options
 Commands
 ────────────────────────────────────────────────────────────────────────
   build|bundle|b [entries...] [options]                                              Run webpack (default command, can be omitted).
+  complete [shell]                                                                   Generate shell completion scripts.
   configtest|t [config-path]                                                         Validate a webpack configuration.
   help|h [command] [option]                                                          Display help for commands and options.
   info|i [options]                                                                   Outputs information about your system.
