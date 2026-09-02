@@ -20,6 +20,15 @@ const hyphenToUpperCase = (name) => {
   return name.replaceAll(/-([a-z])/g, (g) => g[1].toUpperCase());
 };
 
+// Since execa v10 the subprocess is a plain promise, Node.js `ChildProcess` APIs
+// like `.on()` are only available through `subprocess.nodeChildProcess`
+/**
+ * Get the underlying Node.js child process of an execa subprocess.
+ * @param {import("execa").ResultPromise} proc execa subprocess
+ * @returns {import("node:child_process").ChildProcess} child process
+ */
+const getChildProcess = (proc) => proc.nodeChildProcess ?? proc;
+
 const processKill = (process) => {
   if (isWindows) {
     exec(`taskkill /pid ${process.pid} /T /F`);
@@ -389,6 +398,7 @@ const uniqueDirectoryForTest = async () => {
 };
 
 module.exports = {
+  getChildProcess,
   getWebpackCliArguments,
   hyphenToUpperCase,
   isWindows,
