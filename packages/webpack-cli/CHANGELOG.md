@@ -1,5 +1,11 @@
 # Change Log
 
+## 7.3.0
+
+### Minor Changes
+
+- feat: add shell completions for zsh, bash, fish and powershell through the `complete` command (by [@alexander-akait](https://github.com/alexander-akait) in [#4840](https://github.com/webpack/webpack-cli/pull/4840))
+
 ## 7.2.3
 
 ### Patch Changes
