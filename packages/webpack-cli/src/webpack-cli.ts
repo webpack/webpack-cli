@@ -2221,10 +2221,12 @@ class WebpackCLI {
           return;
         }
 
-        const DevServer: DevServerConstructor = cmd.context.devServer;
+        const DevServer: DevServerConstructor = devServer;
+        const isDevServerPlugin =
+          typeof (DevServer.prototype as { apply?: unknown }).apply === "function";
         const servers: InstanceType<DevServerConstructor>[] = [];
 
-        if (this.#needWatchStdin(compiler)) {
+        if (!isDevServerPlugin && this.#needWatchStdin(compiler)) {
           process.stdin.on("end", () => {
             Promise.all(servers.map((server) => server.stop())).then(() => {
               process.exit(0);
@@ -2238,8 +2240,23 @@ class WebpackCLI {
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const usedPorts: number[] = [];
+        const devServerConfigurations: DevServerConfiguration[] = [];
+        const validatePort = ({ port }: DevServerConfiguration): void => {
+          if (port && port !== "auto") {
+            const portNumber = Number(port);
+
+            if (usedPorts.includes(portNumber)) {
+              throw new Error(
+                "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
+              );
+            }
+
+            usedPorts.push(portNumber);
+          }
+        };
         // @ts-expect-error different versions of the `Schema` type
         const devServerArgs = this.#getArguments(webpack, devServer.schema);
+        let appliedDevServers = 0;
 
         for (const compilerForDevServer of compilersForDevServer) {
           if (compilerForDevServer.options.devServer === false) {
@@ -2270,24 +2287,65 @@ class WebpackCLI {
             this.#processArguments(webpack, args, devServerConfiguration, values);
           }
 
-          if (devServerConfiguration.port) {
-            const portNumber = Number(devServerConfiguration.port);
+          if (isDevServerPlugin) {
+            validatePort(devServerConfiguration);
+          }
 
-            if (usedPorts.includes(portNumber)) {
-              throw new Error(
-                "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
-              );
-            }
+          devServerConfigurations.push(devServerConfiguration);
+        }
 
-            usedPorts.push(portNumber);
+        for (const devServerConfiguration of devServerConfigurations) {
+          if (!isDevServerPlugin) {
+            validatePort(devServerConfiguration);
           }
 
           try {
-            const server = new DevServer(devServerConfiguration, compiler);
+            if (isDevServerPlugin) {
+              let { port } = devServerConfiguration;
 
-            await server.start();
+              if (
+                devServerConfigurations.length > 1 &&
+                !devServerConfiguration.ipc &&
+                (typeof port === "undefined" || port === "auto")
+              ) {
+                const { default: getPort, portNumbers } = await import("get-port");
+                const basePort = Number.parseInt(
+                  process.env.WEBPACK_DEV_SERVER_BASE_PORT ?? "8080",
+                  10,
+                );
+                const host = devServerConfiguration.host
+                  ? await DevServer.getHostname(devServerConfiguration.host)
+                  : undefined;
 
-            servers.push(server as unknown as InstanceType<DevServerConstructor>);
+                // Plugins select ports before any server starts listening.
+                port = await getPort({
+                  port: portNumbers(basePort, 65535),
+                  host,
+                  exclude: usedPorts,
+                });
+                usedPorts.push(port);
+              }
+
+              // v5 typings lack the plugin constructor.
+              const DevServerPlugin = DevServer as unknown as new (
+                options: DevServerConfiguration,
+              ) => { apply(compiler: Compiler | MultiCompiler): void };
+
+              // Serve all child compilers, regardless of which defines devServer.
+              new DevServerPlugin({
+                ...devServerConfiguration,
+                port,
+                setupExitSignals: false,
+              }).apply(compiler);
+            } else {
+              const server = new DevServer(devServerConfiguration, compiler);
+
+              await server.start();
+
+              servers.push(server as unknown as InstanceType<DevServerConstructor>);
+            }
+
+            appliedDevServers += 1;
           } catch (error) {
             if (this.isValidationError(error as Error)) {
               this.logger.error((error as Error).message);
@@ -2299,9 +2357,86 @@ class WebpackCLI {
           }
         }
 
-        if (servers.length === 0) {
+        if (appliedDevServers === 0) {
           this.logger.error("No dev server configurations to run");
           process.exit(2);
+        }
+
+        // Older servers manage compilation and signals themselves.
+        if (!isDevServerPlugin) {
+          return;
+        }
+
+        // Closing the compiler stops the server through its shutdown hook.
+        this.#setupGracefulShutdown(compiler, true);
+
+        if (this.#needWatchStdin(compiler)) {
+          process.stdin.on("end", () => {
+            compiler.close(() => {
+              process.exit();
+            });
+          });
+          process.stdin.resume();
+        }
+
+        const watchCallback = (error: Error | null, stats?: Stats | MultiStats): void => {
+          if (error) {
+            if (this.isValidationError(error)) {
+              this.logger.error(error.message);
+            } else {
+              this.logger.error(error);
+            }
+
+            process.exit(2);
+          }
+
+          if (!stats) {
+            return;
+          }
+
+          if (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings())) {
+            process.exitCode = 1;
+          }
+
+          // Each middleware can override stats for the whole compiler.
+          for (const devServerConfiguration of devServerConfigurations) {
+            const middlewareStats = devServerConfiguration.devMiddleware?.stats;
+            const getStatsOptions = (compiler: Compiler): StatsOptions => {
+              if (typeof middlewareStats === "undefined") {
+                return compiler.options.stats as StatsOptions;
+              }
+
+              const statsOptions: StatsOptions =
+                typeof middlewareStats === "boolean"
+                  ? { preset: middlewareStats ? "normal" : "none" }
+                  : typeof middlewareStats === "string"
+                    ? { preset: middlewareStats }
+                    : { ...middlewareStats };
+
+              if (typeof statsOptions.colors === "undefined") {
+                statsOptions.colors = (compiler.options.stats as StatsOptions).colors;
+              }
+
+              return statsOptions;
+            };
+            const statsOptions = this.isMultipleCompiler(compiler)
+              ? { children: compiler.compilers.map(getStatsOptions) }
+              : getStatsOptions(compiler);
+            const printedStats = stats.toString(statsOptions);
+
+            if (printedStats) {
+              this.logger.raw(printedStats);
+            }
+          }
+        };
+
+        if (this.isMultipleCompiler(compiler)) {
+          compiler.watch(
+            compiler.compilers.map((compiler) => compiler.options.watchOptions || {}),
+            watchCallback,
+          );
+        } else {
+          compiler.watch(compiler.options.watchOptions || {}, watchCallback);
         }
       },
     },
@@ -3658,6 +3793,35 @@ class WebpackCLI {
     return Boolean(compiler.options.watchOptions?.stdin);
   }
 
+  #setupGracefulShutdown(compiler: Compiler | MultiCompiler, preserveExitCode = false): void {
+    let needForceShutdown = false;
+
+    for (const signal of EXIT_SIGNALS) {
+      // eslint-disable-next-line @typescript-eslint/no-loop-func
+      const listener = () => {
+        if (needForceShutdown) {
+          process.exit(preserveExitCode ? process.exitCode : 0);
+        }
+
+        // Keep fast shutdowns silent.
+        const timeout = setTimeout(() => {
+          this.logger.info(
+            "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+          );
+        }, 2000);
+
+        needForceShutdown = true;
+
+        compiler.close(() => {
+          clearTimeout(timeout);
+          process.exit(preserveExitCode ? process.exitCode : 0);
+        });
+      };
+
+      process.on(signal, listener);
+    }
+  }
+
   async runWebpack(options: Options, isWatchCommand: boolean): Promise<void> {
     let compiler: Compiler | MultiCompiler;
     let stringifyChunked: typeof stringifyChunkedType;
@@ -3755,32 +3919,7 @@ class WebpackCLI {
       );
 
     if (needGracefulShutdown(compiler)) {
-      let needForceShutdown = false;
-
-      for (const signal of EXIT_SIGNALS) {
-        // eslint-disable-next-line @typescript-eslint/no-loop-func
-        const listener = () => {
-          if (needForceShutdown) {
-            process.exit(0);
-          }
-
-          // Output message after delay to avoid extra logging
-          const timeout = setTimeout(() => {
-            this.logger.info(
-              "Gracefully shutting down. To force exit, press ^C again. Please wait...",
-            );
-          }, 2000);
-
-          needForceShutdown = true;
-
-          compiler.close(() => {
-            clearTimeout(timeout);
-            process.exit(0);
-          });
-        };
-
-        process.on(signal, listener);
-      }
+      this.#setupGracefulShutdown(compiler);
 
       if (this.#needWatchStdin(compiler)) {
         process.stdin.on("end", () => {
