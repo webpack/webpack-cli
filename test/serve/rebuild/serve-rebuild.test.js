@@ -2,6 +2,7 @@
 
 const { readFileSync, writeFileSync } = require("node:fs");
 const { resolve } = require("node:path");
+const [devServerVersion] = require("webpack-dev-server/package.json").version;
 const { processKill, runWatch } = require("../../utils/test-utils");
 
 const getGetPort = () => import("get-port");
@@ -94,7 +95,7 @@ describe("serve recompilation", () => {
       let requestError;
       const { stdout } = await runWatch(
         __dirname,
-        ["serve", "--config", "multi.config.js", "--port", port],
+        ["serve", "--config", "multi.config.js", "--watch-options-stdin", "--port", port],
         {
           handler: (proc) => {
             let output = "";
@@ -126,7 +127,7 @@ describe("serve recompilation", () => {
                     requestError = error;
                   })
                   .finally(() => {
-                    processKill(proc);
+                    proc.stdin.end();
                   });
               }
             };
@@ -147,8 +148,10 @@ describe("serve recompilation", () => {
       expect(updatedBody).toContain(`updated ${name} bundle`);
       expect(stdout).toContain("Watch app: 10");
       expect(stdout).toContain("Watch worker: 30");
-      expect(stdout.match(/Closed app/g)).toHaveLength(1);
-      expect(stdout.match(/Closed worker/g)).toHaveLength(1);
+      if (devServerVersion !== "5") {
+        expect(stdout.match(/Closed app/g)).toHaveLength(1);
+        expect(stdout.match(/Closed worker/g)).toHaveLength(1);
+      }
     },
   );
 });
