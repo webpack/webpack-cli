@@ -2293,7 +2293,10 @@ class WebpackCLI {
               ) => { apply(compiler: Compiler | MultiCompiler): void };
 
               // Serve all child compilers, regardless of which defines devServer.
-              new DevServerPlugin(devServerConfiguration).apply(compiler);
+              new DevServerPlugin({
+                ...devServerConfiguration,
+                setupExitSignals: false,
+              }).apply(compiler);
             } else {
               const server = new DevServer(devServerConfiguration, compiler);
 
@@ -2325,12 +2328,12 @@ class WebpackCLI {
         }
 
         // Closing the compiler stops the server through its shutdown hook.
-        this.#setupGracefulShutdown(compiler);
+        this.#setupGracefulShutdown(compiler, true);
 
         if (this.#needWatchStdin(compiler)) {
           process.stdin.on("end", () => {
             compiler.close(() => {
-              process.exit(0);
+              process.exit();
             });
           });
           process.stdin.resume();
@@ -3732,14 +3735,14 @@ class WebpackCLI {
     return Boolean(compiler.options.watchOptions?.stdin);
   }
 
-  #setupGracefulShutdown(compiler: Compiler | MultiCompiler): void {
+  #setupGracefulShutdown(compiler: Compiler | MultiCompiler, preserveExitCode = false): void {
     let needForceShutdown = false;
 
     for (const signal of EXIT_SIGNALS) {
       // eslint-disable-next-line @typescript-eslint/no-loop-func
       const listener = () => {
         if (needForceShutdown) {
-          process.exit(0);
+          process.exit(preserveExitCode ? process.exitCode : 0);
         }
 
         // Keep fast shutdowns silent.
@@ -3753,7 +3756,7 @@ class WebpackCLI {
 
         compiler.close(() => {
           clearTimeout(timeout);
-          process.exit(0);
+          process.exit(preserveExitCode ? process.exitCode : 0);
         });
       };
 
