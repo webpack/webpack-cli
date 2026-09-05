@@ -2398,17 +2398,35 @@ class WebpackCLI {
             process.exitCode = 1;
           }
 
-          // Plugin mode leaves stats output to the CLI.
-          const statsOptions = this.isMultipleCompiler(compiler)
-            ? {
-                children: compiler.compilers.map((compiler) => compiler.options.stats),
+          // Each middleware can override stats for the whole compiler.
+          for (const devServerConfiguration of devServerConfigurations) {
+            const middlewareStats = devServerConfiguration.devMiddleware?.stats;
+            const getStatsOptions = (compiler: Compiler): StatsOptions => {
+              if (typeof middlewareStats === "undefined") {
+                return compiler.options.stats as StatsOptions;
               }
-            : compiler.options.stats;
 
-          const printedStats = stats.toString(statsOptions as StatsOptions);
+              const statsOptions: StatsOptions =
+                typeof middlewareStats === "boolean"
+                  ? { preset: middlewareStats ? "normal" : "none" }
+                  : typeof middlewareStats === "string"
+                    ? { preset: middlewareStats }
+                    : { ...middlewareStats };
 
-          if (printedStats) {
-            this.logger.raw(printedStats);
+              if (typeof statsOptions.colors === "undefined") {
+                statsOptions.colors = (compiler.options.stats as StatsOptions).colors;
+              }
+
+              return statsOptions;
+            };
+            const statsOptions = this.isMultipleCompiler(compiler)
+              ? { children: compiler.compilers.map(getStatsOptions) }
+              : getStatsOptions(compiler);
+            const printedStats = stats.toString(statsOptions);
+
+            if (printedStats) {
+              this.logger.raw(printedStats);
+            }
           }
         };
 
