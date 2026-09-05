@@ -2240,6 +2240,20 @@ class WebpackCLI {
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const usedPorts: number[] = [];
+        const devServerConfigurations: DevServerConfiguration[] = [];
+        const validatePort = ({ port }: DevServerConfiguration): void => {
+          if (port && port !== "auto") {
+            const portNumber = Number(port);
+
+            if (usedPorts.includes(portNumber)) {
+              throw new Error(
+                "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
+              );
+            }
+
+            usedPorts.push(portNumber);
+          }
+        };
         // @ts-expect-error different versions of the `Schema` type
         const devServerArgs = this.#getArguments(webpack, devServer.schema);
         let appliedDevServers = 0;
@@ -2273,20 +2287,45 @@ class WebpackCLI {
             this.#processArguments(webpack, args, devServerConfiguration, values);
           }
 
-          if (devServerConfiguration.port) {
-            const portNumber = Number(devServerConfiguration.port);
+          if (isDevServerPlugin) {
+            validatePort(devServerConfiguration);
+          }
 
-            if (usedPorts.includes(portNumber)) {
-              throw new Error(
-                "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
-              );
-            }
+          devServerConfigurations.push(devServerConfiguration);
+        }
 
-            usedPorts.push(portNumber);
+        for (const devServerConfiguration of devServerConfigurations) {
+          if (!isDevServerPlugin) {
+            validatePort(devServerConfiguration);
           }
 
           try {
             if (isDevServerPlugin) {
+              let { port } = devServerConfiguration;
+
+              if (
+                devServerConfigurations.length > 1 &&
+                !devServerConfiguration.ipc &&
+                (typeof port === "undefined" || port === "auto")
+              ) {
+                const { default: getPort, portNumbers } = await import("get-port");
+                const basePort = Number.parseInt(
+                  process.env.WEBPACK_DEV_SERVER_BASE_PORT ?? "8080",
+                  10,
+                );
+                const host = devServerConfiguration.host
+                  ? await DevServer.getHostname(devServerConfiguration.host)
+                  : undefined;
+
+                // Plugins select ports before any server starts listening.
+                port = await getPort({
+                  port: portNumbers(basePort, 65535),
+                  host,
+                  exclude: usedPorts,
+                });
+                usedPorts.push(port);
+              }
+
               // v5 typings lack the plugin constructor.
               const DevServerPlugin = DevServer as unknown as new (
                 options: DevServerConfiguration,
@@ -2295,6 +2334,7 @@ class WebpackCLI {
               // Serve all child compilers, regardless of which defines devServer.
               new DevServerPlugin({
                 ...devServerConfiguration,
+                port,
                 setupExitSignals: false,
               }).apply(compiler);
             } else {
