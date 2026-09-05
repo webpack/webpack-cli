@@ -8,6 +8,8 @@ const getGetPort = () => import("get-port");
 
 const entryPath = resolve(__dirname, "./src/index.js");
 const originalEntry = readFileSync(entryPath, "utf8");
+const workerPath = resolve(__dirname, "./src/worker.js");
+const originalWorker = readFileSync(workerPath, "utf8");
 
 describe("serve recompilation", () => {
   let port;
@@ -18,6 +20,7 @@ describe("serve recompilation", () => {
 
   afterEach(() => {
     writeFileSync(entryPath, originalEntry);
+    writeFileSync(workerPath, originalWorker);
   });
 
   it("should recompile upon file change and log the stats again", async () => {
@@ -84,18 +87,68 @@ describe("serve recompilation", () => {
     expect(updatedBody).toContain("serve rebuild test updated");
   });
 
-  it("should watch every compiler of a multi compiler with its own watch options", async () => {
-    const { stderr, stdout } = await runWatch(
-      __dirname,
-      ["serve", "--config", "multi.config.js", "--port", port],
-      {
-        stdoutKillStr: /compiled successfully/,
-        stderrKillStr: /Project is running at:/,
-      },
-    );
+  it.each(["app", "worker"])(
+    "should rebuild and serve changes to the %s compiler",
+    async (name) => {
+      let updatedBody;
+      let requestError;
+      const { stdout } = await runWatch(
+        __dirname,
+        ["serve", "--config", "multi.config.js", "--port", port],
+        {
+          handler: (proc) => {
+            let output = "";
+            let serverOutput = "";
+            let changed = false;
+            let fetching = false;
+            const check = () => {
+              if (
+                !changed &&
+                output.includes("Built app") &&
+                output.includes("Built worker") &&
+                serverOutput.includes("Project is running at:")
+              ) {
+                changed = true;
+                writeFileSync(
+                  name === "app" ? entryPath : workerPath,
+                  `console.log('updated ${name} bundle');\n`,
+                );
+              }
 
-    expect(stdout).toContain("app:");
-    expect(stdout).toContain("worker:");
-    expect(stderr).toContain("Project is running at:");
-  });
+              if (!fetching && output.split(`Built ${name}`).length === 3) {
+                fetching = true;
+                fetch(`http://127.0.0.1:${port}/${name}.js`)
+                  .then((response) => response.text())
+                  .then((body) => {
+                    updatedBody = body;
+                  })
+                  .catch((error) => {
+                    requestError = error;
+                  })
+                  .finally(() => {
+                    processKill(proc);
+                  });
+              }
+            };
+
+            proc.stdout.on("data", (chunk) => {
+              output += chunk.toString();
+              check();
+            });
+            proc.stderr.on("data", (chunk) => {
+              serverOutput += chunk.toString();
+              check();
+            });
+          },
+        },
+      );
+
+      expect(requestError).toBeUndefined();
+      expect(updatedBody).toContain(`updated ${name} bundle`);
+      expect(stdout).toContain("Watch app: 10");
+      expect(stdout).toContain("Watch worker: 30");
+      expect(stdout.match(/Closed app/g)).toHaveLength(1);
+      expect(stdout.match(/Closed worker/g)).toHaveLength(1);
+    },
+  );
 });

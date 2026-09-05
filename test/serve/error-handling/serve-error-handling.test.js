@@ -18,7 +18,7 @@ describeDevServer6("serve error handling", () => {
   });
 
   test("should print the stats with errors and keep serving when the compilation fails", async () => {
-    const { stderr, stdout } = await runWatch(
+    const { exitCode, stderr, stdout } = await runWatch(
       __dirname,
       ["serve", "--config", "error.config.js", "--port", port],
       {
@@ -29,10 +29,11 @@ describeDevServer6("serve error handling", () => {
 
     expect(stdout).toContain("ERROR in");
     expect(stderr).toContain("Project is running at:");
+    expect(exitCode).toBe(1);
   });
 
   test("should print the stats with warnings using the '--fail-on-warnings' option", async () => {
-    const { stderr, stdout } = await runWatch(
+    const { exitCode, stderr, stdout } = await runWatch(
       __dirname,
       ["serve", "--config", "warning.config.js", "--fail-on-warnings", "--port", port],
       {
@@ -43,7 +44,63 @@ describeDevServer6("serve error handling", () => {
 
     expect(stdout).toContain("WARNING");
     expect(stderr).toContain("Project is running at:");
+    expect(exitCode).toBe(1);
   });
+
+  test.each(process.platform === "win32" ? ["stdin"] : ["SIGINT", "SIGTERM", "stdin"])(
+    "should preserve failure status and close the compiler on %s",
+    async (trigger) => {
+      const { exitCode, stdout, stderr } = await runWatch(
+        __dirname,
+        [
+          "serve",
+          "--config",
+          "shutdown.config.js",
+          "--fail-on-warnings",
+          "--watch-options-stdin",
+          "--port",
+          port,
+        ],
+        {
+          handler: (proc) => {
+            let output = "";
+            let serverOutput = "";
+            let stopping = false;
+            const stop = () => {
+              if (
+                stopping ||
+                !output.includes("WARNING") ||
+                !serverOutput.includes("Server ready")
+              ) {
+                return;
+              }
+
+              stopping = true;
+
+              if (trigger === "stdin") {
+                proc.stdin.end();
+              } else {
+                proc.kill(trigger);
+              }
+            };
+
+            proc.stdout.on("data", (chunk) => {
+              output += chunk.toString();
+              stop();
+            });
+            proc.stderr.on("data", (chunk) => {
+              serverOutput += chunk.toString();
+              stop();
+            });
+          },
+        },
+      );
+
+      expect(exitCode).toBe(1);
+      expect(stderr).toContain("Server ready: 1 SIGINT, 1 SIGTERM");
+      expect(stdout.match(/Compiler shutdown/g)).toHaveLength(1);
+    },
+  );
 
   test("should log the error and exit when the dev server fails inside the watch run", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, [
