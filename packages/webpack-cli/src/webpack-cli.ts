@@ -2221,10 +2221,12 @@ class WebpackCLI {
           return;
         }
 
-        const DevServer: DevServerConstructor = cmd.context.devServer;
+        const DevServer: DevServerConstructor = devServer;
+        const isDevServerPlugin =
+          typeof (DevServer.prototype as { apply?: unknown }).apply === "function";
         const servers: InstanceType<DevServerConstructor>[] = [];
 
-        if (this.#needWatchStdin(compiler)) {
+        if (!isDevServerPlugin && this.#needWatchStdin(compiler)) {
           process.stdin.on("end", () => {
             Promise.all(servers.map((server) => server.stop())).then(() => {
               process.exit(0);
@@ -2240,6 +2242,7 @@ class WebpackCLI {
         const usedPorts: number[] = [];
         // @ts-expect-error different versions of the `Schema` type
         const devServerArgs = this.#getArguments(webpack, devServer.schema);
+        let appliedDevServers = 0;
 
         for (const compilerForDevServer of compilersForDevServer) {
           if (compilerForDevServer.options.devServer === false) {
@@ -2283,11 +2286,23 @@ class WebpackCLI {
           }
 
           try {
-            const server = new DevServer(devServerConfiguration, compiler);
+            if (isDevServerPlugin) {
+              // v5 typings lack the plugin constructor.
+              const DevServerPlugin = DevServer as unknown as new (
+                options: DevServerConfiguration,
+              ) => { apply(compiler: Compiler | MultiCompiler): void };
 
-            await server.start();
+              // Serve all child compilers, regardless of which defines devServer.
+              new DevServerPlugin(devServerConfiguration).apply(compiler);
+            } else {
+              const server = new DevServer(devServerConfiguration, compiler);
 
-            servers.push(server as unknown as InstanceType<DevServerConstructor>);
+              await server.start();
+
+              servers.push(server as unknown as InstanceType<DevServerConstructor>);
+            }
+
+            appliedDevServers += 1;
           } catch (error) {
             if (this.isValidationError(error as Error)) {
               this.logger.error((error as Error).message);
@@ -2299,9 +2314,68 @@ class WebpackCLI {
           }
         }
 
-        if (servers.length === 0) {
+        if (appliedDevServers === 0) {
           this.logger.error("No dev server configurations to run");
           process.exit(2);
+        }
+
+        // Older servers manage compilation and signals themselves.
+        if (!isDevServerPlugin) {
+          return;
+        }
+
+        // Closing the compiler stops the server through its shutdown hook.
+        this.#setupGracefulShutdown(compiler);
+
+        if (this.#needWatchStdin(compiler)) {
+          process.stdin.on("end", () => {
+            compiler.close(() => {
+              process.exit(0);
+            });
+          });
+          process.stdin.resume();
+        }
+
+        const watchCallback = (error: Error | null, stats?: Stats | MultiStats): void => {
+          if (error) {
+            if (this.isValidationError(error)) {
+              this.logger.error(error.message);
+            } else {
+              this.logger.error(error);
+            }
+
+            process.exit(2);
+          }
+
+          if (!stats) {
+            return;
+          }
+
+          if (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings())) {
+            process.exitCode = 1;
+          }
+
+          // Plugin mode leaves stats output to the CLI.
+          const statsOptions = this.isMultipleCompiler(compiler)
+            ? {
+                children: compiler.compilers.map((compiler) => compiler.options.stats),
+              }
+            : compiler.options.stats;
+
+          const printedStats = stats.toString(statsOptions as StatsOptions);
+
+          if (printedStats) {
+            this.logger.raw(printedStats);
+          }
+        };
+
+        if (this.isMultipleCompiler(compiler)) {
+          compiler.watch(
+            compiler.compilers.map((compiler) => compiler.options.watchOptions || {}),
+            watchCallback,
+          );
+        } else {
+          compiler.watch(compiler.options.watchOptions || {}, watchCallback);
         }
       },
     },
@@ -3658,6 +3732,35 @@ class WebpackCLI {
     return Boolean(compiler.options.watchOptions?.stdin);
   }
 
+  #setupGracefulShutdown(compiler: Compiler | MultiCompiler): void {
+    let needForceShutdown = false;
+
+    for (const signal of EXIT_SIGNALS) {
+      // eslint-disable-next-line @typescript-eslint/no-loop-func
+      const listener = () => {
+        if (needForceShutdown) {
+          process.exit(0);
+        }
+
+        // Keep fast shutdowns silent.
+        const timeout = setTimeout(() => {
+          this.logger.info(
+            "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+          );
+        }, 2000);
+
+        needForceShutdown = true;
+
+        compiler.close(() => {
+          clearTimeout(timeout);
+          process.exit(0);
+        });
+      };
+
+      process.on(signal, listener);
+    }
+  }
+
   async runWebpack(options: Options, isWatchCommand: boolean): Promise<void> {
     let compiler: Compiler | MultiCompiler;
     let stringifyChunked: typeof stringifyChunkedType;
@@ -3755,32 +3858,7 @@ class WebpackCLI {
       );
 
     if (needGracefulShutdown(compiler)) {
-      let needForceShutdown = false;
-
-      for (const signal of EXIT_SIGNALS) {
-        // eslint-disable-next-line @typescript-eslint/no-loop-func
-        const listener = () => {
-          if (needForceShutdown) {
-            process.exit(0);
-          }
-
-          // Output message after delay to avoid extra logging
-          const timeout = setTimeout(() => {
-            this.logger.info(
-              "Gracefully shutting down. To force exit, press ^C again. Please wait...",
-            );
-          }, 2000);
-
-          needForceShutdown = true;
-
-          compiler.close(() => {
-            clearTimeout(timeout);
-            process.exit(0);
-          });
-        };
-
-        process.on(signal, listener);
-      }
+      this.#setupGracefulShutdown(compiler);
 
       if (this.#needWatchStdin(compiler)) {
         process.stdin.on("end", () => {
