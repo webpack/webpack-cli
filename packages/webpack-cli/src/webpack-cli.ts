@@ -82,7 +82,7 @@ type RestartMessage =
   | { type: "webpack-cli:resume" }
   | { type: "webpack-cli:close" };
 
-// `compiler.hooks.buildDependenciesChanged` exists since webpack 5.112.0
+// `buildDependenciesChanged` exists on `Compiler` and `MultiCompiler` hooks since webpack 5.112.0
 interface BuildDependenciesHooks {
   buildDependenciesChanged?: {
     tap(name: string, fn: (changedFiles: ReadonlySet<string>) => true | void): void;
@@ -4034,12 +4034,11 @@ class WebpackCLI {
       (compiler.watching as { resume(): void } | undefined)?.resume();
     };
 
-    const hooks = compilers.map(
-      (item) => (item.hooks as BuildDependenciesHooks).buildDependenciesChanged,
-    );
+    // A `MultiCompiler` hook taps every child compiler
+    const hook = (compiler.hooks as BuildDependenciesHooks).buildDependenciesChanged;
 
     // webpack is too old to report build dependency changes
-    if (hooks.some((hook) => !hook)) {
+    if (!hook) {
       return;
     }
 
@@ -4066,9 +4065,7 @@ class WebpackCLI {
       return true;
     };
 
-    for (const hook of hooks) {
-      hook!.tap("webpack-cli", onChanged);
-    }
+    hook.tap("webpack-cli", onChanged);
 
     if (IS_RESTARTED_PROCESS) {
       process.on("message", (message: RestartMessage) => {
