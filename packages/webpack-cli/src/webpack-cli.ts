@@ -2257,17 +2257,108 @@ class WebpackCLI {
           env: { WEBPACK_SERVE: true, ...options.env },
         };
 
-        const compiler = await this.createCompiler(webpackCLIOptions);
+        let compiler = await this.createCompiler(webpackCLIOptions);
 
         if (!compiler) {
           return;
         }
 
         const DevServer: DevServerConstructor = cmd.context.devServer;
-        const servers: InstanceType<DevServerConstructor>[] = [];
+        // @ts-expect-error different versions of the `Schema` type
+        const devServerArgs = this.#getArguments(webpack, devServer.schema);
+
+        // Validates everything before any server starts, so a reload can keep the running servers on errors
+        const createServers = (
+          compiler: Compiler | MultiCompiler,
+        ): InstanceType<DevServerConstructor>[] => {
+          const created: InstanceType<DevServerConstructor>[] = [];
+          const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
+          const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
+          const compilersForDevServer =
+            possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
+          const usedPorts: number[] = [];
+
+          for (const compilerForDevServer of compilersForDevServer) {
+            if (compilerForDevServer.options.devServer === false) {
+              continue;
+            }
+
+            const devServerConfiguration: DevServerConfiguration =
+              compilerForDevServer.options.devServer || {};
+
+            const args: Record<string, WebpackArgument> = {};
+            const values: ProcessedArguments = {};
+
+            for (const name of Object.keys(options)) {
+              if (name === "argv") continue;
+
+              const kebabName = this.toKebabCase(name);
+              const arg = devServerArgs[kebabName];
+
+              if (arg) {
+                args[name] = arg;
+                // We really don't know what the value is
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                values[name] = options[name as keyof Options] as any;
+              }
+            }
+
+            if (Object.keys(values).length > 0) {
+              this.#processArguments(webpack, args, devServerConfiguration, values);
+            }
+
+            if (devServerConfiguration.port) {
+              const portNumber = Number(devServerConfiguration.port);
+
+              if (usedPorts.includes(portNumber)) {
+                throw new Error(
+                  "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
+                );
+              }
+
+              usedPorts.push(portNumber);
+            }
+
+            created.push(
+              new DevServer(
+                devServerConfiguration,
+                compiler,
+              ) as unknown as InstanceType<DevServerConstructor>,
+            );
+          }
+
+          return created;
+        };
+
+        const logServerError = (error: unknown) => {
+          if (this.isValidationError(error as Error)) {
+            this.logger.error((error as Error).message);
+          } else {
+            this.logger.error(error);
+          }
+        };
+
+        let servers: InstanceType<DevServerConstructor>[] = [];
+
+        try {
+          servers = createServers(compiler);
+
+          for (const server of servers) {
+            await server.start();
+          }
+        } catch (error) {
+          logServerError(error);
+          process.exit(2);
+        }
+
+        if (servers.length === 0) {
+          this.logger.error("No dev server configurations to run");
+          process.exit(2);
+        }
 
         if (this.#needWatchStdin(compiler)) {
           process.stdin.on("end", () => {
+            // Reads `servers` at the time of the event, so it stops the ones started by a reload too
             Promise.all(servers.map((server) => server.stop())).then(() => {
               process.exit(0);
             });
@@ -2275,76 +2366,96 @@ class WebpackCLI {
           process.stdin.resume();
         }
 
-        const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
-        const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
-        const compilersForDevServer =
-          possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
-        const usedPorts: number[] = [];
-        // @ts-expect-error different versions of the `Schema` type
-        const devServerArgs = this.#getArguments(webpack, devServer.schema);
+        const reloadInProcess = async (files: string[], resume: () => void) => {
+          this.#logRestart(files);
+          this.#invalidateLocalModules(webpack);
 
-        for (const compilerForDevServer of compilersForDevServer) {
-          if (compilerForDevServer.options.devServer === false) {
-            continue;
-          }
+          let nextCompiler: Compiler | MultiCompiler;
+          let nextServers: InstanceType<DevServerConstructor>[];
 
-          const devServerConfiguration: DevServerConfiguration =
-            compilerForDevServer.options.devServer || {};
-
-          const args: Record<string, WebpackArgument> = {};
-          const values: ProcessedArguments = {};
-
-          for (const name of Object.keys(options)) {
-            if (name === "argv") continue;
-
-            const kebabName = this.toKebabCase(name);
-            const arg = devServerArgs[kebabName];
-
-            if (arg) {
-              args[name] = arg;
-              // We really don't know what the value is
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              values[name] = options[name as keyof Options] as any;
-            }
-          }
-
-          if (Object.keys(values).length > 0) {
-            this.#processArguments(webpack, args, devServerConfiguration, values);
-          }
-
-          if (devServerConfiguration.port) {
-            const portNumber = Number(devServerConfiguration.port);
-
-            if (usedPorts.includes(portNumber)) {
-              throw new Error(
-                "Unique ports must be specified for each devServer option in your webpack configuration. Alternatively, run only 1 devServer config using the --config-name flag to specify your desired config.",
-              );
-            }
-
-            usedPorts.push(portNumber);
-          }
+          this.#throwOnConfigError = true;
 
           try {
-            const server = new DevServer(devServerConfiguration, compiler);
+            nextCompiler = await this.createCompiler(webpackCLIOptions);
 
-            await server.start();
+            try {
+              nextServers = createServers(nextCompiler);
 
-            servers.push(server as unknown as InstanceType<DevServerConstructor>);
+              if (nextServers.length === 0) {
+                throw new Error("No dev server configurations to run");
+              }
+            } catch (error) {
+              await new Promise<void>((resolve) => {
+                nextCompiler.close(() => resolve());
+              });
+              throw error;
+            }
           } catch (error) {
-            if (this.isValidationError(error as Error)) {
-              this.logger.error((error as Error).message);
-            } else {
-              this.logger.error(error);
+            if (!(error instanceof ConfigReloadError)) {
+              logServerError(error);
             }
 
-            process.exit(2);
+            this.logger.error(
+              "Failed to apply the changed configuration, the previous dev server keeps running. Fix the error and save again.",
+            );
+            resume();
+            return;
+          } finally {
+            this.#throwOnConfigError = false;
           }
-        }
 
-        if (servers.length === 0) {
-          this.logger.error("No dev server configurations to run");
-          process.exit(2);
-        }
+          // Stopping frees the ports and closes the old watching, the old compiler stays usable until the new servers listen
+          await Promise.all(servers.map((server) => server.stop()));
+
+          try {
+            for (const server of nextServers) {
+              await server.start();
+            }
+          } catch (error) {
+            // Some options (e.g. the port) only fail on listen, bring the previous dev server back
+            logServerError(error);
+            await Promise.allSettled(nextServers.map((server) => server.stop()));
+            await new Promise<void>((resolve) => {
+              nextCompiler.close(() => resolve());
+            });
+
+            try {
+              servers = createServers(compiler);
+
+              for (const server of servers) {
+                await server.start();
+              }
+            } catch (err) {
+              logServerError(err);
+              process.exit(2);
+            }
+
+            this.logger.error(
+              "Failed to apply the changed configuration, the previous dev server keeps running. Fix the error and save again.",
+            );
+            // The compiler keeps its listener, it only has to accept the next change again
+            resume();
+            return;
+          }
+
+          // Closing saves the persistent cache
+          await new Promise<void>((resolve) => {
+            compiler.close(() => resolve());
+          });
+
+          compiler = nextCompiler;
+          servers = nextServers;
+
+          this.#restartOnBuildDependenciesChange(compiler, webpack, {
+            reloadInProcess,
+            isServe: true,
+          });
+        };
+
+        this.#restartOnBuildDependenciesChange(compiler, webpack, {
+          reloadInProcess,
+          isServe: true,
+        });
       },
     },
     help: {
@@ -3901,11 +4012,18 @@ class WebpackCLI {
   #restartOnBuildDependenciesChange(
     compiler: Compiler | MultiCompiler,
     webpackMod: typeof webpack,
-    reloadInProcess?: (files: string[], resume: () => void) => void,
+    {
+      reloadInProcess,
+      isServe = false,
+    }: {
+      reloadInProcess?: (files: string[], resume: () => void) => void;
+      // The dev server watches through its middleware, `watch` stays `false` in the options
+      isServe?: boolean;
+    } = {},
   ): void {
     const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
 
-    if (!compilers.some((item) => item.options.watch)) {
+    if (!isServe && !compilers.some((item) => item.options.watch)) {
       return;
     }
 
@@ -3934,11 +4052,11 @@ class WebpackCLI {
         process.send!({ type: "webpack-cli:restart", files: [...changedFiles] });
       } else if (!this.#runner && reloadInProcess && this.#canReloadInProcess(webpackMod)) {
         reloadInProcess([...changedFiles], resume);
-      } else if (process.argv[1]) {
+      } else if (process.argv[1] && !isServe) {
         this.#runner ??= { close: (callback) => compiler.close(() => callback()), resume };
         this.#restart([...changedFiles]);
       } else {
-        // Used programmatically without a CLI script, let webpack warn and rebuild
+        // No in-process reload for the dev server here, or no CLI script to re-spawn: let webpack warn and rebuild
         return;
       }
 
@@ -4193,10 +4311,10 @@ class WebpackCLI {
       // Signal and stdin handlers read `compiler`, so they close the new one from now on
       compiler = nextCompiler;
       this.#startCompiler(compiler, callback);
-      this.#restartOnBuildDependenciesChange(compiler, options.webpack, reloadInProcess);
+      this.#restartOnBuildDependenciesChange(compiler, options.webpack, { reloadInProcess });
     };
 
-    this.#restartOnBuildDependenciesChange(compiler, options.webpack, reloadInProcess);
+    this.#restartOnBuildDependenciesChange(compiler, options.webpack, { reloadInProcess });
 
     const needGracefulShutdown = (compiler: Compiler | MultiCompiler): boolean =>
       Boolean(
