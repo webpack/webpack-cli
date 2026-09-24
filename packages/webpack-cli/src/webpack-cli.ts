@@ -1,3 +1,4 @@
+import { type ChildProcess, fork } from "node:child_process";
 import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -52,6 +53,35 @@ type DevServerConstructor = typeof import("webpack-dev-server") extends {
   : typeof import("webpack-dev-server");
 
 const EXIT_SIGNALS = ["SIGINT", "SIGTERM"];
+
+// Set on processes spawned to restart the build after its configuration changed
+const RESTARTED_ENV = "WEBPACK_CLI_RESTARTED";
+const IS_RESTARTED_PROCESS =
+  process.env[RESTARTED_ENV] === "true" && typeof process.send === "function";
+
+if (IS_RESTARTED_PROCESS) {
+  delete process.env[RESTARTED_ENV];
+}
+
+type RestartMessage =
+  | { type: "webpack-cli:ready" }
+  | { type: "webpack-cli:start" }
+  | { type: "webpack-cli:restart"; files: string[] }
+  | { type: "webpack-cli:resume" }
+  | { type: "webpack-cli:close" };
+
+// `compiler.hooks.buildDependenciesChanged` exists since webpack 5.112.0
+interface BuildDependenciesHooks {
+  buildDependenciesChanged?: {
+    tap(name: string, fn: (changedFiles: ReadonlySet<string>) => true | void): void;
+  };
+}
+
+interface Runner {
+  process?: ChildProcess;
+  close(callback: () => void): void;
+  resume(): void;
+}
 const DEFAULT_CONFIGURATION_FILES = [
   "webpack.config",
   ".webpack/webpack.config",
@@ -3512,34 +3542,45 @@ class WebpackCLI {
         typeof config.cache !== "boolean" &&
         config.cache.type === "filesystem";
 
-      // Setup default cache options
-      if (isFileSystemCacheOptions(configuration) && Object.isExtensible(configuration.cache)) {
-        const configPath = config.path.get(configuration);
+      const configPath = config.path.get(configuration);
 
-        if (configPath) {
+      if (configPath) {
+        const normalizeConfigPath = (configPath: string) =>
+          // TODO fix `file:` support on webpack side and remove it in the next major release
+          configPath.startsWith("file://") ? fileURLToPath(configPath) : path.resolve(configPath);
+        const configPaths = (Array.isArray(configPath) ? configPath : [configPath]).map(
+          normalizeConfigPath,
+        );
+
+        // Top-level `buildDependencies` also invalidate the persistent cache and are watched in watch mode
+        if (this.#supportsTopLevelBuildDependencies(options.webpack)) {
+          const withBuildDependencies = configuration as Configuration & {
+            buildDependencies?: Record<string, string[]>;
+          };
+
+          if (!withBuildDependencies.buildDependencies) {
+            withBuildDependencies.buildDependencies = {};
+          }
+
+          if (Object.isExtensible(withBuildDependencies.buildDependencies)) {
+            withBuildDependencies.buildDependencies.defaultConfig = [
+              ...(withBuildDependencies.buildDependencies.defaultConfig || []),
+              ...configPaths,
+            ];
+          }
+        } else if (
+          isFileSystemCacheOptions(configuration) &&
+          Object.isExtensible(configuration.cache)
+        ) {
+          // Setup default cache options
           if (!configuration.cache.buildDependencies) {
             configuration.cache.buildDependencies = {};
           }
 
-          if (!configuration.cache.buildDependencies.defaultConfig) {
-            configuration.cache.buildDependencies.defaultConfig = [];
-          }
-
-          const normalizeConfigPath = (configPath: string) =>
-            configPath.startsWith("file://") ? fileURLToPath(configPath) : path.resolve(configPath);
-
-          if (Array.isArray(configPath)) {
-            for (const oneOfConfigPath of configPath) {
-              configuration.cache.buildDependencies.defaultConfig.push(
-                normalizeConfigPath(oneOfConfigPath),
-              );
-            }
-          } else {
-            configuration.cache.buildDependencies.defaultConfig.push(
-              // TODO fix `file:` support on webpack side and remove it in the next major release
-              normalizeConfigPath(configPath),
-            );
-          }
+          configuration.cache.buildDependencies.defaultConfig = [
+            ...(configuration.cache.buildDependencies.defaultConfig || []),
+            ...configPaths,
+          ];
         }
       }
 
@@ -3614,6 +3655,7 @@ class WebpackCLI {
   async createCompiler(
     options: Options,
     callback?: WebpackCallback,
+    deferWatch = false,
   ): Promise<Compiler | MultiCompiler> {
     const { webpack } = options;
 
@@ -3623,6 +3665,24 @@ class WebpackCLI {
 
     const config = await this.loadConfig(options);
     let compiler: Compiler | MultiCompiler;
+    // Without a callback webpack can't start watching (and warns), the caller starts it later
+    const deferredWatch: boolean[] = [];
+
+    if (deferWatch) {
+      const configurations = this.isMultipleConfiguration(config.options)
+        ? config.options
+        : [config.options];
+
+      for (const configuration of configurations) {
+        const watch = Boolean(configuration.watch) && Object.isExtensible(configuration);
+
+        deferredWatch.push(watch);
+
+        if (watch) {
+          configuration.watch = false;
+        }
+      }
+    }
 
     try {
       compiler = callback
@@ -3645,7 +3705,208 @@ class WebpackCLI {
       process.exit(2);
     }
 
+    if (deferWatch) {
+      const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
+
+      for (const [index, item] of compilers.entries()) {
+        if (deferredWatch[index]) {
+          item.options.watch = true;
+        }
+      }
+    }
+
     return compiler;
+  }
+
+  #supportsTopLevelBuildDependenciesCache = new WeakMap<typeof webpack, boolean>();
+
+  #supportsTopLevelBuildDependencies(webpackMod: typeof webpack): boolean {
+    let result = this.#supportsTopLevelBuildDependenciesCache.get(webpackMod);
+
+    if (result === undefined) {
+      try {
+        // Precompiled schema check, cheap compared to walking the schema
+        webpackMod.validate({ buildDependencies: {} } as Configuration);
+        result = true;
+      } catch {
+        result = false;
+      }
+
+      this.#supportsTopLevelBuildDependenciesCache.set(webpackMod, result);
+    }
+
+    return result;
+  }
+
+  // The process currently running the build, only set once a restart happened
+  #runner: Runner | undefined;
+
+  #restarting = false;
+
+  #closedChildren = new WeakSet<ChildProcess>();
+
+  #startCompiler(compiler: Compiler | MultiCompiler, callback: WebpackCallback): void {
+    const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
+
+    if (compilers.some((item) => item.options.watch)) {
+      if (this.isMultipleCompiler(compiler)) {
+        compiler.watch(
+          compiler.compilers.map((item) => item.options.watchOptions || {}),
+          callback as Parameters<MultiCompiler["watch"]>[1],
+        );
+      } else {
+        compiler.watch(
+          compiler.options.watchOptions || {},
+          callback as Parameters<Compiler["watch"]>[1],
+        );
+      }
+
+      return;
+    }
+
+    (compiler as Compiler).run((error, stats) => {
+      (compiler as Compiler).close((closeError) => {
+        callback((error || closeError) as Error | null, stats);
+      });
+    });
+  }
+
+  /**
+   * In watch mode, restart the build in a fresh process when the configuration or anything it imports changes.
+   * A fresh process is used because Node.js has no way to drop ES modules from its cache.
+   */
+  #restartOnBuildDependenciesChange(compiler: Compiler | MultiCompiler): void {
+    const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
+
+    // Can't re-spawn when used programmatically without a CLI script
+    if (!compilers.some((item) => item.options.watch) || !process.argv[1]) {
+      return;
+    }
+
+    let pending = false;
+
+    const resume = () => {
+      pending = false;
+      (compiler.watching as { resume(): void } | undefined)?.resume();
+    };
+
+    const hooks = compilers.map(
+      (item) => (item.hooks as BuildDependenciesHooks).buildDependenciesChanged,
+    );
+
+    // webpack is too old to report build dependency changes
+    if (hooks.some((hook) => !hook)) {
+      return;
+    }
+
+    const onChanged = (changedFiles: ReadonlySet<string>): true => {
+      if (!pending) {
+        pending = true;
+
+        if (IS_RESTARTED_PROCESS) {
+          process.send!({ type: "webpack-cli:restart", files: [...changedFiles] });
+        } else {
+          this.#runner ??= { close: (callback) => compiler.close(() => callback()), resume };
+          this.#restart([...changedFiles]);
+        }
+      }
+
+      // Keeps the watching suspended until the restart succeeds or fails
+      return true;
+    };
+
+    for (const hook of hooks) {
+      hook!.tap("webpack-cli", onChanged);
+    }
+
+    if (IS_RESTARTED_PROCESS) {
+      process.on("message", (message: RestartMessage) => {
+        if (message.type === "webpack-cli:resume") {
+          resume();
+        }
+      });
+    }
+  }
+
+  #restart(files: string[]): void {
+    if (this.#restarting) {
+      return;
+    }
+
+    this.#restarting = true;
+
+    const relativeFiles = files.map((file) => path.relative(process.cwd(), file) || file);
+
+    this.logger.info(
+      `Build dependencies changed (${relativeFiles.join(", ")}), restarting with the new configuration...`,
+    );
+
+    const candidate = fork(process.argv[1], process.argv.slice(2), {
+      stdio: "inherit",
+      env: { ...process.env, [RESTARTED_ENV]: "true" },
+    });
+    let ready = false;
+
+    candidate.on("message", (message: RestartMessage) => {
+      switch (message.type) {
+        case "webpack-cli:ready": {
+          ready = true;
+
+          // The new configuration is valid, replace the old build with it
+          (this.#runner as Runner).close(() => {
+            this.#runner = {
+              process: candidate,
+              close: (callback) => {
+                this.#closedChildren.add(candidate);
+
+                if (candidate.exitCode !== null || candidate.signalCode !== null) {
+                  callback();
+                  return;
+                }
+
+                candidate.once("exit", () => callback());
+                candidate.send({ type: "webpack-cli:close" });
+              },
+              resume: () => candidate.send({ type: "webpack-cli:resume" }),
+            };
+            this.#restarting = false;
+            candidate.send({ type: "webpack-cli:start" });
+          });
+          break;
+        }
+        case "webpack-cli:restart": {
+          if (this.#runner?.process === candidate) {
+            this.#restart(message.files);
+          }
+          break;
+        }
+        default:
+          break;
+      }
+    });
+
+    candidate.on("exit", (code) => {
+      if (!ready) {
+        this.#restarting = false;
+        this.logger.error(
+          "Failed to apply the changed configuration, the previous build keeps running. Fix the error and save again.",
+        );
+        (this.#runner as Runner).resume();
+        return;
+      }
+
+      if (this.#runner?.process === candidate && !this.#closedChildren.has(candidate)) {
+        process.exit(code ?? 1);
+      }
+    });
+  }
+
+  #shutdownRunner(): void {
+    const runner = this.#runner as Runner;
+
+    runner.close(() => {
+      process.exit(runner.process?.exitCode ?? 0);
+    });
   }
 
   #needWatchStdin(compiler: Compiler | MultiCompiler): boolean {
@@ -3736,11 +3997,36 @@ class WebpackCLI {
       options.isWatchingLikeCommand = true;
     }
 
-    compiler = await this.createCompiler(options, callback);
+    if (IS_RESTARTED_PROCESS) {
+      // Load and validate the changed configuration, then wait until the previous build is closed
+      compiler = await this.createCompiler(options, undefined, true);
 
-    if (!compiler) {
-      return;
+      if (!compiler) {
+        return;
+      }
+
+      await new Promise<void>((resolve) => {
+        const onMessage = (message: RestartMessage) => {
+          if (message.type === "webpack-cli:start") {
+            process.off("message", onMessage);
+            resolve();
+          }
+        };
+
+        process.on("message", onMessage);
+        process.send!({ type: "webpack-cli:ready" });
+      });
+
+      this.#startCompiler(compiler, callback);
+    } else {
+      compiler = await this.createCompiler(options, callback);
+
+      if (!compiler) {
+        return;
+      }
     }
+
+    this.#restartOnBuildDependenciesChange(compiler);
 
     const needGracefulShutdown = (compiler: Compiler | MultiCompiler): boolean =>
       Boolean(
@@ -3760,6 +4046,12 @@ class WebpackCLI {
       for (const signal of EXIT_SIGNALS) {
         // eslint-disable-next-line @typescript-eslint/no-loop-func
         const listener = () => {
+          // The build runs in a restarted process now, which received the signal as well
+          if (this.#runner?.process) {
+            this.#shutdownRunner();
+            return;
+          }
+
           if (needForceShutdown) {
             process.exit(0);
           }
@@ -3784,9 +4076,36 @@ class WebpackCLI {
 
       if (this.#needWatchStdin(compiler)) {
         process.stdin.on("end", () => {
+          if (this.#runner?.process) {
+            this.#shutdownRunner();
+            return;
+          }
+
           process.exit(0);
         });
         process.stdin.resume();
+      }
+
+      if (IS_RESTARTED_PROCESS) {
+        const close = () => {
+          // Already shutting down because of a signal
+          if (needForceShutdown) {
+            return;
+          }
+
+          needForceShutdown = true;
+          compiler.close(() => {
+            process.exit(0);
+          });
+        };
+
+        process.on("message", (message: RestartMessage) => {
+          if (message.type === "webpack-cli:close") {
+            close();
+          }
+        });
+        // The supervising process is gone
+        process.on("disconnect", close);
       }
     }
   }
