@@ -3849,6 +3849,11 @@ class WebpackCLI {
       this.#exitOnConfigError();
     }
 
+    // With a callback, webpack reports an invalid configuration there and returns no compiler
+    if (!compiler) {
+      return compiler;
+    }
+
     const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
 
     for (const [index, item] of compilers.entries()) {
