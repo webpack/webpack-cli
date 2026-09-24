@@ -1,6 +1,6 @@
 import { type ChildProcess, fork } from "node:child_process";
 import fs from "node:fs";
-import { createRequire } from "node:module";
+import nodeModule, { createRequire } from "node:module";
 import path from "node:path";
 import { type Readable as ReadableType } from "node:stream";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -53,6 +53,18 @@ type DevServerConstructor = typeof import("webpack-dev-server") extends {
   : typeof import("webpack-dev-server");
 
 const EXIT_SIGNALS = ["SIGINT", "SIGTERM"];
+
+class ConfigReloadError extends Error {}
+
+interface ResolveResult {
+  url: string;
+}
+
+type ResolveHook = (
+  specifier: string,
+  context: unknown,
+  next: (specifier: string, context: unknown) => ResolveResult,
+) => ResolveResult;
 
 // Set on processes spawned to restart the build after its configuration changed
 const RESTARTED_ENV = "WEBPACK_CLI_RESTARTED";
@@ -3055,6 +3067,19 @@ class WebpackCLI {
     return undefined;
   }
 
+  // While reloading the configuration in watch mode a broken config must not stop the running build
+  #throwOnConfigError = false;
+
+  #configsLoadedByImport = new Set<string>();
+
+  #exitOnConfigError(): never {
+    if (this.#throwOnConfigError) {
+      throw new ConfigReloadError();
+    }
+
+    process.exit(2);
+  }
+
   async loadConfig(options: Options) {
     const disableInterpret =
       typeof options.disableInterpret !== "undefined" && options.disableInterpret;
@@ -3093,7 +3118,7 @@ class WebpackCLI {
             this.logger.error(
               `Loading '${ext}' configuration files requires the '${dataFormatLoader.package}' package, which is not installed. Please install it, e.g. \`npm install --save-dev ${dataFormatLoader.package}\`.`,
             );
-            process.exit(2);
+            this.#exitOnConfigError();
           }
 
           // Reading/parsing errors propagate to the handler below, which
@@ -3108,8 +3133,14 @@ class WebpackCLI {
             options = // eslint-disable-next-line no-eval
               (await eval(`import("${isFileURL ? configPath : pathToFileURL(configPath)}")`))
                 .default;
+            this.#configsLoadedByImport.add(configPath);
           } catch (err) {
-            if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
+            if (
+              this.isValidationError(err) ||
+              process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG ||
+              // On reload `require()` would return the copy Node.js cached when it was imported
+              (this.#throwOnConfigError && this.#configsLoadedByImport.has(configPath))
+            ) {
               throw err;
             }
 
@@ -3173,10 +3204,10 @@ class WebpackCLI {
                       this.logger.error(tsxFailureReason);
                     }
                     this.logger.error("Please install one of them");
-                    process.exit(2);
+                    this.#exitOnConfigError();
                   }
                   this.logger.error(error);
-                  process.exit(2);
+                  this.#exitOnConfigError();
                 }
               }
             } else if (TSX_LOADABLE_EXTENSIONS.has(ext) && !disableInterpret) {
@@ -3219,7 +3250,7 @@ class WebpackCLI {
           this.logger.error(error);
         }
 
-        process.exit(2);
+        this.#exitOnConfigError();
       }
 
       if (Array.isArray(options)) {
@@ -3265,7 +3296,7 @@ class WebpackCLI {
       if (!isObject(options) && !Array.isArray(options)) {
         this.logger.error(`Invalid configuration in '${configPath}'`);
 
-        process.exit(2);
+        this.#exitOnConfigError();
       }
 
       return {
@@ -3344,7 +3375,7 @@ class WebpackCLI {
             .map((configName) => `Configuration with the name "${configName}" was not found.`)
             .join(" "),
         );
-        process.exit(2);
+        this.#exitOnConfigError();
       }
     }
 
@@ -3371,7 +3402,7 @@ class WebpackCLI {
 
           if (intersection.length > 0) {
             this.logger.error("Recursive configuration detected, exiting.");
-            process.exit(2);
+            this.#exitOnConfigError();
           }
         }
 
@@ -3439,7 +3470,7 @@ class WebpackCLI {
       // single config exporting an array
       if (!this.isMultipleConfiguration(config.options) || config.options.length <= 1) {
         this.logger.error("At least two configurations are required for merge.");
-        process.exit(2);
+        this.#exitOnConfigError();
       }
 
       const mergedConfigPaths: string[] = [];
@@ -3475,7 +3506,7 @@ class WebpackCLI {
       this.logger.error(
         `'${options.progress}' is an invalid value for the --progress option. Only 'profile' is allowed.`,
       );
-      process.exit(2);
+      this.#exitOnConfigError();
     }
 
     // Node's CJS interop nests the class under `.default.default`; Bun honors
@@ -3689,7 +3720,7 @@ class WebpackCLI {
         ? webpack(config.options, (error, stats) => {
             if (error && this.isValidationError(error)) {
               this.logger.error(error.message);
-              process.exit(2);
+              this.#exitOnConfigError();
             }
 
             callback(error as Error | null, stats);
@@ -3702,7 +3733,7 @@ class WebpackCLI {
         this.logger.error(error);
       }
 
-      process.exit(2);
+      this.#exitOnConfigError();
     }
 
     if (deferWatch) {
@@ -3771,15 +3802,110 @@ class WebpackCLI {
     });
   }
 
+  #localModulesGeneration = 0;
+
+  #localModulesHookRegistered = false;
+
+  // Packages whose modules are never reloaded: webpack itself and this CLI
+  #nonReloadableRoots: string[] | undefined;
+
+  #isReloadableModule(filename: string, webpackMod: typeof webpack): boolean {
+    if (!path.isAbsolute(filename) || filename.includes(`${path.sep}node_modules${path.sep}`)) {
+      return false;
+    }
+
+    if (!this.#nonReloadableRoots) {
+      this.#nonReloadableRoots = [path.resolve(__dirname, "..") + path.sep];
+
+      for (const [key, value] of Object.entries(require.cache)) {
+        if (value?.exports === webpackMod) {
+          this.#nonReloadableRoots.push(path.resolve(path.dirname(key), "..") + path.sep);
+          break;
+        }
+      }
+    }
+
+    return !this.#nonReloadableRoots.some((root) => filename.startsWith(root));
+  }
+
+  #canReloadInProcess(webpackMod: typeof webpack): boolean {
+    // `module.registerHooks` is only available on Node.js >= 22.15.0
+    // eslint-disable-next-line n/no-unsupported-features/node-builtins
+    if (typeof (nodeModule as { registerHooks?: unknown }).registerHooks !== "function") {
+      return false;
+    }
+
+    // `require()` of an ES module can't be reloaded: Node.js caches it outside of `require.cache`
+    for (const [key, value] of Object.entries(require.cache)) {
+      if (
+        value &&
+        this.#isReloadableModule(key, webpackMod) &&
+        (value.exports as { [Symbol.toStringTag]?: string } | undefined)?.[Symbol.toStringTag] ===
+          "Module"
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   /**
-   * In watch mode, restart the build in a fresh process when the configuration or anything it imports changes.
-   * A fresh process is used because Node.js has no way to drop ES modules from its cache.
+   * Makes the next config load evaluate local modules again: CommonJS ones are removed from `require.cache`,
+   * ES modules get a new URL (Node.js can't drop them from its cache), so every reload keeps the old copies in memory.
    */
-  #restartOnBuildDependenciesChange(compiler: Compiler | MultiCompiler): void {
+  #invalidateLocalModules(webpackMod: typeof webpack): void {
+    this.#localModulesGeneration++;
+
+    if (!this.#localModulesHookRegistered) {
+      this.#localModulesHookRegistered = true;
+
+      // Checked by `#canReloadInProcess`
+      // eslint-disable-next-line n/no-unsupported-features/node-builtins
+      const { registerHooks } = nodeModule as unknown as {
+        registerHooks(hooks: { resolve: ResolveHook }): void;
+      };
+
+      registerHooks({
+        resolve: (specifier, context, next) => {
+          const result = next(specifier, context);
+
+          if (
+            this.#localModulesGeneration > 0 &&
+            result.url.startsWith("file:") &&
+            this.#isReloadableModule(fileURLToPath(result.url), webpackMod)
+          ) {
+            const url = new URL(result.url);
+
+            url.searchParams.set("webpack-cli-generation", String(this.#localModulesGeneration));
+
+            return { ...result, url: url.href };
+          }
+
+          return result;
+        },
+      });
+    }
+
+    for (const key of Object.keys(require.cache)) {
+      if (this.#isReloadableModule(key, webpackMod)) {
+        delete require.cache[key];
+      }
+    }
+  }
+
+  /**
+   * In watch mode, restart the build when the configuration or anything it imports changes.
+   * The new configuration is loaded in this process when possible, otherwise in a fresh process.
+   */
+  #restartOnBuildDependenciesChange(
+    compiler: Compiler | MultiCompiler,
+    webpackMod: typeof webpack,
+    reloadInProcess?: (files: string[], resume: () => void) => void,
+  ): void {
     const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
 
-    // Can't re-spawn when used programmatically without a CLI script
-    if (!compilers.some((item) => item.options.watch) || !process.argv[1]) {
+    if (!compilers.some((item) => item.options.watch)) {
       return;
     }
 
@@ -3799,17 +3925,24 @@ class WebpackCLI {
       return;
     }
 
-    const onChanged = (changedFiles: ReadonlySet<string>): true => {
-      if (!pending) {
-        pending = true;
-
-        if (IS_RESTARTED_PROCESS) {
-          process.send!({ type: "webpack-cli:restart", files: [...changedFiles] });
-        } else {
-          this.#runner ??= { close: (callback) => compiler.close(() => callback()), resume };
-          this.#restart([...changedFiles]);
-        }
+    const onChanged = (changedFiles: ReadonlySet<string>): true | void => {
+      if (pending) {
+        return true;
       }
+
+      if (IS_RESTARTED_PROCESS) {
+        process.send!({ type: "webpack-cli:restart", files: [...changedFiles] });
+      } else if (!this.#runner && reloadInProcess && this.#canReloadInProcess(webpackMod)) {
+        reloadInProcess([...changedFiles], resume);
+      } else if (process.argv[1]) {
+        this.#runner ??= { close: (callback) => compiler.close(() => callback()), resume };
+        this.#restart([...changedFiles]);
+      } else {
+        // Used programmatically without a CLI script, let webpack warn and rebuild
+        return;
+      }
+
+      pending = true;
 
       // Keeps the watching suspended until the restart succeeds or fails
       return true;
@@ -3828,18 +3961,21 @@ class WebpackCLI {
     }
   }
 
+  #logRestart(files: string[]): void {
+    const relativeFiles = files.map((file) => path.relative(process.cwd(), file) || file);
+
+    this.logger.info(
+      `Build dependencies changed (${relativeFiles.join(", ")}), restarting with the new configuration...`,
+    );
+  }
+
   #restart(files: string[]): void {
     if (this.#restarting) {
       return;
     }
 
     this.#restarting = true;
-
-    const relativeFiles = files.map((file) => path.relative(process.cwd(), file) || file);
-
-    this.logger.info(
-      `Build dependencies changed (${relativeFiles.join(", ")}), restarting with the new configuration...`,
-    );
+    this.#logRestart(files);
 
     const candidate = fork(process.argv[1], process.argv.slice(2), {
       stdio: "inherit",
@@ -4026,7 +4162,41 @@ class WebpackCLI {
       }
     }
 
-    this.#restartOnBuildDependenciesChange(compiler);
+    const reloadInProcess = async (files: string[], resume: () => void) => {
+      this.#logRestart(files);
+      this.#invalidateLocalModules(options.webpack);
+
+      let nextCompiler: Compiler | MultiCompiler;
+
+      this.#throwOnConfigError = true;
+
+      try {
+        nextCompiler = await this.createCompiler(options, undefined, true);
+      } catch (error) {
+        if (!(error instanceof ConfigReloadError)) {
+          this.logger.error(error);
+        }
+
+        this.logger.error(
+          "Failed to apply the changed configuration, the previous build keeps running. Fix the error and save again.",
+        );
+        resume();
+        return;
+      } finally {
+        this.#throwOnConfigError = false;
+      }
+
+      await new Promise<void>((resolve) => {
+        compiler.close(() => resolve());
+      });
+
+      // Signal and stdin handlers read `compiler`, so they close the new one from now on
+      compiler = nextCompiler;
+      this.#startCompiler(compiler, callback);
+      this.#restartOnBuildDependenciesChange(compiler, options.webpack, reloadInProcess);
+    };
+
+    this.#restartOnBuildDependenciesChange(compiler, options.webpack, reloadInProcess);
 
     const needGracefulShutdown = (compiler: Compiler | MultiCompiler): boolean =>
       Boolean(
