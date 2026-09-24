@@ -1,4 +1,4 @@
-const { processKill, runWatch } = require("../../utils/test-utils");
+const { getChildProcess, processKill, runWatch } = require("../../utils/test-utils");
 
 describe("--watch-options-stdin", () => {
   it('should stop the process when stdin ends using "--watch" and "--watch-options-stdin" options', async () => {
@@ -6,7 +6,7 @@ describe("--watch-options-stdin", () => {
 
     await runWatch(__dirname, ["--watch", "--watch-options-stdin"], {
       handler: (proc) => {
-        proc.on("exit", () => {
+        getChildProcess(proc).on("exit", () => {
           expect(semaphore).toBe(true);
 
           processKill(proc);
@@ -24,7 +24,7 @@ describe("--watch-options-stdin", () => {
 
     await runWatch(__dirname, ["watch", "--watch-options-stdin"], {
       handler: (proc) => {
-        proc.on("exit", () => {
+        getChildProcess(proc).on("exit", () => {
           expect(semaphore).toBe(true);
 
           processKill(proc);
@@ -42,7 +42,7 @@ describe("--watch-options-stdin", () => {
 
     await runWatch(__dirname, ["--config", "./watch.config.js"], {
       handler: (proc) => {
-        proc.on("exit", () => {
+        getChildProcess(proc).on("exit", () => {
           expect(semaphore).toBe(true);
 
           processKill(proc);
@@ -60,7 +60,7 @@ describe("--watch-options-stdin", () => {
 
     await runWatch(__dirname, ["--config", "./multi-watch.config.js"], {
       handler: (proc) => {
-        proc.on("exit", () => {
+        getChildProcess(proc).on("exit", () => {
           expect(semaphore).toBe(true);
 
           processKill(proc);
@@ -78,7 +78,7 @@ describe("--watch-options-stdin", () => {
 
     await runWatch(__dirname, ["serve", "--watch-options-stdin"], {
       handler: (proc) => {
-        proc.on("exit", () => {
+        getChildProcess(proc).on("exit", () => {
           expect(semaphore).toBe(true);
 
           processKill(proc);
@@ -96,7 +96,7 @@ describe("--watch-options-stdin", () => {
 
     await runWatch(__dirname, ["serve", "--stdin"], {
       handler: (proc) => {
-        proc.on("exit", () => {
+        getChildProcess(proc).on("exit", () => {
           expect(semaphore).toBe(true);
 
           processKill(proc);
@@ -114,7 +114,7 @@ describe("--watch-options-stdin", () => {
 
     await runWatch(__dirname, ["serve", "--config", "./serve.config.js"], {
       handler: (proc) => {
-        proc.on("exit", () => {
+        getChildProcess(proc).on("exit", () => {
           expect(semaphore).toBe(true);
 
           processKill(proc);
@@ -132,7 +132,7 @@ describe("--watch-options-stdin", () => {
 
     await runWatch(__dirname, ["--config", "./multi-watch.config.js"], {
       handler: (proc) => {
-        proc.on("exit", () => {
+        getChildProcess(proc).on("exit", () => {
           expect(semaphore).toBe(true);
 
           processKill(proc);
