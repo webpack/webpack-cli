@@ -3805,6 +3805,8 @@ class WebpackCLI {
       process.env.NODE_ENV = options.configNodeEnv;
     }
 
+    // Config files changed after this count as changed, even while the config is still evaluated
+    const loadStartTime = Date.now();
     const config = await this.loadConfig(options);
     let compiler: Compiler | MultiCompiler;
     // Without a callback webpack can't start watching (and warns), the caller starts it later
@@ -3847,14 +3849,16 @@ class WebpackCLI {
       this.#exitOnConfigError();
     }
 
-    if (deferWatch) {
-      const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
+    const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
 
-      for (const [index, item] of compilers.entries()) {
-        if (deferredWatch[index]) {
-          item.options.watch = true;
-        }
+    for (const [index, item] of compilers.entries()) {
+      if (deferredWatch[index]) {
+        item.options.watch = true;
       }
+
+      // Set before watching starts, which webpack does on the next tick at the earliest
+      (item as Compiler & { buildDependenciesStartTime?: number }).buildDependenciesStartTime =
+        loadStartTime;
     }
 
     return compiler;
