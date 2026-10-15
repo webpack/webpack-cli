@@ -3289,24 +3289,46 @@ class WebpackCLI {
       }
     }
 
+    // Options for the whole MultiCompiler, such as `parallelism`, are set on the
+    // exported array itself, so carry them over whenever the array is rebuilt.
+    const keepMultiCompilerOptions = <T extends Configuration[]>(
+      source: Configuration | MultiConfiguration,
+      target: T,
+    ): T => {
+      if (Array.isArray(source)) {
+        for (const key of Object.keys(source)) {
+          if (!/^\d+$/.test(key)) {
+            (target as unknown as Record<string, unknown>)[key] = (
+              source as unknown as Record<string, unknown>
+            )[key];
+          }
+        }
+      }
+
+      return target;
+    };
+
     if (options.configName) {
       const notFoundConfigNames: string[] = [];
 
-      config.options = options.configName.map((configName) => {
-        let found;
+      config.options = keepMultiCompilerOptions(
+        config.options,
+        options.configName.map((configName) => {
+          let found;
 
-        if (this.isMultipleConfiguration(config.options)) {
-          found = config.options.find((options) => options.name === configName);
-        } else {
-          found = config.options.name === configName ? config.options : undefined;
-        }
+          if (this.isMultipleConfiguration(config.options)) {
+            found = config.options.find((options) => options.name === configName);
+          } else {
+            found = config.options.name === configName ? config.options : undefined;
+          }
 
-        if (!found) {
-          notFoundConfigNames.push(configName);
-        }
+          if (!found) {
+            notFoundConfigNames.push(configName);
+          }
 
-        return found;
-      }) as MultiConfiguration;
+          return found;
+        }) as Configuration[],
+      );
 
       if (notFoundConfigNames.length > 0) {
         this.logger.error(
@@ -3366,8 +3388,11 @@ class WebpackCLI {
       const extendsPaths = options.extends;
 
       if (this.isMultipleConfiguration(config.options)) {
-        config.options = await Promise.all(
-          config.options.map((options) => resolveExtends(options, config.path, extendsPaths)),
+        config.options = keepMultiCompilerOptions(
+          config.options,
+          await Promise.all(
+            config.options.map((options) => resolveExtends(options, config.path, extendsPaths)),
+          ),
         );
       } else {
         // load the config from the extends option
@@ -3379,17 +3404,20 @@ class WebpackCLI {
       this.isMultipleConfiguration(config.options) &&
       config.options.some((options) => options.extends)
     ) {
-      config.options = await Promise.all(
-        config.options.map((options) => {
-          if (options.extends) {
-            return resolveExtends(
-              options,
-              config.path,
-              typeof options.extends === "string" ? [options.extends] : options.extends,
-            );
-          }
-          return options;
-        }),
+      config.options = keepMultiCompilerOptions(
+        config.options,
+        await Promise.all(
+          config.options.map((options) => {
+            if (options.extends) {
+              return resolveExtends(
+                options,
+                config.path,
+                typeof options.extends === "string" ? [options.extends] : options.extends,
+              );
+            }
+            return options;
+          }),
+        ),
       );
     } else if (!this.isMultipleConfiguration(config.options) && config.options.extends) {
       config.options = await resolveExtends(
