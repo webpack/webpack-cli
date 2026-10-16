@@ -378,8 +378,11 @@ const uuid = (size = 21) => {
 //   plugins such as webpack-bundle-analyzer >= 5.4 print to stderr
 // webpack's own deprecations (`DEP_WEBPACK_*`), warnings (`<w>`) and errors
 // (`<e>`) are kept, so tests still catch the CLI misusing webpack.
+// A warning message may span several lines. Node.js prints the `(Use node --trace-...)`
+// hint only after the first warning of a process, so continuation lines are dropped
+// only up to that hint, and never across a line that starts another record.
 const NODE_WARNING_RE =
-  /^\(node:\d+\) (?:ExperimentalWarning|\[DEP\d+\] DeprecationWarning):.*(?:\r?\n(?:\(Use `node --trace-(?:warnings|deprecation) \.\.\.` to show where the warning was created\)(?:\r?\n|$))?|$)/gm;
+  /^\(node:\d+\) (?:ExperimentalWarning|\[DEP\d+\] DeprecationWarning):.*(?:(?:\r?\n(?!\(node:\d+\) |<[a-z]> |\[webpack)[^\r\n]*)*?\r?\n\(Use `node --trace-(?:warnings|deprecation) \.\.\.` to show where the warning was created\))?(?:\r?\n|$)/gm;
 const INFRASTRUCTURE_INFO_RE = /^<i> .*(?:\r?\n|$)/gm;
 
 /**

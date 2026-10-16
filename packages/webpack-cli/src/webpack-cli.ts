@@ -3665,13 +3665,15 @@ class WebpackCLI {
 
     try {
       // Branch on the configuration shape so each call matches one `webpack()` overload
-      compiler = this.isMultipleConfiguration(config.options)
-        ? webpackCallback
-          ? webpack(config.options, webpackCallback)!
-          : webpack(config.options)
-        : webpackCallback
+      if (this.isMultipleConfiguration(config.options)) {
+        compiler = webpackCallback
           ? webpack(config.options, webpackCallback)!
           : webpack(config.options);
+      } else {
+        compiler = webpackCallback
+          ? webpack(config.options, webpackCallback)!
+          : webpack(config.options);
+      }
     } catch (error) {
       if (this.isValidationError(error)) {
         this.logger.error(error.message);
