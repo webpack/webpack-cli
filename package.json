@@ -77,7 +77,7 @@
     "json5": "^2.2.3",
     "lint-staged": "^17.4.1",
     "mini-css-extract-plugin": "^2.10.2",
-    "pkg-pr-new": "^0.0.88",
+    "pkg-pr-new": "^0.0.91",
     "prettier": "^3.9.6",
     "readable-stream": "^4.7.0",
     "sass": "^1.103.1",
