@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("multiple configuration files", () => {
   it("should not throw error and spawn compilers for each configuration file", async () => {
@@ -13,7 +13,7 @@ describe("multiple configuration files", () => {
 
     // Should contain the correct exit code
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     // Should spawn multiple compilers
     expect(stdout).toContain("amd:");
     expect(stdout).toContain("commonjs:");

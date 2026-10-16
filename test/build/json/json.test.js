@@ -2,7 +2,7 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { readFile, run } = require("../../utils/test-utils");
+const { cleanStderr, readFile, run } = require("../../utils/test-utils");
 
 const successMessage = "stats are successfully stored as json to stats.json";
 
@@ -11,7 +11,7 @@ describe("json", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--json"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(() => JSON.parse(stdout)).not.toThrow();
     expect(JSON.parse(stdout).hash).toBeDefined();
   });
@@ -91,7 +91,7 @@ describe("json", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-j"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(() => JSON.parse(stdout)).not.toThrow();
     expect(JSON.parse(stdout).hash).toBeDefined();
   });

@@ -3102,8 +3102,8 @@ class WebpackCLI {
 
             // `tsx` is missing from `interpret`'s loader tables, and it cannot
             // be added there: its `tsx/cjs` entry point exists only in the
-            // package's `exports` map, which `rechoir`'s resolver does not
-            // support. Register it manually instead, resolved from the
+            // package's `exports` map, which `rechoir` < 1 could not resolve.
+            // Register it manually instead, resolved from the
             // configuration file's location so the user's copy is picked up.
             // Requiring `tsx/cjs` installs its require hook as a side effect.
             const registerTsxLoader = (): Error | undefined => {
@@ -3260,7 +3260,7 @@ class WebpackCLI {
       } else {
         config.options = [];
         for (const loadedConfig of loadedConfigs) {
-          if (Array.isArray(loadedConfig.options)) {
+          if (this.isMultipleConfiguration(loadedConfig.options)) {
             for (const item of loadedConfig.options) {
               (config.options as Configuration[]).push(item);
               config.path.set(options, [loadedConfig.path]);
@@ -3652,17 +3652,28 @@ class WebpackCLI {
     const config = await this.loadConfig(options);
     let compiler: Compiler | MultiCompiler;
 
-    try {
-      compiler = callback
-        ? webpack(config.options, (error, stats) => {
-            if (error && this.isValidationError(error)) {
-              this.logger.error(error.message);
-              process.exit(2);
-            }
+    const webpackCallback = callback
+      ? (error: Error | null, stats: Stats | MultiStats | undefined) => {
+          if (error && this.isValidationError(error)) {
+            this.logger.error(error.message);
+            process.exit(2);
+          }
 
-            callback(error as Error | null, stats);
-          })!
-        : webpack(config.options);
+          (callback as (error: Error | null, stats?: Stats | MultiStats) => void)(error, stats);
+        }
+      : undefined;
+
+    try {
+      // Branch on the configuration shape so each call matches one `webpack()` overload
+      if (this.isMultipleConfiguration(config.options)) {
+        compiler = webpackCallback
+          ? webpack(config.options, webpackCallback)!
+          : webpack(config.options);
+      } else {
+        compiler = webpackCallback
+          ? webpack(config.options, webpackCallback)!
+          : webpack(config.options);
+      }
     } catch (error) {
       if (this.isValidationError(error)) {
         this.logger.error(error.message);

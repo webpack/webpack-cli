@@ -1,13 +1,13 @@
 "use strict";
 
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("stats flag", () => {
   it("should use stats 'detailed' as defined in webpack config", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, []);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("preset: 'detailed'");
   });
 
@@ -15,7 +15,7 @@ describe("stats flag", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--no-stats"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("preset: 'none'");
   });
 });

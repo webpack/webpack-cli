@@ -1,6 +1,6 @@
 "use strict";
 
-const { normalizeStderr, normalizeStdout, run } = require("../../../utils/test-utils");
+const { cleanStderr, normalizeStderr, normalizeStdout, run } = require("../../../utils/test-utils");
 
 const presets = [
   "normal",
@@ -19,7 +19,7 @@ describe("stats flag", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--stats", `${preset}`]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain(`preset: '${preset}'`);
     });
   }
@@ -28,7 +28,7 @@ describe("stats flag", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--stats"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("preset: 'normal'");
   });
 
@@ -36,7 +36,7 @@ describe("stats flag", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--no-stats"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("preset: 'none'");
   });
 

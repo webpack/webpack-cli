@@ -1,4 +1,4 @@
-const { existsSync, mkdirSync, readFileSync } = require("node:fs");
+const { accessSync, constants, existsSync, mkdirSync, readFileSync } = require("node:fs");
 const path = require("node:path");
 const { join, resolve } = require("node:path");
 const { createPathDependentUtils, isWindows, uniqueDirectoryForTest } = require("../test.utils");
@@ -233,6 +233,15 @@ describe("create-webpack-app cli", () => {
     const projectPath = join(dir, "non-writable-path");
 
     mkdirSync(projectPath, 0o500);
+
+    // Privileged users (e.g. root in containers) ignore the permission bits
+    try {
+      accessSync(projectPath, constants.W_OK);
+
+      return;
+    } catch {
+      // Not writable, as the test expects
+    }
 
     const { exitCode, stderr } = await run(projectPath, ["init", "my-app", "--force"], {
       reject: false,

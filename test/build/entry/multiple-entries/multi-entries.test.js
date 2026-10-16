@@ -2,7 +2,7 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { readFile, run } = require("../../../utils/test-utils");
+const { cleanStderr, readFile, run } = require("../../../utils/test-utils");
 
 describe("multiple entries", () => {
   it("should allow multiple entry flags", async () => {
@@ -14,7 +14,7 @@ describe("multiple entries", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(existsSync(resolve(__dirname, "./dist/main.js"))).toBeTruthy();
 

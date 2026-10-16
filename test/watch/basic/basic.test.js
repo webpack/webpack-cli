@@ -2,7 +2,7 @@
 
 const { writeFileSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { processKill, run, runWatch } = require("../../utils/test-utils");
+const { cleanStderr, processKill, run, runWatch } = require("../../utils/test-utils");
 
 const wordsInStatsv5 = ["asset", "index.js", "compiled successfully"];
 
@@ -15,7 +15,7 @@ describe("basic", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 

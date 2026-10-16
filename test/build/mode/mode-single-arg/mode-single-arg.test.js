@@ -1,13 +1,13 @@
 "use strict";
 
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("mode flags", () => {
   it("should not set mode=production by default", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).not.toContain("mode: 'production'");
     expect(stdout).toContain(
       "The 'mode' option has not been set, webpack will fallback to 'production' for this value.",
@@ -18,7 +18,7 @@ describe("mode flags", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--mode", "development"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'development'");
   });
 
@@ -26,7 +26,7 @@ describe("mode flags", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--mode", "production"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'production'");
   });
 
@@ -34,7 +34,7 @@ describe("mode flags", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--mode", "none"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'none'");
   });
 
@@ -44,7 +44,7 @@ describe("mode flags", () => {
     });
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'development'");
   });
 

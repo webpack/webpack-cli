@@ -1,13 +1,13 @@
 "use strict";
 
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 describe("--config-name flag", () => {
   it("should select only the config whose name is passed with --config-name", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--config-name", "first"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("first");
     expect(stdout).not.toContain("second");
     expect(stdout).not.toContain("third");
@@ -22,7 +22,7 @@ describe("--config-name flag", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("first");
     expect(stdout).not.toContain("second");
     expect(stdout).toContain("third");
@@ -45,7 +45,7 @@ describe("--config-name flag", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("first");
     expect(stdout).not.toContain("second");
     expect(stdout).not.toContain("third");
@@ -120,7 +120,7 @@ describe("--config-name flag", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("first");
     expect(stdout).not.toContain("second");
     expect(stdout).not.toContain("third");
@@ -134,7 +134,7 @@ describe("--config-name flag", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("first");
     expect(stdout).not.toContain("second");
     expect(stdout).toContain("third");

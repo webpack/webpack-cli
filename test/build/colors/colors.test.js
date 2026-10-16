@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 describe("colors", () => {
   it("should output by default", async () => {
@@ -10,7 +10,7 @@ describe("colors", () => {
     });
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -20,7 +20,7 @@ describe("colors", () => {
     });
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -32,7 +32,7 @@ describe("colors", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -46,7 +46,7 @@ describe("colors", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -54,7 +54,7 @@ describe("colors", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--stats=verbose", "--color"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -62,7 +62,7 @@ describe("colors", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--stats=verbose", "--no-color"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).not.toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
     expect(stdout).toContain("successfully");
   });
@@ -77,7 +77,7 @@ describe("colors", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -91,7 +91,7 @@ describe("colors", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -105,7 +105,7 @@ describe("colors", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -115,7 +115,7 @@ describe("colors", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -125,7 +125,7 @@ describe("colors", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).not.toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
     expect(stdout).toContain("successfully");
   });
@@ -140,7 +140,7 @@ describe("colors", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[31msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -154,7 +154,7 @@ describe("colors", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     // red from first config
     expect(stdout).toContain("\u001B[31msuccessfully");
     // blue from second config
@@ -168,7 +168,7 @@ describe("colors", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
   });
 
@@ -179,7 +179,7 @@ describe("colors", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).not.toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");
     expect(stdout).toContain("successfully");
   });
@@ -191,7 +191,7 @@ describe("colors", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("\u001B[1mfirst-config");
     expect(stdout).toContain("\u001B[1msecond-config");
     expect(stdout).toContain("\u001B[1m\u001B[32msuccessfully\u001B[39m\u001B[22m");

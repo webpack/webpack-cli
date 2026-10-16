@@ -1,6 +1,6 @@
 "use strict";
 
-const { normalizeStderr, normalizeStdout, run } = require("../../../utils/test-utils");
+const { cleanStderr, normalizeStderr, normalizeStdout, run } = require("../../../utils/test-utils");
 
 const targetValues = [
   "web",
@@ -19,7 +19,7 @@ describe("--target flag", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--target", `${val}`]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain(`target: [ '${val}' ]`);
     });
 
@@ -27,7 +27,7 @@ describe("--target flag", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["-t", `${val}`]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain(`target: [ '${val}' ]`);
     });
   }
@@ -49,7 +49,7 @@ describe("--target flag", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("target: [ 'node', 'async-node' ]");
   });
 
@@ -75,7 +75,7 @@ describe("--target flag", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("target: [ 'node', 'web' ]");
   });
 

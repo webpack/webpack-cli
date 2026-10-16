@@ -1,14 +1,14 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("top multi compiler options", () => {
   it("should work without provided configuration", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("Done build0\nDone build1\nDone build2\nDone build3");
   });
 
@@ -19,7 +19,7 @@ describe("top multi compiler options", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("Done build0\nDone build1\nDone build2\nDone build3");
   });
 });

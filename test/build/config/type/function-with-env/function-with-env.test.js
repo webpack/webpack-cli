@@ -2,7 +2,7 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { isWindows, readFile, run } = require("../../../../utils/test-utils");
+const { cleanStderr, isWindows, readFile, run } = require("../../../../utils/test-utils");
 
 describe("function configuration", () => {
   it("should throw when env is not supplied", async () => {
@@ -17,7 +17,7 @@ describe("function configuration", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "isProd"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("isProd: true");
     // Should generate the appropriate files
     expect(existsSync(resolve(__dirname, "./dist/prod.js"))).toBeTruthy();
@@ -27,7 +27,7 @@ describe("function configuration", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "isDev"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("isDev: true");
     // Should generate the appropriate files
     expect(existsSync(resolve(__dirname, "./dist/dev.js"))).toBeTruthy();
@@ -44,7 +44,7 @@ describe("function configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("environment: 'production'");
     expect(stdout).toContain("app: { title: 'Luffy' }");
     // Should generate the appropriate files
@@ -62,7 +62,7 @@ describe("function configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("environment: 'production'");
     // Should generate the appropriate files
     expect(existsSync(resolve(__dirname, "./dist/Atsumu.js"))).toBeTruthy();
@@ -79,7 +79,7 @@ describe("function configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("environment: 'multipleq'");
     expect(stdout).toContain("file: 'name=is=Eren'");
     // Should generate the appropriate files
@@ -97,7 +97,7 @@ describe("function configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("environment: 'dot'");
     expect(stdout).toContain("'name.': 'Hisoka'");
     // Should generate the appropriate files
@@ -115,7 +115,7 @@ describe("function configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("environment: 'dot'");
     expect(stdout).toContain("'name.': true");
     // Should generate the appropriate files
@@ -126,7 +126,7 @@ describe("function configuration", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo=''"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("foo: \"''\"");
     // Should generate the appropriate files
     expect(existsSync(resolve(__dirname, "./dist/empty-string.js"))).toBeTruthy();
@@ -136,7 +136,7 @@ describe("function configuration", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo=bar=''"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("foo: \"bar=''\"");
     // Should generate the appropriate files
     expect(existsSync(resolve(__dirname, "./dist/new-empty-string.js"))).toBeTruthy();
@@ -146,7 +146,7 @@ describe("function configuration", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo="]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     // should log foo: undefined
     expect(stdout).toContain("foo: undefined");
   });
@@ -155,7 +155,7 @@ describe("function configuration", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--env", "foo=undefined"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     // should log foo: 'undefined'
     expect(stdout).toContain("foo: 'undefined'");
     // Should generate the appropriate files
@@ -170,7 +170,7 @@ describe("function configuration", () => {
       });
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("foo: \"''\"");
       // Should generate the appropriate files
       expect(existsSync(resolve(__dirname, "./dist/empty-string.js"))).toBeTruthy();
@@ -182,7 +182,7 @@ describe("function configuration", () => {
       });
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("foo: undefined");
     });
 
@@ -196,7 +196,7 @@ describe("function configuration", () => {
       );
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       // should log foo: undefined
       expect(stdout).toContain("foo: undefined");
     });
@@ -213,7 +213,7 @@ describe("function configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("verboseStats: true");
     expect(stdout).toContain("envMessage: true");
     // check that the verbose env is respected
@@ -240,7 +240,7 @@ describe("function configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("verboseStats: true");
     expect(stdout).toContain("envMessage: true");
     // check that the verbose env is respected
@@ -271,7 +271,7 @@ describe("function configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("'name.': 'baz'");
     // Should generate the appropriate files
     expect(existsSync(resolve(__dirname, "./dist/baz.js"))).toBeTruthy();

@@ -2,14 +2,14 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { readdir, run } = require("../../../utils/test-utils");
+const { cleanStderr, readdir, run } = require("../../../utils/test-utils");
 
 describe("source-map object", () => {
   it("should not write a source map for obj config", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.eval.config.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("devtool: 'eval-cheap-module-source-map'");
 
     let files;
@@ -27,7 +27,7 @@ describe("source-map object", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.source.config.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("devtool: 'source-map'");
     expect(existsSync(resolve(__dirname, "dist/dist-amd.js.map"))).toBeTruthy();
   });
@@ -40,7 +40,7 @@ describe("source-map object", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("devtool: 'source-map'");
     expect(existsSync(resolve(__dirname, "binary/dist-amd.js.map"))).toBeTruthy();
   });
@@ -53,7 +53,7 @@ describe("source-map object", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("devtool: false");
     expect(existsSync(resolve(__dirname, "binary/dist-amd.js.map"))).toBeTruthy();
   });

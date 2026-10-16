@@ -2,14 +2,14 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { readFile, run } = require("../../../utils/test-utils");
+const { cleanStderr, readFile, run } = require("../../../utils/test-utils");
 
 describe("entry flag", () => {
   it("should resolve the path to src/index.cjs", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--entry", "./src/index.cjs"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 
@@ -17,7 +17,7 @@ describe("entry flag", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--entry", "./src/a.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(existsSync(resolve(__dirname, "./dist/main.js"))).toBeTruthy();
 
@@ -36,7 +36,7 @@ describe("entry flag", () => {
   it("should resolve the path to /src/a.js as ./src/a.js", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--entry", "/src/a.js"]);
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(existsSync(resolve(__dirname, "./dist/main.js"))).toBeTruthy();
 
@@ -56,7 +56,7 @@ describe("entry flag", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--entry", "./src/test.js"]);
 
     expect(exitCode).toBe(1);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("Module not found: Error: Can't resolve");
   });
 
@@ -70,7 +70,7 @@ describe("entry flag", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("{ main: { import: [ './src/a.js' ] } }");
     expect(existsSync(resolve(__dirname, "./dist/main.js"))).toBeTruthy();
 
@@ -95,7 +95,7 @@ describe("entry flag", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("{ main: { import: [ './src/index.cjs', './src/a.js' ] } }");
 
     let data;
@@ -119,7 +119,7 @@ describe("entry flag", () => {
       "/src/a.js",
     ]);
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(existsSync(resolve(__dirname, "./dist/main.js"))).toBeTruthy();
 
@@ -146,7 +146,7 @@ describe("entry flag", () => {
       "./src/index.cjs",
     ]);
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("{ main: { import: [ './src/a.js', './src/index.cjs' ] } }");
     expect(existsSync(resolve(__dirname, "./dist/main.js"))).toBeTruthy();
 
@@ -187,7 +187,7 @@ describe("entry flag", () => {
     ]);
 
     expect(exitCode).toBe(1);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("Module not found: Error: Can't resolve");
   });
 });

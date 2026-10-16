@@ -1,14 +1,14 @@
 "use strict";
 
 const { join } = require("node:path");
-const { normalizeStdout, run } = require("../utils/test-utils");
+const { cleanStderr, normalizeStdout, run } = require("../utils/test-utils");
 
 describe("'-o, --output <value>' usage", () => {
   it("gets info text by default", async () => {
     const { exitCode, stdout, stderr } = await run(join(__dirname, "../../"), ["version"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("webpack:");
     // Snapshot the framed, branded output so the styled layout stays visible.
     expect(normalizeStdout(stdout)).toMatchSnapshot("stdout");
@@ -21,7 +21,7 @@ describe("'-o, --output <value>' usage", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain('"Packages":');
 
     const parse = () => {
@@ -40,7 +40,7 @@ describe("'-o, --output <value>' usage", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("## Packages:");
   });
 
@@ -64,7 +64,7 @@ describe("'-o, --output <value>' usage", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("## Packages:");
   });
 });

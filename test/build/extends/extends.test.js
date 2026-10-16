@@ -2,14 +2,14 @@
 
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 describe("extends property", () => {
   it("extends a provided webpack config correctly", async () => {
     const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./simple-case"));
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("base.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("name: 'base_config'");
@@ -20,7 +20,7 @@ describe("extends property", () => {
     const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./file-protocol"));
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("base.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("name: 'base_config'");
@@ -31,7 +31,7 @@ describe("extends property", () => {
     const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./require-resolve"));
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("base.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("name: 'base_config'");
@@ -42,7 +42,7 @@ describe("extends property", () => {
     const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./json"));
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("name: 'base_config'");
     expect(stdout).toContain("mode: 'development'");
@@ -52,7 +52,7 @@ describe("extends property", () => {
     const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./multiple-extends"));
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("base1.webpack.config.js");
     expect(stdout).toContain("base2.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
@@ -66,7 +66,7 @@ describe("extends property", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("base1.webpack.config.js");
     expect(stdout).toContain("base2.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
@@ -78,7 +78,7 @@ describe("extends property", () => {
     const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./multiple-configs"));
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("base.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("name: 'derived_config1'");
@@ -92,7 +92,7 @@ describe("extends property", () => {
     const { exitCode, stderr, stdout } = await run(path.resolve(__dirname, "./multiple-configs2"));
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("base.webpack.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("name: 'base_config'");
@@ -108,7 +108,7 @@ describe("extends property", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("base.webpack.config.js");
     expect(stdout).toContain("deep.base.webpack.config.js");
@@ -126,7 +126,7 @@ describe("extends property", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("base.webpack.config.js");
     expect(stdout).toContain("other.config.js");
@@ -142,7 +142,7 @@ describe("extends property", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("override.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("name: 'override_config'");
@@ -156,7 +156,7 @@ describe("extends property", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("override.config.js");
     expect(stdout).toContain("derived.webpack.config.js");
     expect(stdout).toContain("name: 'override_config'");

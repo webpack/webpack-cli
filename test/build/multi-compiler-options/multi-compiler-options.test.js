@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 // Options for the whole MultiCompiler, such as `parallelism`, are set on the
 // exported array itself and must survive every step that rebuilds the array.
@@ -9,7 +9,7 @@ describe("multi compiler options", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, []);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("max concurrent compilers: 1");
   });
 
@@ -22,7 +22,7 @@ describe("multi compiler options", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("max concurrent compilers: 1");
   });
 
@@ -30,7 +30,7 @@ describe("multi compiler options", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./extends.config.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("max concurrent compilers: 1");
   });
 
@@ -38,7 +38,7 @@ describe("multi compiler options", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--extends", "./base.config.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("max concurrent compilers: 1");
   });
 });

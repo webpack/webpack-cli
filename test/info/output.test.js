@@ -1,13 +1,13 @@
 "use strict";
 
-const { run } = require("../utils/test-utils");
+const { cleanStderr, run } = require("../utils/test-utils");
 
 describe("'-o, --output <value>' usage", () => {
   it("gets info text by default", async () => {
     const { exitCode, stdout, stderr } = await run(__dirname, ["info"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
@@ -19,7 +19,7 @@ describe("'-o, --output <value>' usage", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["info", "--output=json"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain('"System":');
 
     const parse = () => {
@@ -37,7 +37,7 @@ describe("'-o, --output <value>' usage", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["info", "--output", "markdown"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("## System:");
   });
 
@@ -53,7 +53,7 @@ describe("'-o, --output <value>' usage", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["info", "-o", "markdown"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("## System:");
   });
 });

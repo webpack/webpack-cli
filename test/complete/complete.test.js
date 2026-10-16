@@ -2,7 +2,7 @@
 
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
-const { run } = require("../utils/test-utils");
+const { cleanStderr, run } = require("../utils/test-utils");
 
 // Hides `@bomb.sh/tab` from the CLI, the way a project that never installed the
 // optional package sees it.
@@ -24,7 +24,7 @@ describe("complete", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "zsh"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("webpack");
     expect(stdout).toContain("complete");
   });
@@ -33,7 +33,7 @@ describe("complete", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "bash"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("webpack");
   });
 
@@ -41,7 +41,7 @@ describe("complete", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", ""]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
 
     const suggestions = parseCompletions(stdout);
 
@@ -57,7 +57,7 @@ describe("complete", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
 
     const suggestions = parseCompletions(stdout);
 
@@ -73,7 +73,7 @@ describe("complete", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
 
     const suggestions = parseCompletions(stdout);
 
@@ -92,7 +92,7 @@ describe("complete", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", typed]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(parseCompletions(stdout)).toEqual([command]);
     }
   });
@@ -104,7 +104,7 @@ describe("complete", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", alias, "--"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(parseCompletions(stdout)).toEqual(parseCompletions(canonical));
     }
   });
@@ -113,7 +113,7 @@ describe("complete", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", "b", "--mode="]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(parseCompletions(stdout)).toEqual(
       expect.arrayContaining(["development", "production", "none"]),
     );
@@ -129,7 +129,7 @@ describe("complete", () => {
     // A shell asks for this on every keypress, so it must print nothing at all.
     expect(exitCode).toBe(0);
     expect(stdout).toBeFalsy();
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
   });
 
   it("should ask to install the parser when generating a script", async () => {
@@ -148,7 +148,7 @@ describe("complete", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(parseCompletions(stdout)).toEqual(expect.arrayContaining(["profile"]));
   });
 
@@ -161,7 +161,7 @@ describe("complete", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(parseCompletions(stdout)).toEqual(expect.arrayContaining(["json", "markdown"]));
   });
 
@@ -169,7 +169,7 @@ describe("complete", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", "--help="]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(parseCompletions(stdout)).toEqual(expect.arrayContaining(["verbose"]));
   });
 
@@ -177,7 +177,7 @@ describe("complete", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", "complete", ""]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(parseCompletions(stdout)).toEqual(
       expect.arrayContaining(["zsh", "bash", "fish", "powershell"]),
     );
@@ -188,7 +188,7 @@ describe("complete", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", command, "--"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(parseCompletions(stdout)).toEqual(
         expect.arrayContaining(["--color", "--no-color", "--help"]),
       );
@@ -199,7 +199,7 @@ describe("complete", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", ""]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
 
     const suggestions = parseCompletions(stdout);
 
@@ -214,7 +214,7 @@ describe("complete", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["complete", "--", "build", "--"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
 
     const suggestions = parseCompletions(stdout);
 

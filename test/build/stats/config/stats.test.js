@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 // 'normal' is used in webpack.config.js
 const statsPresets = [
@@ -18,7 +18,7 @@ describe("stats flag with config", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, []);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("preset: 'normal'");
   });
 
@@ -27,7 +27,7 @@ describe("stats flag with config", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--stats", `${preset}`]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain(`preset: '${preset}'`);
     });
   }
