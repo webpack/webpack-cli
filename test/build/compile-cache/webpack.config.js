@@ -19,6 +19,6 @@ new Worker(`require("node:worker_threads").parentPort.postMessage(${script})`, {
       child: JSON.parse(child),
       worker,
     })}\n`,
+    () => process.exit(0),
   );
-  process.exit(0);
 });

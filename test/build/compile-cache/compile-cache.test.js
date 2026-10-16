@@ -60,6 +60,17 @@ describe("compile cache", () => {
     }
   });
 
+  it("should hand nothing on when a preload has already enabled the compile cache", async () => {
+    const { variable, child, worker } = await report({
+      NODE_OPTIONS: `--require ${path.resolve(__dirname, "preload.js")}`,
+    });
+
+    // The preload's directory is already version-tagged; handing it on would tag it twice.
+    expect(variable).toBeNull();
+    expect(child).toBe(worker);
+    expect(child.match(/v\d+\.\d+\.\d+-/g)).toHaveLength(1);
+  });
+
   it("should hand nothing on where the compile cache is disabled", async () => {
     expect(await report({ NODE_DISABLE_COMPILE_CACHE: "1" })).toEqual({
       variable: null,
