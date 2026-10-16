@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 describe("node flags", () => {
   it("is able to pass the options flags to node js", async () => {
@@ -13,7 +13,7 @@ describe("node flags", () => {
     });
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("---from bootstrap.js---");
     expect(stdout).toContain("---from bootstrap2.js---");
   });

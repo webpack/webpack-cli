@@ -370,13 +370,27 @@ const uuid = (size = 21) => {
   return id;
 };
 
-const EXPERIMENTAL_WARNING_RE =
-  /^\(node:\d+\) ExperimentalWarning:.*\n(?:\(Use `node --trace-warnings \.\.\.` to show where the warning was created\)\n?)?/gm;
+// Lines third-party code writes to stderr that say nothing about the CLI itself:
+// - Node.js experimental warnings (e.g. webpack >= 5.110 strips types through
+//   `module.stripTypeScriptTypes`, which Node.js flags as experimental)
+// - Node.js core deprecations (`DEP0xxx`) raised inside dependencies
+// - webpack infrastructure logs at info level (`<i> [plugin-name] ...`), which
+//   plugins such as webpack-bundle-analyzer >= 5.4 print to stderr
+// webpack's own deprecations (`DEP_WEBPACK_*`), warnings (`<w>`) and errors
+// (`<e>`) are kept, so tests still catch the CLI misusing webpack.
+const NODE_WARNING_RE =
+  /^\(node:\d+\) (?:ExperimentalWarning|\[DEP\d+\] DeprecationWarning):.*(?:\r?\n(?:\(Use `node --trace-(?:warnings|deprecation) \.\.\.` to show where the warning was created\)(?:\r?\n|$))?|$)/gm;
+const INFRASTRUCTURE_INFO_RE = /^<i> .*(?:\r?\n|$)/gm;
 
-// webpack >= 5.110 strips types through `module.stripTypeScriptTypes`, which
-// Node.js flags as experimental — upstream noise the CLI does not control.
-const withoutExperimentalWarnings = (stderr) =>
-  typeof stderr === "string" ? stderr.replaceAll(EXPERIMENTAL_WARNING_RE, "") : stderr;
+/**
+ * Strip third-party noise from stderr so assertions only see what the CLI reports.
+ * @param {string} stderr stderr of a CLI run
+ * @returns {string} stderr without third-party noise
+ */
+const cleanStderr = (stderr) =>
+  typeof stderr === "string"
+    ? stderr.replaceAll(NODE_WARNING_RE, "").replaceAll(INFRASTRUCTURE_INFO_RE, "").trim()
+    : stderr;
 
 const uniqueDirectoryForTest = async () => {
   const result = path.resolve(path.resolve(__dirname, "../create-webpack-app-testing"), uuid());
@@ -389,6 +403,7 @@ const uniqueDirectoryForTest = async () => {
 };
 
 module.exports = {
+  cleanStderr,
   getWebpackCliArguments,
   hyphenToUpperCase,
   isWindows,
@@ -401,5 +416,4 @@ module.exports = {
   runPromptWithAnswers,
   runWatch,
   uniqueDirectoryForTest,
-  withoutExperimentalWarnings,
 };

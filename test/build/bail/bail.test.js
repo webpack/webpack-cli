@@ -1,13 +1,13 @@
 "use strict";
 
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 describe("bail and watch warning", () => {
   it("should not log warning in not watch mode", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "bail-webpack.config.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 
@@ -15,7 +15,7 @@ describe("bail and watch warning", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "no-bail-webpack.config.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 });

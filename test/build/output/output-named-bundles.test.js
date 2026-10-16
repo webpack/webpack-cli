@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { normalizeStderr, normalizeStdout, run } = require("../../utils/test-utils");
+const { cleanStderr, normalizeStderr, normalizeStdout, run } = require("../../utils/test-utils");
 
 describe("output flag named bundles", () => {
   it("should output file given as flag instead of in configuration", async () => {
@@ -12,7 +12,7 @@ describe("output flag named bundles", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 
@@ -24,7 +24,7 @@ describe("output flag named bundles", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 
@@ -36,7 +36,7 @@ describe("output flag named bundles", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 
@@ -47,7 +47,7 @@ describe("output flag named bundles", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 

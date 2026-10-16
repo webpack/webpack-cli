@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { isWindows, run } = require("../../utils/test-utils");
+const { cleanStderr, isWindows, run } = require("../../utils/test-utils");
 
 describe("core flags", () => {
   describe("boolean type flags", () => {
@@ -9,7 +9,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--bail"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("bail: true");
     });
 
@@ -17,7 +17,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--no-bail"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("bail: false");
     });
   });
@@ -32,7 +32,7 @@ describe("core flags", () => {
       ]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).not.toContain("Module Warning (from ./my-warning-loader.js):");
       expect(stdout).not.toContain("Generated Warning");
     });
@@ -47,7 +47,7 @@ describe("core flags", () => {
       ]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("Module Warning (from ./my-warning-loader.js):");
       expect(stdout).toContain("Generated Warning");
     });
@@ -71,7 +71,7 @@ describe("core flags", () => {
       ]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("src/entry.js");
       expect(stdout).not.toContain("src/main.js");
     });
@@ -90,7 +90,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--parallelism", 10]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("parallelism: 10");
     });
 
@@ -98,7 +98,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--parallelism=10"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("parallelism: 10");
     });
   });
@@ -116,7 +116,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--no-amd"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("amd: false");
     });
 
@@ -151,7 +151,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--context", "./"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
 
       if (isWindows) {
         const windowsPath = resolve(__dirname, "./").replaceAll("\\", "\\\\");
@@ -168,7 +168,7 @@ describe("core flags", () => {
       ]);
 
       expect(exitCode).toBe(1);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("Module not found: Error: Can't resolve './src/main.js'");
     });
   });
@@ -178,7 +178,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--dependencies", "lodash"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("dependencies: [ 'lodash' ]");
     });
 
@@ -190,7 +190,7 @@ describe("core flags", () => {
       ]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("dependencies: [ 'lodash', 'react' ]");
     });
   });
@@ -203,7 +203,7 @@ describe("core flags", () => {
       ]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("debug: [ 'MyPlugin' ]");
     });
 
@@ -214,7 +214,7 @@ describe("core flags", () => {
       ]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("debug: [ /MyPlugin/ ],");
     });
 
@@ -226,7 +226,7 @@ describe("core flags", () => {
       ]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("debug: [ 'MyPlugin', /MyAnotherPlugin/ ]");
     });
 
@@ -234,7 +234,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--devtool", "source-map"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("devtool: 'source-map'");
     });
 
@@ -242,7 +242,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["-d", "source-map"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("devtool: 'source-map'");
     });
 
@@ -251,7 +251,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["-dsource-map"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("devtool: 'source-map'");
     });
 
@@ -259,7 +259,7 @@ describe("core flags", () => {
       const { exitCode, stderr, stdout } = await run(__dirname, ["--no-devtool"]);
 
       expect(exitCode).toBe(0);
-      expect(stderr).toBeFalsy();
+      expect(cleanStderr(stderr)).toBeFalsy();
       expect(stdout).toContain("devtool: false");
     });
 

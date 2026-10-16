@@ -1,13 +1,13 @@
 "use strict";
 
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 describe("--config-node-env flag", () => {
   it('should set "process.env.NODE_ENV" to "development"', async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--config-node-env", "development"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'development'");
   });
 
@@ -15,7 +15,7 @@ describe("--config-node-env flag", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--config-node-env", "production"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'production'");
   });
 
@@ -23,7 +23,7 @@ describe("--config-node-env flag", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--config-node-env", "none"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'none'");
   });
 
@@ -36,7 +36,7 @@ describe("--config-node-env flag", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'development'");
   });
 
@@ -49,7 +49,7 @@ describe("--config-node-env flag", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'production'");
   });
 
@@ -62,7 +62,7 @@ describe("--config-node-env flag", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'none'");
   });
 });

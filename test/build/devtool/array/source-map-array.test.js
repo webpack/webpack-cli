@@ -1,14 +1,14 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { readdir, run } = require("../../../utils/test-utils");
+const { cleanStderr, readdir, run } = require("../../../utils/test-utils");
 
 describe("source-map object", () => {
   it("should treat source-map settings right", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, []);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     // multi compilers
     expect(stdout).toContain("devtool: 'source-map'");
     expect(stdout).toContain("devtool: 'eval-cheap-module-source-map'");
@@ -33,7 +33,7 @@ describe("source-map object", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("devtool: 'source-map'");
 
     let files;

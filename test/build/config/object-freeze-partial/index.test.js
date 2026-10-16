@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("config with partial `Object.freeze({})`", () => {
   it("should not throw error", async () => {
@@ -11,7 +11,7 @@ describe("config with partial `Object.freeze({})`", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 });

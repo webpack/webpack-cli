@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("custom config file", () => {
   it("should work with cjs format", async () => {
@@ -11,7 +11,7 @@ describe("custom config file", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 
@@ -22,7 +22,7 @@ describe("custom config file", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 });

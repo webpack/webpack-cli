@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 const importLocalMock = jest.fn();
 jest.setMock("import-local", importLocalMock);
@@ -16,7 +16,7 @@ describe("import local", () => {
     });
     expect(importLocalMock).not.toHaveBeenCalled();
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 });

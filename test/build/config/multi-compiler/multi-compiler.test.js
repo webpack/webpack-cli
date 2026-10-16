@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("basic config file", () => {
   it("should build and not throw error with a basic configuration file", async () => {
@@ -10,7 +10,7 @@ describe("basic config file", () => {
       resolve(__dirname, "webpack.config.js"),
     ]);
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 });

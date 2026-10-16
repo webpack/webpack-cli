@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("mode flags with config", () => {
   it("should run in production mode when --mode=production is passed", async () => {
@@ -12,7 +12,7 @@ describe("mode flags with config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(stdout).toContain("mode: 'production'");
   });
@@ -26,7 +26,7 @@ describe("mode flags with config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(stdout).toContain("mode: 'development'");
   });
@@ -40,7 +40,7 @@ describe("mode flags with config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(stdout).toContain("mode: 'none'");
   });
@@ -56,7 +56,7 @@ describe("mode flags with config", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'none'");
   });
 
@@ -64,7 +64,7 @@ describe("mode flags with config", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "webpack.config2.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'development'");
   });
 
@@ -77,7 +77,7 @@ describe("mode flags with config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'development'");
     expect(stdout.match(/mode: 'development'/g)).toHaveLength(1);
   });
@@ -93,7 +93,7 @@ describe("mode flags with config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'none'");
     expect(stdout.match(/mode: 'none'/g)).toHaveLength(2);
   });
@@ -110,7 +110,7 @@ describe("mode flags with config", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("mode: 'production'");
     expect(stdout).toContain("mode: 'development'");
     expect(stdout.match(/mode: 'production'/g)).toHaveLength(1);

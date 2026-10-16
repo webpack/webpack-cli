@@ -2,14 +2,14 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { run } = require("../../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../../utils/test-utils");
 
 describe("array of promises", () => {
   it("is able to understand a configuration file as a promise", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["-c", "./webpack.config.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(existsSync(resolve(__dirname, "./binary/a-promise.js"))).toBeTruthy();
     expect(existsSync(resolve(__dirname, "./binary/b-promise.js"))).toBeTruthy();

@@ -1,4 +1,4 @@
-const { run } = require("../utils/test-utils");
+const { cleanStderr, run } = require("../utils/test-utils");
 
 describe("external command", () => {
   it("should work", async () => {
@@ -7,7 +7,7 @@ describe("external command", () => {
     });
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("custom unknown");
   });
 
@@ -17,7 +17,7 @@ describe("external command", () => {
     });
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("custom json");
   });
 
@@ -27,7 +27,7 @@ describe("external command", () => {
     });
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("Usage: webpack custom-command|cc [options]");
     expect(stdout).toContain("-o, --output <value>  To get the output in a specified format");
   });
@@ -42,7 +42,7 @@ describe("external command", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("Usage: webpack custom-command --output <value>");
     expect(stdout).toContain("Description: To get the output in a specified format");
   });

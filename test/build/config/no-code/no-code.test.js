@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("config flag with no code", () => {
   it("should build and not throw error with no configuration or index file", async () => {
@@ -11,7 +11,7 @@ describe("config flag with no code", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 });

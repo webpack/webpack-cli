@@ -2,7 +2,7 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("functional config", () => {
   it("should build and not throw error with single configuration", async () => {
@@ -12,7 +12,7 @@ describe("functional config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("./src/index.js");
     expect(existsSync(resolve(__dirname, "./dist/single.js"))).toBeTruthy();
   });
@@ -24,7 +24,7 @@ describe("functional config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("./src/index.js");
     expect(existsSync(resolve(__dirname, "./dist/async-single.js"))).toBeTruthy();
   });
@@ -36,7 +36,7 @@ describe("functional config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("first");
     expect(stdout).toContain("second");
     expect(existsSync(resolve(__dirname, "./dist/multi-first.js"))).toBeTruthy();
@@ -50,7 +50,7 @@ describe("functional config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("first");
     expect(stdout).toContain("second");
     expect(existsSync(resolve(__dirname, "./dist/multi-async-first.js"))).toBeTruthy();
@@ -64,7 +64,7 @@ describe("functional config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("./src/index.js");
     expect(existsSync(resolve(__dirname, "./dist/promise-single.js"))).toBeTruthy();
   });
@@ -77,7 +77,7 @@ describe("functional config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("./src/index.js");
     expect(existsSync(resolve(__dirname, "./dist/env-single.js"))).toBeTruthy();
   });
@@ -90,7 +90,7 @@ describe("functional config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("./src/index.js");
     expect(existsSync(resolve(__dirname, "./dist/async-env-single.js"))).toBeTruthy();
   });
@@ -102,7 +102,7 @@ describe("functional config", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("first");
     expect(stdout).toContain("second");
     expect(existsSync(resolve(__dirname, "./dist/function-each-first.js"))).toBeTruthy();

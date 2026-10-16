@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 describe("custom-webpack", () => {
   it("should use package from 'node_modules'", async () => {
@@ -10,7 +10,7 @@ describe("custom-webpack", () => {
     });
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("main.js");
   });
 
@@ -20,7 +20,7 @@ describe("custom-webpack", () => {
     });
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("main.js");
   });
 });

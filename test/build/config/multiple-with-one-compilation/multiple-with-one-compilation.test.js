@@ -1,7 +1,7 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("config with single config in array", () => {
   it("should build and not throw error with configuration file exporting single configuration in array", async () => {
@@ -12,7 +12,7 @@ describe("config with single config in array", () => {
       "./binary",
     ]);
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
   });
 });

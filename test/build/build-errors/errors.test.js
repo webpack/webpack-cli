@@ -1,14 +1,14 @@
 "use strict";
 
 const { resolve } = require("node:path");
-const { readFile, run } = require("../../utils/test-utils");
+const { cleanStderr, readFile, run } = require("../../utils/test-utils");
 
 describe("errors", () => {
   it("should output by default", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname);
 
     expect(exitCode).toBe(1);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toMatch(/ERROR/);
     expect(stdout).toMatch(/Error: Can't resolve/);
   });
@@ -17,7 +17,7 @@ describe("errors", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--json"]);
 
     expect(exitCode).toBe(1);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(() => JSON.parse(stdout)).not.toThrow();
 
     const json = JSON.parse(stdout);

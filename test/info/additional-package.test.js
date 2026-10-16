@@ -1,7 +1,7 @@
 "use strict";
 
 const { join } = require("node:path");
-const { run } = require("../utils/test-utils");
+const { cleanStderr, run } = require("../utils/test-utils");
 
 describe("'-a, --additional-package <value...>' usage", () => {
   it("should work with only one package", async () => {
@@ -12,7 +12,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
@@ -29,7 +29,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
@@ -48,7 +48,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");
@@ -69,7 +69,7 @@ describe("'-a, --additional-package <value...>' usage", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("System:");
     expect(stdout).toContain("Node");
     expect(stdout).toContain("npm");

@@ -2,14 +2,14 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { readFile, run } = require("../../utils/test-utils");
+const { cleanStderr, readFile, run } = require("../../utils/test-utils");
 
 describe("warnings", () => {
   it("should output by default", async () => {
     const { exitCode, stderr, stdout } = await run(__dirname);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toMatch(/WARNING/);
     expect(stdout).toMatch(/Error: Can't resolve/);
   });
@@ -18,7 +18,7 @@ describe("warnings", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--fail-on-warnings"]);
 
     expect(exitCode).toBe(1);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toMatch(/WARNING/);
     expect(stdout).toMatch(/Error: Can't resolve/);
   });
@@ -27,7 +27,7 @@ describe("warnings", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--json"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
 
     expect(() => JSON.parse(stdout)).not.toThrow();
 

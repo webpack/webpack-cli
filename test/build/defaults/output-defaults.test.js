@@ -2,7 +2,7 @@
 
 const { existsSync } = require("node:fs");
 const { resolve } = require("node:path");
-const { run } = require("../../utils/test-utils");
+const { cleanStderr, run } = require("../../utils/test-utils");
 
 describe("output flag defaults", () => {
   it("should create default file for a given directory", async () => {
@@ -14,7 +14,7 @@ describe("output flag defaults", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     // Should print warning about config fallback
     expect(stdout).toContain("option has not been set, webpack will fallback to");
 
@@ -25,7 +25,7 @@ describe("output flag defaults", () => {
     const { exitCode, stderr, stdout } = await run(__dirname, ["--entry", "./a.js"]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toBeTruthy();
     expect(existsSync(resolve(__dirname, "./binary/main.js"))).toBeTruthy();
   });

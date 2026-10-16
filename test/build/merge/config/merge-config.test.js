@@ -1,6 +1,6 @@
 "use strict";
 
-const { run } = require("../../../utils/test-utils");
+const { cleanStderr, run } = require("../../../utils/test-utils");
 
 describe("merge flag configuration", () => {
   it("merges two configurations together", async () => {
@@ -13,7 +13,7 @@ describe("merge flag configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("WebpackCLITestPlugin"); // from 1.js
     expect(stdout).toContain("second-output.js"); // from 2.js
   });
@@ -26,7 +26,7 @@ describe("merge flag configuration", () => {
     );
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("WebpackCLITestPlugin"); // from 1.js
     expect(stdout).toContain("target: 'node'"); // from 2.js
     expect(stdout).toContain("third-output.js"); // from 3.js
@@ -42,7 +42,7 @@ describe("merge flag configuration", () => {
     ]);
 
     expect(exitCode).toBe(0);
-    expect(stderr).toBeFalsy();
+    expect(cleanStderr(stderr)).toBeFalsy();
     expect(stdout).toContain("WebpackCLITestPlugin"); // from 1.js
     expect(stdout).toContain("second-output.js"); // from 2.js
   });
