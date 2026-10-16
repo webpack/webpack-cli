@@ -3102,8 +3102,8 @@ class WebpackCLI {
 
             // `tsx` is missing from `interpret`'s loader tables, and it cannot
             // be added there: its `tsx/cjs` entry point exists only in the
-            // package's `exports` map, which `rechoir`'s resolver does not
-            // support. Register it manually instead, resolved from the
+            // package's `exports` map, which `rechoir` < 1 could not resolve.
+            // Register it manually instead, resolved from the
             // configuration file's location so the user's copy is picked up.
             // Requiring `tsx/cjs` installs its require hook as a side effect.
             const registerTsxLoader = (): Error | undefined => {
