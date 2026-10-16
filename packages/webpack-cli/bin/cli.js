@@ -8,7 +8,13 @@ const { enableCompileCache } = require("node:module");
 
 if (enableCompileCache) {
   try {
-    enableCompileCache();
+    const { directory } = enableCompileCache();
+
+    // Minimizer workers and other child processes start without the cache;
+    // the variable Node reads at startup hands them the same directory.
+    if (directory && process.env.NODE_COMPILE_CACHE === undefined) {
+      process.env.NODE_COMPILE_CACHE = directory;
+    }
   } catch {
     // Ignore errors
   }
