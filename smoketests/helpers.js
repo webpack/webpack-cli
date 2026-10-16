@@ -19,6 +19,10 @@ const swapPkgName = (current, isSubPackage = false) => {
   fs.renameSync(getPkgPath(current, isSubPackage), getPkgPath(next, isSubPackage));
 };
 
+// Since execa v10 the subprocess is a plain promise, Node.js `ChildProcess` APIs
+// like `.on()` are only available through `subprocess.nodeChildProcess`
+const getChildProcess = (proc) => proc.nodeChildProcess ?? proc;
+
 const CLI_ENTRY_PATH = path.resolve(ROOT_PATH, "./packages/webpack-cli/bin/cli.js");
 
 const runTest = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage = false) => {
@@ -70,13 +74,13 @@ const runTest = async (pkg, cliArgs = [], logMessage = undefined, isSubPackage =
       }
     });
 
-    proc.on("exit", () => {
+    getChildProcess(proc).on("exit", () => {
       swapPkgName(`.${pkg}`, isSubPackage);
       clearTimeout(timeout);
       resolve(hasPassed);
     });
 
-    proc.on("error", () => {
+    getChildProcess(proc).on("error", () => {
       swapPkgName(`.${pkg}`, isSubPackage);
       clearTimeout(timeout);
       resolve(false);
@@ -123,13 +127,13 @@ const runTestStdout = async ({ packageName, cliArgs, logMessage, isSubPackage, c
       console.log(`  stderr: ${data}`);
     });
 
-    proc.on("exit", () => {
+    getChildProcess(proc).on("exit", () => {
       swapPkgName(`.${packageName}`, isSubPackage);
       clearTimeout(timeout);
       resolve(hasPassed);
     });
 
-    proc.on("error", () => {
+    getChildProcess(proc).on("error", () => {
       swapPkgName(`.${packageName}`, isSubPackage);
       clearTimeout(timeout);
       resolve(false);
@@ -187,13 +191,13 @@ const runTestStdoutWithInput = async ({
       console.log(`  stderr: ${data}`);
     });
 
-    proc.on("exit", () => {
+    getChildProcess(proc).on("exit", () => {
       swapPkgName(`.${packageName}`, isSubPackage);
       clearTimeout(timeout);
       resolve(hasPassed);
     });
 
-    proc.on("error", () => {
+    getChildProcess(proc).on("error", () => {
       swapPkgName(`.${packageName}`, isSubPackage);
       clearTimeout(timeout);
       resolve(false);
@@ -250,13 +254,13 @@ const runTestWithHelp = async (pkg, cliArgs = [], logMessage = undefined, isSubP
       }
     });
 
-    proc.on("exit", () => {
+    getChildProcess(proc).on("exit", () => {
       swapPkgName(`.${pkg}`, isSubPackage);
       clearTimeout(timeout);
       resolve(hasPassed);
     });
 
-    proc.on("error", () => {
+    getChildProcess(proc).on("error", () => {
       swapPkgName(`.${pkg}`, isSubPackage);
       clearTimeout(timeout);
       resolve(false);
