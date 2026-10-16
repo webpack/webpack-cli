@@ -1,5 +1,17 @@
 # Change Log
 
+## 7.3.0
+
+### Minor Changes
+
+- feat: add shell completions for zsh, bash, fish and powershell through the `complete` command (by [@alexander-akait](https://github.com/alexander-akait) in [#4840](https://github.com/webpack/webpack-cli/pull/4840))
+
+### Patch Changes
+
+- fix: keep multi-compiler options such as `parallelism` and `plugins` set on a configuration array when `--config-name` or `extends` rebuild it (by [@alexander-akait](https://github.com/alexander-akait) in [#4871](https://github.com/webpack/webpack-cli/pull/4871))
+
+- perf: share the compile cache with child processes and worker threads, such as minimizer workers, so they start warm too (by [@alexander-akait](https://github.com/alexander-akait) in [#4872](https://github.com/webpack/webpack-cli/pull/4872))
+
 ## 7.2.3
 
 ### Patch Changes
