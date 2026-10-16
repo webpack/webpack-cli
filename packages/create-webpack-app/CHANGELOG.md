@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.2.1
+
+### Patch Changes
+
+- chore: update `ejs` to v7 (by [@alexander-akait](https://github.com/alexander-akait) in [#4873](https://github.com/webpack/webpack-cli/pull/4873))
+
 ## 2.2.0
 
 ### Minor Changes
