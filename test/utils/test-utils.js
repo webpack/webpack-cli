@@ -268,7 +268,9 @@ const normalizeStdout = (stdout) => {
 };
 
 const IPV4 = /(25[0-5]|2[0-4][0-9]|1?[0-9][0-9]{1,2})(\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}/g;
-const IPV6 = /([0-9a-f]){1,4}(:([0-9a-f]){1,4}){7}/gi;
+// A bracketed IPv6 host in a URL, in full or compressed ("::") form, e.g. a unique local
+// address such as `[fdb2:2c26:f4e4::1]`. The loopback `[::1]` stays as it is.
+const IPV6 = /\[(?!::1\])[0-9a-f]*:[0-9a-f:.]*(%[^\]]+)?\]/gi;
 
 const normalizeStderr = (stderr) => {
   if (typeof stderr !== "string") {
