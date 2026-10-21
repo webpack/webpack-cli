@@ -2,6 +2,7 @@
 
 const { exec } = require("node:child_process");
 const fs = require("node:fs");
+const { isIPv6 } = require("node:net");
 const path = require("node:path");
 const { stripVTControlCharacters } = require("node:util");
 const concat = require("concat-stream");
@@ -268,7 +269,12 @@ const normalizeStdout = (stdout) => {
 };
 
 const IPV4 = /(25[0-5]|2[0-4][0-9]|1?[0-9][0-9]{1,2})(\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}/g;
-const IPV6 = /([0-9a-f]){1,4}(:([0-9a-f]){1,4}){7}/gi;
+// A bracketed IPv6 host in a URL, in full or compressed ("::") form, e.g. a unique local
+// address such as `[fdb2:2c26:f4e4::1]`. The loopback `[::1]` and bracketed text that is not
+// an IPv6 address stay as they are.
+const IPV6 = /\[([0-9a-f:.]+)(%[^\]]+)?\]/gi;
+const replaceIPv6 = (match, address) =>
+  address !== "::1" && isIPv6(address) ? "[x:x:x:x:x:x:x:x]" : match;
 
 const normalizeStderr = (stderr) => {
   if (typeof stderr !== "string") {
@@ -283,7 +289,7 @@ const normalizeStderr = (stderr) => {
   normalizedStderr = normalizeCwd(normalizedStderr);
 
   normalizedStderr = normalizedStderr.replaceAll(IPV4, "x.x.x.x");
-  normalizedStderr = normalizedStderr.replaceAll(IPV6, "[x:x:x:x:x:x:x:x]");
+  normalizedStderr = normalizedStderr.replaceAll(IPV6, replaceIPv6);
   normalizedStderr = normalizedStderr.replaceAll(/:[0-9]+\//g, ":<port>/");
 
   if (!/On Your Network \(IPv6\)/.test(stderr)) {
