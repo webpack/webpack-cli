@@ -4,7 +4,16 @@ const net = require("node:net");
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
 const { runWatch } = require("../../utils/test-utils");
 
-const getGetPort = () => import("get-port");
+/**
+ * Ports below the ephemeral ranges (32768+ on Linux, 49152+ on Windows and macOS), so outgoing
+ * connections can't take the next ports, which the CLI picks for dev servers without a port
+ * @returns {Promise<number>} free port
+ */
+const getFreePort = async () => {
+  const { default: getPort, portNumbers } = await import("get-port");
+
+  return getPort({ port: portNumbers(20000, 30000) });
+};
 
 const describeDevServer6 = devServerVersion === "5" ? describe.skip : describe;
 
@@ -14,7 +23,7 @@ describeDevServer6("automatic dev server ports", () => {
 
   beforeEach(async () => {
     occupied = net.createServer();
-    basePort = await (await getGetPort()).default();
+    basePort = await getFreePort();
     await new Promise((resolve, reject) => {
       occupied.once("error", reject);
       occupied.listen(basePort, "127.0.0.1", resolve);
@@ -30,7 +39,7 @@ describeDevServer6("automatic dev server ports", () => {
   test.each(["omitted", "auto", "explicit"])(
     "should assign distinct available ports with %s ports",
     async (mode) => {
-      const explicitPort = await (await getGetPort()).default();
+      const explicitPort = await getFreePort();
       const args = ["serve", "--watch-options-stdin"];
 
       if (mode === "auto") {
@@ -46,12 +55,22 @@ describeDevServer6("automatic dev server ports", () => {
         handler: (proc) => {
           let output = "";
           let stopping = false;
+          const stop = () => {
+            stopping = true;
+            proc.stdin.end();
+          };
+
           proc.stdout.on("data", (chunk) => {
             output += chunk.toString();
 
             if (!stopping && [...output.matchAll(/Listening \d: \d+\n/g)].length === 2) {
-              stopping = true;
-              proc.stdin.end();
+              stop();
+            }
+          });
+          // Fail fast when a server can't listen instead of waiting for the test timeout
+          proc.stderr.on("data", (chunk) => {
+            if (!stopping && chunk.toString().includes("EADDRINUSE")) {
+              stop();
             }
           });
         },
