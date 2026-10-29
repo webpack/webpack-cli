@@ -37,7 +37,10 @@ describeDevServer6("serve error handling", () => {
   });
 
   test("should reset the failure exit code after a successful rebuild", async () => {
-    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "webpack-cli-serve-recover-"));
+    // The real path, on macOS the temporary directory is behind a symlink the watcher can miss
+    const directory = fs.mkdtempSync(
+      path.join(fs.realpathSync(os.tmpdir()), "webpack-cli-serve-recover-"),
+    );
     const entry = path.join(directory, "index.js");
 
     fs.writeFileSync(entry, "const broken = {;");
@@ -58,18 +61,23 @@ describeDevServer6("serve error handling", () => {
         {
           handler: (proc) => {
             let output = "";
-            let fixed = false;
+            let fixing;
 
             proc.stdout.on("data", (chunk) => {
               output += chunk.toString();
 
-              if (!fixed && output.includes("ERROR in")) {
-                fixed = true;
-                fs.writeFileSync(entry, "console.log('fixed');");
-              } else if (fixed && output.includes("compiled successfully")) {
+              if (!fixing && output.includes("ERROR in")) {
+                // Rewrite until the watcher picks the fix up, it can start after the first write
+                const fix = () => fs.writeFileSync(entry, `console.log(${Date.now()});`);
+
+                fix();
+                fixing = setInterval(fix, 500);
+              } else if (fixing && output.includes("compiled successfully")) {
+                clearInterval(fixing);
                 proc.stdin.end();
               }
             });
+            proc.on("exit", () => clearInterval(fixing));
           },
         },
       );
