@@ -3,6 +3,7 @@
 /* eslint-disable jest/require-top-level-describe -- Version-gated describe */
 
 const fs = require("node:fs");
+const net = require("node:net");
 const os = require("node:os");
 const path = require("node:path");
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
@@ -161,6 +162,33 @@ describeDevServer6("serve error handling", () => {
     expect(exitCode).toBe(2);
     expect(stderr).toContain("Injected middleware failure");
     expect(stdout).toBeFalsy();
+  });
+
+  test("should log the error and exit when the port is already in use", async () => {
+    const server = net.createServer();
+
+    await new Promise((resolve) => {
+      server.listen(port, "127.0.0.1", resolve);
+    });
+
+    try {
+      const { exitCode, stderr } = await run(__dirname, [
+        "serve",
+        "--config",
+        "recover.config.js",
+        "--env",
+        `entry=${path.resolve(__dirname, "src/index.js")}`,
+        "--host",
+        "127.0.0.1",
+        "--port",
+        port,
+      ]);
+
+      expect(exitCode).toBe(2);
+      expect(stderr).toContain("EADDRINUSE");
+    } finally {
+      server.close();
+    }
   });
 
   test("should log the validation error and exit when a middleware option is invalid", async () => {

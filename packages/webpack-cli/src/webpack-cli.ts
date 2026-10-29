@@ -2296,7 +2296,9 @@ class WebpackCLI {
           // needed for `webpack-dev-server@5` typings, which lack the plugin constructor
           const DevServerPlugin = DevServer as unknown as new (options: DevServerConfiguration) => {
             apply(compiler: Compiler | MultiCompiler): void;
+            listen(): Promise<void>;
           };
+          const plugins: InstanceType<typeof DevServerPlugin>[] = [];
 
           const compiler = await this.createCompiler(
             webpackCLIOptions,
@@ -2361,6 +2363,8 @@ class WebpackCLI {
                   setupExitSignals: false,
                 });
 
+                plugins.push(plugin);
+
                 if (isDevServerPerCompiler) {
                   configuration.plugins = [...(configuration.plugins || []), plugin];
                 } else {
@@ -2404,6 +2408,25 @@ class WebpackCLI {
 
           if (!compiler) {
             return;
+          }
+
+          // TODO remove it when webpack-dev-server reports listen failures to the compiler
+          // A dev server only logs a failure to listen, e.g. a port already in use, and the
+          // CLI would keep watching without it, so exit like dev servers without plugin
+          // support do
+          for (const plugin of plugins) {
+            const { listen } = plugin;
+
+            plugin.listen = () =>
+              listen.call(plugin).catch((error) => {
+                process.exitCode = 2;
+
+                compiler.close(() => {
+                  process.exit();
+                });
+
+                throw error;
+              });
           }
 
           // Closing the compiler stops dev servers, failures keep the exit code
