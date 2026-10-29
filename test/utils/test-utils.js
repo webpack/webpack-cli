@@ -412,7 +412,8 @@ const cleanStderr = (stderr) =>
  */
 const getFreePort = async () => {
   const { default: getPort, portNumbers } = await import("get-port");
-  const from = 20000 + (Number(process.env.JEST_WORKER_ID || 1) - 1) * 500;
+  // 24 ranges keep ports below 32768, where the ephemeral range of Linux starts
+  const from = 20000 + ((Number(process.env.JEST_WORKER_ID || 1) - 1) % 24) * 500;
 
   return getPort({ port: portNumbers(from, from + 499) });
 };
