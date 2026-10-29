@@ -8,11 +8,10 @@ const nodeVersion = Number.parseInt(process.versions.node.split(".")[0], 10);
 // eslint-disable-next-line jsdoc/reject-any-type
 /** @typedef {Record<string, any>} TestOptions */
 
-// The generators install real packages. Let npm reuse what is in its cache instead of
-// asking the registry about every package again, and skip the requests the tests don't
-// need, so fewer requests can fail.
+// The generators install real packages. Skip the requests the tests don't need, so fewer
+// requests can fail. `prefer-offline` isn't used: with a stale cache, npm misses new
+// versions that other packages already depend on.
 const packageManagerEnv = {
-  npm_config_prefer_offline: "true",
   npm_config_audit: "false",
   npm_config_fund: "false",
   npm_config_update_notifier: "false",
