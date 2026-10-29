@@ -9,11 +9,10 @@ const nodeVersion = Number.parseInt(process.versions.node.split(".")[0], 10);
 /** @typedef {Record<string, any>} TestOptions */
 
 // The generators install real packages. Let npm reuse what is in its cache instead of
-// asking the registry about every package again, and retry the requests it does make
-// more times, so a network error doesn't fail the test.
+// asking the registry about every package again, and skip the requests the tests don't
+// need, so fewer requests can fail.
 const packageManagerEnv = {
   npm_config_prefer_offline: "true",
-  npm_config_fetch_retries: "5",
   npm_config_audit: "false",
   npm_config_fund: "false",
   npm_config_update_notifier: "false",
