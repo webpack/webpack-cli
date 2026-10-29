@@ -3944,6 +3944,9 @@ class WebpackCLI {
       ({ Readable } = await import("node:stream"));
     }
 
+    // Whether the failure exit code comes from a previous build, so a successful rebuild resets it
+    let isFailedBuild = false;
+
     return (error, stats): void => {
       if (error) {
         this.logger.error(error);
@@ -3952,6 +3955,10 @@ class WebpackCLI {
 
       if (stats && (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings()))) {
         process.exitCode = 1;
+        isFailedBuild = true;
+      } else if (stats && isFailedBuild) {
+        process.exitCode = undefined;
+        isFailedBuild = false;
       }
 
       if (!stats) {

@@ -2,6 +2,9 @@
 
 /* eslint-disable jest/require-top-level-describe -- Version-gated describe */
 
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
 const { run, runWatch } = require("../../utils/test-utils");
 
@@ -30,6 +33,52 @@ describeDevServer6("serve error handling", () => {
     expect(stdout).toContain("ERROR in");
     expect(stderr).toContain("Project is running at:");
     expect(exitCode).toBe(1);
+  });
+
+  test("should reset the failure exit code after a successful rebuild", async () => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "webpack-cli-serve-recover-"));
+    const entry = path.join(directory, "index.js");
+
+    fs.writeFileSync(entry, "const broken = {;");
+
+    try {
+      const { exitCode, stdout } = await runWatch(
+        __dirname,
+        [
+          "serve",
+          "--config",
+          "recover.config.js",
+          "--env",
+          `entry=${entry}`,
+          "--watch-options-stdin",
+          "--port",
+          port,
+        ],
+        {
+          handler: (proc) => {
+            let output = "";
+            let fixed = false;
+
+            proc.stdout.on("data", (chunk) => {
+              output += chunk.toString();
+
+              if (!fixed && output.includes("ERROR in")) {
+                fixed = true;
+                fs.writeFileSync(entry, "console.log('fixed');");
+              } else if (fixed && output.includes("compiled successfully")) {
+                proc.stdin.end();
+              }
+            });
+          },
+        },
+      );
+
+      expect(stdout).toContain("ERROR in");
+      expect(stdout).toContain("compiled successfully");
+      expect(exitCode).toBe(0);
+    } finally {
+      fs.rmSync(directory, { recursive: true, force: true });
+    }
   });
 
   test("should print the stats with warnings using the '--fail-on-warnings' option", async () => {

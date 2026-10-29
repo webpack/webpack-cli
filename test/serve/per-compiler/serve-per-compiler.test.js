@@ -2,6 +2,7 @@
 
 /* eslint-disable jest/require-top-level-describe -- Version-gated describe */
 
+const path = require("node:path");
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
 const { runWatch } = require("../../utils/test-utils");
 
@@ -11,9 +12,10 @@ const getGetPort = () => import("get-port");
  * Starts `webpack serve` and requests every bundle from every dev server once they listen.
  * @param {string[]} args extra CLI arguments
  * @param {string=} config configuration file
+ * @param {Record<string, string>=} env environment variables
  * @returns {Promise<{ exitCode: number, stdout: string, stderr: string, responses: Record<string, number> }>} result
  */
-const serve = async (args, config = "webpack.config.js") => {
+const serve = async (args, config = "webpack.config.js", env = {}) => {
   const { default: getPort } = await getGetPort();
   const appPort = await getPort();
   const adminPort = await getPort({ exclude: [appPort] });
@@ -35,6 +37,7 @@ const serve = async (args, config = "webpack.config.js") => {
       ...args,
     ],
     {
+      env,
       handler: (proc) => {
         let output = "";
         let requesting = false;
@@ -84,6 +87,20 @@ describeDevServer6("serve with a dev server per compiler", () => {
     // Every dev server prints the stats of all compilers using its own options
     expect(stdout.match(/app\.js/g)).toHaveLength(1);
     expect(stdout.match(/admin\.js/g)).toHaveLength(1);
+  });
+
+  test("should serve all compilers by every dev server with webpack before 5.112", async () => {
+    const { exitCode, responses } = await serve([], "webpack.config.js", {
+      WEBPACK_PACKAGE: path.resolve(__dirname, "./old-webpack.js"),
+    });
+
+    expect(exitCode).toBe(0);
+    expect(responses).toEqual({
+      "app:app": 200,
+      "app:admin": 200,
+      "admin:app": 200,
+      "admin:admin": 200,
+    });
   });
 
   test("should serve each compiler only by its own dev server using the '--dev-server-per-compiler' option", async () => {
