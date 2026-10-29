@@ -95,7 +95,7 @@
     "typescript": "^6.0.3",
     "webpack": "^5.112.0",
     "webpack-bundle-analyzer": "^5.4.0",
-    "webpack-dev-server": "^6.0.0"
+    "webpack-dev-server": "^6.1.0"
   },
   "peerDependencies": {
     "webpack": "5.x.x"

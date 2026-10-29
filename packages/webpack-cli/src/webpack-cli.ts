@@ -2175,7 +2175,21 @@ class WebpackCLI {
       },
       options: (cmd) => {
         const { webpack, devServer } = cmd.context;
-        const webpackOptions = this.schemaToOptions(webpack, undefined, this.#CLIOptions);
+        const webpackOptions = this.schemaToOptions(webpack, undefined, [
+          ...this.#CLIOptions,
+          {
+            name: "dev-server-per-compiler",
+            configs: [
+              {
+                type: "enum",
+                values: [true],
+              },
+            ],
+            description:
+              "Serve each compiler only by the dev server from its own configuration in multi-compiler mode, instead of serving all compilers by every dev server.",
+            hidden: false,
+          },
+        ]);
         // @ts-expect-error different versions of the `Schema` type
         const devServerOptions = this.schemaToOptions(webpack, devServer.schema, undefined, {
           hidden: false,
@@ -2222,8 +2236,22 @@ class WebpackCLI {
         }
 
         const DevServer: DevServerConstructor = devServer;
+        // TODO in the next major release, require `webpack-dev-server@6` and remove this check
+        // together with the `start()`/`stop()` workaround for dev servers without plugin support
         const isDevServerPlugin =
           typeof (DevServer.prototype as { apply?: unknown }).apply === "function";
+        const isMultiCompiler = this.isMultipleCompiler(compiler);
+        let isDevServerPerCompiler = Boolean(options.devServerPerCompiler) && isMultiCompiler;
+
+        if (isDevServerPerCompiler && !isDevServerPlugin) {
+          this.logger.warn(
+            "The '--dev-server-per-compiler' option requires webpack-dev-server with plugin support (v6 or later), all compilers will be served by every dev server.",
+          );
+
+          isDevServerPerCompiler = false;
+        }
+
+        // TODO in the next major release, remove it, servers without plugin support only
         const servers: InstanceType<DevServerConstructor>[] = [];
 
         if (!isDevServerPlugin && this.#needWatchStdin(compiler)) {
@@ -2235,12 +2263,15 @@ class WebpackCLI {
           process.stdin.resume();
         }
 
-        const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
+        const compilers = isMultiCompiler ? compiler.compilers : [compiler as Compiler];
         const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
         const compilersForDevServer =
           possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
         const usedPorts: number[] = [];
-        const devServerConfigurations: DevServerConfiguration[] = [];
+        const devServers: {
+          compiler: Compiler;
+          configuration: DevServerConfiguration;
+        }[] = [];
         const validatePort = ({ port }: DevServerConfiguration): void => {
           if (port && port !== "auto") {
             const portNumber = Number(port);
@@ -2291,21 +2322,24 @@ class WebpackCLI {
             validatePort(devServerConfiguration);
           }
 
-          devServerConfigurations.push(devServerConfiguration);
+          devServers.push({
+            compiler: compilerForDevServer,
+            configuration: devServerConfiguration,
+          });
         }
 
-        for (const devServerConfiguration of devServerConfigurations) {
+        for (const { compiler: compilerForDevServer, configuration } of devServers) {
           if (!isDevServerPlugin) {
-            validatePort(devServerConfiguration);
+            validatePort(configuration);
           }
 
           try {
             if (isDevServerPlugin) {
-              let { port } = devServerConfiguration;
+              let { port } = configuration;
 
               if (
-                devServerConfigurations.length > 1 &&
-                !devServerConfiguration.ipc &&
+                devServers.length > 1 &&
+                !configuration.ipc &&
                 (typeof port === "undefined" || port === "auto")
               ) {
                 const { default: getPort, portNumbers } = await import("get-port");
@@ -2313,8 +2347,8 @@ class WebpackCLI {
                   process.env.WEBPACK_DEV_SERVER_BASE_PORT ?? "8080",
                   10,
                 );
-                const host = devServerConfiguration.host
-                  ? await DevServer.getHostname(devServerConfiguration.host)
+                const host = configuration.host
+                  ? await DevServer.getHostname(configuration.host)
                   : undefined;
 
                 // Plugins select ports before any server starts listening.
@@ -2326,19 +2360,21 @@ class WebpackCLI {
                 usedPorts.push(port);
               }
 
-              // v5 typings lack the plugin constructor.
+              // By default, every dev server serves all compilers, regardless of which defines
+              // `devServer`, the same as dev servers without plugin support do.
+              // The CLI owns signal handling and closes the compiler on shutdown.
+              // TODO in the next major release, use `DevServer` directly, the cast is only
+              // needed for `webpack-dev-server@5` typings, which lack the plugin constructor
               const DevServerPlugin = DevServer as unknown as new (
                 options: DevServerConfiguration,
               ) => { apply(compiler: Compiler | MultiCompiler): void };
 
-              // Serve all child compilers, regardless of which defines devServer.
-              new DevServerPlugin({
-                ...devServerConfiguration,
-                port,
-                setupExitSignals: false,
-              }).apply(compiler);
+              new DevServerPlugin({ ...configuration, port, setupExitSignals: false }).apply(
+                isDevServerPerCompiler ? compilerForDevServer : compiler,
+              );
             } else {
-              const server = new DevServer(devServerConfiguration, compiler);
+              // TODO in the next major release, remove it, servers without plugin support only
+              const server = new DevServer(configuration, compiler);
 
               await server.start();
 
@@ -2362,7 +2398,8 @@ class WebpackCLI {
           process.exit(2);
         }
 
-        // Older servers manage compilation and signals themselves.
+        // TODO in the next major release, remove it, servers without plugin support manage
+        // compilation and signals themselves
         if (!isDevServerPlugin) {
           return;
         }
@@ -2378,6 +2415,47 @@ class WebpackCLI {
           });
           process.stdin.resume();
         }
+
+        const getStatsOptions = (
+          compiler: Compiler,
+          configuration?: DevServerConfiguration,
+        ): StatsOptions => {
+          const middlewareStats = configuration?.devMiddleware?.stats;
+
+          if (typeof middlewareStats === "undefined") {
+            return compiler.options.stats as StatsOptions;
+          }
+
+          const statsOptions: StatsOptions =
+            typeof middlewareStats === "boolean"
+              ? { preset: middlewareStats ? "normal" : "none" }
+              : typeof middlewareStats === "string"
+                ? { preset: middlewareStats }
+                : { ...middlewareStats };
+
+          if (typeof statsOptions.colors === "undefined") {
+            statsOptions.colors = (compiler.options.stats as StatsOptions).colors;
+          }
+
+          return statsOptions;
+        };
+        const printStats = (
+          stats: Stats | MultiStats,
+          getConfiguration: (compiler: Compiler) => DevServerConfiguration | undefined,
+        ): void => {
+          const statsOptions = isMultiCompiler
+            ? {
+                children: compilers.map((compiler) =>
+                  getStatsOptions(compiler, getConfiguration(compiler)),
+                ),
+              }
+            : getStatsOptions(compiler as Compiler, getConfiguration(compiler as Compiler));
+          const printedStats = stats.toString(statsOptions);
+
+          if (printedStats) {
+            this.logger.raw(printedStats);
+          }
+        };
 
         const watchCallback = (error: Error | null, stats?: Stats | MultiStats): void => {
           if (error) {
@@ -2398,39 +2476,22 @@ class WebpackCLI {
             process.exitCode = 1;
           }
 
-          // Each middleware can override stats for the whole compiler.
-          for (const devServerConfiguration of devServerConfigurations) {
-            const middlewareStats = devServerConfiguration.devMiddleware?.stats;
-            const getStatsOptions = (compiler: Compiler): StatsOptions => {
-              if (typeof middlewareStats === "undefined") {
-                return compiler.options.stats as StatsOptions;
-              }
-
-              const statsOptions: StatsOptions =
-                typeof middlewareStats === "boolean"
-                  ? { preset: middlewareStats ? "normal" : "none" }
-                  : typeof middlewareStats === "string"
-                    ? { preset: middlewareStats }
-                    : { ...middlewareStats };
-
-              if (typeof statsOptions.colors === "undefined") {
-                statsOptions.colors = (compiler.options.stats as StatsOptions).colors;
-              }
-
-              return statsOptions;
-            };
-            const statsOptions = this.isMultipleCompiler(compiler)
-              ? { children: compiler.compilers.map(getStatsOptions) }
-              : getStatsOptions(compiler);
-            const printedStats = stats.toString(statsOptions);
-
-            if (printedStats) {
-              this.logger.raw(printedStats);
+          if (isDevServerPerCompiler) {
+            // Each compiler is printed using the stats options of its own dev server
+            printStats(
+              stats,
+              (compiler) =>
+                devServers.find((devServer) => devServer.compiler === compiler)?.configuration,
+            );
+          } else {
+            // Each middleware prints stats for the whole compiler
+            for (const { configuration } of devServers) {
+              printStats(stats, () => configuration);
             }
           }
         };
 
-        if (this.isMultipleCompiler(compiler)) {
+        if (isMultiCompiler) {
           compiler.watch(
             compiler.compilers.map((compiler) => compiler.options.watchOptions || {}),
             watchCallback,
