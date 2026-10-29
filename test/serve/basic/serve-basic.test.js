@@ -491,7 +491,9 @@ describe("basic serve usage", () => {
       },
     );
 
-    expect(normalizeStderr(stderr)).toContain("log.config.js");
+    // Check the raw output: the "serving events at ..." log of webpack-dev-middleware confuses
+    // the stack trace normalization, which then removes the line with the config path
+    expect(stderr).toContain("log.config.js");
     expect(normalizeStdout(stdout)).toContain("compiled successfully");
   });
 
