@@ -401,6 +401,22 @@ const cleanStderr = (stderr) =>
     ? stderr.replaceAll(NODE_WARNING_RE, "").replaceAll(INFRASTRUCTURE_INFO_RE, "").trim()
     : stderr;
 
+/**
+ * Get a free port for a dev server.
+ *
+ * A port from the OS comes from the ephemeral range, where outgoing connections (e.g. of
+ * tests that install packages) can take it before the dev server listens, and Jest
+ * workers running in parallel can get the same one. So each worker takes ports from its
+ * own range below the ephemeral ones.
+ * @returns {Promise<number>} free port
+ */
+const getFreePort = async () => {
+  const { default: getPort, portNumbers } = await import("get-port");
+  const from = 20000 + (Number(process.env.JEST_WORKER_ID || 1) - 1) * 500;
+
+  return getPort({ port: portNumbers(from, from + 499) });
+};
+
 const uniqueDirectoryForTest = async () => {
   const result = path.resolve(path.resolve(__dirname, "../create-webpack-app-testing"), uuid());
 
@@ -413,6 +429,7 @@ const uniqueDirectoryForTest = async () => {
 
 module.exports = {
   cleanStderr,
+  getFreePort,
   getWebpackCliArguments,
   hyphenToUpperCase,
   isWindows,
