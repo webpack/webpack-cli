@@ -2296,42 +2296,38 @@ class WebpackCLI {
             webpackCLIOptions,
             await this.#createWebpackCallback(webpackCLIOptions),
             async (configOptions) => {
-              const isMultiConfiguration = this.isMultipleConfiguration(configOptions);
-              const configurations = isMultiConfiguration ? configOptions : [configOptions];
-              const configurationsWithDevServer = configurations.filter(
-                (configuration) => configuration.devServer,
-              );
-              const configurationsForDevServer = (
-                configurationsWithDevServer.length > 0
-                  ? configurationsWithDevServer
-                  : [configurations[0]]
-              ).filter((configuration) => (configuration.devServer as unknown) !== false);
+              const configurations = this.isMultipleConfiguration(configOptions)
+                ? configOptions
+                : [configOptions];
               const isDevServerPerCompiler =
-                !isMultiConfiguration || Boolean(options.devServerPerCompiler);
+                configurations.length === 1 || Boolean(options.devServerPerCompiler);
+              // Configurations with `devServer`, otherwise the first one
+              const devServers = (
+                configurations.some((configuration) => configuration.devServer)
+                  ? configurations.filter((configuration) => configuration.devServer)
+                  : [configurations[0]]
+              )
+                .filter((configuration) => (configuration.devServer as unknown) !== false)
+                .map((configuration) => {
+                  const devServerOptions = getDevServerOptions(
+                    configuration.devServer as DevServerConfiguration,
+                  );
 
-              if (configurationsForDevServer.length === 0) {
+                  // Validate all explicit ports before assigning automatic ones
+                  validatePort(devServerOptions.port);
+
+                  return { configuration, devServerOptions };
+                });
+
+              if (devServers.length === 0) {
                 this.logger.error("No dev server configurations to run");
                 process.exit(2);
               }
 
-              // The CLI drives compilation like the `watch` command
-              for (const configuration of configurations) {
-                configuration.watch = true;
-              }
-
+              const basePort = process.env.WEBPACK_DEV_SERVER_BASE_PORT;
+              let nextBasePort = Number.parseInt(basePort ?? "8080", 10);
               // Plugins which should be applied to the multi compiler
               const multiCompilerPlugins: InstanceType<typeof DevServerPlugin>[] = [];
-              const devServers = configurationsForDevServer.map((configuration) => {
-                const devServerOptions = getDevServerOptions(
-                  configuration.devServer as DevServerConfiguration,
-                );
-
-                validatePort(devServerOptions.port);
-
-                return { configuration, devServerOptions };
-              });
-              // Compilers which already print stats of a dev server
-              const configurationsWithMiddlewareStats = new Set<Configuration>();
 
               for (const { configuration, devServerOptions } of devServers) {
                 // Servers select ports before any of them listens, so they can't do it themselves
@@ -2340,18 +2336,15 @@ class WebpackCLI {
                   !devServerOptions.ipc &&
                   (typeof devServerOptions.port === "undefined" || devServerOptions.port === "auto")
                 ) {
-                  const { default: getPort, portNumbers } = await import("get-port");
+                  const host = await DevServer.getHostname(devServerOptions.host as string);
 
-                  devServerOptions.port = await getPort({
-                    port: portNumbers(
-                      Number.parseInt(process.env.WEBPACK_DEV_SERVER_BASE_PORT ?? "8080", 10),
-                      65535,
-                    ),
-                    host: devServerOptions.host
-                      ? await DevServer.getHostname(devServerOptions.host)
-                      : undefined,
-                    exclude: usedPorts,
-                  });
+                  // The dev server searches for a free port from the base one
+                  do {
+                    process.env.WEBPACK_DEV_SERVER_BASE_PORT = String(nextBasePort);
+                    devServerOptions.port = Number(await DevServer.getFreePort("auto", host));
+                    nextBasePort = devServerOptions.port + 1;
+                  } while (usedPorts.includes(devServerOptions.port));
+
                   usedPorts.push(devServerOptions.port);
                 }
 
@@ -2361,36 +2354,41 @@ class WebpackCLI {
                   ...devServerOptions,
                   setupExitSignals: false,
                 });
-                const servedConfigurations = isDevServerPerCompiler
-                  ? [configuration]
-                  : configurations;
-                const middlewareStats = devServerOptions.devMiddleware?.stats;
-
-                // The middleware leaves printing stats to the CLI, the first dev server wins
-                for (const servedConfiguration of servedConfigurations) {
-                  if (
-                    typeof middlewareStats === "undefined" ||
-                    configurationsWithMiddlewareStats.has(servedConfiguration)
-                  ) {
-                    continue;
-                  }
-
-                  const { colors } = servedConfiguration.stats as StatsOptions;
-
-                  servedConfiguration.stats =
-                    typeof middlewareStats === "boolean"
-                      ? { preset: middlewareStats ? "normal" : "none" }
-                      : typeof middlewareStats === "string"
-                        ? { preset: middlewareStats }
-                        : { ...middlewareStats };
-                  servedConfiguration.stats.colors ??= colors;
-                  configurationsWithMiddlewareStats.add(servedConfiguration);
-                }
 
                 if (isDevServerPerCompiler) {
                   configuration.plugins = [...(configuration.plugins || []), plugin];
                 } else {
                   multiCompilerPlugins.push(plugin);
+                }
+              }
+
+              if (typeof basePort === "undefined") {
+                delete process.env.WEBPACK_DEV_SERVER_BASE_PORT;
+              } else {
+                process.env.WEBPACK_DEV_SERVER_BASE_PORT = basePort;
+              }
+
+              for (const configuration of configurations) {
+                // The CLI drives compilation like the `watch` command
+                configuration.watch = true;
+
+                // The middleware leaves printing stats to the CLI, the first dev server wins
+                const middlewareStats = (
+                  isDevServerPerCompiler
+                    ? devServers.find((devServer) => devServer.configuration === configuration)
+                    : devServers[0]
+                )?.devServerOptions.devMiddleware?.stats;
+
+                if (typeof middlewareStats !== "undefined") {
+                  const { colors } = configuration.stats as StatsOptions;
+
+                  configuration.stats =
+                    typeof middlewareStats === "boolean"
+                      ? { preset: middlewareStats ? "normal" : "none" }
+                      : typeof middlewareStats === "string"
+                        ? { preset: middlewareStats }
+                        : { ...middlewareStats };
+                  configuration.stats.colors ??= colors;
                 }
               }
 
