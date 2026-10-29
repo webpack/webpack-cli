@@ -18,14 +18,29 @@ const report = async (env) => {
       ([name]) => !name.startsWith("NODE_COMPILE_CACHE") && name !== "NODE_DISABLE_COMPILE_CACHE",
     ),
   );
-  const { exitCode, stdout } = await run(__dirname, [], {
-    env: { ...cleanEnv, ...env },
-    extendEnv: false,
-  });
+  // The default compile cache directory lives in the temporary directory, so give each run
+  // a fresh one: a `node-compile-cache` left on the machine (e.g. by another user or Node.js
+  // version) can make the cache fail to enable
+  const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "webpack-cli-tmp-"));
 
-  expect(exitCode).toBe(0);
+  try {
+    const { exitCode, stdout } = await run(__dirname, [], {
+      env: {
+        ...cleanEnv,
+        TMPDIR: temporaryDirectory,
+        TMP: temporaryDirectory,
+        TEMP: temporaryDirectory,
+        ...env,
+      },
+      extendEnv: false,
+    });
 
-  return JSON.parse(stdout.slice(stdout.indexOf("REPORT") + 6).split("\n")[0]);
+    expect(exitCode).toBe(0);
+
+    return JSON.parse(stdout.slice(stdout.indexOf("REPORT") + 6).split("\n")[0]);
+  } finally {
+    fs.rmSync(temporaryDirectory, { recursive: true, force: true });
+  }
 };
 
 describe("compile cache", () => {
