@@ -120,6 +120,9 @@ describeDevServer6("serve error handling", () => {
           port,
         ],
         {
+          // execa kills with `SIGKILL` when the process is still alive 5 seconds after
+          // `SIGTERM`, a graceful shutdown can take longer on slow machines
+          forceKillAfterDelay: false,
           handler: (proc) => {
             let output = "";
             let serverOutput = "";
