@@ -1,5 +1,6 @@
 "use strict";
 
+const { EventEmitter } = require("node:events");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
@@ -15,9 +16,17 @@ jest.unstable_mockModule("node:readline", () => ({
   }),
 }));
 
-const spawnMock = jest.fn();
+// A process which exits successfully
+const spawnMock = jest.fn(() => {
+  // eslint-disable-next-line unicorn/prefer-event-target -- Child processes are event emitters
+  const child = new EventEmitter();
 
-jest.unstable_mockModule("node:child_process", () => ({ spawnSync: spawnMock }));
+  process.nextTick(() => child.emit("close", 0));
+
+  return child;
+});
+
+jest.unstable_mockModule("node:child_process", () => ({ spawn: spawnMock }));
 
 /**
  * Checks the command which installs the package.
@@ -31,6 +40,7 @@ const expectInstallCommand = (packageManager, args) => {
     // Package managers are `.cmd` files on Windows, so they run in a shell with escaped arguments
     expect(spawnMock).toHaveBeenCalledWith(
       [packageManager, ...args.map((arg) => `^"${arg}^"`)].join(" "),
+      [],
       { stdio: "inherit", shell: true },
     );
   } else {
@@ -138,7 +148,7 @@ describe("installPackage", () => {
 
       await cli.installPackage('a"b&c');
 
-      expect(spawnMock).toHaveBeenCalledWith('npm ^"install^" ^"-D^" ^"a\\^"b^&c^"', {
+      expect(spawnMock).toHaveBeenCalledWith('npm ^"install^" ^"-D^" ^"a\\^"b^&c^"', [], {
         stdio: "inherit",
         shell: true,
       });
@@ -155,6 +165,7 @@ describe("installPackage", () => {
 
       expect(spawnMock).toHaveBeenCalledWith(
         'npm ^^^"install^^^" ^^^"-D^^^" ^^^"a\\^^^"b^^^&c^^^"',
+        [],
         { stdio: "inherit", shell: true },
       );
     });

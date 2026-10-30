@@ -1,4 +1,4 @@
-import { type SpawnSyncOptions, type SpawnSyncReturns } from "node:child_process";
+import { type SpawnOptions } from "node:child_process";
 import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -633,18 +633,24 @@ class WebpackCLI {
    * Runs a command, the same as `cross-spawn` does.
    * @param {string} command command
    * @param {string[]} args arguments
-   * @param {SpawnSyncOptions} options options
-   * @returns {SpawnSyncReturns<string | Buffer>} result
+   * @param {SpawnOptions} options options
+   * @returns {Promise<{ status: number | null, error?: Error }>} exit status, or the error when the command fails to start
    */
-  async #spawnSync(
+  async #spawn(
     command: string,
     args: string[],
-    options: SpawnSyncOptions = {},
-  ): Promise<SpawnSyncReturns<string | Buffer>> {
-    const { spawnSync } = await import("node:child_process");
+    options: SpawnOptions = {},
+  ): Promise<{ status: number | null; error?: Error }> {
+    const { spawn } = await import("node:child_process");
+    const run = (command: string, args: string[], options: SpawnOptions) =>
+      new Promise<{ status: number | null; error?: Error }>((resolve) => {
+        spawn(command, args, options)
+          .once("error", (error) => resolve({ status: null, error }))
+          .once("close", (status) => resolve({ status }));
+      });
 
     if (process.platform !== "win32") {
-      return spawnSync(command, args, options);
+      return run(command, args, options);
     }
 
     // Find the file of the command like `which`, on Windows the current directory goes first
@@ -667,7 +673,7 @@ class WebpackCLI {
 
         try {
           if (
-            fs.statSync(candidate).isFile() &&
+            (await fs.promises.stat(candidate)).isFile() &&
             extensions.some(
               (extension) =>
                 extension !== "" && candidate.toLowerCase().endsWith(extension.toLowerCase()),
@@ -685,7 +691,7 @@ class WebpackCLI {
 
     // Executables run directly
     if (file && /\.(?:com|exe)$/i.test(file)) {
-      return spawnSync(command, args, options);
+      return run(command, args, options);
     }
 
     // Other files, e.g. `npm.cmd`, only run in a shell, which doesn't escape arguments, and the
@@ -702,8 +708,9 @@ class WebpackCLI {
       return isShim ? quoted.replaceAll(metaChars, "^$1") : quoted;
     });
 
-    return spawnSync(
+    return run(
       [path.normalize(command).replaceAll(metaChars, "^$1"), ...escapedArgs].join(" "),
+      [],
       { ...options, shell: true },
     );
   }
@@ -732,7 +739,9 @@ class WebpackCLI {
 
     // A missing package manager fails to start, or exits with an error in the shell on Windows
     for (const packageManager of ["npm", "yarn", "pnpm"] as const) {
-      const { error, status } = await this.#spawnSync(packageManager, ["--version"]);
+      const { error, status } = await this.#spawn(packageManager, ["--version"], {
+        stdio: "ignore",
+      });
 
       if (!error && status === 0) {
         return packageManager;
@@ -872,7 +881,7 @@ class WebpackCLI {
 
     if (needInstall) {
       try {
-        await this.#spawnSync(packageManager, commandArguments, { stdio: "inherit" });
+        await this.#spawn(packageManager, commandArguments, { stdio: "inherit" });
       } catch (error) {
         this.logger.error(error);
 
