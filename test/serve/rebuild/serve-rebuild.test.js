@@ -3,9 +3,7 @@
 const { readFileSync, writeFileSync } = require("node:fs");
 const { resolve } = require("node:path");
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
-const { processKill, runWatch } = require("../../utils/test-utils");
-
-const getGetPort = () => import("get-port");
+const { getFreePort, processKill, runWatch } = require("../../utils/test-utils");
 
 const entryPath = resolve(__dirname, "./src/index.js");
 const originalEntry = readFileSync(entryPath, "utf8");
@@ -16,7 +14,7 @@ describe("serve recompilation", () => {
   let port;
 
   beforeEach(async () => {
-    port = await (await getGetPort()).default();
+    port = await getFreePort();
   });
 
   afterEach(() => {

@@ -4,9 +4,7 @@
 
 const path = require("node:path");
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
-const { runWatch } = require("../../utils/test-utils");
-
-const getGetPort = () => import("get-port");
+const { getFreePort, runWatch } = require("../../utils/test-utils");
 
 /**
  * Starts `webpack serve` and requests every bundle from every dev server once they listen.
@@ -16,9 +14,8 @@ const getGetPort = () => import("get-port");
  * @returns {Promise<{ exitCode: number, stdout: string, stderr: string, responses: Record<string, number> }>} result
  */
 const serve = async (args, config = "webpack.config.js", env = {}) => {
-  const { default: getPort } = await getGetPort();
-  const appPort = await getPort();
-  const adminPort = await getPort({ exclude: [appPort] });
+  const appPort = await getFreePort();
+  const adminPort = await getFreePort([appPort]);
   const names = config === "webpack.config.js" ? ["app", "admin"] : ["app"];
   const ports = { app: appPort, admin: adminPort };
   const responses = {};

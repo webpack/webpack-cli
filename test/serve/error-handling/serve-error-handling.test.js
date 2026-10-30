@@ -7,9 +7,7 @@ const net = require("node:net");
 const os = require("node:os");
 const path = require("node:path");
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
-const { run, runWatch } = require("../../utils/test-utils");
-
-const getGetPort = () => import("get-port");
+const { getFreePort, run, runWatch } = require("../../utils/test-utils");
 
 // Only plugin mode uses the CLI's watch callback.
 const describeDevServer6 = devServerVersion === "5" ? describe.skip : describe;
@@ -18,7 +16,7 @@ describeDevServer6("serve error handling", () => {
   let port;
 
   beforeEach(async () => {
-    port = await (await getGetPort()).default();
+    port = await getFreePort();
   });
 
   test("should print the stats with errors and keep serving when the compilation fails", async () => {

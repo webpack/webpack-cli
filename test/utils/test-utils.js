@@ -408,14 +408,15 @@ const cleanStderr = (stderr) =>
  * tests that install packages) can take it before the dev server listens, and Jest
  * workers running in parallel can get the same one. So each worker takes ports from its
  * own range below the ephemeral ones.
+ * @param {number[]=} exclude ports to skip
  * @returns {Promise<number>} free port
  */
-const getFreePort = async () => {
+const getFreePort = async (exclude = []) => {
   const { default: getPort, portNumbers } = await import("get-port");
   // 120 ranges keep ports below 32768, where the ephemeral range of Linux starts
   const from = 20000 + ((Number(process.env.JEST_WORKER_ID || 1) - 1) % 120) * 100;
 
-  return getPort({ port: portNumbers(from, from + 99) });
+  return getPort({ port: portNumbers(from, from + 99), exclude });
 };
 
 const uniqueDirectoryForTest = async () => {
