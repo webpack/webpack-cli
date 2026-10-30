@@ -1,3 +1,4 @@
+import { type SpawnOptions } from "node:child_process";
 import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -628,9 +629,93 @@ class WebpackCLI {
     };
   }
 
-  async getDefaultPackageManager(): Promise<PackageManager | undefined> {
-    const { sync } = await import("cross-spawn");
+  /**
+   * Runs a command, the same as `cross-spawn` does.
+   * @param {string} command command
+   * @param {string[]} args arguments
+   * @param {SpawnOptions} options options
+   * @returns {Promise<{ status: number | null, error?: Error }>} exit status, or the error when the command fails to start
+   */
+  async #spawn(
+    command: string,
+    args: string[],
+    options: SpawnOptions = {},
+  ): Promise<{ status: number | null; error?: Error }> {
+    const { spawn } = await import("node:child_process");
+    const run = (command: string, args: string[], options: SpawnOptions) =>
+      new Promise<{ status: number | null; error?: Error }>((resolve) => {
+        spawn(command, args, options)
+          .once("error", (error) => resolve({ status: null, error }))
+          .once("close", (status) => resolve({ status }));
+      });
 
+    if (process.platform !== "win32") {
+      return run(command, args, options);
+    }
+
+    // Find the file of the command like `which`, on Windows the current directory goes first
+    const extensions = (process.env.PATHEXT || ".EXE;.CMD;.BAT;.COM").split(";");
+
+    if (command.includes(".") && extensions[0] !== "") {
+      extensions.unshift("");
+    }
+
+    const directories = /[/\\]/.test(command)
+      ? [""]
+      : [process.cwd(), ...(process.env.PATH || "").split(";")];
+    let file: string | undefined;
+
+    search: for (const directory of directories) {
+      for (const extension of extensions) {
+        const candidate = path.resolve(
+          path.join(directory.replace(/^"(.*)"$/, "$1"), command) + extension,
+        );
+
+        try {
+          if (
+            (await fs.promises.stat(candidate)).isFile() &&
+            extensions.some(
+              (extension) =>
+                extension !== "" && candidate.toLowerCase().endsWith(extension.toLowerCase()),
+            )
+          ) {
+            file = candidate;
+
+            break search;
+          }
+        } catch {
+          // Not found
+        }
+      }
+    }
+
+    // Executables run directly
+    if (file && /\.(?:com|exe)$/i.test(file)) {
+      return run(command, args, options);
+    }
+
+    // Other files, e.g. `npm.cmd`, only run in a shell, which doesn't escape arguments, and the
+    // `.cmd` shims of packages pass them to another shell, so they are escaped twice
+    const isShim = Boolean(file && /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i.test(file));
+    const metaChars = /([()\][%!^"`<>&|;, *?])/g;
+    const escapedArgs = args.map((arg) => {
+      const quoted = `"${arg
+        // Double the backslashes before a quote and escape the quote
+        .replaceAll(/(?=(\\+?)?)\1"/g, '$1$1\\"')
+        // Double the backslashes at the end, they precede the closing quote
+        .replace(/(?=(\\+?)?)\1$/, "$1$1")}"`.replaceAll(metaChars, "^$1");
+
+      return isShim ? quoted.replaceAll(metaChars, "^$1") : quoted;
+    });
+
+    return run(
+      [path.normalize(command).replaceAll(metaChars, "^$1"), ...escapedArgs].join(" "),
+      [],
+      { ...options, shell: true },
+    );
+  }
+
+  async getDefaultPackageManager(): Promise<PackageManager | undefined> {
     try {
       await fs.promises.access(path.resolve(process.cwd(), "package-lock.json"), fs.constants.F_OK);
       return "npm";
@@ -652,37 +737,20 @@ class WebpackCLI {
       // Nothing
     }
 
-    try {
-      // the sync function below will fail if npm is not installed,
-      // an error will be thrown
-      if (sync("npm", ["--version"])) {
-        return "npm";
+    // A missing package manager fails to start, or exits with an error in the shell on Windows
+    for (const packageManager of ["npm", "yarn", "pnpm"] as const) {
+      const { error, status } = await this.#spawn(packageManager, ["--version"], {
+        stdio: "ignore",
+      });
+
+      if (!error && status === 0) {
+        return packageManager;
       }
-    } catch {
-      // Nothing
     }
 
-    try {
-      // the sync function below will fail if yarn is not installed,
-      // an error will be thrown
-      if (sync("yarn", ["--version"])) {
-        return "yarn";
-      }
-    } catch {
-      // Nothing
-    }
+    this.logger.error("No package manager found.");
 
-    try {
-      // the sync function below will fail if pnpm is not installed,
-      // an error will be thrown
-      if (sync("pnpm", ["--version"])) {
-        return "pnpm";
-      }
-    } catch {
-      this.logger.error("No package manager found.");
-
-      process.exit(2);
-    }
+    process.exit(2);
   }
 
   async isPackageInstalled(packageName: string): Promise<boolean> {
@@ -812,10 +880,18 @@ class WebpackCLI {
     }
 
     if (needInstall) {
-      const { sync } = await import("cross-spawn");
-
       try {
-        sync(packageManager, commandArguments, { stdio: "inherit" });
+        const { error, status } = await this.#spawn(packageManager, commandArguments, {
+          stdio: "inherit",
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        if (status !== 0) {
+          throw new Error(`'${commandToBeRun}' exited with code ${status}`);
+        }
       } catch (error) {
         this.logger.error(error);
 
