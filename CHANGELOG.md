@@ -1,5 +1,23 @@
 # Change Log
 
+## 7.3.0
+
+### Minor Changes
+
+- feat: run `webpack-dev-server@6` as a compiler plugin. The CLI drives watch compilation, prints build stats and closes the compiler on shutdown. Older dev servers continue to manage their own compilation. (by [@bjohansebas](https://github.com/bjohansebas) in [#4847](https://github.com/webpack/webpack-cli/pull/4847))
+
+  In multi-compiler mode, every dev server serves all compilers by default. Use the new `--dev-server-per-compiler` option of `webpack serve` to serve each compiler only by the dev server from its own configuration.
+
+- feat: add shell completions for zsh, bash, fish and powershell through the `complete` command (by [@alexander-akait](https://github.com/alexander-akait) in [#4840](https://github.com/webpack/webpack-cli/pull/4840))
+
+### Patch Changes
+
+- fix: keep multi-compiler options such as `parallelism` and `plugins` set on a configuration array when `--config-name` or `extends` rebuild it (by [@alexander-akait](https://github.com/alexander-akait) in [#4871](https://github.com/webpack/webpack-cli/pull/4871))
+
+- perf: share the compile cache with child processes and worker threads, such as minimizer workers, so they start warm too (by [@alexander-akait](https://github.com/alexander-akait) in [#4872](https://github.com/webpack/webpack-cli/pull/4872))
+
+- fix: assign distinct ports to dev servers of configurations that share the same `devServer` object. (by [@alexander-akait](https://github.com/alexander-akait) in [#4886](https://github.com/webpack/webpack-cli/pull/4886))
+
 ## 7.2.3
 
 ### Patch Changes
