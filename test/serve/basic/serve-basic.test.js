@@ -1,9 +1,12 @@
 "use strict";
 
 const path = require("node:path");
-const { normalizeStderr, normalizeStdout, runWatch } = require("../../utils/test-utils");
-
-const getGetPort = () => import("get-port");
+const {
+  getFreePort,
+  normalizeStderr,
+  normalizeStdout,
+  runWatch,
+} = require("../../utils/test-utils");
 
 const testPath = path.resolve(__dirname);
 
@@ -16,7 +19,7 @@ describe("basic serve usage", () => {
   let port;
 
   beforeEach(async () => {
-    port = await (await getGetPort()).default();
+    port = await getFreePort();
   });
 
   it("should work", async () => {
