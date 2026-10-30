@@ -2390,15 +2390,8 @@ class WebpackCLI {
                 )?.devServerOptions.devMiddleware?.stats;
 
                 if (typeof middlewareStats !== "undefined") {
-                  const { colors } = configuration.stats as StatsOptions;
-
-                  configuration.stats =
-                    typeof middlewareStats === "boolean"
-                      ? { preset: middlewareStats ? "normal" : "none" }
-                      : typeof middlewareStats === "string"
-                        ? { preset: middlewareStats }
-                        : { ...middlewareStats };
-                  configuration.stats.colors ??= colors;
+                  configuration.stats = middlewareStats;
+                  this.#setupStats(configuration);
                 }
               }
 
@@ -3781,33 +3774,7 @@ class WebpackCLI {
         configuration.mode = process.env.NODE_ENV;
       }
 
-      // Setup stats
-      if (typeof configuration.stats === "undefined") {
-        configuration.stats = { preset: "normal" };
-      } else if (typeof configuration.stats === "boolean") {
-        configuration.stats = configuration.stats ? { preset: "normal" } : { preset: "none" };
-      } else if (typeof configuration.stats === "string") {
-        configuration.stats = { preset: configuration.stats };
-      }
-
-      let colors;
-
-      // From arguments
-      if (typeof this.#isColorSupportChanged !== "undefined") {
-        colors = Boolean(this.#isColorSupportChanged);
-      }
-      // From stats
-      else if (typeof configuration.stats.colors !== "undefined") {
-        colors = configuration.stats.colors;
-      }
-      // Default
-      else {
-        colors = Boolean(this.colors.isColorSupported);
-      }
-
-      if (Object.isExtensible(configuration.stats)) {
-        configuration.stats.colors = colors;
-      }
+      this.#setupStats(configuration);
 
       // Apply CLI plugin
       if (!configuration.plugins) {
@@ -3836,6 +3803,35 @@ class WebpackCLI {
     }
 
     return config;
+  }
+
+  #setupStats(configuration: Configuration): void {
+    if (typeof configuration.stats === "undefined") {
+      configuration.stats = { preset: "normal" };
+    } else if (typeof configuration.stats === "boolean") {
+      configuration.stats = configuration.stats ? { preset: "normal" } : { preset: "none" };
+    } else if (typeof configuration.stats === "string") {
+      configuration.stats = { preset: configuration.stats };
+    }
+
+    let colors;
+
+    // From arguments
+    if (typeof this.#isColorSupportChanged !== "undefined") {
+      colors = Boolean(this.#isColorSupportChanged);
+    }
+    // From stats
+    else if (typeof configuration.stats.colors !== "undefined") {
+      colors = configuration.stats.colors;
+    }
+    // Default
+    else {
+      colors = Boolean(this.colors.isColorSupported);
+    }
+
+    if (Object.isExtensible(configuration.stats)) {
+      configuration.stats.colors = colors;
+    }
   }
 
   async createCompiler(
