@@ -1,5 +1,6 @@
 "use strict";
 
+const os = require("node:os");
 const path = require("node:path");
 const testUtilsPkg = require("../utils/test-utils");
 
@@ -15,6 +16,12 @@ const packageManagerEnv = {
   npm_config_audit: "false",
   npm_config_fund: "false",
   npm_config_update_notifier: "false",
+  // Yarn 1 breaks its cache when two installs fill it at the same time, as tests in parallel
+  // Jest workers do, so each worker gets its own
+  YARN_CACHE_FOLDER: path.join(
+    os.tmpdir(),
+    `webpack-cli-yarn-cache-${process.env.JEST_WORKER_ID || 1}`,
+  ),
 };
 
 /**
