@@ -1,5 +1,15 @@
 # Change Log
 
+## 7.3.1
+
+### Patch Changes
+
+- fix: detect missing package managers and failed installations, without a lock file the CLI chose npm even when it wasn't installed instead of yarn or pnpm, and it continued after a package failed to install (by [@alexander-akait](https://github.com/alexander-akait) in [#4889](https://github.com/webpack/webpack-cli/pull/4889))
+
+- chore: replace the `import-local` and `cross-spawn` dependencies with Node.js built-ins (by [@alexander-akait](https://github.com/alexander-akait) in [#4889](https://github.com/webpack/webpack-cli/pull/4889))
+
+- chore: load configuration files with `import()` instead of `eval` (by [@alexander-akait](https://github.com/alexander-akait) in [#4893](https://github.com/webpack/webpack-cli/pull/4893))
+
 ## 7.3.0
 
 ### Minor Changes
