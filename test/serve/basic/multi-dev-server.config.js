@@ -1,11 +1,10 @@
+const { getFreePort } = require("../../utils/test-utils");
 const WebpackCLITestPlugin = require("../../utils/webpack-cli-test-plugin");
 const { devServerConfig } = require("./helper/base-dev-server.config");
 
-const getGetPort = () => import("get-port");
-
 module.exports = async () => {
-  const port1 = await (await getGetPort()).default();
-  const port2 = await (await getGetPort()).default();
+  const port1 = await getFreePort();
+  const port2 = await getFreePort();
 
   return [
     {
