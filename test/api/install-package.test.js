@@ -1,5 +1,8 @@
 "use strict";
 
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 const { stripVTControlCharacters } = require("node:util");
 const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
 
@@ -99,23 +102,71 @@ describe("installPackage", () => {
     expectInstallCommand("pnpm", ["install", "-D", "test-package"]);
   });
 
-  it("should escape the arguments for the shell on Windows", async () => {
-    readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("y"));
-    getDefaultPackageManagerSpy.mockReturnValue("npm");
+  describe("on Windows", () => {
+    let directory;
+    let platform;
+    let env;
 
-    const platform = Object.getOwnPropertyDescriptor(process, "platform");
+    beforeEach(() => {
+      directory = fs.mkdtempSync(path.join(os.tmpdir(), "webpack-cli-install-package-"));
+      platform = Object.getOwnPropertyDescriptor(process, "platform");
+      env = { PATH: process.env.PATH, PATHEXT: process.env.PATHEXT };
 
-    Object.defineProperty(process, "platform", { value: "win32" });
+      Object.defineProperty(process, "platform", { value: "win32" });
+      process.env.PATH = directory;
+      process.env.PATHEXT = ".exe;.cmd";
+      readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("y"));
+      getDefaultPackageManagerSpy.mockReturnValue("npm");
+    });
 
-    try {
-      await cli.installPackage('a"b&c');
-    } finally {
+    afterEach(() => {
       Object.defineProperty(process, "platform", platform);
-    }
 
-    expect(spawnMock).toHaveBeenCalledWith('npm ^"install^" ^"-D^" ^"a\\^"b^&c^"', {
-      stdio: "inherit",
-      shell: true,
+      for (const [name, value] of Object.entries(env)) {
+        if (typeof value === "undefined") {
+          delete process.env[name];
+        } else {
+          process.env[name] = value;
+        }
+      }
+
+      fs.rmSync(directory, { recursive: true, force: true });
+    });
+
+    it("should escape the arguments for the shell", async () => {
+      fs.writeFileSync(path.join(directory, "npm.cmd"), "");
+
+      await cli.installPackage('a"b&c');
+
+      expect(spawnMock).toHaveBeenCalledWith('npm ^"install^" ^"-D^" ^"a\\^"b^&c^"', {
+        stdio: "inherit",
+        shell: true,
+      });
+    });
+
+    it("should escape the arguments twice for the shims of packages", async () => {
+      const bin = path.join(directory, "node_modules", ".bin");
+
+      fs.mkdirSync(bin, { recursive: true });
+      fs.writeFileSync(path.join(bin, "npm.cmd"), "");
+      process.env.PATH = bin;
+
+      await cli.installPackage('a"b&c');
+
+      expect(spawnMock).toHaveBeenCalledWith(
+        'npm ^^^"install^^^" ^^^"-D^^^" ^^^"a\\^^^"b^^^&c^^^"',
+        { stdio: "inherit", shell: true },
+      );
+    });
+
+    it("should run executables without a shell", async () => {
+      fs.writeFileSync(path.join(directory, "npm.exe"), "");
+
+      await cli.installPackage("test-package");
+
+      expect(spawnMock).toHaveBeenCalledWith("npm", ["install", "-D", "test-package"], {
+        stdio: "inherit",
+      });
     });
   });
 

@@ -647,20 +647,65 @@ class WebpackCLI {
       return spawnSync(command, args, options);
     }
 
-    // Package managers are `.cmd` files on Windows, which only a shell runs, and the shell doesn't
-    // escape arguments
+    // Find the file of the command like `which`, on Windows the current directory goes first
+    const extensions = (process.env.PATHEXT || ".EXE;.CMD;.BAT;.COM").split(";");
+
+    if (command.includes(".") && extensions[0] !== "") {
+      extensions.unshift("");
+    }
+
+    const directories = /[/\\]/.test(command)
+      ? [""]
+      : [process.cwd(), ...(process.env.PATH || "").split(";")];
+    let file: string | undefined;
+
+    search: for (const directory of directories) {
+      for (const extension of extensions) {
+        const candidate = path.resolve(
+          path.join(directory.replace(/^"(.*)"$/, "$1"), command) + extension,
+        );
+
+        try {
+          if (
+            fs.statSync(candidate).isFile() &&
+            extensions.some(
+              (extension) =>
+                extension !== "" && candidate.toLowerCase().endsWith(extension.toLowerCase()),
+            )
+          ) {
+            file = candidate;
+
+            break search;
+          }
+        } catch {
+          // Not found
+        }
+      }
+    }
+
+    // Executables run directly
+    if (file && /\.(?:com|exe)$/i.test(file)) {
+      return spawnSync(command, args, options);
+    }
+
+    // Other files, e.g. `npm.cmd`, only run in a shell, which doesn't escape arguments, and the
+    // `.cmd` shims of packages pass them to another shell, so they are escaped twice
+    const isShim = Boolean(file && /node_modules[\\/].bin[\\/][^\\/]+\.cmd$/i.test(file));
+    const metaChars = /([()\][%!^"`<>&|;, *?])/g;
     const escapedArgs = args.map((arg) => {
       const quoted = `"${arg
         // Double the backslashes before a quote and escape the quote
         .replaceAll(/(?=(\\+?)?)\1"/g, '$1$1\\"')
         // Double the backslashes at the end, they precede the closing quote
-        .replace(/(?=(\\+?)?)\1$/, "$1$1")}"`;
+        .replace(/(?=(\\+?)?)\1$/, "$1$1")}"`.replaceAll(metaChars, "^$1");
 
-      // Escape the characters `cmd.exe` treats specially
-      return quoted.replaceAll(/([()\][%!^"`<>&|;, *?])/g, "^$1");
+      return isShim ? quoted.replaceAll(metaChars, "^$1") : quoted;
     });
 
-    return spawnSync([command, ...escapedArgs].join(" "), { ...options, shell: true });
+    return spawnSync(
+      [path.normalize(command).replaceAll(metaChars, "^$1"), ...escapedArgs].join(" "),
+      { ...options, shell: true },
+    );
   }
 
   async getDefaultPackageManager(): Promise<PackageManager | undefined> {
