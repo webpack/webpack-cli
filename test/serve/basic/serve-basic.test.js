@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("node:path");
+const [devServerVersion] = require("webpack-dev-server/package.json").version;
 const {
   getFreePort,
   normalizeStderr,
@@ -9,6 +10,8 @@ const {
 } = require("../../utils/test-utils");
 
 const testPath = path.resolve(__dirname);
+
+const describeDevServer6 = devServerVersion === "5" ? describe.skip : describe;
 
 const normalStdKillOptions = {
   stdoutKillStr: /webpack \d+\.\d+\.\d/,
@@ -95,21 +98,64 @@ describe("basic serve usage", () => {
     expect(stdout).toContain("second-output/main.js");
   });
 
-  // TODO need fix in future, edge case
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip("should work in multi compiler mode with multiple dev servers", async () => {
-    const { stderr, stdout } = await runWatch(
-      __dirname,
-      ["serve", "--config", "multi-dev-server.config.js"],
-      normalStdKillOptions,
-    );
+  // TODO in the next major release, remove the condition, only dev servers with plugin support
+  // select distinct ports for configurations without them
+  describeDevServer6("with multiple dev servers", () => {
+    it("should work in multi compiler mode without ports", async () => {
+      const ports = [];
+      const responses = {};
+      const { exitCode, stdout } = await runWatch(
+        __dirname,
+        ["serve", "--config", "multi-dev-server.config.js", "--watch-options-stdin"],
+        {
+          // Automatic ports start from the base one
+          env: { WEBPACK_DEV_SERVER_BASE_PORT: String(port) },
+          handler: (proc) => {
+            let output = "";
 
-    expect(normalizeStderr(stderr)).toMatchSnapshot("stderr");
-    expect(stdout).toContain("HotModuleReplacementPlugin");
-    expect(stdout).toContain("one");
-    expect(stdout).toContain("first-output/main.js");
-    expect(stdout).toContain("two");
-    expect(stdout).toContain("second-output/main.js");
+            proc.stderr.on("data", (chunk) => {
+              output += chunk.toString();
+
+              if (ports.length > 0) {
+                return;
+              }
+
+              const found = [...output.matchAll(/Loopback: http:\/\/localhost:(\d+)\//g)].map(
+                ([, found]) => found,
+              );
+
+              if (found.length < 2) {
+                return;
+              }
+
+              ports.push(...found);
+
+              // Every dev server serves all compilers
+              Promise.all(
+                ports.flatMap((port) =>
+                  ["first-output", "second-output"].map((directory) =>
+                    fetch(
+                      `http://127.0.0.1:${port}/dev-server-my-public-path/${directory}/main.js`,
+                    ).then((response) => {
+                      responses[`${port}:${directory}`] = response.status;
+                    }),
+                  ),
+                ),
+              ).finally(() => {
+                proc.stdin.end();
+              });
+            });
+          },
+        },
+      );
+
+      expect(exitCode).toBe(0);
+      expect(new Set(ports).size).toBe(2);
+      expect(Object.values(responses)).toEqual([200, 200, 200, 200]);
+      expect(stdout).toContain("HotModuleReplacementPlugin");
+      expect(stdout).toContain("first-output/main.js");
+      expect(stdout).toContain("second-output/main.js");
+    });
   });
 
   it('should work with the "--mode" option', async () => {

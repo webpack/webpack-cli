@@ -2245,7 +2245,8 @@ class WebpackCLI {
         const getDevServerOptions = (
           devServerOptions: DevServerConfiguration | undefined,
         ): DevServerConfiguration => {
-          const configuration: DevServerConfiguration = devServerOptions || {};
+          // Configurations can share options, so a port assigned to one isn't used by others
+          const configuration: DevServerConfiguration = { ...devServerOptions };
           const args: Record<string, WebpackArgument> = {};
           const values: ProcessedArguments = {};
 
