@@ -247,6 +247,42 @@ describe("installPackage", () => {
     expectInstallCommand("npm", ["install", "-D", "test-package"]);
   });
 
+  it.each([
+    [
+      "exits with an error",
+      (child) => child.emit("close", 1),
+      "'npm install -D test-package' exited with code 1",
+    ],
+    [
+      "fails to start",
+      (child) => child.emit("error", new Error("spawn npm ENOENT")),
+      "spawn npm ENOENT",
+    ],
+  ])("should exit when the installation %s", async (_name, fail, message) => {
+    readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("y"));
+    getDefaultPackageManagerSpy.mockReturnValue("npm");
+    spawnMock.mockImplementationOnce(() => {
+      // eslint-disable-next-line unicorn/prefer-event-target -- Child processes are event emitters
+      const child = new EventEmitter();
+
+      process.nextTick(() => fail(child));
+
+      return child;
+    });
+
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+    const consoleMock = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await cli.installPackage("test-package");
+
+    expect(mockExit).toHaveBeenCalledWith(2);
+    expect(consoleMock).toHaveBeenCalledTimes(1);
+    expect(stripVTControlCharacters(consoleMock.mock.calls[0][0])).toContain(message);
+
+    mockExit.mockRestore();
+    consoleMock.mockRestore();
+  });
+
   it("should not install if install is not confirmed", async () => {
     readlineQuestionMock.mockImplementation((_questionTest, cb) => cb("n"));
 

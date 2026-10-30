@@ -881,7 +881,17 @@ class WebpackCLI {
 
     if (needInstall) {
       try {
-        await this.#spawn(packageManager, commandArguments, { stdio: "inherit" });
+        const { error, status } = await this.#spawn(packageManager, commandArguments, {
+          stdio: "inherit",
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        if (status !== 0) {
+          throw new Error(`'${commandToBeRun}' exited with code ${status}`);
+        }
       } catch (error) {
         this.logger.error(error);
 
