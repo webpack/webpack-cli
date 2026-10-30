@@ -232,6 +232,16 @@ declare interface WebpackCallback {
   (err: null | Error, result?: MultiStats): void;
 }
 
+interface MultiCompilerPlugin {
+  apply(compiler: MultiCompiler): void;
+}
+
+// Changes the loaded configuration before the compiler is created,
+// returns plugins which should be applied to the multi compiler
+type ConfigureCompiler = (
+  options: Configuration | MultiConfiguration,
+) => PotentialPromise<MultiCompilerPlugin[] | void>;
+
 type ProcessedArguments = Parameters<(typeof webpack)["cli"]["processArguments"]>[2];
 type Schema = Parameters<(typeof webpack)["cli"]["getArguments"]>[0];
 
@@ -2175,7 +2185,21 @@ class WebpackCLI {
       },
       options: (cmd) => {
         const { webpack, devServer } = cmd.context;
-        const webpackOptions = this.schemaToOptions(webpack, undefined, this.#CLIOptions);
+        const webpackOptions = this.schemaToOptions(webpack, undefined, [
+          ...this.#CLIOptions,
+          {
+            name: "dev-server-per-compiler",
+            configs: [
+              {
+                type: "enum",
+                values: [true],
+              },
+            ],
+            description:
+              "Serve each compiler only by the dev server from its own configuration in multi-compiler mode, instead of serving all compilers by every dev server.",
+            hidden: false,
+          },
+        ]);
         // @ts-expect-error different versions of the `Schema` type
         const devServerOptions = this.schemaToOptions(webpack, devServer.schema, undefined, {
           hidden: false,
@@ -2215,40 +2239,13 @@ class WebpackCLI {
           env: { WEBPACK_SERVE: true, ...options.env },
         };
 
-        const compiler = await this.createCompiler(webpackCLIOptions);
-
-        if (!compiler) {
-          return;
-        }
-
-        const DevServer: DevServerConstructor = cmd.context.devServer;
-        const servers: InstanceType<DevServerConstructor>[] = [];
-
-        if (this.#needWatchStdin(compiler)) {
-          process.stdin.on("end", () => {
-            Promise.all(servers.map((server) => server.stop())).then(() => {
-              process.exit(0);
-            });
-          });
-          process.stdin.resume();
-        }
-
-        const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
-        const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
-        const compilersForDevServer =
-          possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
-        const usedPorts: number[] = [];
+        const DevServer: DevServerConstructor = devServer;
         // @ts-expect-error different versions of the `Schema` type
         const devServerArgs = this.#getArguments(webpack, devServer.schema);
-
-        for (const compilerForDevServer of compilersForDevServer) {
-          if (compilerForDevServer.options.devServer === false) {
-            continue;
-          }
-
-          const devServerConfiguration: DevServerConfiguration =
-            compilerForDevServer.options.devServer || {};
-
+        const getDevServerOptions = (
+          devServerOptions: DevServerConfiguration | undefined,
+        ): DevServerConfiguration => {
+          const configuration: DevServerConfiguration = devServerOptions || {};
           const args: Record<string, WebpackArgument> = {};
           const values: ProcessedArguments = {};
 
@@ -2267,11 +2264,15 @@ class WebpackCLI {
           }
 
           if (Object.keys(values).length > 0) {
-            this.#processArguments(webpack, args, devServerConfiguration, values);
+            this.#processArguments(webpack, args, configuration, values);
           }
 
-          if (devServerConfiguration.port) {
-            const portNumber = Number(devServerConfiguration.port);
+          return configuration;
+        };
+        const usedPorts: number[] = [];
+        const validatePort = (port: DevServerConfiguration["port"]): void => {
+          if (port && port !== "auto") {
+            const portNumber = Number(port);
 
             if (usedPorts.includes(portNumber)) {
               throw new Error(
@@ -2281,27 +2282,212 @@ class WebpackCLI {
 
             usedPorts.push(portNumber);
           }
+        };
 
-          try {
-            const server = new DevServer(devServerConfiguration, compiler);
+        // TODO in the next major release, require `webpack-dev-server@6` and remove the `else` branch
+        if (typeof (DevServer.prototype as { apply?: unknown }).apply === "function") {
+          // TODO in the next major release, use `DevServer` directly, the cast is only
+          // needed for `webpack-dev-server@5` typings, which lack the plugin constructor
+          const DevServerPlugin = DevServer as unknown as new (options: DevServerConfiguration) => {
+            apply(compiler: Compiler | MultiCompiler): void;
+            listen(): Promise<void>;
+          };
+          const plugins: InstanceType<typeof DevServerPlugin>[] = [];
 
-            await server.start();
+          const compiler = await this.createCompiler(
+            webpackCLIOptions,
+            await this.#createWebpackCallback(webpackCLIOptions),
+            async (configOptions) => {
+              const configurations = this.isMultipleConfiguration(configOptions)
+                ? configOptions
+                : [configOptions];
+              const isDevServerPerCompiler =
+                configurations.length === 1 || Boolean(options.devServerPerCompiler);
+              // Configurations with `devServer`, otherwise the first one
+              const devServers = (
+                configurations.some((configuration) => configuration.devServer)
+                  ? configurations.filter((configuration) => configuration.devServer)
+                  : [configurations[0]]
+              )
+                .filter((configuration) => (configuration.devServer as unknown) !== false)
+                .map((configuration) => {
+                  const devServerOptions = getDevServerOptions(
+                    configuration.devServer as DevServerConfiguration,
+                  );
 
-            servers.push(server as unknown as InstanceType<DevServerConstructor>);
-          } catch (error) {
-            if (this.isValidationError(error as Error)) {
-              this.logger.error((error as Error).message);
-            } else {
-              this.logger.error(error);
+                  // Validate all explicit ports before assigning automatic ones
+                  validatePort(devServerOptions.port);
+
+                  return { configuration, devServerOptions };
+                });
+
+              if (devServers.length === 0) {
+                this.logger.error("No dev server configurations to run");
+                process.exit(2);
+              }
+
+              const basePort = process.env.WEBPACK_DEV_SERVER_BASE_PORT;
+              let nextBasePort = Number.parseInt(basePort ?? "8080", 10);
+              // Plugins which should be applied to the multi compiler
+              const multiCompilerPlugins: InstanceType<typeof DevServerPlugin>[] = [];
+
+              for (const { configuration, devServerOptions } of devServers) {
+                // Servers select ports before any of them listens, so they can't do it themselves
+                if (
+                  devServers.length > 1 &&
+                  !devServerOptions.ipc &&
+                  (typeof devServerOptions.port === "undefined" || devServerOptions.port === "auto")
+                ) {
+                  const host = await DevServer.getHostname(devServerOptions.host as string);
+
+                  // The dev server searches for a free port from the base one
+                  do {
+                    process.env.WEBPACK_DEV_SERVER_BASE_PORT = String(nextBasePort);
+                    devServerOptions.port = Number(await DevServer.getFreePort("auto", host));
+                    nextBasePort = devServerOptions.port + 1;
+                  } while (usedPorts.includes(devServerOptions.port));
+
+                  usedPorts.push(devServerOptions.port);
+                }
+
+                // By default, every dev server serves all compilers, the same as dev servers
+                // without plugin support do. The CLI handles signals and closes the compiler.
+                const plugin = new DevServerPlugin({
+                  ...devServerOptions,
+                  setupExitSignals: false,
+                });
+
+                plugins.push(plugin);
+
+                if (isDevServerPerCompiler) {
+                  configuration.plugins = [...(configuration.plugins || []), plugin];
+                } else {
+                  multiCompilerPlugins.push(plugin);
+                }
+              }
+
+              if (typeof basePort === "undefined") {
+                delete process.env.WEBPACK_DEV_SERVER_BASE_PORT;
+              } else {
+                process.env.WEBPACK_DEV_SERVER_BASE_PORT = basePort;
+              }
+
+              for (const configuration of configurations) {
+                // The CLI drives compilation like the `watch` command
+                configuration.watch = true;
+
+                // The middleware leaves printing stats to the CLI, the first dev server wins
+                const middlewareStats = (
+                  isDevServerPerCompiler
+                    ? devServers.find((devServer) => devServer.configuration === configuration)
+                    : devServers[0]
+                )?.devServerOptions.devMiddleware?.stats;
+
+                if (typeof middlewareStats !== "undefined") {
+                  configuration.stats = middlewareStats;
+                  this.#setupStats(configuration);
+                }
+              }
+
+              return multiCompilerPlugins;
+            },
+          );
+
+          if (!compiler) {
+            return;
+          }
+
+          // TODO remove it when webpack-dev-server reports listen failures to the compiler
+          // A dev server only logs a failure to listen, e.g. a port already in use, and the
+          // CLI would keep watching without it, so exit like dev servers without plugin
+          // support do
+          for (const plugin of plugins) {
+            const { listen } = plugin;
+
+            plugin.listen = () =>
+              listen.call(plugin).catch((error) => {
+                process.exitCode = 2;
+
+                compiler.close(() => {
+                  process.exit();
+                });
+
+                throw error;
+              });
+          }
+
+          // Closing the compiler stops dev servers, failures keep the exit code
+          this.#setupGracefulShutdown(compiler, true);
+
+          if (this.#needWatchStdin(compiler)) {
+            process.stdin.on("end", () => {
+              compiler.close(() => {
+                process.exit();
+              });
+            });
+            process.stdin.resume();
+          }
+        } else {
+          const compiler = await this.createCompiler(webpackCLIOptions);
+
+          if (!compiler) {
+            return;
+          }
+
+          if (options.devServerPerCompiler) {
+            this.logger.warn(
+              "The '--dev-server-per-compiler' option requires webpack-dev-server with plugin support (v6 or later), all compilers will be served by every dev server.",
+            );
+          }
+
+          const servers: InstanceType<DevServerConstructor>[] = [];
+
+          if (this.#needWatchStdin(compiler)) {
+            process.stdin.on("end", () => {
+              Promise.all(servers.map((server) => server.stop())).then(() => {
+                process.exit(0);
+              });
+            });
+            process.stdin.resume();
+          }
+
+          const compilers = this.isMultipleCompiler(compiler) ? compiler.compilers : [compiler];
+          const possibleCompilers = compilers.filter((compiler) => compiler.options.devServer);
+          const compilersForDevServer =
+            possibleCompilers.length > 0 ? possibleCompilers : [compilers[0]];
+
+          for (const compilerForDevServer of compilersForDevServer) {
+            if (compilerForDevServer.options.devServer === false) {
+              continue;
             }
 
+            const devServerConfiguration = getDevServerOptions(
+              compilerForDevServer.options.devServer,
+            );
+
+            validatePort(devServerConfiguration.port);
+
+            try {
+              const server = new DevServer(devServerConfiguration, compiler);
+
+              await server.start();
+
+              servers.push(server as unknown as InstanceType<DevServerConstructor>);
+            } catch (error) {
+              if (this.isValidationError(error as Error)) {
+                this.logger.error((error as Error).message);
+              } else {
+                this.logger.error(error);
+              }
+
+              process.exit(2);
+            }
+          }
+
+          if (servers.length === 0) {
+            this.logger.error("No dev server configurations to run");
             process.exit(2);
           }
-        }
-
-        if (servers.length === 0) {
-          this.logger.error("No dev server configurations to run");
-          process.exit(2);
         }
       },
     },
@@ -3582,33 +3768,7 @@ class WebpackCLI {
         configuration.mode = process.env.NODE_ENV;
       }
 
-      // Setup stats
-      if (typeof configuration.stats === "undefined") {
-        configuration.stats = { preset: "normal" };
-      } else if (typeof configuration.stats === "boolean") {
-        configuration.stats = configuration.stats ? { preset: "normal" } : { preset: "none" };
-      } else if (typeof configuration.stats === "string") {
-        configuration.stats = { preset: configuration.stats };
-      }
-
-      let colors;
-
-      // From arguments
-      if (typeof this.#isColorSupportChanged !== "undefined") {
-        colors = Boolean(this.#isColorSupportChanged);
-      }
-      // From stats
-      else if (typeof configuration.stats.colors !== "undefined") {
-        colors = configuration.stats.colors;
-      }
-      // Default
-      else {
-        colors = Boolean(this.colors.isColorSupported);
-      }
-
-      if (Object.isExtensible(configuration.stats)) {
-        configuration.stats.colors = colors;
-      }
+      this.#setupStats(configuration);
 
       // Apply CLI plugin
       if (!configuration.plugins) {
@@ -3639,9 +3799,39 @@ class WebpackCLI {
     return config;
   }
 
+  #setupStats(configuration: Configuration): void {
+    if (typeof configuration.stats === "undefined") {
+      configuration.stats = { preset: "normal" };
+    } else if (typeof configuration.stats === "boolean") {
+      configuration.stats = configuration.stats ? { preset: "normal" } : { preset: "none" };
+    } else if (typeof configuration.stats === "string") {
+      configuration.stats = { preset: configuration.stats };
+    }
+
+    let colors;
+
+    // From arguments
+    if (typeof this.#isColorSupportChanged !== "undefined") {
+      colors = Boolean(this.#isColorSupportChanged);
+    }
+    // From stats
+    else if (typeof configuration.stats.colors !== "undefined") {
+      colors = configuration.stats.colors;
+    }
+    // Default
+    else {
+      colors = Boolean(this.colors.isColorSupported);
+    }
+
+    if (Object.isExtensible(configuration.stats)) {
+      configuration.stats.colors = colors;
+    }
+  }
+
   async createCompiler(
     options: Options,
     callback?: WebpackCallback,
+    configure?: ConfigureCompiler,
   ): Promise<Compiler | MultiCompiler> {
     const { webpack } = options;
 
@@ -3650,6 +3840,12 @@ class WebpackCLI {
     }
 
     const config = await this.loadConfig(options);
+
+    const multiCompilerPlugins = (await configure?.(config.options)) || [];
+    const [major, minor] = webpack.version.split(".").map(Number);
+    // TODO in the next major release, require `webpack@^5.112.0` and remove it
+    const isMultiCompilerPluginsSupported = major > 5 || minor >= 112;
+
     let compiler: Compiler | MultiCompiler;
 
     const webpackCallback = callback
@@ -3666,9 +3862,31 @@ class WebpackCLI {
     try {
       // Branch on the configuration shape so each call matches one `webpack()` overload
       if (this.isMultipleConfiguration(config.options)) {
-        compiler = webpackCallback
-          ? webpack(config.options, webpackCallback)!
-          : webpack(config.options);
+        if (multiCompilerPlugins.length > 0 && !isMultiCompilerPluginsSupported) {
+          // TODO in the next major release, remove it, older versions of webpack don't apply
+          // `plugins` of multi configurations, so apply them before the compilation starts
+          for (const options of config.options) {
+            options.watch = false;
+          }
+
+          compiler = webpack(config.options);
+
+          for (const plugin of multiCompilerPlugins) {
+            plugin.apply(compiler);
+          }
+
+          if (webpackCallback) {
+            compiler.watch(
+              config.options.map((options) => options.watchOptions || {}),
+              webpackCallback,
+            );
+          }
+        } else {
+          config.options.plugins = [...(config.options.plugins || []), ...multiCompilerPlugins];
+          compiler = webpackCallback
+            ? webpack(config.options, webpackCallback)!
+            : webpack(config.options);
+        }
       } else {
         compiler = webpackCallback
           ? webpack(config.options, webpackCallback)!
@@ -3697,8 +3915,40 @@ class WebpackCLI {
     return Boolean(compiler.options.watchOptions?.stdin);
   }
 
-  async runWebpack(options: Options, isWatchCommand: boolean): Promise<void> {
-    let compiler: Compiler | MultiCompiler;
+  #setupGracefulShutdown(compiler: Compiler | MultiCompiler, preserveExitCode = false): void {
+    let needForceShutdown = false;
+
+    for (const signal of EXIT_SIGNALS) {
+      // eslint-disable-next-line @typescript-eslint/no-loop-func
+      const listener = () => {
+        if (needForceShutdown) {
+          process.exit(preserveExitCode ? process.exitCode : 0);
+        }
+
+        // Keep fast shutdowns silent.
+        const timeout = setTimeout(() => {
+          this.logger.info(
+            "Gracefully shutting down. To force exit, press ^C again. Please wait...",
+          );
+        }, 2000);
+
+        needForceShutdown = true;
+
+        compiler.close(() => {
+          clearTimeout(timeout);
+          process.exit(preserveExitCode ? process.exitCode : 0);
+        });
+      };
+
+      process.on(signal, listener);
+    }
+  }
+
+  #isMultiStats(stats: Stats | MultiStats): stats is MultiStats {
+    return "stats" in stats;
+  }
+
+  async #createWebpackCallback(options: Options): Promise<WebpackCallback> {
     let stringifyChunked: typeof stringifyChunkedType;
     let Readable: typeof ReadableType;
 
@@ -3707,7 +3957,10 @@ class WebpackCLI {
       ({ Readable } = await import("node:stream"));
     }
 
-    const callback: WebpackCallback = (error, stats): void => {
+    // Whether the failure exit code comes from a previous build, so a successful rebuild resets it
+    let isFailedBuild = false;
+
+    return (error, stats): void => {
       if (error) {
         this.logger.error(error);
         process.exit(2);
@@ -3715,17 +3968,21 @@ class WebpackCLI {
 
       if (stats && (stats.hasErrors() || (options.failOnWarnings && stats.hasWarnings()))) {
         process.exitCode = 1;
+        isFailedBuild = true;
+      } else if (stats && isFailedBuild) {
+        process.exitCode = undefined;
+        isFailedBuild = false;
       }
 
-      if (!compiler || !stats) {
+      if (!stats) {
         return;
       }
 
-      const statsOptions = this.isMultipleCompiler(compiler)
+      const statsOptions = this.#isMultiStats(stats)
         ? {
-            children: compiler.compilers.map((compiler) => compiler.options.stats),
+            children: stats.stats.map((stats) => stats.compilation.compiler.options.stats),
           }
-        : compiler.options.stats;
+        : stats.compilation.compiler.options.stats;
 
       if (options.json) {
         const handleWriteError = (error: Error) => {
@@ -3762,6 +4019,10 @@ class WebpackCLI {
         }
       }
     };
+  }
+
+  async runWebpack(options: Options, isWatchCommand: boolean): Promise<void> {
+    const callback = await this.#createWebpackCallback(options);
 
     const env =
       isWatchCommand || options.watch
@@ -3775,7 +4036,7 @@ class WebpackCLI {
       options.isWatchingLikeCommand = true;
     }
 
-    compiler = await this.createCompiler(options, callback);
+    const compiler = await this.createCompiler(options, callback);
 
     if (!compiler) {
       return;
@@ -3794,32 +4055,7 @@ class WebpackCLI {
       );
 
     if (needGracefulShutdown(compiler)) {
-      let needForceShutdown = false;
-
-      for (const signal of EXIT_SIGNALS) {
-        // eslint-disable-next-line @typescript-eslint/no-loop-func
-        const listener = () => {
-          if (needForceShutdown) {
-            process.exit(0);
-          }
-
-          // Output message after delay to avoid extra logging
-          const timeout = setTimeout(() => {
-            this.logger.info(
-              "Gracefully shutting down. To force exit, press ^C again. Please wait...",
-            );
-          }, 2000);
-
-          needForceShutdown = true;
-
-          compiler.close(() => {
-            clearTimeout(timeout);
-            process.exit(0);
-          });
-        };
-
-        process.on(signal, listener);
-      }
+      this.#setupGracefulShutdown(compiler);
 
       if (this.#needWatchStdin(compiler)) {
         process.stdin.on("end", () => {

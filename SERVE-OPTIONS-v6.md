@@ -18,6 +18,7 @@ Options
   -j, --json [pathToJsonFile]                         Prints result as JSON or store it in a file.
   --fail-on-warnings                                  Stop webpack-cli process with non-zero exit code on warnings from webpack.
   --disable-interpret                                 Disable interpret for loading the config file.
+  --dev-server-per-compiler                           Serve each compiler only by the dev server from its own configuration in multi-compiler mode, instead of serving all compilers by every dev server.
   -d, --devtool <value>                               A developer tool to enhance debugging (false | eval | [inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map).
   --no-devtool                                        Negative 'devtool' option.
   --entry <value...>                                  A module that is loaded upon startup. Only the last one is exported.
