@@ -2,18 +2,7 @@
 
 const net = require("node:net");
 const [devServerVersion] = require("webpack-dev-server/package.json").version;
-const { runWatch } = require("../../utils/test-utils");
-
-/**
- * Ports below the ephemeral ranges (32768+ on Linux, 49152+ on Windows and macOS), so outgoing
- * connections can't take the next ports, which the CLI picks for dev servers without a port
- * @returns {Promise<number>} free port
- */
-const getFreePort = async () => {
-  const { default: getPort, portNumbers } = await import("get-port");
-
-  return getPort({ port: portNumbers(20000, 30000) });
-};
+const { getFreePort, runWatch } = require("../../utils/test-utils");
 
 const describeDevServer6 = devServerVersion === "5" ? describe.skip : describe;
 
