@@ -3338,9 +3338,8 @@ class WebpackCLI {
           let loadingError;
 
           try {
-            options = // eslint-disable-next-line no-eval
-              (await eval(`import("${isFileURL ? configPath : pathToFileURL(configPath)}")`))
-                .default;
+            options = (await import(isFileURL ? configPath : pathToFileURL(configPath).href))
+              .default;
           } catch (err) {
             if (this.isValidationError(err) || process.env?.WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG) {
               throw err;
