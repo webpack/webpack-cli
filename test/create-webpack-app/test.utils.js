@@ -22,6 +22,9 @@ const packageManagerEnv = {
     os.tmpdir(),
     `webpack-cli-yarn-cache-${process.env.JEST_WORKER_ID || 1}`,
   ),
+  // Yarn 1 fails on packages which require a newer Node.js version than the one running tests,
+  // the tests check the generated projects and not the engines of the installed packages
+  YARN_IGNORE_ENGINES: "true",
 };
 
 /**
