@@ -8,6 +8,10 @@ updates:
     labels:
       - dependencies
     versioning-strategy: widen
+    ignore:
+      # TODO remove it when webpack-cli requires Node.js >= 22.15.0, `rechoir` 1 requires it
+      - dependency-name: "rechoir"
+        versions: [">=1.0.0"]
     groups:
       dependencies:
         patterns:
