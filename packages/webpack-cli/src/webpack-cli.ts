@@ -1,3 +1,4 @@
+import { type SpawnSyncOptions, type SpawnSyncReturns } from "node:child_process";
 import fs from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -628,9 +629,41 @@ class WebpackCLI {
     };
   }
 
-  async getDefaultPackageManager(): Promise<PackageManager | undefined> {
-    const { sync } = await import("cross-spawn");
+  /**
+   * Runs a command, the same as `cross-spawn` does.
+   * @param {string} command command
+   * @param {string[]} args arguments
+   * @param {SpawnSyncOptions} options options
+   * @returns {SpawnSyncReturns<string | Buffer>} result
+   */
+  async #spawnSync(
+    command: string,
+    args: string[],
+    options: SpawnSyncOptions = {},
+  ): Promise<SpawnSyncReturns<string | Buffer>> {
+    const { spawnSync } = await import("node:child_process");
 
+    if (process.platform !== "win32") {
+      return spawnSync(command, args, options);
+    }
+
+    // Package managers are `.cmd` files on Windows, which only a shell runs, and the shell doesn't
+    // escape arguments
+    const escapedArgs = args.map((arg) => {
+      const quoted = `"${arg
+        // Double the backslashes before a quote and escape the quote
+        .replaceAll(/(?=(\\+?)?)\1"/g, '$1$1\\"')
+        // Double the backslashes at the end, they precede the closing quote
+        .replace(/(?=(\\+?)?)\1$/, "$1$1")}"`;
+
+      // Escape the characters `cmd.exe` treats specially
+      return quoted.replaceAll(/([()\][%!^"`<>&|;, *?])/g, "^$1");
+    });
+
+    return spawnSync([command, ...escapedArgs].join(" "), { ...options, shell: true });
+  }
+
+  async getDefaultPackageManager(): Promise<PackageManager | undefined> {
     try {
       await fs.promises.access(path.resolve(process.cwd(), "package-lock.json"), fs.constants.F_OK);
       return "npm";
@@ -655,7 +688,7 @@ class WebpackCLI {
     try {
       // the sync function below will fail if npm is not installed,
       // an error will be thrown
-      if (sync("npm", ["--version"])) {
+      if (await this.#spawnSync("npm", ["--version"])) {
         return "npm";
       }
     } catch {
@@ -665,7 +698,7 @@ class WebpackCLI {
     try {
       // the sync function below will fail if yarn is not installed,
       // an error will be thrown
-      if (sync("yarn", ["--version"])) {
+      if (await this.#spawnSync("yarn", ["--version"])) {
         return "yarn";
       }
     } catch {
@@ -675,7 +708,7 @@ class WebpackCLI {
     try {
       // the sync function below will fail if pnpm is not installed,
       // an error will be thrown
-      if (sync("pnpm", ["--version"])) {
+      if (await this.#spawnSync("pnpm", ["--version"])) {
         return "pnpm";
       }
     } catch {
@@ -812,10 +845,8 @@ class WebpackCLI {
     }
 
     if (needInstall) {
-      const { sync } = await import("cross-spawn");
-
       try {
-        sync(packageManager, commandArguments, { stdio: "inherit" });
+        await this.#spawnSync(packageManager, commandArguments, { stdio: "inherit" });
       } catch (error) {
         this.logger.error(error);
 

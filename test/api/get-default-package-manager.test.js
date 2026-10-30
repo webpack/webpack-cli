@@ -5,9 +5,7 @@ const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
 const syncMock = jest.fn(() => ({
   stdout: "1.0.0",
 }));
-jest.setMock("cross-spawn", {
-  sync: syncMock,
-});
+jest.unstable_mockModule("node:child_process", () => ({ spawnSync: syncMock }));
 
 describe("getPackageManager", () => {
   let cli;
