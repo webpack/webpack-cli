@@ -730,37 +730,18 @@ class WebpackCLI {
       // Nothing
     }
 
-    try {
-      // the sync function below will fail if npm is not installed,
-      // an error will be thrown
-      if (await this.#spawnSync("npm", ["--version"])) {
-        return "npm";
+    // A missing package manager fails to start, or exits with an error in the shell on Windows
+    for (const packageManager of ["npm", "yarn", "pnpm"] as const) {
+      const { error, status } = await this.#spawnSync(packageManager, ["--version"]);
+
+      if (!error && status === 0) {
+        return packageManager;
       }
-    } catch {
-      // Nothing
     }
 
-    try {
-      // the sync function below will fail if yarn is not installed,
-      // an error will be thrown
-      if (await this.#spawnSync("yarn", ["--version"])) {
-        return "yarn";
-      }
-    } catch {
-      // Nothing
-    }
+    this.logger.error("No package manager found.");
 
-    try {
-      // the sync function below will fail if pnpm is not installed,
-      // an error will be thrown
-      if (await this.#spawnSync("pnpm", ["--version"])) {
-        return "pnpm";
-      }
-    } catch {
-      this.logger.error("No package manager found.");
-
-      process.exit(2);
-    }
+    process.exit(2);
   }
 
   async isPackageInstalled(packageName: string): Promise<boolean> {

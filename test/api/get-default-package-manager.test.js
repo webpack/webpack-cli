@@ -2,9 +2,9 @@ const fs = require("node:fs");
 const path = require("node:path");
 const CLI = require("../../packages/webpack-cli/lib/webpack-cli").default;
 
-const syncMock = jest.fn(() => ({
-  stdout: "1.0.0",
-}));
+const installed = () => ({ status: 0, stdout: "1.0.0" });
+const missing = () => ({ error: Object.assign(new Error("spawnSync ENOENT"), { code: "ENOENT" }) });
+const syncMock = jest.fn(installed);
 jest.unstable_mockModule("node:child_process", () => ({ spawnSync: syncMock }));
 
 describe("getPackageManager", () => {
@@ -38,6 +38,7 @@ describe("getPackageManager", () => {
     cli = new CLI();
 
     syncMock.mockClear();
+    syncMock.mockImplementation(installed);
   });
 
   it("should find yarn.lock", async () => {
@@ -96,11 +97,26 @@ describe("getPackageManager", () => {
     expect(syncMock).toHaveBeenCalledTimes(1);
   });
 
+  it("should find yarn when npm is missing", async () => {
+    cwdSpy.mockReturnValue(noLockPath);
+    syncMock.mockImplementationOnce(missing);
+
+    expect(await cli.getDefaultPackageManager()).toBe("yarn");
+    expect(syncMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("should find pnpm when npm fails and yarn is missing", async () => {
+    cwdSpy.mockReturnValue(noLockPath);
+    // On Windows a missing command fails in the shell
+    syncMock.mockReturnValueOnce({ status: 1 }).mockImplementationOnce(missing);
+
+    expect(await cli.getDefaultPackageManager()).toBe("pnpm");
+    expect(syncMock).toHaveBeenCalledTimes(3);
+  });
+
   it("should throw error if no package manager is found", async () => {
     cwdSpy.mockReturnValue(noLockPath);
-    syncMock.mockImplementation(() => {
-      throw new Error("error");
-    });
+    syncMock.mockImplementation(missing);
     const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
     // Do not print warning in CI
     const consoleMock = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -109,5 +125,8 @@ describe("getPackageManager", () => {
     expect(mockExit).toHaveBeenCalledWith(2);
     expect(consoleMock).toHaveBeenCalledTimes(1);
     expect(syncMock).toHaveBeenCalledTimes(3); // 3 calls for npm, yarn and pnpm
+
+    mockExit.mockRestore();
+    consoleMock.mockRestore();
   });
 });
