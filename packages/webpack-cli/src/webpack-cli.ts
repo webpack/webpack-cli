@@ -1876,24 +1876,18 @@ class WebpackCLI {
     } else {
       const defaultInformation: EnvinfoConfig = {
         Binaries: ["Node", "Yarn", "npm", "pnpm"],
-        // On Windows, `envinfo` starts the browsers themselves to get their versions,
-        // which can hang (e.g. on CI), so they are skipped there
-        ...(process.platform === "win32"
-          ? {}
-          : {
-              Browsers: [
-                "Brave Browser",
-                "Chrome",
-                "Chrome Canary",
-                "Edge",
-                "Firefox",
-                "Firefox Developer Edition",
-                "Firefox Nightly",
-                "Internet Explorer",
-                "Safari",
-                "Safari Technology Preview",
-              ],
-            }),
+        Browsers: [
+          "Brave Browser",
+          "Chrome",
+          "Chrome Canary",
+          "Edge",
+          "Firefox",
+          "Firefox Developer Edition",
+          "Firefox Nightly",
+          "Internet Explorer",
+          "Safari",
+          "Safari Technology Preview",
+        ],
         // @ts-expect-error No in types
         Monorepos: ["Yarn Workspaces", "Lerna"],
         System: ["OS", "CPU", "Memory"],
