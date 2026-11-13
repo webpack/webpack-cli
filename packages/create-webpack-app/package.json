@@ -42,7 +42,7 @@
     "@inquirer/expand": "^5.1.8",
     "@inquirer/select": "^5.2.8",
     "colorette": "^2.0.20",
-    "commander": "^14.0.3",
+    "commander": "^15.1.0",
     "cross-spawn": "^7.0.6",
     "ejs": "^7.0.2",
     "node-plop": "^0.32.3"
